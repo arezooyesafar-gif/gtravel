@@ -1,0 +1,53 @@
+﻿{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست
+                                <span class="change up">ایرلاین ها</span>
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'Create-Airline' %}" class="link">ثبت ایرلاین جدید</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card hotel_list_heading">
+                <div class="row">
+                    <div class="col-lg-2 hotel_list">
+                        <p class="row_head airline_list airline_list">ردیف</p>
+                    </div>
+                    <div class="col-lg-2 hotel_list">
+                        <p class="row_head airline_list">تصویر ایرلاین</p>
+                    </div>
+                    <div class="col-lg-3 hotel_list">
+                        <p class="row_head airline_list">نام ایرلاین</p>
+                    </div>
+                    <div class="col-lg-4 hotel_list">
+                        <p class="row_head airline_list">بار مجاز</p>
+                    </div>
+                    <div class="col-lg-1 hotel_list">
+                        <p class="row_head airline_list">اقدامات</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-sm-12 col-lg-12">
+            <div id="airline_data">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

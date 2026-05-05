@@ -1,0 +1,137 @@
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    <title>پرداخت آنلاین آرزوی سفر</title>
+    {% include 'ui/base/head.html' %}
+</head>
+<body>
+{% include 'ui/base/header.html' %}
+<div class="warp">
+    {% include 'ui/base/preloader.html' %}
+    <section class="destinaton_selector">
+    <div class="top-container">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h5 class="mb-4 text-center">فرم ثبت اطلاعات</h5>
+                            <form action="/get-token" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label">شماره قرارداد</label>
+                                    <input type="text" class="form-control"
+                                           placeholder="لطفا شماره قرارداد خود را وارد نمایید"
+                                           name="contractNumber"
+                                           required="required"
+                                    >
+                                </div>
+                                <!-- نام و نام خانوادگی -->
+                                <div class="mb-3">
+                                    <label class="form-label">نام و نام
+                                        خانوادگی</label>
+                                    <input type="text" class="form-control"
+                                           placeholder="مثلا: کامران معصوم آبادی"
+                                           name="fullName"
+                                           required="required"
+                                    >
+                                </div>
+
+                                <!-- شماره تلفن -->
+                                <div class="mb-3">
+                                    <label class="form-label">شماره
+                                        تلفن</label>
+                                    <input type="tel" class="form-control"
+                                           placeholder="09xxxxxxxxx"
+                                           name="phoneNumber"
+                                           required="required"
+                                    >
+                                </div>
+
+                                <div class="mb-3 position-relative">
+    <label class="form-label">مبلغ (ریال)</label>
+
+    <div class="dropdown w-100">
+        <input type="text" id="amount" name="amount" class="form-control dropdown-toggle"
+               placeholder="انتخاب مبلغ" readonly data-bs-toggle="dropdown">
+
+        <ul class="dropdown-menu w-100 mt-1" id="amountMenu">
+            <li><a class="dropdown-item amount-option" data-value="100000000">10 میلیون تومان - 100,000,000 ریال</a></li>
+            <li><a class="dropdown-item amount-option" data-value="200000000">20 میلیون تومان - 200,000,000 ریال</a></li>
+            <li><a class="dropdown-item amount-option" data-value="500000000">50 میلیون تومان - 500,000,000 ریال</a></li>
+            <li><a class="dropdown-item amount-option" data-value="1000000000">100 میلیون تومان - 1,000,000,000 ریال</a></li>
+            <li><a class="dropdown-item amount-option" data-value="2000000000">200 میلیون تومان - 2,000,000,000 ریال</a></li>
+            <li><a class="dropdown-item" id="customAmount">مبلغ دلخواه</a></li>
+        </ul>
+    </div>
+</div>
+
+                                <!-- توضیحات -->
+                                <div class="mb-3">
+                                    <label class="form-label">توضیحات</label>
+                                    <textarea class="form-control" rows="3" name="description"></textarea>
+                                </div>
+
+                                <!-- دکمه -->
+                                <div class="d-grid">
+                                    <button type="submit"
+                                            class="btn" style="background-color: #61B3E5;color: white">
+                                        ثبت اطلاعات
+                                    </button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script>
+const amountInput = document.getElementById('amount');
+const customAmountBtn = document.getElementById('customAmount');
+const amountOptions = document.querySelectorAll('.amount-option');
+
+// انتخاب گزینه‌های آماده
+amountOptions.forEach(item => {
+    item.addEventListener('click', () => {
+        const value = item.dataset.value;
+        let value2 = value.replace(/,/g, '').replace(/\D/g, '');
+        amountInput.value = value2.replace(/\B(?=(\d{3})+(?!\d))/g, ','); //Number(value).toLocaleString('fa-IR');
+        amountInput.readOnly = true;
+    });
+});
+
+// مبلغ دلخواه
+customAmountBtn.addEventListener('click', () => {
+    amountInput.value = "";
+    amountInput.readOnly = false;
+    amountInput.focus();
+});
+
+// جداکننده سه‌رقمی فقط وقتی فیلد بازه
+amountInput.addEventListener('input', function () {
+    if (this.readOnly) return;
+    let value = this.value.replace(/,/g, '').replace(/\D/g, '');
+    this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+});
+</script>
+        {% include 'ui/base/footer.html' %}
+        {% include 'ui/base/plugins.html' %}
+    </div>
+    </section>
+</div>
+
+<style>
+    #amountMenu {
+        text-align: right;
+    }
+    #amountMenu .dropdown-item {
+        direction: rtl;
+        text-align: right;
+    }
+</style>
+</body>
+</html>

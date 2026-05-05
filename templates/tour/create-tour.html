@@ -1,0 +1,311 @@
+﻿{% extends 'admin-dashboard/base/base.html' %}
+{% load jalali_tags %}
+{% block Main %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row m-t-40">
+            <div class="col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">
+                                    ایجاد و بروزرسانی
+                                    {% if Data %}
+                                        <span class="change down">{{ Data.HotelName }}</span>
+                                    {% else %}
+                                        <span class="change up">تور</span>
+                                    {% endif %}
+                                </h6>
+                            </div>
+                            <div class="card-tools">
+                                {% if Data %}
+                                    <a href="{% url 'create-tour' %}" class="link">ایجاد تور</a>
+                                {% endif %}
+                                <a href="{% url 'tour-list' %}" class="link m-r-20"> لیست تور ها</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-40">
+            <div class="col-lg-4">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="label-text tour_create">تصویر صفحه تور <span class="required">*</span></p>
+                        <label for="id_tour_main" class="custom-file-upload text-input">
+                            <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر صفحه تور</span>
+                        </label>
+                        {{ form.tour_main }}
+                        <script>
+                            $(document).ready(function () {
+                                $('input[type="file"]').change(function (e) {
+                                    var fileName = e.target.files[0].name;
+                                    document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                });
+                            });
+                        </script>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text tour_create">تصویر تور ویژه <span class="required">*</span></p>
+                        <label for="id_TourImage" class="custom-file-upload text-input">
+                            <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر تور</span>
+                        </label>
+                        {{ form.TourImage }}
+                        <script>
+                            $(document).ready(function () {
+                                $('input[type="file"]').change(function (e) {
+                                    var fileName = e.target.files[0].name;
+                                    document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                });
+                            });
+                        </script>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text tour_create">فایل تور<span class="required">*</span></p>
+                        <label for="id_TourPdf" class="custom-file-upload text-input">
+                            <i class="fa fa-cloud-upload-alt"></i><span id="filename2"> بارگذاری فایل</span>
+                        </label>
+                        {{ form.TourPdf }}
+                        <script>
+                            $(document).ready(function () {
+                                $('input[type="file"]').change(function (e) {
+                                    var fileName2 = e.target.files[0].name;
+                                    document.getElementById('filename2').innerHTML = '  فایل انتخابی: ' + fileName2
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="label-text tour_create">عنوان تـــور <span class="required">*</span></p>
+                        {{ form.Title }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text tour_create">عنوان صفحه تـــور <span class="required">*</span></p>
+                        {{ form.tstitle }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text tour_create"> لینک سئو <span class="required">*</span></p>
+                        {{ form.Slug }}
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="label-text tour_create">مبداء تور<span class="required">*</span></p>
+                        {{ form.origin_city }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text tour_create">کشور تور<span class="required">*</span></p>
+                        {{ form.Tcountry }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text tour_create">شهر تور<span class="required">*</span></p>
+                        {{ form.Tcity }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <p class="label-text "> تاریخ شروع تور <span class="required">*</span></p>
+                            {{ form.StartDate }}
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="label-text "> تاریخ اتمام تور <span class="required">*</span></p>
+                            {{ form.EndDate }}
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="label-text "> تعداد شب های اقامت <span class="required">*</span></p>
+                            {{ form.NightCount }}
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="label-text "> تعداد روزهای اقامت <span class="required">*</span></p>
+                            {{ form.DayCount }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="inner_section">
+                    <p class="label">گالری تصاویر تور</p>
+                    <input name="files" type="file" multiple class="form-control">
+                    {% if galley %}
+                        <div class="row m-t-20">
+                            {% for item in galley %}
+                                <div class="col-lg-2">
+                                    <img class="gallery_item" src="{{ item.image.url }}">
+                                    <a class="remove_image" href="{% url 'remove_tour_gallery' item.id %}">حذف</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="inner_section">
+                    <p class="label">تصویر صفحه تور</p>
+                    {% if Data.tour_main %}
+                        <img src="{{ Data.tour_main.url }}">
+                        <a class="remove_image" href="{% url 'remove_tour_main_image' Data.id %}">حذف</a>
+                    {% else %}
+                        <img src="/media/no-hotel-img.jpg">
+                    {% endif %}
+                <br>
+                <p class="label">تصویر ویژه تور</p>
+                    {% if Data.TourImage %}
+                        <img src="{{ Data.TourImage.url }}">
+                        <a class="remove_image" href="{% url 'remove_tour_featured_image' Data.id %}">حذف</a>
+                    {% else %}
+                        <img src="/media/no-hotel-img.jpg">
+                    {% endif %}
+                {% if Data.TourPdf %}
+                        <a class="remove_image" href="{% url 'remove_tour_pdf' Data.id %}">حذف PDF تور</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <div class="row">
+                        <p style="margin-bottom: 30px" class="">اعمال تغییر قیمت روی کل پکیج ها<span
+                                class="required"></span></p>
+                        <div class="col-lg-12">
+                            <p class="label-text ">قیمت دو تخته<span class="required"></span></p>
+                            {{ form.add_peice_dubel }}
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text ">قیمت یک تخته<span class="required"></span></p>
+                            {{ form.add_peice_single }}
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text "> کودک با تخت<span class="required"></span></p>
+                            {{ form.add_peice_with_bed }}
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text ">کودک بدون تخت<span class="required"></span></p>
+                            {{ form.add_peice_without_bed }}
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text ">قیمت نوزاد<span class="required"></span></p>
+                            {{ form.add_peice_infont }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="spacial_feat bg-gray-dim">
+                            تور نقدی {{ form.Cash }}
+                        </p>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="spacial_feat bg-gray-dim">
+                            تور اقساطی {{ form.Installment }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="spacial_feat bg-gray-dim">
+                            تور گارانتی {{ form.satrap_gte }}
+                        </p>
+                    </div>
+                    <div class="col-lg-12 ">
+                        <p class="spacial_feat bg-gray-dim">
+                            تور نوروزی {{ form.norooz }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="spacial_feat bg-gray-dim">
+                            نمایش تور {{ form.PubTour }}
+                        </p>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="spacial_feat bg-gray-dim">
+                            تور ویژه {{ form.Feature }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="spacial_feat bg-gray-dim">
+                            فعال سازی پی دی اف {{ form.pdfAvb }}
+                        </p>
+                    </div>
+                    <div class="col-lg-12 ">
+                        <p class="spacial_feat bg-gray-dim">
+                            تور تخفیفی {{ form.OfferShow }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+         <div class="col-lg-12">
+             <div class="inner_section">
+                 <p class="label-text ">متن تور ویژه<span class="required"></span></p>
+                            {{ form.spacial_lable }}
+             </div>
+         </div>
+        <div class="col-lg-12">
+                <div class="inner_section">
+                    <p class=""> مدارک لازم تور <span class="required">*</span></p>
+                    {{ form.documents }}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <p class=""> خدمات تور <span class="required">*</span></p>
+                    {{ form.ShortDsc }}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <p class=""> توضیحات تکمیلی <span class="required">*</span></p>
+                    {{ form.Description }}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="inner_section">
+                    <p class=""> توضیحات پی دی اف <span class="required">*</span></p>
+                    {{ form.pdfdesc }}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="inner_section">
+                    <p class=""> توضیحات متا <span class="required">*</span></p>
+                    {{ form.MetaDescription }}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="inner_section">
+                    <p class=""> کلمات کلیدی<span class="required">*</span></p>
+                    {{ form.MetaKeywords }}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <button type="submit" class="btn btn-lg btn-info btn-block">
+                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                        id="save-button-title">ذخیره اطلاعات تور</span>
+                </button>
+            </div>
+        </div>
+        {{ form.media }}
+    </form>
+{% endblock %}

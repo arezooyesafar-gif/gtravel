@@ -1,0 +1,6 @@
+<select name="related_post" class="form-select" required="" id="id_related_post">
+    <option value="">پست مرتبط را انتخاب کنید</option>
+    {% for i in all_posts %}
+        <option value="{{ i.id }}">{{ i.Title }}</option>
+    {% endfor %}
+</select>

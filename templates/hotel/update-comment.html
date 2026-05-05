@@ -1,0 +1,84 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% load jalali_tags %}
+    {{ form.errors }}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                ویرایش کامنت کاربر
+                                <span class="down change">{{ comment.full_name }} </span>
+                                برای 
+                                <span class="down change">{{ comment.hotel }}</span>
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <p>تاریخ ثبت کامنت:
+                                {{ comment.create_date|to_jalali:'%Y/%m/%d' }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row m-t-20">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="inner_section">
+                        <div class="col-lg-12">
+                            <p class="label-text">نام کاربر <span class="required">*</span></p>
+                            <input type="text" disabled class="text-input" value="{{ comment.full_name }}">
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">ایمیل کاربر<span class="required">*</span></p>
+                            <input type="text" disabled class="text-input" value="{{ comment.email }}">
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">تاریخ ثبت <span class="required">*</span></p>
+                            <input type="text" disabled class="text-input"
+                                   value="{{ comment.create_date|to_jalali:'%Y/%m/%d' }}">
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">فعال سازی نمایش<span class="required">*</span></p>
+                            <select id="id_parentCat" name="publish" class="text-input">
+                                <option value="1" {% if comment.publish %}selected="selected"{% endif %}>تایید برای
+                                    مشاهده
+                                </option>
+                                <option value="0" {% if not comment.publish %}selected="selected"{% endif %}>عدم تایید
+                                    برای
+                                    مشاهده
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                    id="save-button-title">بروزرسانی کامنت </span>
+                            </button>
+                        </div>
+                        {{ form.media }}
+                    </div>
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="inner_section">
+                        <div class="col-lg-12">
+                            <p class="label-text">متن کامنت<span class="required">*</span></p>
+                            <div class="comment-text-box">
+                                {{ comment.desc }}
+                            </div>
+                        </div>
+                        {{ form.media }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+{% endblock %}

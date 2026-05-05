@@ -1,0 +1,37 @@
+{% load humanize %}
+{% load jalali_tags %}
+<table class="table BranchTable">
+    <thead>
+    <tr>
+        <th class="TbHead">ردیف</th>
+        <th class="TbHead">مبلغ تراکنش</th>
+        <th class="TbHead">تاریخ تراکنش</th>
+        <th class="TbHead">شماره سفارش</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for item in all_recoreds %}
+            <td class="TbCells serial">{{ forloop.counter0|add:all_recoreds.start_index }}</td>
+            <td class="TbCells">{{ item.amount|intcomma }} تومان</td>
+            <td class="TbCells">{{ item.timestamp|to_jalali:"%Y/%m/%d" }}</td>
+            <td class="TbCells">{{ item.order.order_number }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div>
+    <ul class="pagination">
+        {% for n in all_recoreds.paginator.page_range %}
+            {% if all_recoreds.number == n %}
+                <li data-page='{{ n }}'
+                    class="page-item-deposite {% if all_recoreds.number == n %}active{% endif %}"><a
+                        class="page-link">{{ n }}</a></li>
+            {% elif n > all_recoreds.number|add:'-10' and n < all_recoreds.number|add:'10' %}
+                <li data-page='{{ n }}'
+                    class="page-item-deposite {% if all_recoreds.number == n %}active{% endif %}"><a
+                         class="page-link">{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

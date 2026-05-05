@@ -1,0 +1,10 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <script>
+    var wallet_id = {{ user_wallet.id }}
+    </script>
+    {% include 'admin-dashboard/wallet_material/wallet_counter.html' %}
+    {% include 'admin-dashboard/wallet_material/walle_charge.html' %}
+    {% include 'admin-dashboard/wallet_material/wallet_withdrawal.html' %}
+    {% include 'admin-dashboard/wallet_material/wallet_deposit.html' %}
+{% endblock %}

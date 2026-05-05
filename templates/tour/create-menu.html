@@ -1,0 +1,89 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row m-t-40">
+            <div class="col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">
+                                    {% if city %}
+                                        <img class="country_flag_update" src="{{ city.CountryName.Flagimg.url }}">
+                                    {% endif %}
+                                    ایجاد و بروزرسانی
+                                    <span class="change up">منوی تور {{ city.Name }}</span>
+                                </h6>
+                            </div>
+                            <div class="card-tools">
+                                <a href="" class="link">مشاهده لیست منوها</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-40">
+            <div class="alert-light">
+                {% for message in messages %}
+                    <p class="error-body ap">{{ message }}</p>
+                {% endfor %}
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="hd-basic-info personal">
+                                <p class="label-text">نام منو <span class="required">*</span></p>
+                                {{ form.MenuTitle }}
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="hd-basic-info personal" style="display: block;">
+                                <p class="label-text">لینک سئو<span class="required">*</span></p>
+                                {{ form.slug }}
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="hd-basic-info personal" style="display: block;">
+                                <p class="label-text">عنوان سئو<span class="required">*</span></p>
+                                {{ form.page_title }}
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="spacial_feat bg-gray-dim">
+                                نمایش منو {{ form.show_meu }}
+                            </p>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="hd-basic-info personal" style="display: block;">
+                                <p class="label-text">توضیحات منو<span class="required">*</span></p>
+                                {{ form.MenuDesc }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6" style="margin-top: 10px;">
+                            <div class="hd-basic-info personal" style="display: block;">
+                                <p class="label-text">کلمات کلیدی منو<span class="required">*</span></p>
+                                {{ form.meta_keywords }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6" style="margin-top: 10px;">
+                            <div class="hd-basic-info personal" style="display: block;">
+                                <p class="label-text">توضیحات متا منو<span class="required">*</span></p>
+                                {{ form.meta_description }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hd-basic-info personal">
+                <button type="submit" class="btn btn-lg btn-info btn-block">
+                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                        id="save-button-title">ذخیره منو</span>
+                </button>
+            </div>
+            {{ form.media }}
+        </div>
+    </form>
+{% endblock %}

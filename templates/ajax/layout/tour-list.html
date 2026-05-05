@@ -1,0 +1,185 @@
+{% load jalali_tags %}{% load humanize %}
+<div class="tour-box">
+    <ul class="pagination">
+    {% for n in tours_list.paginator.page_range %}
+        {% if tours_list.number == n %}
+            <li data-page='{{ n }}' class="page-item {% if tours_list.number == n %}active{% endif %}"><a
+                    class="page-link">{{ n }}</a></li>
+        {% elif n > tours_list.number|add:'-10' and n < tours_list.number|add:'10' %}
+            <li data-page='{{ n }}' class="page-item {% if tours_list.number == n %}active{% endif %}"><a
+                    class="page-link">{{ n }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% for tours,packages, cities, dates in pubTours %}
+        <div class="col-lg-12 tour_grid no-padding">
+            <div class="row tour_data_box list-view">
+                <div class="top-cycle"></div>
+                <div class="bottom-cycle"></div>
+                <div class="col-lg-3 tour image no-padding">
+                    {% if tours.Feature %}
+                        {% if tours.spacial_lable %}
+                            <div class="spacial_baget-h">
+                            <p>
+                                {{ tours.spacial_lable }}
+                            </p>
+                        </div>
+                            {% else %}
+                        <div class="spacial_baget-h">
+                            <p>
+                                تور ویژه
+                            </p>
+                        </div>
+                            {% endif %}
+                    {% endif %}
+                    {% if tours.TourImage %}
+                        <img class="tour-main-img horzental" src="{{ tours.TourImage.url }}" alt="{{ tours.Title }}" width="558" height="400" loading="lazy" decoding="async">
+                    {% else %}
+                        <img loading="lazy" class="tour-main-img horzental" src="/static/asset/css/images/No_Image_Available.jpg"  alt="{{ tours.Title }}">
+                    {% endif %}
+                    <span class="country_flag_list">
+                         <img loading="lazy" src="{{ tours.Tcountry.Flagimg.url }}" alt="پرچم {{ tours.Tcountry.TitleC }}" width="30" height="30" loading="lazy">
+                              {{ tours.Tcountry.TitleC }}
+                        </span>
+{#                    {% if tours.satrap_gte %}#}
+                    {#                        <span class="grte_">#}
+                    {#                                        گارانتی هتل#}
+                    {#                                    </span>#}
+                    {#                    {% endif %}#}
+                    {#                    {% if tours.Cash %}#}
+                    {#                        <span class="cashe_">#}
+                    {#                                        نقدی#}
+                    {#                                    </span>#}
+                    {#                    {% endif %}#}
+                    {#                    {% if tours.Installment %}#}
+                    {#                        <span class="installment_">#}
+                    {#                                        اقساطی#}
+                    {#                                    </span>#}
+                    {#                                        {% endif %} #}
+                </div>
+                <div class="col-lg-9 no-padding with-bg">
+                    <div class="row">
+                        <div class="col-lg-12 no-padding">
+                            <div class="row airline-info">
+                                <div class="col-lg-6">
+                                    {% if dates %}
+                                    <p class="date-plan-text">دارای 
+                                    {{ dates }}
+                                    تاریخ برگزاری 
+                                    </p>
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="airline-logo-section">
+                                        {% if cities.0.Airline.AirLineTitle %}
+                                            <img loading="lazy" style="width: 70%;position: relative;top: 2px;" src="/media/airplane.png" alt="پرواز">
+                                            <img loading="lazy" class="airline_icon"
+                                                 src="{{ cities.0.Airline.AirlineLogo.url }}" alt="ایرلاین">
+                                        {% else %}
+                                            تــور زمینی
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="col-lg-12 no-padding">
+                                <p class="tour_title_ h-t-l">
+                                    {{ tours.Title }}
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-lg-12 no-padding">
+                                    <p class="duration_ h-t-l">
+                                        <img loading="lazy" class="day_icon" alt="روز" src="/static/asset/css/images/icon/day.png">
+                                        {{ tours.NightCount }}
+                                        شب و
+                                        {{ tours.DayCount }}
+                                        روز
+                                    </p>
+                                </div>
+                                <div class="col-sm-6 col-lg-12 no-padding">
+                                    <p class="duration_ h-t-l">
+                                        <img loading="lazy" class="day_icon" alt="تاریخ" src="/static/asset/css/images/icon/date.png">
+                                        {{ tours.StartDate|to_jalali:'%Y/%m/%d' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-5 no-padding">
+                            <div class="row">
+                                <div class="col-sm-12 order-sm-last col-lg-12 order-lg-0">
+                                    <div class="row info-button">
+                                        <div class="col-sm-6 col-lg-6 no-padding">
+                                            <p class="more_detail">
+                                                <a class="more_detail_link"
+                                                   href="{% url 'tour-detail' tours.id tours.Slug %}">
+                                                    مشاهده جزئیات
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6 no-padding">
+                                            <p class="pdf_download">
+                                                {% if tours.pdfAvb and tours.TourPdf %}
+                                                    <a class="pdf_download_link" href="{{ tours.TourPdf.url }}">
+                                                    دریافت پکیج ها
+                                                </a>
+                                                {% else %}
+                                                <a class="pdf_download_link" href="{% url 'pdf-download' tours.id %}">
+                                                    دریافت پکیج ها
+                                                </a>
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-12 no-padding">
+                                    <div class="row price-info">
+                                        <div class="" style="padding: 0;">
+                                            <div class="col-lg-12 no-padding hr-irprice">
+                                                <div class="">
+                                                    <p class="irprice horzental-price">
+                                                        <span class="lable-txt">شروع قیمت از: </span>
+                                                        {{ packages.0.DoubleBedPrice | intcomma }} {{ packages.0.Pcry }}
+                                                        {% if packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
+                                                            + {{ packages.0.DollerPrice | intcomma }}
+                                                            {% if packages.0.fr_Pcry %}
+                                                            {{ packages.0.fr_Pcry }}
+                                                                {% else %}
+                                                                دلار
+                                                                {% endif %}
+                                                        {% endif %}
+                                                        {% if not packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
+                                                            + {{ packages.0.DoubleBedPrice_doller | intcomma }}
+                                                            {% if packages.0.fr_Pcry %}
+                                                            {{ packages.0.fr_Pcry }}
+                                                                {% else %}
+                                                                دلار
+                                                                {% endif %}
+                                                        {% endif %}
+                                                        {% if packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
+                                                            + {{ packages.0.DoubleBedPrice_doller | intcomma }}
+                                                            {% if packages.0.fr_Pcry %}
+                                                            {{ packages.0.fr_Pcry }}
+                                                                {% else %}
+                                                                دلار
+                                                                {% endif %}
+                                                        {% endif %}
+                                                        {% if not packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
+                                                        {% endif %}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endfor %}
+</div>
+

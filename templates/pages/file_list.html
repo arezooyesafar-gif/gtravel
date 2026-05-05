@@ -1,0 +1,30 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست فایل های روی سرور
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'upload_file' %}" class="link">بارگذاری فایل </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class=" col-lg-12">
+            <div class="inner_section">
+                <div id="file_list" class="table-block">
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

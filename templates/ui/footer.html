@@ -1,0 +1,123 @@
+<div class="footer-container">
+    <div class="contact-info">
+        <div class="inner-container">
+            <div class="address-info">
+                <ion-icon name="location-sharp"></ion-icon>
+                <span>
+                {{Footer.0.Address}}
+                </span>
+            </div>
+            <div class="phone-info">
+                <i class="fa fa-phone-square" aria-hidden="true"></i><span>
+                    {{Footer.0.Phone}}
+                </span>
+            </div>
+            <div class="mail-info">
+                <i class="fa fa-envelope-open" aria-hidden="true"></i><span>
+                    {{Footer.0.Email}}
+                </span>
+            </div>
+            <div class="social-media">
+                <a  href="{{Footer.0.instagram}}"><ion-icon id="social-icons" name="logo-instagram"></ion-icon></a>
+                <a  href="{{Footer.0.Linkedin}}"><ion-icon id="social-icons" name="logo-linkedin"></ion-icon></a>
+                <a  href="{{Footer.0.Telegram}}"><ion-icon id="social-icons" name="paper-plane-sharp"></ion-icon></a>
+            </div>
+            <div class="social-media">
+                <form method="POST", validate="validate" onsubmit="return check_mobile();">
+                    {% csrf_token %}
+                    {{Sub.Mobile}}
+                <button class="submit-btn" type="submit">عضوم کن</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+    <div class="inner-container">
+
+        <div class="footer-links">
+            <div class="links-detail">
+                <div class="cerificate">
+                    <div class="cert saman">
+{#                        <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=313646&amp;Code=LKEwUj0UdsJTdmETDWLQ"><img loading="lazy" alt="enamad" referrerpolicy="origin" src="https://Trustseal.eNamad.ir/logo.aspx?id=313646&amp;Code=LKEwUj0UdsJTdmETDWLQ" alt="" style="cursor:pointer" id="LKEwUj0UdsJTdmETDWLQ"></a>#}
+                        <!-- <a href="{{Footer.0.Samandehi}}">
+                            <img loading="lazy" src="/media/samandehi-2.jpg"> 
+                        </a> -->
+                    </div>
+                    <div class="cert enamad">
+                        <a href="{{Footer.0.Etehadieh}}">
+			            <img loading="lazy" alt="'etehadieh" src="/media/e-businness.jpg">
+                        </a>
+                    </div>
+                    <div class="cert sen">
+                        <a href="{{Footer.0.PsLaw}}">
+			            <img loading="lazy" alt="passenger" src="/media/passenger.jpg">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="company-desc">
+            <div class="heading-title">
+                <h3>درباره آرزوی سفر پارسیان</h3>
+            </div>
+            <div class="description-txt">
+                <p>
+                    {{Footer.0.About}}
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<a id="button" onclick="topFunction()"></a>
+<script>
+let mybutton = document.getElementById("button");
+window.onscroll = function() {scrollFunction()};
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+} 
+</script>
+<script>
+    function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }       
+</script>
+<script>
+function check_mobile() {
+    var regex = new RegExp('(0|98|0098|98)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}');
+    var result = regex.test(document.getElementById('mobile').value);
+    if (result == false) {
+        alert('شماره موبایل صحیح نمیباشد');
+    }
+  }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var elements = document.getElementsByTagName("INPUT");
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].oninvalid = function(e) {
+            e.target.setCustomValidity("");
+            if (!e.target.validity.valid) {
+                e.target.setCustomValidity("مقدار وارد شده معتبر نیست");
+            }
+        };
+        elements[i].oninput = function(e) {
+            e.target.setCustomValidity("");
+        };
+    }
+})
+</script>
+

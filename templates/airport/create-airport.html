@@ -1,0 +1,88 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                ایجاد و بروزرسانی
+                                <span class="change up">فرودگاه</span>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-body">
+                    <div class="alert-light">
+                        {% for message in messages %}
+                            <p class="error-body ap">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                    <form class="input-forms" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <p class="label-text">نام فرودگاه فارسی <span class="required">*</span></p>
+                                {{ form.AirportFa }}
+                            </div>
+                            <div class="col-lg-4">
+                                <p class="label-text">نام فرودگاه انگلیسی <span class="required">*</span></p>
+                                {{ form.AirportEn }}
+                            </div>
+                            <div class="{% if Data %}col-lg-2{% else %}col-lg-4{% endif %}">
+                                <button type="submit" class="btn btn-lg btn-info btn-block">
+                                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">ذخیره
+                                </span>
+                                </button>
+                            </div>
+                            {% if Data %}
+                            <div class="col-lg-2">
+                                <button type="button" class="btn btn-danger delete-modal" data-bs-toggle="modal"
+                                        data-bs-target="#modalAlert">حذف
+                                </button>
+                                <div class="modal fade" tabindex="-1" id="modalAlert">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body modal-body-lg text-center">
+                                                <div class="nk-modal">
+                                                    <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cross bg-danger"></em>
+                                                    <h4 class="nk-modal-title">از حذف این مورد اطمینان دارید؟!</h4>
+                                                    <div class="nk-modal-text">
+                                                        <p class="lead">
+                                                            در حال حذف 
+                                                            {{ Data }} هستید.
+                                                        </p>
+                                                        <p class="text-soft">
+                                                            در صورت حذف اطلاعات قابل بازیابی نمیباشد!
+                                                        </p>
+                                                    </div>
+                                                    <div class="nk-modal-action mt-5">
+                                                        {% if data %}
+                                                        <a href="{% url 'delete-airport' Data.id %}" class="btn btn-lg btn-mw btn-danger"
+                                                           data-bs-dismiss="modal">تایید و حذف</a>
+                                                            {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .modal-body -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-sm-12 col-lg-12">
+            <div id="airport_list">
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

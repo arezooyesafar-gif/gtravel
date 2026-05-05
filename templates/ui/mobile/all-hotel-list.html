@@ -1,0 +1,214 @@
+<html lang="fa-IR" dir="rtl">
+<head>{% load static %}{% load humanize %}{% load jalali_tags %}{% load webp_converter %}
+    {% include 'ui/mobile/base/head.html' %}
+    <link rel=“canonical” href=""/>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    {% if city %}
+    <title>ساتراپ | لیست هتل های {{ city }}</title>
+    {% else %}
+        <title>ساتراپ | لیست هتل ها</title>
+    {% endif %}
+</head>
+<body>
+{% include 'ui/mobile/base/header.html' %}
+<section class="mobile_filter tour_list_section">
+    {% include 'ui/mobile/base/hotel_search.html' %}
+</section>
+{% if countries or cities %}
+<section class="country_list hotel_list_ mobile_view">
+    <div class="container">
+        <h5 class="blog_sec_title">مقصد خود را انتخاب کنید:</h5>
+        <div class="owl-one owl-carousel owl-theme">
+            {% if countries %}
+                {% for countries,hotel_ctry in countries %}
+                    <div class="item">
+                        <div class="country_list_">
+                            <div class="country_image">
+                                <a href="{% url 'all-hotel-list' countries.id countries.slug %}">
+                                    <img alt="{{ countries.TitleC }}" class="country_image_"
+                                         src="{{ countries.Flagimg.url }}">
+                                </a>
+                            </div>
+                            <div class="country_name_">
+                                <a href="{% url 'all-hotel-list' countries.id countries.slug %}"
+                                   class="Country_name">
+                                    {{ countries.TitleC }}
+                                </a>
+                                <p class="country_tours">
+                                    {{ hotel_ctry }} هتل
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if cities %}
+                {% for ctys, hotel_cty_count in cities %}
+                    <div class="item">
+                        <div class="country_list_">
+                            <div class="country_image">
+                                <a href="{% url 'all-hotel-city-list' ctys.id ctys.slug %}">
+                                    <img alt="{{ ctys.CountryName }}" class="country_image_"
+                                         src="{{ ctys.CountryName.Flagimg.url }}">
+                                </a>
+                            </div>
+                            <div class="country_name_">
+                                <a href="{% url 'all-hotel-city-list' ctys.id ctys.slug %}" class="Country_name">
+                                    {{ ctys.Name }}
+                                </a>
+                                <p class="country_tours">
+                                    {{ hotel_cty_count }} هتل
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <script>
+            jQuery(document).ready(function ($) {
+                var owl = $('.owl-one');
+                owl.owlCarousel({
+                    rtl: true,
+                    margin: 10,
+                    nav: true,
+                    loop: false,
+                    autoplay: false,
+                    responsive: {
+                        0: {
+                            items: 1,
+                            loop: true,
+                            dots: true,
+                        },
+                        600: {
+                            items: 2,
+                            loop: true,
+                            dots: true,
+                        },
+                        1000: {
+                            items: 4,
+                            loop: true,
+                            dots: true,
+                        }
+                    }
+                });
+                {#$(".destCountry").select2();#}
+                $('.owl-two').owlCarousel({
+                    loop: true,
+                    margin: 10,
+                    nav: true,
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        600: {
+                            items: 2
+                        },
+                        1000: {
+                            items: 3
+                        }
+                    }
+                });
+            })
+        </script>
+    </div>
+</section>
+{% endif %}
+<section class="hotel_list_ {% if not countries or not cities %}lmt_40{% endif %}">
+    <div class="hotel_list_title_">
+        {% if city %}
+                <p>معرفی هتل های {{ city }}</p>
+            {% else %}
+            <p>معرفی هتل ها</p>
+            {% endif %}
+    </div>
+    <div class="row">
+        {% for hotel in Hotels %}
+            <div class="col-lg-6">
+                <a href="{% url 'hotel-detail' hotel.id hotel.Slug %}">
+                    <div class="hotel-cat">
+                        <div class="cat-img">
+                            {% if hotel.HotelImage %}
+                                <img alt="{{ hotel.HotelName }}" src="{{ hotel.HotelImage.url }}">
+                            {% else %}
+                                <img alt="{{ hotel.HotelName }}" src="/media/no-hotel-img.jpg">
+                            {% endif %}
+                            {% if hotel.top_rate %}
+                            <p class="top_rate_">TOP</p>
+                            {% endif %}
+                            {% if hotel.satrap_gte %}
+                            <p class="gte_hotel">گارانتی ساتراپ</p>
+                            {% endif %}
+                        </div>
+                        <div class="cat-title">
+                            <p class="title-cat hotel_list">{{ hotel.HotelName }}</p>
+                            <p class="hotel_list hotel_data_">{{ hotel.Hcity }} |
+                                {{ hotel.HotelRating }} ستاره
+                                |
+                                {% if hotel.HotelOR %}
+                                    OR
+                                {% elif hotel.HotelBB %}
+                                    BB
+                                {% elif hotel.HotelHB %}
+                                    HB
+                                {% elif hotel.HotelFB %}
+                                    FB
+                                {% elif hotel.HotelAll %}
+                                    ALL
+                                {% elif hotel.HotelUall %}
+                                    UALL
+                                {% elif hotel.HotelMaxAll %}
+                                    MaxALL
+                                {% endif %}
+
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        <ul class="pagination tour_list_">
+            {% if Hotels.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">begin</span>
+                    </a>
+                </li>   {% endif %}
+
+            {% for n in Hotels.paginator.page_range %}
+                {% if Hotels.number == n %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+                    </li>
+                {% elif n > Hotels.number|add:'-5' and n < Hotels.number|add:'5' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if Hotels.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ Hotels.paginator.num_pages }}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">end</span>
+                    </a>
+                </li>
+            {% endif %}   </ul>
+    </div>
+</section>
+{% include 'ui/mobile/base/feature.html' %}
+<section class="mobile_footer">
+    <div class="col-lg-12">
+        <div class="mobile_footer_inner">
+            <div class="col-lg-2">
+                <a href="/" class="logo-link mobile_view_"><img src="/static/Homepage/logo.png"></a>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+{% include 'ui/base/plugins.html' %}
+</html>

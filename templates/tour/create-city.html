@@ -1,0 +1,152 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <form class="input-forms" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row m-t-40">
+            <div class="col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">
+                                    {% if city %}
+                                        <img class="country_flag_update" src="{{ city.CountryName.Flagimg.url }}">
+                                    {% endif %}
+                                    ایجاد و بروزرسانی
+                                    <span class="change up">شهر {{ city.Name }}</span>
+                                </h6>
+                            </div>
+                            <div class="card-tools">
+                                <a href="{% url 'city_list' %}" class="link">مشاهده لیست شهر ها</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-40">
+            <div class="alert-light">
+                {% for message in messages %}
+                    <p class="error-body ap">{{ message }}</p>
+                {% endfor %}
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <p class="label-text city_form">تصویر شهر <span class="required">*</span></p>
+                            <label for="id_cityImg" class="custom-file-upload text-input">
+                                <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر شهر</span>
+                            </label>
+                            {{ Form.cityImg }}
+                            <script>
+                                $(document).ready(function () {
+                                    $('input[type="file"]').change(function (e) {
+                                        var fileName = e.target.files[0].name;
+                                        document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                        {#alert('The file "' + fileName + '" has been selected.');#}
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="label-text city_form">نام کشور <span class="required">*</span></p>
+                            {{ Form.CountryName }}
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="label-text city_form">نام شهر <span class="required">*</span></p>
+                            {{ Form.Name }}
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="label-text city_form">لینک سئو<span class="required">*</span></p>
+                            {{ Form.slug }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p class="label-text city_form">ایکون شهر <span class="required">*</span></p>
+                            {{ Form.cityIcon }}
+                        </div>
+                        <div class="col-lg-6">
+                            {% if city.cityImg %}
+                                <img class="country_image_ad" src="{{ city.cityImg.url }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-6">
+                        {% if city.cityIcon %}
+                                <img class="country_image_icon" src="{{ city.cityIcon.url }}">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="label-text city_form seo">کلمات کلیدی تور<span class="required">*</span></p>
+                        {{ Form.tourmk }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text city_form seo">توضیحات متا تور<span class="required">*</span></p>
+                        {{ Form.tourmd }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text city_form seo">عنوان لیست تورها<span class="required">*</span></p>
+                        {{ Form.tltitle }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="label-text city_form seo">کلمات کلیدی هتل<span class="required">*</span></p>
+                        {{ Form.hotelmk }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text city_form seo">توضیحات متا هتل<span class="required">*</span></p>
+                        {{ Form.hotelmd }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text city_form seo">عنوان لیست هتل ها<span class="required">*</span></p>
+                        {{ Form.hltitle }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-top: 20px">
+                <div class="inner_section">
+                    <p class=""> توضیحات شهر<span class="required">*</span></p>
+                    {{ Form.Description }}
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-top: 20px">
+                <div class="inner_section">
+                    <p class=""> فهرست توضیحات شهر<span class="required">*</span></p>
+                    {{ Form.Description_anchor }}
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-top: 20px">
+                <div class="inner_section">
+                    <p class=""> توضیحات شهر صفحه هتل ها<span class="required">*</span></p>
+                    {{ Form.hotel_page_Description }}
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-top: 20px">
+                <div class="inner_section">
+                    <p class=""> فهرست توضیحات شهر صفحه هتل ها<span class="required">*</span></p>
+                    {{ Form.hotel_page_Description_anchor }}
+                </div>
+            </div>
+            <div class="hd-basic-info " style="display: block;">
+                <button type="submit" class="btn btn-lg btn-info btn-block">
+                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                        id="save-button-title">ذخیره کشور </span>
+                </button>
+            </div>
+            {{ Form.media }}
+        </div>
+    </form>
+{% endblock %}

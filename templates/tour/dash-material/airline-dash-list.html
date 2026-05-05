@@ -1,0 +1,36 @@
+﻿<div class="table-block">
+    {% if Airlines %}
+        <table class="table BranchTable">
+            <thead>
+            <tr>
+                <th class="TbHead">ردیف</th>
+                <th class="TbHead">لوگوی ایرلاین</th>
+                <th class="TbHead">نام ایرلاین</th>
+                <th class="TbHead">اقدامات لازم</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {% for AirLine in Airlines %}
+			{% if forloop.counter <= 5 %}
+                    <td class="TbCells serial">{{ forloop.counter }}</td>
+                    <td class="TbCells amount"><img src="/media/{{ AirLine.AirlineLogo }}" width="35"
+                                                    height="35">
+                    </td>
+                    <td class="TbCells">{{ AirLine.AirLineTitle }}</td>
+
+                    <td class="TbCells">
+                        <a class="EditBtn" href="{% url 'update-airline' AirLine.id %}">
+                            <i class="mdi mdi-table-edit font-20 edit-btn"></i>
+                        </a>
+                        <a class="DelBtn" href="{% url 'delet-airline' AirLine.id %}">
+                            <i class="mdi mdi-delete font-20 del-btn"></i>
+                        </a>
+                    </td>
+                    </tr>
+			{% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>

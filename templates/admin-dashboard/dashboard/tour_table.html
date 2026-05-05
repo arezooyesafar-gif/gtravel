@@ -1,0 +1,84 @@
+{% load jalali_tags %}
+<div class="col-xl-12 col-xxl-12">
+    <div class="card card-bordered card-full">
+        <div class="card-inner border-bottom">
+            <div class="card-title-group">
+                <div class="card-title">
+                    <h6 class="title">
+                        لیست جدیدترین تورهای
+                        <span class="change up">فعال</span>
+                    </h6>
+                </div>
+                <div class="card-tools">
+                    <a href="{% url 'tour-list' %}" class="link">مشاهده همه</a>
+                </div>
+            </div>
+        </div>
+        <div class="card card-preview">
+            <div class="row tour_heading">
+                <div class="col-md-1 text-center">
+                    <span class="">ردیف</span>
+                </div>
+                <div class="col-md-5 text-center">
+                    <span class="">نام تور</span>
+                </div>
+                <div class="col-md-2 text-center">
+                    <span class=""> رفت</span>
+                </div>
+                <div class="col-md-2 text-center">
+                    <span class=""> برگشت</span>
+                </div>
+                <div class="col-md-1 text-center">
+                    <span class=""> وضعیت</span>
+                </div>
+                <div class="col-md-1 text-center">
+                    <span class=""> اقدامات</span>
+                </div>
+            </div>
+            {% for tour in Tours %}
+                {% if forloop.counter < 6 %}
+                    <div class="row tour_data">
+                        <div class="col-md-1 text-center">
+                            <span class="">{{ forloop.counter }}</span>
+                        </div>
+                        <div class="col-md-5 text-center">
+                            <span class="">{{ tour.Title }}</span>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <span class="">{{ tour.StartDate|to_jalali:'%Y/%m/%d' }}</span>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <span class="">{{ tour.EndDate|to_jalali:'%Y/%m/%d' }}</span>
+                        </div>
+                        <div class="col-md-1 text-center">
+            <span class="">
+                {% if tour.PubTour %}
+                    فعال
+                {% endif %}
+            </span>
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <div class="dropdown">
+                                <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                                        class="icon ni ni-more-h"></em></a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                    <ul class="link-list-plain">
+                                        <li><a href="{% url 'update-tour' tour.id %}">ویرایش</a></li>
+                                        <li><a href="{% url 'copy_tour_data' tour.id %}">کپی</a></li>
+                                        <li><a href="{% url 'tour_date_plan' tour.id %}">افزودن تاریخ</a></li>
+                                        <li><a href="{% url 'tour-city-list' tour.id %}">افزودن شهر</a></li>
+                                        <li><a href="{% url 'add-to-package' tour.id %}">افزودن پکیج</a></li>
+                                        <li><a style="color: red" href="{% url 'delet-tour' tour.id %}">حذف</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <!-- .card -->
+</div>
+<!-- .col -->

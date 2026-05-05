@@ -1,0 +1,36 @@
+﻿{% load humanize %}
+<div class="table-block">
+    {% if Packages %}
+        <table class="table BranchTable">
+            <thead>
+            <tr>
+                <th class="TbHead">ردیف</th>
+                <th class="TbHead">نام پکیج</th>
+                <th class="TbHead">نام تور</th>
+                <th class="TbHead">قیمت تخت یک نفره</th>
+                <th class="TbHead">اقدامات لازم</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {% for package in Packages %}
+			{% if forloop.counter <= 5 %}
+                    <td class="TbCells serial">{{ forloop.counter }}</td>
+                    <td class="TbCells amount">{{ package.PackageName }}</td>
+                    <td class="TbCells">{{ package.TourName }}</td>
+                    <td class="TbCells">{{ package.SingleBedPrice | intcomma:False }}</td>
+                    <td class="TbCells">
+                        <a class="EditBtn" href="">
+                            <i class="mdi mdi-table-edit font-20 edit-btn"></i>
+                        </a>
+                        <a class="DelBtn" href="">
+                            <i class="mdi mdi-delete font-20 del-btn"></i>
+                        </a>
+                    </td>
+                    </tr>
+			{% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>

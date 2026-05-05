@@ -1,0 +1,89 @@
+{% extends 'base/base.html' %}
+{% block Data %}
+<div class="row">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-body hs">
+                <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                    لیست منوی تورها
+                </h4>
+            </div>
+            <div class="table-block">
+                <table class="table BranchTable">
+                    <thead>
+                        <tr>
+                            <th class="TbHead">نام کشور</th>
+                            <th class="TbHead">نام شهر</th>
+                            <th class="TbHead">لینک منو</th>
+                            <th class="TbHead">اقدامات لازم</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="TbCells">{{ Menu.CountryName }}</td>
+                            <td class="TbCells">{{ Menu.Name }}</td>
+                            <td class="TbCells">{{ Menu.slug }}</td>
+                            <td class="TbCells">
+                                <a data-toggle="tooltip" data-placement="bottom" title="ویرایش منو" class="EditBtn"
+                                    href="{% url 'tour-menu-update' Menu.id %}">
+                                    <i class="mdi mdi-table-edit font-20 edit-btn"></i>
+                                </a>
+                                <a data-toggle="tooltip" data-placement="bottom" title="حذف منو" class="EditBtn"
+                                    href="{% url 'tour-menu-delete' Menu.id %}" >
+                                    <i class="mdi mdi-delete font-20 del-btn"></i>
+                                </a>
+                                <a data-toggle="tooltip" data-placement="bottom" title="افزودن سوال" class="DelBtn add"
+                                    href="{% url 'create-city-faq' Menu.id %}">
+                                    <i class="fa fa-plus font-20 add-btn"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-body hs">
+                <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                    لیست سوال ها 
+                </h4>
+            </div>
+            <div class="table-block">
+                <table class="table BranchTable">
+                    <thead>
+                        <tr>
+                            <th class="TbHead"> ردیف</th>
+                            <th class="TbHead"> متن سوال</th>
+                            <th class="TbHead"> پاسخ سوال</th>
+                            <th class="TbHead">اقدامات لازم</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for q in List %}
+                        <tr>
+                            <td class="TbCells">{{ forloop.counter }}</td>
+                            <td class="TbCells">{{ q.Question }}</td>
+                            <td class="TbCells">{{ q.Answer }}</td>
+                            <td class="TbCells">
+                                <a data-toggle="tooltip" data-placement="bottom" title="ویرایش منو" class="EditBtn"
+                                    href="{% url 'city-faq-update' q.id %}">
+                                    <i class="mdi mdi-table-edit font-20 edit-btn"></i>
+                                </a>
+                                <a data-toggle="tooltip" data-placement="bottom" title="حذف سوال" class="EditBtn"
+                                    href="{% url 'city-faq-delete' q.id %}">
+                                    <i class="mdi mdi-delete font-20 del-btn"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

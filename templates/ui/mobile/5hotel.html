@@ -1,0 +1,392 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<div class="col-lg-3 hotel_data">
+    <div class="hotel_image_">
+        {% if i.HotelName.HotelImage %}
+            <img alt="{{ i.HotelName }}" src="{{ i.HotelName.HotelImage.url }}" width="100%">
+        {% endif %}
+        {% if i.HotelName.top_rate %}
+            <p class="top_rate_ t_mobile_view">TOP</p>
+        {% endif %}
+        {% if i.HotelName.satrap_gte %}
+            <p class="gte_hotel g_mobile_view">گارانتی ساتراپ</p>
+        {% endif %}
+    </div>
+</div>
+<div class="col-lg-6 hotel_data">
+    <div class="hotel_title_">
+        <p class="hotel_fa_tlt_">{{ i.HotelName.HotelName }}</p>
+        <p class="hotel_en_tlt_">{{ i.HotelName.HotelNameEnglish }}</p>
+    </div>
+</div>
+<div class="col-lg-3 hotel_data">
+    {% if i.HotelName.HotelRating == '1' %}
+        <p class="hotel_rating_"><img alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
+    {% endif %}
+    {% if i.HotelName.HotelRating == '2' %}
+        <p class="hotel_rating_"><img alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
+    {% endif %}
+    {% if i.HotelName.HotelRating == '3' %}
+        <p class="hotel_rating_"><img alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
+    {% endif %}
+    {% if i.HotelName.HotelRating == '4' %}
+        <p class="hotel_rating_"><img alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
+    {% endif %}
+    {% if i.HotelName.HotelRating == '5' %}
+        <p class="hotel_rating_"><img alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
+    {% endif %}
+    <p class="night_count_"> خدمات </p>
+    {% if i.HotelName.HotelOR %}
+        <span class="hotel_class_">OR</span>
+    {% endif %}
+    {% if i.HotelName.HotelBB %}
+        <span class="hotel_class_">BB</span>
+    {% endif %}
+    {% if i.HotelName.HotelHB %}
+        <span class="hotel_class_">HB</span>
+    {% endif %}
+    {% if i.HotelName.HotelFB %}
+        <span class="hotel_class_">FB</span>
+    {% endif %}
+    {% if i.HotelName.HotelAll %}
+        <span class="hotel_class_">All</span>
+    {% endif %}
+    {% if i.HotelName.HotelUall %}
+        <span class="hotel_class_">U All</span>
+    {% endif %}
+    {% if i.HotelName.HotelMaxAll %}
+        <span class="hotel_class_">Max All</span>
+    {% endif %}
+</div>
+{% if i.Mhotel %}
+    <div class="col-lg-3 hotel_data">
+        <div class="hotel_image_">
+            {% if i.Mhotel.HotelImage %}
+                <img alt="{{ i.Mhotel }}" src="{{ i.Mhotel.HotelImage.url }}" width="100%">
+            {% endif %}
+            {% if i.Mhotel.top_rate %}
+                <p class="top_rate_ t_mobile_view">TOP</p>
+            {% endif %}
+            {% if i.Mhotel.satrap_gte %}
+                <p class="gte_hotel g_mobile_view">گارانتی ساتراپ</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-6 hotel_data">
+        <div class="hotel_title_">
+            <p class="hotel_fa_tlt_">{{ i.Mhotel.HotelName }}</p>
+            <p class="hotel_en_tlt_">{{ i.Mhotel.HotelNameEnglish }}</p>
+        </div>
+    </div>
+    <div class="col-lg-3 hotel_data">
+        {% if i.Mhotel.HotelRating == '1' %}
+            <p class="hotel_rating_"><img alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
+        {% endif %}
+        {% if i.Mhotel.HotelRating == '2' %}
+            <p class="hotel_rating_"><img alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
+        {% endif %}
+        {% if i.Mhotel.HotelRating == '3' %}
+            <p class="hotel_rating_"><img alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
+        {% endif %}
+        {% if i.Mhotel.HotelRating == '4' %}
+            <p class="hotel_rating_"><img alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
+        {% endif %}
+        {% if i.Mhotel.HotelRating == '5' %}
+            <p class="hotel_rating_"><img alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
+        {% endif %}
+        <p class="night_count_"> خدمات </p>
+        {% if i.Mhotel.HotelOR %}
+            <span class="hotel_class_">OR</span>
+        {% endif %}
+        {% if i.Mhotel.HotelBB %}
+            <span class="hotel_class_">BB</span>
+        {% endif %}
+        {% if i.Mhotel.HotelHB %}
+            <span class="hotel_class_">HB</span>
+        {% endif %}
+        {% if i.Mhotel.HotelFB %}
+            <span class="hotel_class_">FB</span>
+        {% endif %}
+        {% if i.Mhotel.HotelAll %}
+            <span class="hotel_class_">All</span>
+        {% endif %}
+        {% if i.Mhotel.HotelUall %}
+            <span class="hotel_class_">U All</span>
+        {% endif %}
+        {% if i.Mhotel.HotelMaxAll %}
+            <span class="hotel_class_">Max All</span>
+        {% endif %}
+    </div>
+{% endif %}
+{% if i.M1hotel %}
+    <div class="col-lg-3 hotel_data">
+        <div class="hotel_image_">
+            {% if i.M1hotel.HotelImage %}
+                <img alt="{{ i.M1hotel }}" src="{{ i.M1hotel.HotelImage.url }}" width="100%">
+            {% endif %}
+            {% if i.M1hotel.top_rate %}
+                <p class="top_rate_ t_mobile_view">TOP</p>
+            {% endif %}
+            {% if i.M1hotel.satrap_gte %}
+                <p class="gte_hotel g_mobile_view">گارانتی ساتراپ</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-6 hotel_data">
+        <div class="hotel_title_">
+            <p class="hotel_fa_tlt_">{{ i.M1hotel.HotelName|truncatechars:10 }}</p>
+            <p class="hotel_en_tlt_">{{ i.M1hotel.HotelNameEnglish|truncatechars:10 }}</p>
+        </div>
+    </div>
+    <div class="col-lg-3 hotel_data">
+        {% if i.M1hotel.HotelRating == '1' %}
+            <p class="hotel_rating_"><img alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
+        {% endif %}
+        {% if i.M1hotel.HotelRating == '2' %}
+            <p class="hotel_rating_"><img alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
+        {% endif %}
+        {% if i.M1hotel.HotelRating == '3' %}
+            <p class="hotel_rating_"><img alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
+        {% endif %}
+        {% if i.M1hotel.HotelRating == '4' %}
+            <p class="hotel_rating_"><img alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
+        {% endif %}
+        {% if i.M1hotel.HotelRating == '5' %}
+            <p class="hotel_rating_"><img alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
+        {% endif %}
+        <p class="night_count_"> خدمات </p>
+        {% if i.M1hotel.HotelOR %}
+            <span class="hotel_class_">OR</span>
+        {% endif %}
+        {% if i.M1hotel.HotelBB %}
+            <span class="hotel_class_">BB</span>
+        {% endif %}
+        {% if i.M1hotel.HotelHB %}
+            <span class="hotel_class_">HB</span>
+        {% endif %}
+        {% if i.M1hotel.HotelFB %}
+            <span class="hotel_class_">FB</span>
+        {% endif %}
+        {% if i.M1hotel.HotelAll %}
+            <span class="hotel_class_">All</span>
+        {% endif %}
+        {% if i.M1hotel.HotelUall %}
+            <span class="hotel_class_">U All</span>
+        {% endif %}
+        {% if i.M1hotel.HotelMaxAll %}
+            <span class="hotel_class_">Max All</span>
+        {% endif %}
+    </div>
+{% endif %}
+{% if i.M2hotel %}
+    <div class="col-lg-3 hotel_data">
+        <div class="hotel_image_">
+            {% if i.M2hotel.HotelImage %}
+                <img alt="{{ i.M2hotel }}" src="{{ i.M2hotel.HotelImage.url }}" width="100%">
+            {% endif %}
+            {% if i.M2hotel.top_rate %}
+                <p class="top_rate_ t_mobile_view">TOP</p>
+            {% endif %}
+            {% if i.M2hotel.satrap_gte %}
+                <p class="gte_hotel g_mobile_view">گارانتی ساتراپ</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-6 hotel_data">
+        <div class="hotel_title_">
+            <p class="hotel_fa_tlt_">{{ i.M2hotel.HotelName }}</p>
+            <p class="hotel_en_tlt_">{{ i.M2hotel.HotelNameEnglish }}</p>
+        </div>
+    </div>
+    <div class="col-lg-3 hotel_data">
+        {% if i.M2hotel.HotelRating == '1' %}
+            <p class="hotel_rating_"><img alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
+        {% endif %}
+        {% if i.M2hotel.HotelRating == '2' %}
+            <p class="hotel_rating_"><img alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
+        {% endif %}
+        {% if i.M2hotel.HotelRating == '3' %}
+            <p class="hotel_rating_"><img alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
+        {% endif %}
+        {% if i.M2hotel.HotelRating == '4' %}
+            <p class="hotel_rating_"><img alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
+        {% endif %}
+        {% if i.M2hotel.HotelRating == '5' %}
+            <p class="hotel_rating_"><img alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
+        {% endif %}
+        <p class="night_count_"> خدمات </p>
+        {% if i.M2hotel.HotelOR %}
+            <span class="hotel_class_">OR</span>
+        {% endif %}
+        {% if i.M2hotel.HotelBB %}
+            <span class="hotel_class_">BB</span>
+        {% endif %}
+        {% if i.M2hotel.HotelHB %}
+            <span class="hotel_class_">HB</span>
+        {% endif %}
+        {% if i.M2hotel.HotelFB %}
+            <span class="hotel_class_">FB</span>
+        {% endif %}
+        {% if i.M2hotel.HotelAll %}
+            <span class="hotel_class_">All</span>
+        {% endif %}
+        {% if i.M2hotel.HotelUall %}
+            <span class="hotel_class_">U All</span>
+        {% endif %}
+        {% if i.M2hotel.HotelMaxAll %}
+            <span class="hotel_class_">Max All</span>
+        {% endif %}
+    </div>
+{% endif %}
+{% if i.M3hotel %}
+    <div class="col-lg-3 hotel_data">
+        <div class="hotel_image_">
+            {% if i.M3hotel.HotelImage %}
+                <img alt="{{ i.M3hotel }}" src="{{ i.M3hotel.HotelImage.url }}" width="100%">
+            {% endif %}
+            {% if i.M3hotel.top_rate %}
+                <p class="top_rate_ t_mobile_view">TOP</p>
+            {% endif %}
+            {% if i.M3hotel.satrap_gte %}
+                <p class="gte_hotel g_mobile_view">گارانتی ساتراپ</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-6 hotel_data">
+        <div class="hotel_title_">
+            <p class="hotel_fa_tlt_">{{ i.M3hotel.HotelName }}</p>
+            <p class="hotel_en_tlt_">{{ i.M3hotel.HotelNameEnglish }}</p>
+        </div>
+    </div>
+    <div class="col-lg-3 hotel_data">
+        {% if i.M3hotel.HotelRating == '1' %}
+            <p class="hotel_rating_"><img alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
+        {% endif %}
+        {% if i.M3hotel.HotelRating == '2' %}
+            <p class="hotel_rating_"><img alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
+        {% endif %}
+        {% if i.M3hotel.HotelRating == '3' %}
+            <p class="hotel_rating_"><img alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
+        {% endif %}
+        {% if i.M3hotel.HotelRating == '4' %}
+            <p class="hotel_rating_"><img alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
+        {% endif %}
+        {% if i.M3hotel.HotelRating == '5' %}
+            <p class="hotel_rating_"><img alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
+        {% endif %}
+        <p class="night_count_"> خدمات </p>
+        {% if i.M3hotel.HotelOR %}
+            <span class="hotel_class_">OR</span>
+        {% endif %}
+        {% if i.M3hotel.HotelBB %}
+            <span class="hotel_class_">BB</span>
+        {% endif %}
+        {% if i.M3hotel.HotelHB %}
+            <span class="hotel_class_">HB</span>
+        {% endif %}
+        {% if i.M3hotel.HotelFB %}
+            <span class="hotel_class_">FB</span>
+        {% endif %}
+        {% if i.M3hotel.HotelAll %}
+            <span class="hotel_class_">All</span>
+        {% endif %}
+        {% if i.M3hotel.HotelUall %}
+            <span class="hotel_class_">U All</span>
+        {% endif %}
+        {% if i.M3hotel.HotelMaxAll %}
+            <span class="hotel_class_">Max All</span>
+        {% endif %}
+    </div>
+{% endif %}
+<div class="row peice_section">
+    <div class="col-lg-4 price_">
+        <p class="bed_price_tlt_">دو تخته</p>
+        <p class="bed_price_">{{ i.DoubleBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+    </div>
+    <div class="col-lg-4 price_">
+        <p class="bed_price_tlt_">یک تخته</p>
+        <p class="bed_price_">{{ i.SingleBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+    </div>
+    <div class="col-lg-4 price_">
+        <p class="bed_price_tlt_">کودک با تخت</p>
+        <p class="bed_price_">{{ i.BabyWithBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+    </div>
+    <div class="col-lg-4 price_">
+        <p class="bed_price_tlt_">کودک</p>
+        <p class="bed_price_">{{ i.BabyWithoutBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+    </div>
+    <div class="col-lg-4 price_">
+        <p class="bed_price_tlt_">نوزاد</p>
+        <p class="bed_price_">{{ i.InfontPrice | intcomma:False }} {{ i.Pcry }}</p>
+    </div>
+    <div class="col-lg-4 price_">
+{#        <a href="tel:02122221422" class="add_to_cart">مشاوره رایگان</a>#}
+         <button type="button" class="dd_to_cart" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal{{ forloop.counter }}">
+                    رزرو تــور
+                </button>
+        <div class="modal fade" id="exampleModal{{ forloop.counter }}" tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title fs-5" id="exampleModalLabel">
+                                درخواست رزرو  {{ Tour.Title }}
+                            </h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <div class="order-input">
+                                    <span class="modal_label">لطفا شماره موبایل خود را وارد کنید</span>
+                                    {{ Order.Mobile }}
+                                </div>
+                                <div class="order-input">
+                                    <span class="modal_label">لطفا نام خود را وارد کنید</span>
+                                    {{ Order.Name }}
+                                </div>
+                                <div class="order-input">
+                                    <span class="modal_label">لطفا نام خانوادگی خود را وارد کنید</span>
+                                    {{ Order.Family }}
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 order_form">
+                                        <div class="order-input">
+                                            <span class="modal_label">تعداد بزرگسال</span>
+                                            {{ Order.adult }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 order_form">
+                                        <div class="order-input">
+                                            <span class="modal_label">تعداد کودک</span>
+                                            {{ Order.chield }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 order_form">
+                                        <div class="order-input">
+                                            <span class="modal_label">تعداد نوزاد</span>
+                                            {{ Order.infont }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="order-input">
+                                    <span class="modal_label">توضیحات</span>
+                                    {{ Order.description }}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">ثبت درخواست</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+

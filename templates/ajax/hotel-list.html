@@ -1,0 +1,35 @@
+{% for i in hotels %}
+    <div class="col-sm-12 col-lg-4">
+        <a href="{% url 'all-hotel-city-list' i.id i.slug %}">
+            <div class="hotel-cat">
+                <div class="cat-img city-list">
+                    {% if i.cityImg %}
+                        <img alt="{{ i.Name }}" src="{{ i.cityImg.url }}">
+                    {% else %}
+                        <img alt="{{ i.Name }}" src="/media/no-hotel-img.jpg">
+                    {% endif %}
+                    {% if i.top_rate %}
+                        <p class="top_rate_">TOP</p>
+                    {% endif %}
+                    {% if i.satrap_gte %}
+                        <p class="gte_hotel">گارانتی ساتراپ</p>
+                    {% endif %}
+                </div>
+                <div class="cat-title">
+                    <p class="title-cat">{{ i.Name }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+{% endfor %}
+<ul class="pagination">
+    {% for n in hotels.paginator.page_range %}
+        {% if hotels.number == n %}
+            <li data-page='{{ n }}' class="page-item {% if hotels.number == n %}active{% endif %}"><a
+                    class="page-link">{{ n }}</a></li>
+        {% elif n > hotels.number|add:'-10' and n < hotels.number|add:'10' %}
+            <li data-page='{{ n }}' class="page-item {% if hotels.number == n %}active{% endif %}"><a
+                    class="page-link">{{ n }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>

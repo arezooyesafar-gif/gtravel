@@ -1,0 +1,143 @@
+{% extends 'base/base.html' %}
+{% block Data %}
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-body hs">
+                    <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                        ورود اطلاعات هتـــل
+                    </h4>
+                </div>
+                <div class="form-body">
+                    <div class="alert-light">
+                        {% for message in messages %}
+                            <p class="error-body ap">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                    <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">تصویر هتل <span class="required">*</span></p>
+                            <label for="id_HotelImage" class="custom-file-upload text-input">
+                                <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر هتل </span>
+                            </label>
+                            {{ form.HotelImage }}
+                            <script>
+                                $(document).ready(function () {
+                                    $('input[type="file"]').change(function (e) {
+                                        var fileName = e.target.files[0].name;
+                                        document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                        {#alert('The file "' + fileName + '" has been selected.');#}
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">عنوان فارسی هتل <span class="required">*</span></p>
+                            {{ form.HotelName }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">عنوان انگلیسی هتل<span class="required">*</span></p>
+                            {{ form.HotelNameEnglish }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">کشور هتــل<span class="required">*</span></p>
+                            {{ form.HotelCountry }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> شهــر هتــل <span class="required">*</span></p>
+                            {{ form.HotelCity }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> تعداد ستاره هتل <span class="required">*</span></p>
+                            {{ form.HotelRating }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> امتیاز هتل <span class="required">*</span></p>
+                            {{ form.HotelBookingRate }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> تعداد اتاق هتل <span class="required">*</span></p>
+                            {{ form.HotelRoom }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> آدرس هتل <span class="required">*</span></p>
+                            {{ form.HotelAddress }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> شماره تماس هتل <span class="required">*</span></p>
+                            {{ form.HotelPhone }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> آدرس وبسایت هتل <span class="required">*</span></p>
+                            {{ form.HotelWebSite }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> موقعیت هتل <span class="required">*</span></p>
+                            {{ form.HotelLocation }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> لینک نقشه هتل <span class="required">*</span></p>
+                            {{ form.HotelMap }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> لینک سئو<span class="required">*</span></p>
+                            {{ form.Slug }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">تصویر<span class="required">*</span></p>
+                            {{ Data.HotelImage }}
+                        </div>
+                        <hr>
+                        <div class="hd-basic-info personal hotel-equipment">
+                            <p class="label-text"> خدمات هتل <span class="required">*</span></p>
+                            <div class="hotel-eqp">
+                                {{ form.HotelOR }} OR
+                            </div>
+                            <div class="hotel-eqp">
+                                {{ form.HotelBB }} BB
+                            </div>
+                            <div class="hotel-eqp">
+                                {{ form.HotelHB }} HB
+                            </div>
+                            <div class="hotel-eqp">
+                                {{ form.HotelFB }} FB
+                            </div>
+                            <div class="hotel-eqp">
+                                {{ form.HotelAll }} All
+                            </div>
+                            <div class="hotel-eqp">
+                                {{ form.HotelUall }} U All
+                            </div>
+                            <div class="hotel-eqp">
+                                {{ form.HotelMaxAll }} Max All
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="hd-basic-info personal hotel-services">
+                            <p class="label-text hotel-service"> سرویس های هتل <span class="required">*</span></p>
+                            {{ form.HotelService }}
+                        </div>
+                        <hr>
+                        <div class="">
+                            <p class="label-text short-desc"> توضیحات کوتاه مرتبط با هتل را وارد کنید <span
+                                    class="required">*</span></p>
+                            {{ form.HotelShotDesc }}
+                        </div>
+                        <div class="">
+                            <p class="label-text short-desc"> توضیحات تکمیلی مرتبط با هتل را وارد کنید <span
+                                    class="required">*</span></p>
+                            {{ form.HotelDesc }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <button type="submit" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                    id="save-button-title">بروزرسانی اطلاعات ایرلاین</span>
+                            </button>
+                        </div>
+                        {{ form.media }}
+                    </form>
+                </div>
+            </div>
+        </div>
+{% endblock %}

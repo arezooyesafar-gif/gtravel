@@ -1,0 +1,193 @@
+﻿{% extends 'base/base.html' %}
+{% block Info %}
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-7">
+                        <i class="mdi mdi-office font-20 text-info"></i>
+                        <span class="font-16 m-b-5">تعداد ایرلاین</span>
+                    </div>
+                    <div class="col-5">
+                        <h1 class="font-light text-right mb-0">{{ Airlines.count }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <i class="mdi mdi-book-open font-20 text-success"></i>
+                        <span class="font-16 m-b-5"> تعداد هتل </span>
+                    </div>
+                    <div class="col-3">
+                        <h1 class="font-light text-right mb-0">{{ Hotels.count }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-7">
+                        <i class="mdi mdi-package font-20 text-purple"></i>
+                        <span class="font-16 m-b-5"> تعداد تور </span>
+                    </div>
+                    <div class="col-5">
+                        <h1 class="font-light text-right mb-0">
+                            {{ Tours.count }}
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-7">
+                        <i class="mdi mdi-poll font-20 text-danger"></i>
+                        <span class="font-16 m-b-5"> تعداد پکیج</span>
+                    </div>
+                    <div class="col-5">
+                        <h1 class="font-light text-right mb-0">{{ Packages.count }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-7">
+                        <i class="mdi mdi-eye font-20 text-info"></i>
+                        <span class="font-16 m-b-5"> صفحه اصلی </span>
+                    </div>
+                    <div class="col-5">
+                        <h1 class="font-light text-right mb-0">{{ Views.indexView }}</h1>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-7">
+                        <i class="mdi mdi-eye font-20 text-info"></i>
+                        <span class="font-16 m-b-5">تورها</span>
+                    </div>
+                    <div class="col-5">
+                        <h1 class="font-light text-right mb-0">{{ Views.toursView }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-7">
+                        <i class="mdi mdi-eye font-20 text-info"></i>
+                        <span class="font-16 m-b-5">هتل ها</span>
+                    </div>
+                    <div class="col-5">
+                        <h1 class="font-light text-right mb-0">{{ Views.hotelsView }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-7">
+                        <i class="mdi mdi-eye font-20 text-info"></i>
+                        <span class="font-16 m-b-5">بلاگ</span>
+                    </div>
+                    <div class="col-5">
+                        <h1 class="font-light text-right mb-0">{{ Views.blogView }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block Data %}
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="card-title"><i class="fa fa-square font-20 edit-btn"></i> لیست جدیدترین تورها</h4>
+                    </div>
+                </div>
+                {% include 'tour/dash-material/tour-dash-list.html' %}
+                <ul class="">
+                    <li class="list-inline-item text-muted">
+                        <i class="fa fa-arrow-left text-info m-r-5"></i>
+                        <a class="cat-list" href="/dashboard/tour-list">مشاهده لیست کامل تورها</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block Branch %}
+<div class="col-sm-12 col-lg-5">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"><i class="fa fa-square font-20 edit-btn"></i>
+                لیست ایرلاین ها
+            </h4>
+            {% include 'tour/dash-material/airline-dash-list.html' %}
+            <ul class="">
+                <li class="list-inline-item text-muted">
+                    <i class="fa fa-arrow-left text-info m-r-5"></i>
+                    <a class="cat-list" href="/dashboard/airlines-list">مشاهده لیست کامل ایرلاین ها</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block Category %}
+<div class="col-sm-12 col-lg-7">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div>
+                    <h4 class="card-title"><i class="fa fa-square font-20 edit-btn"></i> لیست پکیج ها </h4>
+                </div>
+            </div>
+            {% include 'tour/dash-material/package-dash-list.html' %}
+            <ul class="">
+                <li class="list-inline-item text-muted">
+                    <i class="fa fa-arrow-left text-info m-r-5"></i>
+                    <a class="cat-list" href="#"> مشاهده کامل پکیج ها</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

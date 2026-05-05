@@ -1,0 +1,85 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <script>var tour_id = {{ Tour.id }}</script>
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                افزودن برنامه سفر به
+                                <span class="change down">{{ Tour.Title }}</span>
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            {% if Data %}
+                                <a href="{% url 'create-tour' %}" class="link">ایجاد تور</a>
+                            {% endif %}
+                            <a href="{% url 'update-tour' Tour.id %}" class="link m-r-20"> ویرایش تور </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-40">
+        <form method="post" novalidate="novalidate" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="inner_section">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <p class="label-text">عنوان<span class="required">*</span></p>
+                                {{ forms.title }}
+                            </div>
+                            <div class="col-lg-4">
+                                <p class="label-text">موقعیت<span class="required">*</span></p>
+                                {{ forms.location }}
+
+                            </div>
+                            <div class="col-lg-4">
+                                <p class="label-text">بازدید<span class="required">*</span></p>
+                                {{ forms.views }}
+                            </div>
+                            <div class="col-lg-4">
+                                <p class="label-text">وعده ها<span class="required">*</span></p>
+                                {{ forms.services }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="inner_section" style="padding-top:10px">
+                        <div class="col-lg-12">
+                            <p class="" style="margin-bottom: 5px">تصویر<span class="required">*</span></p>
+                            {{ forms.plan_image }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <p class="label-text">توضیحات<span class="required">*</span></p>
+                    {{ forms.description }}
+                </div>
+            </div>
+            <button style="margin-bottom: 20px" name="p_data_sub" type="submit"
+                    class="btn btn-lg btn-info btn-block">
+                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">ذخیره
+                                اطلاعات برنامه سفر</span>
+            </button>
+            {{ forms.media }}
+        </form>
+        <div class="col-lg-12">
+            <div id="plans_data" class="table-block" style="margin-bottom: 25px;">
+
+            </div>
+            <a class="back-to-list" href="{% url 'tour-list' %}">اتمام و بازگشت به لیست تورها</a>
+        </div>
+    </div>
+{% endblock %}

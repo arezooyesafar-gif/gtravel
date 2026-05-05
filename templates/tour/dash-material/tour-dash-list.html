@@ -1,0 +1,62 @@
+{% load jalali_tags %}
+{% load humanize %}
+{#{% if ProductList %}#}
+<div class="table-block">
+                    {% if Tours %}
+                        <table class="table BranchTable">
+                            <thead>
+                            <tr>
+                                <th class="TbHead">ردیف</th>
+                                <th class="TbHead">نام تور</th>
+                                <th class="TbHead"> تاریخ رفت</th>
+                                <th class="TbHead"> تاریخ برگشت</th>
+                                <th class="TbHead">تعداد شب اقامت</th>
+                                <th class="TbHead">تعداد روز اقامت</th>
+                                <th class="TbHead">  وضعیت</th>
+                                <th class="TbHead">اقدامات لازم</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                {% for Tour in Tours %}
+                                {% if forloop.counter < 11 %}
+                                    <td class="TbCells serial">{{ forloop.counter }}</td>
+                                    <td class="TbCells">{{ Tour.Title }}</td>
+                                    <td class="TbCells num-class">{{ Tour.StartDate | to_jalali:'%Y/%m/%d' }}</td>
+                                    <td class="TbCells num-class">{{ Tour.EndDate | to_jalali:'%Y/%m/%d' }}</td>
+                                    <td class="TbCells num-class">{{ Tour.NightCount }}</td>
+                                    <td class="TbCells num-class">{{ Tour.DayCount }}</td>
+                                    <td class="TbCells num-class">
+                                        {% if tourlist.PubTour %}
+                                            فعال
+                                        {% else %}
+                                            غیرفعال
+                                        {% endif %}
+                                        </td>
+                                    <td class="TbCells">
+                                        <a data-toggle="tooltip" data-placement="bottom" title="ویرایش تور"
+                                           class="EditBtn" href="{% url 'update-tour' Tour.id %}">
+                                            <i class="mdi mdi-table-edit font-20 edit-btn"></i>
+                                        </a>
+                                        <a data-toggle="tooltip" data-placement="bottom" title="حذف تور"
+                                           class="EditBtn" href="{% url 'delet-tour' Tour.id %}">
+                                            <i class="mdi mdi-delete font-20 del-btn"></i>
+                                        </a>
+                                        <a data-toggle="tooltip" data-placement="bottom" title="افزودن تور به پکیج"
+                                           class="DelBtn" href="{% url 'add-to-package' Tour.id %}">
+                                            <i class="fa fa-plus font-20 add-btn"></i></a>
+                                            <a data-toggle="tooltip" data-placement="bottom" title="مشاهده پکیج ها"
+                                            class="DelBtn view" href="{% url 'main-package-list' Tour.id %}">
+                                             <i class="fa fa-eye font-20 add-btn"></i>
+                                         </a>
+                                        <a data-toggle="tooltip" data-placement="bottom" title="افزودن شهر به تور"
+                                           class="DelBtn" href="/dashboard/tour-city-list/{{Tour.id}}">
+                                            <i class="fa fa-plus font-20 add-btn city"></i></a>
+                                    </td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>

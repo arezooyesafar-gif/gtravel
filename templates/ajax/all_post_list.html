@@ -1,0 +1,76 @@
+ <table class="table BranchTable">
+        <thead>
+        <tr>
+            <th class="TbHead">ردیف</th>
+            <th class="TbHead">عنوان مطلب</th>
+            <th class="TbHead">دسته بندی مطلب</th>
+            <th class="TbHead">لینک مطلب</th>
+            <th class="TbHead"> بازدید</th>
+            <th class="TbHead">اقدامات لازم</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for post in all_posts %}
+                <td class="TbCells serial">{{ forloop.counter0|add:all_posts.start_index }}</td>
+                <td class="TbCells">{{ post.Title }}</td>
+                <td class="TbCells">{{ post.Category }}</td>
+                <td class="TbCells">{{ post.slug }}</td>
+                <td class="TbCells">{{ post.viewCount }}</td>
+                <td class="TbCells">
+                <div class="dropdown">
+                            <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                                    class="icon ni ni-more-h"></em></a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                <ul class="link-list-plain">
+                                    <li><a href="{% url 'update-post' post.id %}">ویرایش</a></li>
+                                    <li><a href="{% url 'add_related_post' post.id %}">افزودن مرتبط</a></li>
+                                    <li><a style="color: red"
+                                     data-bs-toggle="modal"
+                                     data-bs-target="#exampleModal"
+                                     data-post-id="{{ post.id }}"
+                                     onclick="setDeleteId(this)">
+                                     حذف
+                                </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<ul class="pagination">
+        {% for n in all_posts.paginator.page_range %}
+            {% if all_posts.number == n %}
+                <li data-page='{{ n }}' class="page-item {% if all_posts.number == n %}active{% endif %}"><a class="page-link" >{{ n }}</a></li>
+            {% elif n > all_posts.number|add:'-10' and n < all_posts.number|add:'10' %}
+                <li data-page='{{ n }}' class="page-item {% if all_posts.number == n %}active{% endif %}"><a class="page-link" >{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">آیا مطمئن هستید؟</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">خیر</button>
+        <a id="confirmDeleteBtn" type="button" class="btn btn-danger">بله</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    let selectedPostID = null;
+
+    function setDeleteId(el) {
+        selectedPostID = el.dataset.postId;
+        const deleteBtn = document.getElementById("confirmDeleteBtn");
+        deleteBtn.href = `/dashboard/blog/delete-post/${selectedPostID}`;
+    }
+</script>

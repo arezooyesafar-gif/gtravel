@@ -1,0 +1,145 @@
+{% extends 'base/base.html' %}
+{% block Data %}
+<div class="row">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-body hs">
+                <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                    ایجاد پکیج
+                </h4>
+            </div>
+            <div class="form-body">
+                <div class="alert-light">
+                    {% for message in messages %}
+                        <p class="error-body ap">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">انتخاب پکیج<span class="required">*</span></p>
+                        {{ form.MainPkg }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">انتخاب واحد پول<span class="required">*</span></p>
+                        {{ form.Pcry }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">انتخاب هتل اول<span class="required">*</span></p>
+                        <select name="HotelName" class="text-input-hts" required=""
+                                id="id_HotelName">
+                        <option value="">هتل مقصد را انتخاب کنید</option>
+                        </select>
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">انتخاب هتل دوم<span class="required">*</span></p>
+                        <select name="HotelName" class="text-input-hts" required=""
+                                id="id_Mhotel">
+                        <option value="">هتل مقصد را انتخاب کنید</option>
+                        </select>
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">انتخاب هتل سوم<span class="required">*</span></p>
+                        <select name="HotelName" class="text-input-hts" required=""
+                                id="id_M1hotel">
+                        <option value="">هتل مقصد را انتخاب کنید</option>
+                        </select>
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">انتخاب هتل چهارم<span class="required">*</span></p>
+                        <select name="HotelName" class="text-input-hts" required=""
+                                id="id_M2hotel">
+                        <option value="">هتل مقصد را انتخاب کنید</option>
+                        </select>
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">انتخاب هتل پنجم<span class="required">*</span></p>
+                        <select name="HotelName" class="text-input-hts" required=""
+                                id="id_M3hotel">
+                        <option value="">هتل مقصد را انتخاب کنید</option>
+                        </select>
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">انتخاب نوع ویو<span class="required">*</span></p>
+                        {{ form.view }}
+                    </div>
+                    <hr>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text"> قیمت دو تخته <span class="required">*</span></p>
+                        {{ form.DoubleBedPrice }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">قیمت یک تخته <span class="required">*</span></p>
+                        {{ form.SingleBedPrice }}
+                    </div>
+
+                    <div class="hd-basic-info personal">
+                        <p class="label-text"> قیمت کودک با تخت <span class="required">*</span></p>
+                        {{ form.BabyWithBedPrice }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text"> قیمت کودک بدون تخت <span class="required">*</span></p>
+                        {{ form.BabyWithoutBedPrice }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text"> قیمت نوزاد<span class="required">*</span></p>
+                        {{ form.InfontPrice }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text"> قیمت دلاری<span class="required">*</span></p>
+                        {{ form.DollerPrice }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <button name="p_data_sub" type="submit" class="btn btn-lg btn-info btn-block">
+                            <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">ذخیره
+                                اطلاعات پکیج</span>
+                        </button>
+                    </div>
+                    {{ form.media }}
+                </form>
+                <script>
+                    function seprateNum() {
+                        a = document.getElementById('id_DoubleBedPrice').value
+                        console.log(a.toLocaleString("en-US"))
+                        document.getElementById('id_DoubleBedPrice').innerHTML = a.toLocaleString("en-US")
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+    $("#id_HotelName").click(function () {
+            var url = '/dashboard/hotel_list/'
+            $.ajax({
+                url: url,
+                data: {
+                },
+                success: function (data) {
+                    $("#id_HotelName").append(data);
+                    $("#id_Mhotel").append(data);
+                    $("#id_M1hotel").append(data);
+                    $("#id_M2hotel").append(data);
+                    $("#id_M3hotel").append(data);
+                }
+            })
+        });
+    $(document).ready(function () {
+        var url = '/dashboard/hotel_list/'
+            $.ajax({
+                url: url,
+                data: {
+                },
+                success: function (data) {
+                    $("#id_HotelName").append(data);
+                    $("#id_Mhotel").append(data);
+                    $("#id_M1hotel").append(data);
+                    $("#id_M2hotel").append(data);
+                    $("#id_M3hotel").append(data);
+                }
+            })
+            $('.text-input-hts').select2();
+            'resolve'
+        });
+</script>
+{% endblock %}

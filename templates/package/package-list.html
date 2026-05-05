@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% load humanize %}
+{% block Data %}
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-body hs">
+                    <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                        لیست پکیج های موجود
+                    </h4>
+                </div>
+                <div class="table-block">
+                    {% if AllPackage %}
+                        <table class="table BranchTable">
+                            <thead>
+                            <tr>
+                                <th class="TbHead">ردیف</th>
+                                <th class="TbHead">نام پکیج </th>
+                                <th class="TbHead">نام تور </th>
+                                <th class="TbHead">قیمت تخت یک نفره</th>
+                                <th class="TbHead">اقدامات لازم</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                {% for package in AllPackage %}
+                                    <td class="TbCells serial">{{ forloop.counter }}</td>
+                                    <td class="TbCells amount">{{ package.PackageName }}</td>
+                                    <td class="TbCells">{{ package.TourName }}</td>
+                                    <td class="TbCells">{{ package.SingleBedPrice | intcomma:False }}</td>
+                                    <td class="TbCells">
+                                        <a data-toggle="tooltip" data-placement="bottom" title="ویرایش پکیج"
+                                           class="EditBtn" href="{% url 'update-package' package.id %}">
+                                            <i class="mdi mdi-table-edit font-20 edit-btn"></i>
+                                        </a>
+                                        <a data-toggle="tooltip" data-placement="bottom" title="حذف پکیج"
+                                           class="DelBtn" href="{% url 'delet-package' package.id %}">
+                                            <i class="mdi mdi-delete font-20 del-btn"></i>
+                                        </a>
+                                    </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

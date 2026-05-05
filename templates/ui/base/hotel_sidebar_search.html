@@ -1,0 +1,23 @@
+<div class="hotel_search_box">
+    <p class="search_header">جستجو در هتل ها</p>
+    <form style="padding-bottom: 25px;" method="get">
+        <input id="id_hotel_name" name="hotel_name"
+               class="form-control hotel_search_field_">
+        <a onclick="search_hotel()" id="search_link" href="" class="sub_submit_"><i
+                class="fa fa-search footer hotel_search"></i>
+        </a>
+        <p class="search_header">فیلتر بر اساس ستاره</p>
+        <span class="rating_search">
+            <input type="radio" name="filter" value="5">
+                <img class="rating_star_search" src='/media/rating/rating-5.png'>
+        </span>
+        <span class="rating_search">
+            <input type="radio" name="filter" value="4">
+                <img class="rating_star_search" src='/media/rating/rating-4.png'>
+        </span>
+        <span class="rating_search">
+            <input type="radio" name="filter" value="3">
+                <img class="rating_star_search" src='/media/rating/rating-3.png'>
+        </span>
+    </form>
+</div>

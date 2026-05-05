@@ -1,0 +1,131 @@
+<html lang="en" dir="rtl">
+<head>
+    {% load static %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/media/favicon-32x32.png">
+    <link href="{% static '/asset/css/uistyle.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <title>شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان | نتایج جست و جو</title>
+</head>
+<body>
+<div class="main-warper">
+    <div class="top-container">
+        {% include 'ui/topbar.html' %}
+        {% include 'ui/res-menu.html' %}
+        <div class="secd-row">
+            <div class="filter-section">
+                <form class="filter-form" onsubmit="return validateEmpty()" method="get" action="{% url 'search-result' %}" style="text-align: center">
+                    {% csrf_token %}
+                    <div class="form-input search">
+                        {{ Search.DestCountry }}
+                    </div>
+                    <div class="form-input search">
+                        {{ Search.NightCount }}
+                    </div>
+                    <div class="form-input search">
+                        {{ Search.StartDate }}
+                    </div>
+                    <div class="form-input submit search-sub">
+                        <button type="submit" onclick='convertDate()' class="submit-search">جستجو </button>
+                    </div>
+                </form>
+                <script>
+                    function validateEmpty() {
+                        x = document.getElementById('id_DestCountry').value
+                        y = document.getElementById('id_NightCount').value
+                        z = document.getElementById('id_StartDate').value
+                        if ((x.length > 0 ) || (y.length > 0) || (z.length > 0) ) {
+                            return true;
+                        } else {
+                            alert("فیلد های جستجو را پر کنید");
+                            return false;
+                        }
+                    }
+                    </script>
+            </div>
+            <div class="featur-logo">
+            </div>
+        </div>
+    </div>
+    <div class="content-container col-sm-12 col-lg-11">
+        <div class="right-side order-track">
+                            <div class="order-container">
+                                <p class="orders-heading">تورهای رزرو شده </p>
+                                {{trs}}
+                                <table class="order-detail">
+                                    <tr class="order-table-header">
+                                        <td class="tb-header">ردیف</td>
+                                        <td class="tb-header">عنوان تور</td>
+                                        <td class="tb-header">رزرو کننده</td>
+                                        <td class="tb-header">تاریخ رزرو</td>
+                                        <td class="tb-header">کد پیگیری</td>
+                                        <td class="tb-header">پکیج انتخابی</td>
+                                        <td class="tb-header"d>شماره تماس</td>
+                                        <td class="tb-header">تاریخ شروع</td>
+                                        <td class="tb-header">ارسال مدارک</td>
+                                    </tr>
+                                    {% for o in order %}
+                                    {% if forloop.counter <= 10 %}
+                                    <tr class="order-detail-">
+                                        <td class="tb-detail">{{ forloop.counter }}</td>
+                                        <td class="tb-detail">{{ o.OrderTour | truncatechars:25 }}</td>
+                                        <td class="tb-detail">{{ o.Name }} {{ o.Family }} </td>
+                                        <td class="tb-detail"> {{ o.OrderTime | to_jalali:'%H:%M - %Y/%m/%d' }} </td>
+                                        <td class="tb-detail"></td>
+                                        <td class="tb-detail"> {{ o.OrderPack }} </td>
+                                        <td class="tb-detail"> {{ o.Mobile }} </td>
+                                        <td class="tb-detail"> {{ o.OrderTour.StartDate | to_jalali:'%Y/%m/%d' }} </td>
+                                        <td class="tb-detail"></td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </table>
+                            </div>           
+        </div>
+    </div>
+    <div class="blog-container">
+        <div class="blog-row">
+            <p class="blog-heading-title">مجله گردشگری <span><a href="#" class="more-blog-post">مشاهده مطالب بیشتر</a> </span>
+            </p>
+            {% for post in Posts %}
+                <a href="{% url 'post-detail' post.id post.slug %}">
+                <div class="blog-post">
+                    <div class="post-img">
+                        <img src="{{ post.Image.url }}">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-title">
+                            <p>{{ post.Title }}</p>
+                        </div>
+                        <div class="post-date">
+                            <p>30 - 05 -1400</p>
+                        </div>
+                        <div class="post-short-desc">
+                            <p>دسته بندی مطلب : مطالب جهانگردی
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'ui/footer.html' %}
+</div>
+<link href="{% static 'asset/css/rsc/all.min' %}" rel="stylesheet" async>
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<script type="module" src="{% static 'asset/css/rsc/ionicons.esm.js' %}"></script>
+<script type="module" src="{% static 'asset/css/rsc/ionicons.js' %}"></script>
+<script src="{% static 'admin/js/django_jalali.js' %}"></script>
+<script src="{% static 'asset/css/bootstrap/bootstrap.bundle.min.js' %}"></script>
+<script src="/static/asset/js/convertDate.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                ایجاد/بروزرسانی صفحه
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'page_list' %}" class="link">لیست صفحات </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <form style="text-align: right" class="input-forms" method="POST" novalidate="novalidate"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <p class="label-text">تصویر صفحه <span class="required">*</span></p>
+                            <label for="id_page_image" class="custom-file-upload text-input">
+                                <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر صفحه</span>
+                            </label>
+                            {{ forms.page_image }}
+                            <script>
+                                $(document).ready(function () {
+                                    $('input[type="file"]').change(function (e) {
+                                        var fileName = e.target.files[0].name;
+                                        document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                        {#alert('The file "' + fileName + '" has been selected.');#}
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="label-text">عنوان صفحه <span class="required">*</span></p>
+                            {{ forms.title }}
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="label-text">لینک صفحه <span class="required">*</span></p>
+                            {{ forms.slug }}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <p class="input_label">نمایش در بخش نمایندگی ها
+                                <span class="input_check">{{ forms.reseller }}</span>
+                            </p>
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="input_label">نمایش در بخش ستون اول فوتر
+                                <span class="input_check">{{ forms.footer_1 }}</span>
+                            </p>
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="input_label">نمایش در بخش ستون دوم فوتر
+                                <span class="input_check">{{ forms.footer_2 }}</span>
+                            </p>
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="input_label">نمایش در بخش ستون سوم فوتر
+                                <span class="input_check">{{ forms.footer_3 }}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section" style="padding: 25px;">
+                    <p class="label-text">توضیحات کوتاه صفحه <span class="required">*</span></p>
+                    {{ forms.short_content }}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section" style="padding: 25px;">
+                    <p class="label-text">توضیحات تکنیلی صفحه <span class="required">*</span></p>
+                    {{ forms.content }}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="inner_section">
+                        <div class="col-lg-12">
+                            <p class="label-text">کلمات کلیدی صفحه <span class="required">*</span></p>
+                            {{ forms.meta_keyword }}
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">توضیحات متا صفحه <span class="required">*</span></p>
+                            {{ forms.meta_desc }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="inner_section">
+                        <p class="label-text">تصویر صفحه <span class="required">*</span></p>
+                        {% if page.page_image %}
+                            <img src="{{ page.page_image.url }}" width="100%">
+                        {% endif %}
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-lg-12">
+                <button type="submit" class="btn btn-lg btn-info btn-block">
+                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                        id="save-button-title">ذخیره </span>
+                </button>
+            </div>
+        </form>
+    </div>
+    {{ forms.media }}
+{% endblock %}

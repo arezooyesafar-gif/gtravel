@@ -1,0 +1,30 @@
+<div class="cities-list">
+    <ul class="country_menu">
+
+        <li>
+            <a href="#" class="back-to-main" onclick="backToCountry(); return false;">
+                بازگشت
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'all-tour-country' country.slug country.id %}"
+               class="offcanvas-menu-link country-head">
+                <span class="offcanvas-menu-title country-list">
+                    تور {{ country.TitleC }}
+                </span>
+            </a>
+        </li>
+
+        {% for i in tours_cities %}
+            <li class="offcanvas-submenu_link">
+                <a href="{% url 'city-tours' i.slug i.id %}"
+                   class="offcanvas-menu-link">
+                    <span class="offcanvas-menu-title">تور {{ i }}</span>
+                    <span class="plus_menu"></span>
+                </a>
+            </li>
+        {% endfor %}
+
+    </ul>
+</div>

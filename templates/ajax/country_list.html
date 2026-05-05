@@ -1,0 +1,135 @@
+{% load jalali_tags %}
+<div class="row" style="margin-bottom: 5px">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card country_list_heading">
+            <div class="row">
+                <div class="col-lg-1 country_list">
+                    <p class="row_head">ردیف</p>
+                </div>
+                <div class="col-lg-2 country_list">
+                    <p class="row_head">پرچم کشور</p>
+                </div>
+                <div class="col-lg-2 country_list">
+                    <p class="row_head">نام کشور</p>
+                </div>
+                <div class="col-lg-2 country_list">
+                    <p class="row_head">لینک سئو</p>
+                </div>
+                <div class="col-lg-2 country_list">
+                    <p class="row_head">عنوان لیست تور</p>
+                </div>
+                <div class="col-lg-2 country_list">
+                    <p class="row_head view_cont">عنوان لیست هتل</p>
+                </div>
+                <div class="col-lg-1 country_list">
+                    <p class="row_head">اقدامات</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% for country in countries %}
+    <div class="row m-b-5">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card countries_data_row">
+                <div class="row">
+                    <div class="col-lg-1 country_list">
+                        <p class="country_num">{{ forloop.counter0|add:countries.start_index }}</p>
+                    </div>
+                    <div class="col-lg-2 country_list">
+                            {% if country.Flagimg %}
+                            <img src="{{ country.Flagimg.url }}">
+                            {% endif %}
+                    </div>
+                    <div class="col-lg-2 country_list">
+                        <p class="country_name">
+                            {{ country.TitleC }}
+                        </p>
+                    </div>
+                    <div class="col-lg-2 country_list">
+                        <p class="country_slug">
+                            {{ country.slug }}
+                        </p>
+                    </div>
+                    <div class="col-lg-2 country_list">
+                        <p class="country_tour_title">
+                            {% if country.tltitle %}
+                            <span class="cjange up">دارای عنوان</span>
+                            {% else %}
+                                <span class="cjange down">فاقد عنوان</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-lg-2 country_list">
+                        <p class="country_hotel_title">
+                            {% if country.hltitle %}
+                            <span class="cjange up">دارای عنوان</span>
+                            {% else %}
+                                <span class="cjange down">فاقد عنوان</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-lg-1 country_list">
+                        <div class="dropdown" style="margin-top: 12px;">
+                            <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                                    class="icon ni ni-more-h"></em></a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                <ul class="link-list-plain">
+                                    <li><a href="{% url 'update-country' country.id %}">ویرایش</a></li>
+                                    <li><a href="{% url 'create-faq' country.id %}">افزودن پرسش</a></li>
+                                    <li><a href="{% url 'create-media-country' country.id %}">افزودن رسانه</a></li>
+                                    <li><a href="{% url 'create_hotel_country_faq' country.id %}"> پرسش هتل</a></li>
+                                    <li><a href="{% url 'add_country_to_spacial' country.id %}">افزودن به ویژه</a></li>
+                                    <li><a style="color: red"
+                                         data-bs-toggle="modal"
+                                         data-bs-target="#exampleModal"
+                                         data-country-id="{{ country.id }}"
+                                         onclick="setDeleteId(this)">
+                                         حذف
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<div>
+    <ul class="pagination">
+        {% for n in countries.paginator.page_range %}
+            {% if countries.number == n %}
+                <li data-page='{{ n }}' class="page-item {% if countries.number == n %}active{% endif %}"><a class="page-link" >{{ n }}</a></li>
+            {% elif n > countries.number|add:'-10' and n < countries.number|add:'10' %}
+                <li data-page='{{ n }}' class="page-item {% if countries.number == n %}active{% endif %}"><a class="page-link" >{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">آیا مطمئن هستید؟</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">خیر</button>
+        <a id="confirmDeleteBtn" type="button" class="btn btn-danger">بله</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    let selectedCountryID = null;
+
+    function setDeleteId(el) {
+        selectedCountryID = el.dataset.countryId;
+        const deleteBtn = document.getElementById("confirmDeleteBtn");
+        deleteBtn.href = `/dashboard/delete-country/${selectedCountryID}`;
+    }
+</script>

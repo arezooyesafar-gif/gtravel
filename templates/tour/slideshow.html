@@ -1,0 +1,153 @@
+{% extends 'base/base.html' %}
+{% block Data %}
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            {% if not SlideShow %}
+                <div class="card" id="Persoanl-doc-info">
+                    <div class="card-body hs">
+                        <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                           اسلایدشو
+                        </h4>
+                    </div>
+                    <div class="help-desk-form">
+                        <div class="form-body">
+                            <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="information-input">
+                                    <div class="pesronal-info col-sm-12 col-lg-12">
+                                        <h4 class="card-title hs-section-1"><i class="fa fa-user font-20 edit-btn"></i>
+                                            بارگذاری تصاویر اسلایدشو
+                                        </h4>
+                                        <br>
+                                        <div class="hd-basic-info personal">
+                                            <p class="label-text">تصویر اول <span
+                                                    class="required">*</span></p>
+                                            <label for="id_FirstImage" class="custom-file-upload text-input">
+                                                <img id="DocImg-1" class="preview-img" src="/static/img/no-doc-img.jpg" alt="" width="200">
+                                            </label>
+                                            {{ form.FirstImage }}
+                                        </div>
+                                        <div class="hd-basic-info personal">
+                                            <p class="label-text">تصویر دوم <span
+                                                    class="required">*</span></p>
+                                            <label for="id_SeconedImage" class="custom-file-upload text-input">
+                                            <img id="DocImg-2" class="preview-img" src="/static/img/no-doc-img.jpg" alt="" width="200">
+                                            </label>
+                                            {{ form.SeconedImage }}
+                                        </div>
+                                        <div class="hd-basic-info personal">
+                                            <p class="label-text">تصویر سوم <span
+                                                    class="required">*</span></p>
+                                            <label for="id_ThiredImage" class="custom-file-upload text-input">
+                                            <img id="DocImg-3" class="preview-img" src="/static/img/no-doc-img.jpg" alt="" width="200">
+                                            </label>
+                                            {{ form.ThiredImage }}
+                                        </div>
+                                        <button id="save-button-hd" type="submit" class="btn btn-lg btn-info btn-block">
+                                        <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                            id="save-button-title"> ذخیره تصاویر </span>
+                                    </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% elif SlideShow %}
+                <div class="card" id="UserProf">
+                    <div class="card-body hs" id="Persoanl-doc-info">
+                        <h4 class="card-title hs"><i class="fa fa-info font-20 edit-btn"></i>
+                            بروزرسانی تصاویر اسلایدشو
+                        </h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12">
+                            <div class="Personal-image doc-img-block">
+                                <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                <p class="label-text txt-align">تصویر اول</p>
+                                <img src="{{ SlideShow.FirstImage.url }}" alt=""
+                                     class="personal-img" width="170"
+                                     height="170">
+                                     <label for="id_FirstImage" class="custom-file-upload text-input">
+                                         <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر </span>
+                                     </label>
+                                     {{ form.FirstImage }}
+                                     <script>
+                                         $(document).ready(function () {
+                                             $('input[type="file"]').change(function (e) {
+                                                 var fileName = e.target.files[0].name;
+                                                 document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                                 {#alert('The file "' + fileName + '" has been selected.');#}
+                                             });
+                                         });
+                                     </script>
+                            </div>
+                            <div class="Personal-image doc-img-block">
+                                <p class="label-text txt-align">تصویر دوم</p>
+                                <img src="{{ SlideShow.SeconedImage.url }}" alt=""
+                                     class="personal-img" width="170"
+                                     height="170">
+                                     <label for="id_SeconedImage" class="custom-file-upload text-input">
+                                        <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر </span>
+                                    </label>
+                                    {{ form.SeconedImage }}
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('input[type="file"]').change(function (e) {
+                                                var fileName = e.target.files[0].name;
+                                                document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                                {#alert('The file "' + fileName + '" has been selected.');#}
+                                            });
+                                        });
+                                    </script>
+                            </div>
+                            <div class="Personal-image doc-img-block">
+                                <p class="label-text txt-align">تصویر سوم  </p>
+                                <img src="{{ SlideShow.ThiredImage.url }}" alt=""
+                                     class="personal-img" width="170"
+                                     height="170">
+                                     <label for="id_ThiredImage" class="custom-file-upload text-input">
+                                        <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر </span>
+                                    </label>
+                                    {{ form.ThiredImage }}
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('input[type="file"]').change(function (e) {
+                                                var fileName = e.target.files[0].name;
+                                                document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                                {#alert('The file "' + fileName + '" has been selected.');#}
+                                            });
+                                        });
+                                    </script>
+                            </div>
+                            <button id="save-button-hd" type="submit" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                    id="save-button-title"> ذخیره تصاویر </span>
+                            </button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <script>PersonalDetailNav()</script>
+        <script>
+            document.getElementById('id_FirstImage').onchange = function () {
+                src = URL.createObjectURL(this.files[0])
+                document.getElementById('DocImg-1').src = src
+                console.log(src);
+            }
+            document.getElementById('id_SeconedImage').onchange = function () {
+                src = URL.createObjectURL(this.files[0])
+                document.getElementById('DocImg-2').src = src
+                console.log(src);
+            }
+            document.getElementById('id_ThiredImage').onchange = function () {
+                src = URL.createObjectURL(this.files[0])
+                document.getElementById('DocImg-3').src = src
+                console.log(src);
+            }
+        </script>
+    </div>
+{% endblock %}

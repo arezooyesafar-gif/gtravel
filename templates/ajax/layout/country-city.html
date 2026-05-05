@@ -1,0 +1,6 @@
+<select name="city_id" id="city-select" class="select-input">
+    <option value="">شهر مقصد...</option>
+    {% for i in cities %}
+        <option value="{{ i.id }}">{{i}}</option>
+    {% endfor %}
+</select> 

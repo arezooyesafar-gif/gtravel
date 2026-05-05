@@ -1,0 +1,30 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+       <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست پیام ها
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-sm-12 col-lg-12">
+            <div class="">
+                <div id="msg_list" class="table-block">
+                    {% if Messages %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<a class="export-csv" href="/dashboard/export-contacts">خروجی اکسل مخاطبین</a>

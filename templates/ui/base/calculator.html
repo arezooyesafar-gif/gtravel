@@ -1,0 +1,81 @@
+<section id="calc_sec" class="installment_calculator">
+   <div class="container">
+        <div class="row">
+        <div class="col-lg-6">
+            <p class="installment_calc_header">محاسبه گر اقساط</p>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p class="input_label">مبلغ تور(تومان)</p>
+                    <input id="tour_price"  onkeypress="return isNumberKey(event)"
+                   onkeyup="return separateDigits()"
+                   type="text" class="form-control price_input line_1"
+                   placeholder="مبلغ تور مورد نظر خود را وارد کنید">
+                </div>
+                <div class="col-lg-6">
+                    <p class="input_label">مبلغ پیش پرداخت (تومان)</p>
+                    <input id="pre_paid" onkeypress="return isNumberKey(event)"
+                           onkeyup="return separateDigits2()"
+                           type="text" class="form-control price_input"
+                    placeholder="پیش پرداخت مورد نظر خود را وارد کنید">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p class="input_label">تعداد چک</p>
+                    <div class="chequ_counter">
+                        <span class="cheq_plus">+</span>
+                        <span class="cheq_minus">-</span>
+                    <input readonly onchange="checking_values()" id="chequ_num" min="1" value="1" max="6"
+                           type="number" class="form-control price_input height-half">
+                    </div>
+                    <div class="inst_counter">
+                        <p class="input_label">دوره بازپرداخت(ماه)</p>
+                    <span class="inst_plus">+</span>
+                        <span class="inst_minus">-</span>
+                        <input readonly onchange="inst_chequ_month()" id="inst_num" min="3" value="3" max="6"
+                               type="number" class="form-control price_input height-half">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <p class="chequ_time">ماه های صدور چک</p>
+                    <div class="cheq_inner">
+                        <span class="chequ_month">ماه اول</span><input onchange="inst_month_check()" disabled type="checkbox" class="ckbx" id="month1">
+                    <span class="chequ_month">ماه دوم</span><input onchange="inst_month_check()"  disabled type="checkbox" class="ckbx" id="month2">
+                    <span class="chequ_month">ماه سوم</span><input checked onchange="inst_month_check()"  type="checkbox" class="ckbx" id="month3">
+                    <span class="chequ_month">ماه چهارم</span><input onchange="inst_month_check()" disabled type="checkbox" class="ckbx" id="month4">
+                    <span class="chequ_month">ماه پنجم</span><input onchange="inst_month_check()" disabled type="checkbox" class="ckbx" id="month5">
+                    <span class="chequ_month">ماه ششم</span><input onchange="inst_month_check()" disabled type="checkbox" class="ckbx" id="month6">
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <button onclick="installment_calculation()" type="button" class="calc_btn">محاسبه اقساط</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="result_tab">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="installment_result_heading">مبلغ هر فقره چک :</p>
+                        <p class="installment_value"><span id="instal_val">0</span> <span class="currency"> تومان </span></p>
+                    </div>
+                    <div class="col-lg-6 installment_data">
+                        <p class="data_heading_">پیش پرداخت</p>
+                        <p id="price_val" class="data_value_">0</p>
+                        <p class="data_currency_">تومان</p>
+                    </div>
+                    <div class="col-lg-6 installment_data">
+                        <p class="data_heading_">مبلغ کل تور </p>
+                        <p id="tour_total_price" class="data_value_">0</p>
+                        <p class="data_currency_">تومان</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+       <div id="colse_pane" class="colse_btn">
+        <i class="fa fa-times" aria-hidden="true"></i>
+    </div>
+    </div>
+
+</section>

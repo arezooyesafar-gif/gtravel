@@ -1,0 +1,12 @@
+{% if dest %}
+    {% for i in dest %}
+    <li class="dest_item" onclick="addcity('{{ i }}')">{{ i }}</li>
+    {% endfor %}
+{% endif %}
+<script>
+    function addcity(city){
+        document.getElementById('id_DestCountry').value = city
+        document.getElementById('list_dest').style.display = 'none'
+
+    }
+</script>

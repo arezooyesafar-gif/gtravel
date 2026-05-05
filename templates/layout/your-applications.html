@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load date_filter %}
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta name="theme-color" content=""/>
+    <!-- Title -->
+    <title>Your applications</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"/>
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/static/layout/assets/css/style.css"/>
+    <link rel="stylesheet" href="/static/layout/assets/css/responsive.css"/>
+</head>
+<body>
+{% include 'layout/header.html' %}
+<main>
+    <section>
+        <div class="your-applications-section">
+            <div class="container">
+                <form method="get" class="mb-3">
+                    <input type="text" name="search" placeholder="جستجو بر اساس شماره درخواست"
+                           value="{{ request.GET.search }}" class="form-control" style="max-width: 300px; display: inline-block;">
+                    <button type="submit" class="btn btn-primary">جستجو</button>
+                </form>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Date <span>(تاریخ ثبت)</span></th>
+                            <th scope="col">Application Number <span>(شماره درخواست )</span></th>
+                            <th scope="col">Status <span>(وضیعت درخواست)</span></th>
+                            <th scope="col">Approve Time <span>(تاریخ صدور)</span></th>
+                            <th scope="col">File <span>(دریافت فایل)</span></th>
+                            {% if request.user.is_superuser %}
+                            <th scope="col">Remove Request <span>(حذف درخواست)</span></th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                         {% for item in all_items %}
+                            <tr>
+                                <td><span>{{ item.created_date|date:'M d, Y H:i:s' }}</span></td>
+                                <td><span><a href="{% url 'update_visa_request' item.id %}">
+                                    ev-{{ item.trs_number }}
+                                </a> </span></td>
+                                <td><span>{{ item.req_stat }}<span></span></span></td>
+                                <td>
+                                    <p id="countDown">{{ item.created_date|plus_days:5|date:'M d, Y' }}, <span class="approve_tome">{{ item.created_date|plus_days:5|date:'H:i:s' }}</span></p>
+                                </td>
+                                <td>
+                                    {% if item.visa_file and item.payment_stat %}
+                                        <a href="{{ item.visa_file.url }}">
+                                            <button type="button" class="btn btn-theme">Download Visa File <span>(دانلود ویزا)</span>
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                                {% if request.user.is_superuser %}
+                                <td>
+                                    <a href="{% url 'delete_visa_request' item.id %}">
+                                        <button style="background: red;" type="button" class="btn btn-theme">Remove <span>(حذف )</span>
+                                        </button>
+                                    </a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                         {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                                <span class="step-links">
+                                    {% if all_items.has_previous %}
+                                        <a class="page-btn" href="?page=1">&laquo; ابندا</a>
+                                        <a class="page-btn" href="?page={{ all_items.previous_page_number }}">قبلی</a>
+                                    {% endif %}
+
+                                    <span class="current">
+                                        صفحه {{ all_items.number }} از {{ all_items.paginator.num_pages }}
+                                    </span>
+
+                                    {% if all_items.has_next %}
+                                        <a class="page-btn" href="?page={{ all_items.next_page_number }}">بعدی</a>
+                                        <a class="page-btn" href="?page={{ all_items.paginator.num_pages }}">انتها &raquo;</a>
+                                    {% endif %}
+                                </span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+</main>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+        integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+        crossorigin="anonymous"></script>
+<script src="/static/layout/assets/js/main.js"></script>
+<!-- /scripts -->
+</body>
+</html>

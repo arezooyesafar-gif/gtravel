@@ -1,0 +1,6 @@
+<select name="related_tour" class="form-select" id="id_related_tour">
+  <option value="" selected="">تور مرتبط را انتخاب کنید</option>
+    {% for i in tours %}
+        <option value="{{ i.id }}">{{ i.Title }}</option>
+    {% endfor %}
+</select>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    {% load static %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel=“canonical” href=“https://arezoosafar.com/blog{% url 'post-detail' Post.id Post.slug %}”/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="{{ Post.metaKeyword }}">
+    <meta name="description" content="{{ Post.metaDescription }}">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-35DTMEQBTC');
+    </script>
+
+    {% include 'ui/base/head.html' %}
+    {% if Post.ptitle %}
+        <title>{{ Post.ptitle }}</title>
+    {% else %}
+        <title>{{ Post.Title }} | آزانس مسافرتی و گردشگری آرزوی سفر ئارسیان</title>
+    {% endif %}
+</head>
+<body style="background: #efefef">
+{% include 'ui/base/header.html' %}
+{% include 'ui/base/preloader.html' %}
+<section class="post_detail">
+    <div class="container">
+        <div class="row">
+            <div id="post-body" class="col-lg-9">
+                <div class="post_page_image">
+                    <img loading="lazy" alt="{{ Post.Title }}" class="_post_image" src="{{ Post.Image.url }}">
+                    <div class="post-header-blure">
+                        <h1 class="_post_page_title">{{ Post.Title }}</h1>
+                    </div>
+                </div>
+                <div class="_post_page_cat">
+                    <span class="_post_cat">{{ Post.Category }}</span>
+                    <span class="_post_cat">{{ Post.PubDate|to_jalali:'%Y/%m/%d' }}</span>
+                </div>
+                <div class="post_page_body">
+                    <div class="_post_page_title">
+
+                    </div>
+                    <div class="_post_page_short_desc">
+                        {{ Post.ShortDesc|safe }}
+                    </div>
+                    <div class="_post_page_full_desc">
+                        {{ Post.Description|safe }}
+                    </div>
+                </div>
+                <div class="comment-form">
+                    {% for message in messages %}
+                        <p class="success">{{ message }}</p>
+                    {% endfor %}
+                    {% csrf_token %}
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <h2 class="comments_headline">ثبت دیدگاه برای این مطلب</h2>
+                            <p id="success-cm" class="success-send"></p>
+                            <p id="invalid-cm" class="invalid-data-cm"></p>
+                            <div class="col-lg-6">
+                                <input type="text" name="full_name" maxlength="300" class="form-control"
+                                       placeholder=" نام و نام خانوادگی را وارد کنید" required="" id="id_full_name">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="email" name="email" maxlength="254" placeholder="ایمیل را وارد کنید"
+                                       class="form-control" required="" id="id_email">
+                            </div>
+                            <div class="col-lg-12">
+                                <textarea name="desc" cols="40" rows="10" maxlength="5000"
+                                          placeholder="توضیحات را وارد کنید" class="form-control" required=""
+                                          id="id_desc"></textarea>
+                            </div>
+                            <div class="col-lg-12 m-t-10">
+                                <button onclick="submitComment({{ Post.id }})" name="submit_comment"
+                                        class="btn-primary-comment">ارسال نظر
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comments">
+                    {% for i in all_comments %}
+                        <div class="comments_body">
+                            <div class="comments_info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <p class="comment_athour"><i
+                                                class="fa fa-user comment-user"></i> {{ i.full_name }}
+                                            <span class="cooment_date">در تاریخ :
+                                                {{ i.create_date|to_jalali:'%Y/%m/%d'}}</span></p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="reply-box">
+                                            <button onclick="sendReply({{ i.id }})" class="comments-replay">پاسخ به
+                                                کامنت
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cooments_message">
+                                {{ i.desc }}
+                            </div>
+                            {% for j in all_comments_reply %}
+                                {% if j.comment == i %}
+                                    <div class="cm-reply-box">
+                                        <div class="comments_info">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <p class="comment_athour"><i
+                                                            class="fa fa-user comment-user"></i> {{ j.full_name }}
+                                                        <span class="cooment_date">در تاریخ :
+                                                            {{ j.create_date|to_jalali:'%Y/%m/%d'}}</span></p>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cooments_message">
+                                            {{ j.desc }}
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                            {% endfor %}
+                            <div class="comment-reply cm-{{ i.id }}">
+                                <div class="row">
+                                    <p id="success-msg-{{ i.id }}" class="success-send"></p>
+                                    <p id="invalid-cm-{{ i.id }}" class="invalid-data-cm"></p>
+                                    <div class="col-lg-6">
+                                        <input id="nameData-{{ i.id }}" type="text" class="form-control "
+                                               placeholder="نام و نام خانوادگی">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <input id="emailData-{{ i.id }}" type="email" class="form-control"
+                                               placeholder="آدرس ایمیل">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <textarea id="desc-{{ i.id }}" class="form-control" rows="3"></textarea>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <button class="reply-btn" onclick="sendReplyData({{ i.id }})">ارسال پاسخ
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class='post-sidebar'>
+                {% if Posts %}
+                    <div class="fav_box _post_page">
+                        <h5 class="_all_fav_list_header _post_page">
+                            <span><i class="fa fa-podcast"></i></span>
+                            پربازدیدها
+                        </h5>
+                        {% for i in Posts %}
+                            <div class="fav_body">
+                                <div class="row">
+                                    <div class="col-lg-3 no-padding">
+                                        <img loading="lazy" alt="{{ i.related_post.Title }}" class="fav_post_image_"
+                                             src="{{ i.related_post.Image.url }}">
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <div class="fav_post_title_">
+                                            <h6 class="fav_title_">{{ i.related_post.Title }}</h6>
+                                            <span class="categoryname"><i
+                                                    class="fa fa-archive"></i>{{ i.related_post.Category }} </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="contact-banner">
+                    <p class="reseve-title">
+                        دریافت مشاوره و رزرو تور
+                    </p>
+                    <p class="reseve-phone">
+                        021-45128
+                    </p>
+                    <p class="reseve-desc">
+                        کارشناسان ما پاسخگوی شما خواهند بود
+                    </p>
+                </div>
+                {% if Post.post_links %}
+                    <div class="anchor-links margin-top-25">
+                        <p class="head-text">
+                            فهرست مطالب
+                        </p>
+                        <div class="anchor-box-inner">
+                            {{ Post.post_links|safe }}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="social-share">
+                    <p class="social-head-post">
+                        لینک اشتراک گذاری
+                    </p>
+                    <div class="share-box">
+                        <a id="post-link" data-link="https://arezoosafar.com{% url 'post-detail' Post.id Post.slug %}" onclick="CopPostLink()">
+                            <i class="fa-solid fa-link post-social"></i>
+                        </a>
+                    </div>
+                    <div class="share-box">
+                        <a href="https://api.whatsapp.com/send?text={% url 'post-detail' Post.id Post.slug %}">
+                            <i class="fa-brands fa-whatsapp post-social"></i>
+                        </a>
+                    </div>
+                    <div class="share-box">
+                        <a href="https://www.instagram.com/direct/new/?text={% url 'post-detail' Post.id Post.slug %}">
+                            <i class="fa-brands fa-instagram post-social"></i>
+                        </a>
+                    </div>
+                    <div class="share-box">
+                        <a href="https://t.me/share/url?url={% url 'post-detail' Post.id Post.slug %}&text={{ Post.Title }}">
+                            <i class="fa-brands fa-telegram post-social"></i>
+                        </a>
+                    </div>
+                    <p id="success-link-copy" class="success-copy"></p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    var country = '{{ contry.slug }}'
+    var country_id = '{{ contry.id }}'
+    var city = '{{ city.slug }}'
+    var city_id = '{{ city.id }}'
+    var tour_id = '{{ Tour.id }}'
+    var tour_slug = '{{ Tour.Slug }}'
+    var tour_menu = '{{ Menu.slug }}'
+</script>
+<script>
+    function CopPostLink() {
+        var copyText = document.getElementById("post-link");
+        copyTextData = copyText.getAttribute('data-link')
+        navigator.clipboard.writeText(copyTextData);
+        var message = document.getElementById('success-link-copy')
+        message.innerText = 'لینک با موفقیت کپی شد.'
+        message.style.display = 'block'
+
+    }
+</script>
+
+{% include 'ui/base/footer.html' %}
+{% include 'ui/base/plugins.html' %}
+</body>
+</html>

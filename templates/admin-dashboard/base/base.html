@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fa" class="js">
+<head>
+{% include 'admin-dashboard/base/head.html' %}
+    <!-- Page Title  -->
+    <title>داشبورد | مدیریت سامانه</title>
+</head>
+
+<body class="has-rtl nk-body npc-invest bg-lighter no-touch nk-nio-theme" dir="rtl">
+<div class="nk-app-root">
+    <!-- wrap @s -->
+    <div class="nk-wrap">
+        <!-- main header @s -->
+        {% include 'admin-dashboard/base/header.html' %}
+        <!-- main header @e -->
+        <!-- content @s -->
+        <div class="nk-content nk-content-fluid">
+            <div class="container-xl wide-xl">
+                <div class="nk-content-inner">
+                    <div class="nk-content-body">
+                        <div class="nk-block-head nk-block-head-sm">
+                            <div class="nk-block-between">
+                                <div class="nk-block-head-content">
+                                    <h3 class="nk-block-title page-title">داشبورد مدیریت</h3>
+                                    <div class="nk-block-des text-soft">
+                                        <p>
+                                            {{ request.user.get_full_name }}
+                                            {% if request.user.is_superuser %}
+                                                مدیر گرامی
+                                            {% else %}
+                                                کارمند عزیز
+                                            {% endif %}
+                                         خوش آمدید.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- .nk-block-head-content -->
+                                <div class="nk-block-head-content">
+                                    <div class="toggle-wrap nk-block-tools-toggle">
+                                        <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                           data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+                                        <div class="toggle-expand-content" data-content="pageMenu">
+                                            <ul class="nk-block-tools g-3">
+                                                <li>
+                                                    <a href="{% url 'file_list' %}" class="btn btn-white btn-dim btn-outline-primary"><em
+                                                            class="icon ni ni-download-cloud"></em><span>مدیریت فایل ها</span></a>
+                                                </li>
+                                                <li>
+                                                    <a href="{% url 'tour-list' %}" class="btn btn-white btn-dim btn-outline-primary"><em
+                                                            class="icon ni ni-reports"></em><span>لیست تور ها</span></a>
+                                                </li>
+                                                <li class="nk-block-tools-opt">
+                                                    <div class="drodown">
+                                                        <a href="#" class="dropdown-toggle btn btn-icon btn-primary"
+                                                           data-bs-toggle="dropdown"><em
+                                                                class="icon ni ni-plus"></em></a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <ul class="link-list-opt no-bdr">
+                                                                <li>
+                                                                    <a href="{% url 'create_user' %}"><em
+                                                                            class="icon ni ni-user-add-fill"></em><span>افزودن کاربر</span></a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="{% url 'create-tour' %}"><em
+                                                                            class="icon ni ni-property-add"></em><span>افزودن تور</span></a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="{% url 'create_page' %}"><em
+                                                                            class="icon ni ni-note-add-fill-c"></em><span>افزودن صفحه</span></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!-- .toggle-expand-content -->
+                                    </div>
+                                    <!-- .toggle-wrap -->
+                                </div>
+                                <!-- .nk-block-head-content -->
+                            </div>
+                            <!-- .nk-block-between -->
+                        </div>
+                        <!-- .nk-block-head -->
+                        <div class="nk-block">
+                            <div id="main_body" class="row g-gs">
+                                {% block Main %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content @e -->
+        <!-- footer @s -->
+        <div class="nk-footer nk-footer-fluid bg-lighter">
+            <div class="container-xl">
+                <div class="nk-footer-wrap">
+                    <div class="nk-footer-copyright">© تمام حقوق محفوظ است. طراحی و پیاده سازی <a
+                            target="_blank" rel="nofollow" href="https://www.gandomteam.com">
+                        تیم توسعه نرم افزاری گندم
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer @e -->
+    </div>
+    <!-- wrap @e -->
+</div>
+<!-- app-root @e -->
+<!-- select region modal -->
+<!-- .modal -->
+
+
+<!-- JavaScript -->
+{% include 'admin-dashboard/base/plugins.html' %}
+</body>
+</html>

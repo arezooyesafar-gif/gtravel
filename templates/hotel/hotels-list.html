@@ -1,0 +1,45 @@
+﻿{% extends 'admin-dashboard/base/base.html' %}
+{% load jalali_tags %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست هتل های ثبت شده
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'create_hotel' %}" class="link">ایجاد هتل جدید </a>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row m-20">
+                        <div class="col-lg-3">
+                            {{ forms.hotel_name }}
+                        </div>
+                        <div class="col-lg-3">
+                            {{ forms.hotel_name_eng }}
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="city_name" name="city" class="text-input search-input">
+
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <button id="searchBtn" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-check btn-icon font-20 edit-btn"></i>
+                                <span>جستجو هتل </span>
+                            </button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-40">
+        <div id="hotel_list" class="table-block">
+        </div>
+    </div>
+{% endblock %}

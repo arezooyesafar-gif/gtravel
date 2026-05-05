@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/*
+Disallow: /dashboard/*
+Disallow: /blog/61/weirdest-laws-around-world
+Disallow: /singapore-tour/65/city-tours
+
+Sitemap: https://arezoosafar.com/sitemap.xml

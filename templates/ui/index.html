@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>{% load static %}{% load humanize %}{% load jalali_tags %}{% load webp_converter %}{% load cache %}
+    {% include 'ui/base/head.html' %}
+    <meta name="enamad" content="33521584" />
+    <link rel=“canonical” href=“https://arezoosafar.com”/>
+    <meta name="description"
+          content="شرکت آرزوی سفر پارسیان برگزار کننده  تور ارزان قیمت خارجی به صورت نقد و اقساط | مجری تور روسیه و کارگزار تور تایلند">
+    <meta name="keywords" content="آرزوی سفر, تور, تور اقساطی, تور خارجی, تور روسیه, تور تایلند, کارگزار تور تایلند, مجری تور روسیه">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
+    <script async>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-35DTMEQBTC');
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org/",
+            "@type": "TravelAgency",
+            "name": "آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار تور روسیه و تایلند)",
+        " description ": "شرکت آرزوی سفر پارسیان برگزار کننده  تور ارزان قیمت خارجی به صورت نقد و اقساط | مجری تور روسیه و کارگزار تور تایلند",
+            "image": "https://arezoosafar.com/static/homepage-banner.webp",
+            "telephone": "02145128",
+            "url": "https://arezoosafar.com/all-tour",
+        "inLanguage": "fa-IR",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": " تهران، بلوار مرزداران بین خیابان نارون و سپهر پلاک 143 ساختمان دیپلمات طبقه چهارم",
+                "addressLocality": "تهران",
+                "addressRegion": "تهران",
+                "postalCode": "1463863481",
+                "addressCountry": "Iran, Islamic Republic of"
+            },
+            "sameAs": ["https://www.instagram.com/arezooyesafarparsian/"]
+        }
+        </script>        
+    <title> آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)</title>
+</head>
+<body>
+{% include 'ui/base/header.html' %}
+<div class="col-sm-12 d-lg-none d-sm-block">
+    <a href="https://arezoosafar.com/visa/request" class="visa-link-mobile">درخواست ویزا</a>
+    <a href="/payment" class="visa-link-mobile">پرداخت آنلاین</a>
+</div>
+<div class="warp">
+   {# {% include 'ui/base/preloader.html' %} #}
+    {% csrf_token %}
+    <section class="col -lg-12 filter_section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="header-banner">
+                        <img loading="lazy" src="/static/homepage-banner.webp">
+                    </div>
+                    <div class="header-background"></div>
+                    <div class="filter-box">
+                        <form method="post" action="/search-result">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-3 margin-b-5">
+                                    <select name="country_id" id="country-select" class="select-input"
+                                            onchange="getCountryId()">
+                                        <option value="">کشور مقصد...</option>
+                                        {% for i in select_countries %}
+                                            <option value="{{ i.id }}">{{ i.TitleC }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <input id="country-id" type="text" hidden="">
+                                </div>
+                                <div id="city" class="col-sm-12 col-lg-3 margin-b-5">
+                                    <select name="city_id" id="city-select" class="select-input">
+                                        <option value="">شهر مقصد...</option>
+
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 stay margin-b-5">
+                                    <input name="day_count" type="number" min="0" max="10" class="form-control"
+                                           placeholder="تعداد روز اقامت"/>
+                                    <span class="plus">+</span>
+                                    <span class="minus">-</span>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="submit" class="btn-primary-search">جستجو</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <section class="tour_origins">
+            <h1 class="blog_sec_title" style="font-size: 31px; padding-right: 14px; margin-bottom: 6px; color: #4e99c6;">
+                آرزوی سفر؛ مرجع رزرو تور و هتل با بهترین قیمت
+            </h1>
+            <p class="spacial_tour_subtitle_">کاربران ما بیشترین سفر را به این کشورها داشته اند.</p>
+            <div class="row world-bg-main">
+                {% if spacialDest %}
+                    {% for i in spacialDest %}
+                        <div class="col-sm-6 col-lg-2">
+                            {% if i.country %}
+                                <a href="{% url 'all-tour-country' i.country.slug i.country.id %}">
+                                    <div class="airpalne-window">
+                                        {% if i.homepage_img %}
+                                            <img loading="lazy" alt="{{ i.country.TitleC }}" class="country-in-window"
+                                                 src="{{ i.homepage_img.url }}">
+                                        {% endif %}
+                                        <div class="window-layout">
+                                            <div class="window-shiled">
+                                                <div class="title-container">
+                                                    <p class="country-title" title="تور {{ i.country.TitleC }}">
+                                                        تور {{ i.country.TitleC }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </a>
+                            {% else %}
+                                <a href="{% url 'city-tours' i.city.slug i.city.id %}">
+                                    <div class="airpalne-window">
+                                        {% if i.homepage_img %}
+                                            <img loading="lazy" alt="{{ i.city.Name }}" class="country-in-window"
+                                                 src="{{ i.homepage_img.url }}">
+                                        {% endif %}
+                                        <div class="window-layout">
+                                            <div class="window-shiled">
+                                            </div>
+                                        </div>
+                                        <div class="title-container">
+                                            <p class="country-title">تور {{ i.city.Name }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </section>
+    </div>
+    <section class="spacial_tour">
+        <div class="container">
+            <h3 class="blog_sec_title">تورهای ویژه</h3>
+            <p class="spacial_tour_subtitle_">تورهای پیشنهادی ما به شما</p>
+            <div id="spacial-tours-slider" class="large-12 columns">
+                <div class="owl-two owl-carousel owl-theme">
+                    {% if SpacialData %}
+                        {% for spacialtour, scities, spackages in SpacialData %}
+                             <a href="{% url 'tour-detail' spacialtour.id spacialtour.Slug %}"
+                                target="_blank">
+                             <div class="item">
+                                <div class="spacial-tour ">
+                                    <div class="spacial-tour-img">
+                                            {% if spacialtour.TourImage %}
+                                                <img loading="lazy" alt="{{ spacialtour.Title }}" class="item-image"
+                                                     src="{{ MEDIA_ROOT }}{{ spacialtour.TourImage.url }}">
+                                            {% endif %}
+                                        <div class="price-text">
+                                            <img loading="lazy" class="day_icon" alt="تاریخ" src="/static/asset/css/images/icon/date.png"
+                                                 width="10px">
+                                            تاریخ رفت :
+                                            {{ spacialtour.StartDate |to_jalali:'%Y/%m/%d' }}
+                                            |
+                                            <img loading="lazy" class="day_icon"  alt="روز" src="/static/asset/css/images/icon/day.png">
+                                            {{ spacialtour.NightCount }}
+                                            شب و
+                                            {{ spacialtour.DayCount }}
+                                            روز
+                                        </div>
+                                    </div>
+
+                                    <div class="spacial-tour-detail">
+                                        <div class="spacial-tour-title">
+                                                <p> {{ spacialtour| truncatechars:40 }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="spacial-tour-price">
+                                        <p class="tour-price">
+                                            <span class="price-title">
+                                               قیمت از:
+                                            </span>
+                                            {{ spackages.0.DoubleBedPrice|intcomma }} تومان 
+                                            {% if spackages.0.DoubleBedPrice_doller %}
+                                             + {{ spackages.0.DoubleBedPrice_doller | intcomma }}
+                                                {% if spackages.0.fr_Pcry %}
+                                                    {{ spackages.0.fr_Pcry }}
+                                                {% else %}
+                                                        دلار
+                                                {% endif %}
+                                            {% endif%}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                             </a>
+                            
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="tour_list">
+        <div class="container">
+            <h3 class="blog_sec_title">آخرین تورها</h3>
+            <p class="blog_subtitle_">جدیدترین تورها را اینجا ببینید.</p>
+            <div id="tous-a" class="row">
+
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="insta">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="insta-box">
+                            <div class="insta-motion">
+                                <img loading="lazy" alt="گیف اینستا" src="/media/instaarezoosafar.gif">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-7">
+                        <h4 class="about_title">
+                            معرفی تورهای جذاب و شگفت انگیـــز
+                        </h4>
+                        <p>با ما در اینستاگرام همراه شو تا از پیشنهادات لحظه آخری و تورهای جذاب مطلع بشی!</p>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="input-section">
+                            <div class="row">
+                                <div class="col-lg-12 t-center">
+                                    <a href="https://www.instagram.com/arezooyesafarparsian/"
+                                       class="btn-insta-subscribe">
+                                        <span class="logo-insta">
+                                            <img loading="lazy" alt="اینستاگرام" src="/static/asset/css/images/insta-logo.webp">
+                                        </span>
+                                        ایــنستاگـــرام</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="blog_section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3 class="blog_sec_title">مجله گردشگری</h3>
+                    <p class="blog_subtitle_">جدیدترین های مجله گردشگری را اینجا بخوانید.</p>
+                </div>
+                <div class="col-lg-4">
+                    <a class="blog_post_list" href="{% url 'blog' %}">خواندنی های بیشتر در مجله گردشگری</a>
+                </div>
+            </div>
+            <div id="posts-a" class="row">
+
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="about">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h4 class="about_title">
+                            دوست داری از جدیدترین تورها با خبر بشی؟
+                        </h4>
+                        <p>با عضویت در خبرنامه پیامکی آرزوی سفر پارسیان از جدیدترین تورها با خبر شو!</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="input-section">
+                            <form method="post">
+                                {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control index-input"
+                                           placeholder="شماره موبایل خود را وارد کنید">
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="submit" class="btn-primary-subscribe">عضویت</button>
+                                </div>
+                            </div>
+                        </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% cache 6000 contact-us %}
+    <section class="contact-us">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="office-img">
+                        <img loading="lazy" src="/static/asset/css/images/office-1.jpg">
+                        <div class="image-list">
+                            <div class="row">
+                                <div class="office-gallery">
+                                    <img loading="lazy" class="mini-images" src="/static/asset/css/images/office-2.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="contact-us-section">
+                        <p class="headline">ارتباط با آرزوی سفر پارسیان</p>
+                        <p class="sub-headline">کارشناسان ما در آرزوی سفر پارسیان آماده پاسخگویی به سوالات شما
+                            هستند.</p>
+                        <div class="row">
+                            <div class="col-lg-8 no-padding">
+                                <p class="phone-title">
+                                    شماره تماس :
+                                </p>
+                                <p class="phone-number">
+                                    45128 021
+                                </p>
+                                <p class="address-headline">تهران، بلوار مرزداران بین خیابان نارون و سپهر پلاک 143
+                                    ساختمان دیپلمات طبقه چهارم</p>
+                            </div>
+                            <div class="col-lg-4 no-padding">
+                                <div class="row social-container">
+                                    <div class="col-sm-2 col-lg-2 mrg-l-5">
+                                        <div class="social-box">
+                                            <a href="https://www.instagram.com/arezooyesafarparsian/">
+                                                <img loading="lazy" src="/media/social-icon/insta.png">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 col-lg-2 mrg-l-5">
+                                        <div class="social-box">
+                                            <a href="https://t.me/Arezouyesafar/">
+                                                <img loading="lazy" src="/media/social-icon/telegram.png">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 col-lg-2 mrg-l-5">
+                                        <div class="social-box">
+                                            <a href="https://chat.whatsapp.com/GIskiohLjv63Zbqu3PM3vx/">
+                                                <img loading="lazy" src="/media/social-icon/whatsapp.png">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="phone-title">
+                                    شبکه های اجتماعی
+                                </p>
+                                <p class="address-headline">ما در فضای مجازی همراهی کنید</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endcache %}
+    {% include 'ui/base/footer.html' %}
+    <script>
+        var country = '{{ contry.slug }}'
+        var country_id = '{{ contry.id }}'
+        var city = '{{ city.slug }}'
+        var city_id = '{{ city.id }}'
+        var tour_id = '{{ Tour.id }}'
+        var tour_slug = '{{ Tour.Slug }}'
+        var tour_menu = '{{ Menu.slug }}'
+    </script>
+</div>
+</body>
+{% include 'ui/base/plugins.html' %}
+</html>

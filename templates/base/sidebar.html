@@ -1,0 +1,304 @@
+{% load static %}
+<aside class="left-sidebar">
+     <!-- Sidebar scroll-->
+      <div class="scroll-sidebar">
+          <!-- Sidebar navigation-->
+          <nav class="sidebar-nav">
+              <ul id="sidebarnav">
+                  <li class="nav-small-cap">
+                      <i class="mdi mdi-dots-horizontal"></i>
+                      <a class="main-title" href="/dashboard"><span class="hide-menu">داشبـــورد</span></a>
+                  </li>
+                  <li class="sidebar-item">
+                      <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                          <ion-icon name="airplane"></ion-icon>
+                          <span class="hide-menu">مدیریت پرواز ها</span>
+                      </a>
+                      <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-airport" class="sidebar-link">
+                                        <i class="mdi mdi-adjust"></i>
+                                        <span class="hide-menu">مدیریت فرودگاه ها</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-air-line" class="sidebar-link">
+                                        <i class="mdi mdi-adjust"></i>
+                                        <span class="hide-menu"> ایجاد ایرلاین جدید </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/airlines-list" class="sidebar-link">
+                                        <i class="mdi mdi-adjust"></i>
+                                        <span class="hide-menu"> لیست ایرلاین ها </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                               <i class="far fa-map side"></i>
+                                <span class="hide-menu"> مدیریت مقصد </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-country" class="sidebar-link">
+                                        <i class="mdi mdi-adjust"></i>
+                                        <span class="hide-menu">  کشور </span>
+                                    </a>
+                               </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-city" class="sidebar-link">
+                                        <i class="mdi mdi-adjust"></i>
+                                        <span class="hide-menu">  شهر </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <ion-icon name="briefcase"></ion-icon>
+                                <span class="hide-menu">مدیریت تـــورها</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-tour-menu" class="sidebar-link">
+                                        <i class="mdi mdi-view-quilt"></i>
+                                        <span class="hide-menu"> ایجاد منو تور </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/tour-menu-list" class="sidebar-link">
+                                        <i class="mdi mdi-view-quilt"></i>
+                                        <span class="hide-menu"> لیست منو تورها </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-tour" class="sidebar-link">
+                                        <i class="mdi mdi-view-quilt"></i>
+                                        <span class="hide-menu"> ایجاد تـــور جدید </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/tour-list" class="sidebar-link">
+                                        <i class="mdi mdi-view-parallel"></i>
+                                        <span class="hide-menu"> لیست تــورها </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-package/" class="sidebar-link">
+                                        <i class="mdi mdi-view-day"></i>
+                                        <span class="hide-menu"> ایجاد پکیج  </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/main-packages-list" class="sidebar-link">
+                                        <i class="mdi mdi-view-day"></i>
+                                        <span class="hide-menu"> لیست پکیج ها  </span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <ion-icon name="business"></ion-icon>
+                                <span class="hide-menu"> مدیریت هتل ها </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-hotel-menu" class="sidebar-link">
+                                        <i class="mdi mdi-plus-circle"></i>
+                                        <span class="hide-menu">مدیریت منو هتل</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-hotel" class="sidebar-link">
+                                        <i class="mdi mdi-plus-circle"></i>
+                                        <span class="hide-menu"> ایجاد هتل جدید </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/hotel-list" class="sidebar-link">
+                                        <i class="mdi mdi-format-list-bulleted"></i>
+                                        <span class="hide-menu"> مشاهده لیست هتل ها </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="" aria-expanded="false">
+                                <i class="mdi mdi-inbox"></i>
+                                <span class="hide-menu"> مدیریت فایل و صفحات </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="{% url 'create_page' %}" class="sidebar-link">
+                                        <i class="mdi mdi-email"></i>
+                                        <span class="hide-menu"> ایجاد صفحه جدید </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'page_list' %}" class="sidebar-link">
+                                        <i class="mdi mdi-email"></i>
+                                        <span class="hide-menu"> لیست  صفحات </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'upload_file' %}" class="sidebar-link">
+                                        <i class="mdi mdi-email"></i>
+                                        <span class="hide-menu"> بارگذاری فایل </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'ads_upload_file' %}" class="sidebar-link">
+                                        <i class="mdi mdi-email-alert"></i>
+                                        <span class="hide-menu"> بارگذاری فایل تبلیغاتی </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'file_list' %}" class="sidebar-link">
+                                        <i class="mdi mdi-email-secure"></i>
+                                        <span class="hide-menu">لیست فایل های سرور </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'ads_file_list' %}" class="sidebar-link">
+                                        <i class="mdi mdi-email-secure"></i>
+                                        <span class="hide-menu">لیست فایل های تبلیغاتی </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="ti-bookmark"></i>
+                                <span class="hide-menu"> مجله گردشگری </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-post-category" class="sidebar-link">
+                                        <i class="mdi mdi-book-multiple"></i>
+                                        <span class="hide-menu"> ایجاد دسته بندی </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/post-category-list" class="sidebar-link">
+                                        <i class="mdi mdi-book-plus"></i>
+                                        <span class="hide-menu"> لیست دسته بندی ها </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-post" class="sidebar-link">
+                                        <i class="mdi mdi-book-plus"></i>
+                                        <span class="hide-menu"> ایجاد مطلب </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/post-list" class="sidebar-link">
+                                        <i class="mdi mdi-book-plus"></i>
+                                        <span class="hide-menu"> لیست مطلب </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/comments_list" class="sidebar-link">
+                                        <i class="mdi mdi-book-plus"></i>
+                                        <span class="hide-menu"> لیست کامنتها </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-gradient"></i>
+                                <span class="hide-menu">سایر  </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="{% url 'create_home_faq' %}" class="sidebar-link">
+                                        <i class="ti-comment"></i>
+                                        <span class="hide-menu">پرسش و پاسخ صفحه اصلی</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/order-list" class="sidebar-link">
+                                        <i class="ti-comment"></i>
+                                        <span class="hide-menu">مشاهده رزرواسیون</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/create-currency" class="sidebar-link">
+                                        <i class="ti-comment"></i>
+                                        <span class="hide-menu">واحد پولی </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/update-about/1" class="sidebar-link">
+                                        <i class="ti-comment"></i>
+                                        <span class="hide-menu"> متن درباره ما </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/update-contact-us/1" class="sidebar-link">
+                                        <i class="mdi mdi-calendar-range"></i>
+                                        <span class="hide-menu"> متن تماس با ما </span>
+                                    </a>
+                                </li>
+                               <li class="sidebar-item">
+                                    <a href="/dashboard/create-slideshow/1" class="sidebar-link">
+                                        <i class="mdi mdi-calendar-range"></i>
+                                        <span class="hide-menu"> اسلایدشو</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/messages" class="sidebar-link">
+                                        <i class="mdi mdi-calendar-range"></i>
+                                        <span class="hide-menu"> صندوق پیام ورودی</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/memo-list" class="sidebar-link">
+                                        <i class="mdi mdi-format-list-bulleted"></i>
+                                        <span class="hide-menu"> مشاهده لیست سفرنامه ها </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/subscribe-list" class="sidebar-link">
+                                        <i class="mdi mdi-format-list-bulleted"></i>
+                                        <span class="hide-menu">  لیست اعضای خبرنامه </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/footer/1" class="sidebar-link">
+                                        <i class="mdi mdi-format-list-bulleted"></i>
+                                        <span class="hide-menu">تنظیمات فوتتر</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="fa fa-cogs" aria-hidden="true"></i>
+                                <span class="hide-menu">تنظیمات  </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="/dashboard/theme/main_page/1" class="sidebar-link">
+                                        <i class="ti-comment"></i>
+                                        <span class="hide-menu">تنظیمات صفحه اصلی</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'user_list' %}" class="sidebar-link">
+                                        <i class="ti-comment"></i>
+                                        <span class="hide-menu">لیست کاربران</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+              </ul>
+          </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>

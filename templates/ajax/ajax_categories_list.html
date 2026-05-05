@@ -1,0 +1,88 @@
+
+    <table class="table BranchTable">
+        <thead>
+        <tr>
+            <th class="TbHead">ردیف</th>
+            <th class="TbHead">نام دسته بندی</th>
+            <th class="TbHead"> دسته بندی مادر</th>
+            <th class="TbHead">لینک سئو</th>
+            <th class="TbHead">اقدامات لازم</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for cat in categories %}
+                <td class="TbCells serial">{{ forloop.counter0|add:categories.start_index }}</td>
+                <td class="TbCells">{{ cat.CatName }}</td>
+                <td class="TbCells">
+                    {% if cat.parentCat %}
+                        {{ cat.parentCat }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td class="TbCells">{{ cat.slug }}</td>
+                <td class="TbCells">
+                    <div class="dropdown">
+                        <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                           data-bs-toggle="dropdown"><em
+                                class="icon ni ni-more-h"></em></a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                            <ul class="link-list-plain">
+                                <li><a href="{% url 'update-post-category' cat.id %}">ویرایش</a>
+                                </li>
+                                <li><a style="color: red"
+                                     data-bs-toggle="modal"
+                                     data-bs-target="#exampleModal"
+                                     data-category-id="{{ cat.id }}"
+                                     onclick="setDeleteId(this)">
+                                     حذف
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<div>
+    <ul class="pagination">
+        {% for n in categories.paginator.page_range %}
+            {% if categories.number == n %}
+                <li data-page='{{ n }}'
+                    class="page-item {% if categories.number == n %}active{% endif %}"><a
+                        class="page-link">{{ n }}</a></li>
+            {% elif n > categories.number|add:'-10' and n < categories.number|add:'10' %}
+                <li data-page='{{ n }}'
+                    class="page-item {% if categories.number == n %}active{% endif %}"><a
+                         class="page-link">{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">آیا مطمئن هستید؟</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">خیر</button>
+        <a id="confirmDeleteBtn" type="button" class="btn btn-danger">بله</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    let selectedCategoryID = null;
+
+    function setDeleteId(el) {
+        selectedCategoryID = el.dataset.categoryId;
+        const deleteBtn = document.getElementById("confirmDeleteBtn");
+        deleteBtn.href = `/dashboard/blog/delet-post-category/${selectedCategoryID}`;
+    }
+</script>

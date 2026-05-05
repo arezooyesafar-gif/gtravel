@@ -1,0 +1,146 @@
+{% load jalali_tags %}
+<div class="row" style="margin-bottom: 5px">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card hotel_list_heading">
+            <div class="row">
+                <div class="col-lg-1 city_list">
+                    <p class="row_head">ردیف</p>
+                </div>
+                <div class="col-lg-3 city_list">
+                    <p class="row_head"> نام تور</p>
+                </div>
+                <div class="col-lg-2 city_list">
+                    <p class="row_head">ایرلاین</p>
+                </div>
+                <div class="col-lg-1 city_list">
+                    <p class="row_head">رفت </p>
+                </div>
+                <div class="col-lg-1 city_list">
+                    <p class="row_head">برگشت </p>
+                </div>
+                <div class="col-lg-1 city_list">
+                    <p class="row_head">اقامت</p>
+                </div>
+                <div class="col-lg-1 city_list">
+                    <p class="row_head view_cont">وضعیت</p>
+                </div>
+                <div class="col-lg-1 city_list">
+                    <p class="row_head view_cont">بازدید</p>
+                </div>
+                <div class="col-lg-1 city_list">
+                    <p class="row_head">اقدامات</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% for tour_list, cities in data %}
+    <div class="row m-b-5">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card countries_data_row">
+                <div class="row">
+                    <div class="col-lg-1 tour_list">
+                        <p class="tour_data_">{{ forloop.counter }}</p>
+                    </div>
+                    <div class="col-lg-3 tour_list" style="padding: 0;">
+                        <p class="tour_data_ t_title">{{ tour_list.Title|truncatechars:45 }}</p>
+                    </div>
+                    <div class="col-lg-2 tour_list">
+                        <p class="tour_data_">
+                            {% if cities.0.Airline %}
+                                {{ cities.0.Airline }}
+                            {% else %}
+                                تور زمینی
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-lg-1 tour_list">
+                        <p class="tour_data_ s_date">{{ tour_list.StartDate | to_jalali:'%Y/%m/%d' }} </p>
+                    </div>
+                    <div class="col-lg-1 tour_list">
+                        <p class="tour_data_ e_date">{{ tour_list.EndDate | to_jalali:'%Y/%m/%d' }} </p>
+                    </div>
+                    <div class="col-lg-1 tour_list">
+                        <p class="tour_data_">{{ tour_list.NightCount }}</p>
+                    </div>
+                    <div class="col-lg-1 tour_list">
+                        <p class="tour_data_ view_cont">
+                            {% if tour_list.PubTour %}
+                                <span class="active_tour">
+                                فعال
+                                </span>
+                            {% else %}
+                                <span class="disactive_tours">
+                                 غیرفعال
+                                </span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-lg-1 tour_list">
+                        <p class="tour_data_ view_cont">{{ tour_list.viewCount }}</p>
+                    </div>
+                    <div class="col-lg-1 tour_list">
+                        <div class="dropdown" style="margin-top: 12px;">
+                            <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                                    class="icon ni ni-more-h"></em></a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                <ul class="link-list-plain">
+                                    <li><a target="_blank" href="{% url 'update-tour' tour_list.id %}">ویرایش</a></li>
+                                    <li><a target="_blank" href="{% url 'copy_tour_data' tour_list.id %}">کپی</a></li>
+                                    <li><a target="_blank" href="{% url 'tour_date_plan' tour_list.id %}">افزودن تاریخ</a></li>
+                                    <li><a target="_blank" href="{% url 'tour-city-list' tour_list.id %}">افزودن شهر</a></li>
+                                    <li><a target="_blank" href="{% url 'add-to-package' tour_list.id %}">افزودن پکیج</a></li>
+                                    <li><a target="_blank" href="{% url 'add_trip_plan' tour_list.id %}"> برنامه سفر</a></li>
+                                    <li><a target="_blank" href="{% url 'add_related_tour' tour_list.id %}">مقصد مرتبط</a></li>
+                                    <li><a style="color: red"
+                                         data-bs-toggle="modal"
+                                         data-bs-target="#exampleModal"
+                                         data-tour-id="{{ tour_list.id }}"
+                                         onclick="setDeleteId(this)">
+                                         حذف
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<ul class="pagination">
+    {% for n in tour_list.paginator.page_range %}
+        {% if tour_list.number == n %}
+            <li data-page='{{ n }}' class="page-item {% if tour_list.number == n %}active{% endif %}"><a
+                    class="page-link">{{ n }}</a></li>
+        {% elif n > tour_list.number|add:'-10' and n < tour_list.number|add:'10' %}
+            <li data-page='{{ n }}' class="page-item {% if tour_list.number == n %}active{% endif %}"><a
+                    class="page-link">{{ n }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">آیا مطمئن هستید؟</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">خیر</button>
+        <a id="confirmDeleteBtn" type="button" class="btn btn-danger">بله</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    let selectedTourID = null;
+
+    function setDeleteId(el) {
+        selectedTourID = el.dataset.tourId;
+        const deleteBtn = document.getElementById("confirmDeleteBtn");
+        deleteBtn.href = `/dashboard/delet-tour/${selectedTourID}`;
+    }
+</script>

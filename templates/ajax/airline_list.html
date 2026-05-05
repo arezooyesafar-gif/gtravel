@@ -1,0 +1,81 @@
+{% if AirlinesList %}
+    {% for airline in AirlinesList %}
+        <div class="row m-b-5">
+            <div class="col-sm-12 col-lg-12">
+                <div class="card airline_data_row">
+                    <div class="row">
+                        <div class="col-md-2 text-center">
+                            <span class="airline_vounter_">{{ forloop.counter0|add:AirlinesList.start_index }}</span>
+                        </div>
+                        <div class="col-md-2 text-center">
+                                <span class=""><img height="45px" width="100px"
+                                                    src="{{ airline.AirlineLogo.url }}"></span>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <span class="arline_list_">
+                                {{ airline.AirLineTitle }}</span>
+                        </div>
+                        <div class="col-md-4 text-center">
+                                <span class="ariline_text">بار مجاز :
+                                    <br>
+                                    {{ airline.AirlineCargo }} کیلوگرم</span>
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <div class="dropdown" style="margin-top: 15px;">
+                                <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                   data-bs-toggle="dropdown"><em
+                                        class="icon ni ni-more-h"></em></a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                    <ul class="link-list-plain">
+                                        <li><a href="{% url 'update-airline' airline.id %}">ویرایش</a></li>
+                                        <li><a style="color: red"
+                                         data-bs-toggle="modal"
+                                         data-bs-target="#exampleModal"
+                                         data-airline-id="{{ airline.id }}"
+                                         onclick="setDeleteId(this)">
+                                         حذف
+                                    </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+<ul class="pagination">
+    {% for n in AirlinesList.paginator.page_range %}
+        {% if n > AirlinesList.number|add:'-10' and n < AirlinesList.number|add:'10' %}
+            <li data-page="{{ n }}"
+                class="page-item{% if AirlinesList.number == n %} active{% endif %}">
+                <a class="page-link">{{ n }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">آیا مطمئن هستید؟</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">خیر</button>
+        <a id="confirmDeleteBtn" type="button" class="btn btn-danger">بله</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    let selectedAirlineID = null;
+
+    function setDeleteId(el) {
+        selectedAirlineID = el.dataset.airlineId;
+        const deleteBtn = document.getElementById("confirmDeleteBtn");
+        deleteBtn.href = `/dashboard/delet-airline/${selectedAirlineID}`;
+    }
+</script>

@@ -1,0 +1,558 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel=“canonical” href=“https://arezoosafar.com/all-hotel”/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content=" رزرو بهترین هتل های خارجی و داخلی با کمترین نرخ در آرزوی سفر پارسیان">
+    <meta name="keywords"
+          content="لیست هتل های داخلی,لیست هتل های خارجی,هتل های روسیه,هتل های ترکیه,هتل های دبی,هتل های ارزان قیمت,رزور هتل,آرزوی سفر">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'ui/base/head.html' %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-35DTMEQBTC');
+    </script>
+    <script>
+        !function (t, e, n) {
+            t.yektanetAnalyticsObject = n, t[n] = t[n] || function () {
+                t[n].q.push(arguments)
+            }, t[n].q = t[n].q || [];
+            var a = new Date,
+                r = a.getFullYear().toString() + "0" + a.getMonth() + "0" + a.getDate() + "0" + a.getHours(),
+                c = e.getElementsByTagName("script")[0], s = e.createElement("script");
+            s.id = "ua-script-WnTehyfw";
+            s.dataset.analyticsobject = n;
+            s.async = 1;
+            s.type = "text/javascript";
+            s.src = "https://cdn.yektanet.com/rg_woebegone/scripts_v3/WnTehyfw/rg.complete.js?v=" + r, c.parentNode.insertBefore(s, c)
+        }(window, document, "yektanet");
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            {% if city %}
+            "@graph": [
+                {
+                    "@type": [
+                        "WebPage",
+                        "FAQPage"
+                    ],
+                    "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}",
+                    "url": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}",
+                    "name": "{{ city.hltitle }} هتل",
+                    "isPartOf": {
+                        "@id": "https://arezoosafar.com/#website"
+                    },
+                    "primaryImageOfPage": {
+                        "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#primaryimage"
+                    },
+                    "image": {
+                        "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#primaryimage"
+                    },
+                    "thumbnailUrl": "https://arezoosafar.com{{ city.cityImg.url }}",
+                    "description": "{{ city.hotelmd }}",
+                    "breadcrumb": {
+                        "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#breadcrumb"
+                    },
+                    "mainEntity": [
+                    {% for q in all_faqs %}
+                        {
+                            "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#faq-question-{{forloop.counter}}"
+                        }{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                    ],
+                    "inLanguage": "fa-IR",
+                    "potentialAction": [
+                        {
+                            "@type": "ReadAction",
+                            "target": [
+                                "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "@type": "ImageObject",
+                    "inLanguage": "fa-IR",
+                    "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#primaryimage",
+                    "url": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}",
+                    "contentUrl": "https://arezoosafar.com{{ city.cityImg.url }}",
+                    "width": 1211,
+                    "height": 400,
+                    "caption": "{{ city.hltitle }}"
+                },
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#breadcrumb",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
+                            "item": "https://arezoosafar.com/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": "لیست هتل ها | شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان",
+                            "item": "https://arezoosafar.com/all-hotel"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 3,
+                            "name": "{{city.CountryName.TitleC}}",
+                            "item": "https://arezoosafar.com{% url 'all-hotel-list' city.CountryName.id city.CountryName.slug %}"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 4,
+                            "name": "{{ city.hltitle }}"
+                        }
+                    ]
+                },
+                {
+                    "@type": "WebSite",
+                    "@id": "https://arezoosafar.com/#website",
+                    "url": "https://arezoosafar.com/",
+                    "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
+                    "description": "شرکت آرزوی سفر پارسیان برگزار کننده  تور ارزان قیمت خارجی به صورت نقد و اقساط | مجری تور روسیه و کارگزار تور تایلند",
+                    "publisher": {
+                        "@id": "https://arezoosafar.com/#organization"
+                    }
+                }{% if all_faqs|length > 0 %},{% endif %}
+                {% for q in all_faqs %}
+                {
+                    "@type": "Question",
+                    "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#faq-question-{{forloop.counter}}",
+                    "position": {{forloop.counter}},
+                    "url": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#faq-question-{{forloop.counter}}",
+                    {% if q.question %}
+                    "name": "{{ q.question }}",                   
+                    {% else %}
+                    "name": "{{ q.Question }}",                    
+                    {% endif %}
+                    "answerCount": {{forloop.counter}},
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        {% if q.answer %}
+                        "text": "{{ q.answer|safe }}",                
+                        {% else %}
+                        "text": "{{ q.Answer|safe }}",               
+                        {% endif %}
+                        "inLanguage": "fa-IR"
+                    },
+                    "inLanguage": "fa-IR"
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]
+        {% elif country %}
+        "@graph": [
+        {
+            "@type": [
+                "WebPage",
+                "FAQPage"
+            ],
+            "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}",
+            "url": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}",
+            "name": "{{ country.TitleC }} هتل",
+            "isPartOf": {
+                "@id": "https://arezoosafar.com/#website"
+            },
+            "primaryImageOfPage": {
+                "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#primaryimage"
+            },
+            "image": {
+                "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#primaryimage"
+            },
+            "thumbnailUrl": "https://arezoosafar.com{{ country.country_iamge.url }}",
+            "description": "{{ country.hotelmd }}",
+            "breadcrumb": {
+                "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#breadcrumb"
+            },
+            "mainEntity": [
+            {% for q in all_faqs %}
+                {
+                    "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{forloop.counter}}"
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+            ],
+            "inLanguage": "fa-IR",
+            "potentialAction": [
+                {
+                    "@type": "ReadAction",
+                    "target": [
+                        "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}"
+                    ]
+                }
+            ]
+        },
+        {
+            "@type": "ImageObject",
+            "inLanguage": "fa-IR",
+            "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#primaryimage",
+            "url": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}",
+            "contentUrl": "https://arezoosafar.com{{ country.country_iamge.url }}",
+            "width": 387,
+            "height": 192,
+            "caption": "هتل های {{ country.TitleC }}"
+        },
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
+                    "item": "https://arezoosafar.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "لیست هتل ها | شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان",
+                    "item": "https://arezoosafar.com/all-hotel"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "{{country.TitleC}}",
+                    "item": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}"
+                }
+            ]
+        },
+        {
+            "@type": "WebSite",
+            "@id": "https://arezoosafar.com/#website",
+            "url": "https://arezoosafar.com/",
+            "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
+            "description": "شرکت آرزوی سفر پارسیان برگزار کننده  تور ارزان قیمت خارجی به صورت نقد و اقساط | مجری تور روسیه و کارگزار تور تایلند",
+            "publisher": {
+                "@id": "https://arezoosafar.com/#organization"
+            }
+        }{% if all_faqs|length > 0 %},{% endif %}
+        {% for q in all_faqs %}
+        {
+            "@type": "Question",
+            "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{forloop.counter}}",
+            "position": {{forloop.counter}},
+            "url": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{forloop.counter}}",
+            {% if q.question %}
+            "name": "{{ q.question }}",                   
+            {% else %}
+            "name": "{{ q.Question }}",                    
+            {% endif %}
+            "answerCount": {{forloop.counter}},
+            "acceptedAnswer": {
+                "@type": "Answer",
+                {% if q.answer %}
+                "text": "{{ q.answer|safe }}",                
+                {% else %}
+                "text": "{{ q.Answer|safe }}",               
+                {% endif %}
+                "inLanguage": "fa-IR"
+            },
+            "inLanguage": "fa-IR"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+        ]
+        {% else %}
+        "@graph": [
+        {
+            "@type": [
+                "WebPage",
+                "FAQPage"
+            ],
+            "@id": "https://arezoosafar.com/all-hotel",
+            "url": "https://arezoosafar.com/all-hotel",
+            "name": "لیست هتل ها | شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان",
+            "isPartOf": {
+                "@id": "https://arezoosafar.com/#website"
+            },
+            "primaryImageOfPage": {
+                "@id": "https://arezoosafar.com/all-hotel#primaryimage"
+            },
+            "image": {
+                "@id": "https://arezoosafar.com/all-hotel#primaryimage"
+            },
+            "thumbnailUrl": "https://arezoosafar.com/static/asset/css/images/world-map.png",
+            "description": "رزرو بهترین هتل های خارجی و داخلی با کمترین نرخ در آرزوی سفر پارسیان"
+            "breadcrumb": {
+                "@id": "https://arezoosafar.com/all-hotel#breadcrumb"
+            },
+            "mainEntity": [
+            {% for q in all_faqs %}
+                {
+                    "@id": "https://arezoosafar.com/all-hotel#faq-question-{{forloop.counter}}"
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+            ],
+            "inLanguage": "fa-IR",
+            "potentialAction": [
+                {
+                    "@type": "ReadAction",
+                    "target": [
+                        "https://arezoosafar.com/all-hotel"
+                    ]
+                }
+            ]
+        },
+        {
+            "@type": "ImageObject",
+            "inLanguage": "fa-IR",
+            "@id": "https://arezoosafar.com/all-hotel#primaryimage",
+            "url": "https://arezoosafar.com/all-hotel",
+            "contentUrl": "https://arezoosafar.com/static/asset/css/images/world-map.png",
+            "width": 1211,
+            "height": 400
+        },
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://arezoosafar.com/all-hotel#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
+                    "item": "https://arezoosafar.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "لیست هتل ها | شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان",
+                    "item": "https://arezoosafar.com/all-hotel"
+                }
+            ]
+        },
+        {
+            "@type": "WebSite",
+            "@id": "https://arezoosafar.com/#website",
+            "url": "https://arezoosafar.com/",
+            "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
+            "description": "شرکت آرزوی سفر پارسیان برگزار کننده  تور ارزان قیمت خارجی به صورت نقد و اقساط | مجری تور روسیه و کارگزار تور تایلند",
+            "publisher": {
+                "@id": "https://arezoosafar.com/#organization"
+            }
+        }{% if all_faqs|length > 0 %},{% endif %}
+        {% for q in all_faqs %}
+        {
+            "@type": "Question",
+            "@id": "https://arezoosafar.com/all-hotel#faq-question-{{forloop.counter}}",
+            "position": {{forloop.counter}},
+            "url": "https://arezoosafar.com/all-hotel#faq-question-{{forloop.counter}}",
+            {% if q.question %}
+            "name": "{{ q.question }}",                   
+            {% else %}
+            "name": "{{ q.Question }}",                    
+            {% endif %}
+            "answerCount": {{forloop.counter}},
+            "acceptedAnswer": {
+                "@type": "Answer",
+                {% if q.answer %}
+                "text": "{{ q.answer|safe }}",                
+                {% else %}
+                "text": "{{ q.Answer|safe }}",               
+                {% endif %}
+                "inLanguage": "fa-IR"
+            },
+            "inLanguage": "fa-IR"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+        ]
+        {% endif %}
+        }
+    </script>
+    <title>لیست هتل ها | شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان</title>
+</head>
+<body>
+{% include 'ui/base/header.html' %}
+<div class="warp">
+    {% include 'ui/base/preloader.html' %}
+    {% csrf_token %}
+    <section class="country_list hotel_list_">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 hotel-filter-section" style="margin-top: 90px;position: relative;">
+                    <img loading="lazy" class="city-full-img" src="/media/hotels.jpg">
+                    <div class="hotel-filter">
+                        <form method="get" action="/hotel_search">
+                            {% csrf_token %}
+                            <div class="row filter">
+                                <div class="col-lg-3">
+                                    <select id="country-select" name="countryname" class="form-select" onchange="getCountryId()", style="padding-right: 35px;">
+                                        <option value=''>کشور را انتخاب کنید</option>
+                                        {% for i in countries_hotel %}
+                                        <option value="{{ i.id }}">{{ i.TitleC }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <select name="cityname" class="form-select" id="city", style="padding-right: 35px;">
+                                        <option value=''>شهر مقصد...</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <select class="form-select" name="rating", style="padding-right: 35px;">
+                                        <option value="">انتخاب ستاره هتل</option>
+                                        <option value="3">3 ستاره</option>
+                                        <option value="4">4 ستاره</option>
+                                        <option value="5">5 ستاره</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="submit" class="btn-primary-search">جستجو هتل</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <h5 class="blog_sec_title">مقصد خود را انتخاب کنید:</h5>
+            <p class="spacial_tour_subtitle_">سفر هیجان انگیز شما از اینجا شروع میشود. کافی است یک مقصد را انتخاب
+                کنید</p>
+            <div class="owl-two owl-carousel owl-theme">
+                {% if countries %}
+                    {% for countries,hotel_ctry in countries %}
+                        <div class="item">
+                            <div class="country_list_">
+                                <div class="country_image">
+                                    <a href="{% url 'all-hotel-list' countries.id countries.slug %}">
+                                        {% if countries.country_iamge %}
+                                            <img loading="lazy" alt="{{ countries.TitleC }}" class="country_image_hotel"
+                                                 src="{{ countries.country_iamge.url }}">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div class="country_name_">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-lg-6">
+                                            <a href="{% url 'all-hotel-list' countries.id countries.slug %}"
+                                               class="Country_name">
+                                                <img loading="lazy" alt="{{ countries.TitleC }}" class="country_flag_image_"
+                                                     src="{{ countries.Flagimg.url }}">
+                                                <span class="country_name_span">{{ countries.TitleC }}</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6">
+                                            <p class="country_tours">
+                                                {{ hotel_ctry }} هتل {{ countries.TitleC }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% if cities %}
+                    {% for ctys, hotel_cty_count in cities %}
+                        <div class="item">
+                            <div class="country_list_">
+                                <div class="country_image">
+                                    <a href="{% url 'all-hotel-city-list' ctys.id ctys.slug %}">
+                                        <img loading="lazy" alt="{{ ctys.CountryName }}" class="country_image_"
+                                             src="{{ ctys.CountryName.Flagimg.url }}">
+                                    </a>
+                                </div>
+                                <div class="country_name_">
+                                    <a href="{% url 'all-hotel-city-list' ctys.id ctys.slug %}" class="Country_name">
+                                        {{ ctys.Name }}
+                                    </a>
+                                    <p class="country_tours">
+                                        {{ hotel_cty_count }} هتل {{ ctys.Name }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <div class="container col-sm-12 col-lg-12">
+        <div class="hotel_list_title_">
+            <h5 class="blog_sec_title">معرفی هتل ها</h5>
+            <p class="spacial_tour_subtitle_">شهر مورد نظرت رو انتخاب کن و هتل هاش رو ببین!</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="hotels-list" class="row">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="container">
+            <div class="insta" style="margin-top: 80px;">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="insta-box">
+                            <div class="insta-motion">
+                                <img loading="lazy" alt="گیف اینستا" src="/media/instaarezoosafar.gif">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-7">
+                        <h4 class="about_title">
+                            معرفی تورهای جذاب و شگفت انگیـــز
+                        </h4>
+                        <p>با ما در اینستاگرام همراه شو تا از پیشنهادات لحظه آخری و تورهای جذاب مطلع بشی!</p>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="input-section">
+                            <div class="row">
+                                <div class="col-lg-12 t-center">
+                                    <a href="https://www.instagram.com/arezooyesafarparsian/"
+                                       class="btn-insta-subscribe">
+                                        <span class="logo-insta">
+                                            <img loading="lazy" alt="اینستاگرام" src="/static/asset/css/images/insta-logo.webp">
+                                        </span>
+                                        ایــنستاگـــرام</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    {#{% include 'ui/base/faq.html' %}#}
+    {% include 'ui/base/footer.html' %}
+    {#{% include 'ui/base/feature.html' %}#}
+</div>
+<script>
+    var country = {% if contry %}
+        '{{ contry.slug }}'
+    {% else %}
+        '{{ city.CountryName.slug }}'
+    {% endif %}
+    var country_id = {% if contry %}
+        '{{ contry.id }}'
+    {% else %}
+        '{{ city.CountryName.id }}'
+    {% endif %}
+    var city = '{{ city.slug }}'
+    var city_id = '{{ city.id }}'
+    var tour_id = '{{ Tour.id }}'
+    var tour_slug = '{{ Tour.Slug }}'
+    var tour_menu = '{{ Menu.slug }}'
+
+</script>
+{% include 'ui/base/plugins.html' %}
+</body>
+</html>

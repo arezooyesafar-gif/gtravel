@@ -1,0 +1,193 @@
+<html lang="fa-IR" dir="rtl">
+<head>{% load static %}{% load humanize %}{% load jalali_tags %}{% load webp_converter %}
+    {% include 'ui/mobile/base/head.html' %}
+    <link rel=“canonical” href=""/>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>وبلاگ گردشگری | ساتراپ </title>
+</head>
+<body>
+{% include 'ui/mobile/base/header.html' %}
+<section class="blog_intro_posts">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <a class="blog_post_index blog_page" href="{% url 'post-detail' Posts.0.id Posts.0.slug %}">
+                    <div class="_blog_page_post_cat">
+                        <p class="_blog_cat">
+                            {{ Posts.0.Category }}
+                        </p>
+                    </div>
+                    <div>
+                        <img class="post_image_index" src="{{ Posts.0.Image.url }}">
+                    </div>
+                    <div class="post_title_index">
+                        <p class="_index_title blog_page">
+                            {{ Posts.0.Title|truncatechars:40 }}
+                        </p>
+                    </div>
+                </a>
+                <a class="blog_post_index blog_page" href="{% url 'post-detail' Posts.1.id Posts.1.slug %}">
+                    <div class="_blog_page_post_cat">
+                        <p class="_blog_cat">
+                            {{ Posts.1.Category }}
+                        </p>
+                    </div>
+                    <div>
+                        <img class="post_image_index" src="{{ Posts.1.Image.url }}">
+                    </div>
+
+                    <div class="post_title_index">
+                        <p class="_index_title blog_page">
+                            {{ Posts.1.Title|truncatechars:40 }}
+                        </p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3">
+                {% for post in Posts %}
+                    {% if forloop.counter > 3 and forloop.counter < 6 %}
+                        <a class="blog_post_index blog_page" href="{% url 'post-detail' post.id post.slug %}">
+                            <div class="_blog_page_post_cat">
+                                <p class="_blog_cat">
+                                    {{ post.Category }}
+                                </p>
+                            </div>
+                            <div>
+                                <img class="post_image_index" src="{{ post.Image.url }}">
+                            </div>
+
+                            <div class="post_title_index">
+                                <p class="_index_title blog_page mini_blog">
+                                    {{ post.Title|truncatechars:35 }}
+                                </p>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-lg-3">
+                {% for post in Posts %}
+                    {% if forloop.counter > 6 and forloop.counter < 9 %}
+                        <a class="blog_post_index blog_page" href="{% url 'post-detail' post.id post.slug %}">
+                            <div class="_blog_page_post_cat">
+                                <p class="_blog_cat">
+                                    {{ post.Category }}
+                                </p>
+                            </div>
+                            <div>
+                                <img class="post_image_index" src="{{ post.Image.url }}">
+                            </div>
+
+                            <div class="post_title_index">
+                                <p class="_index_title blog_page mini_blog">
+                                    {{ post.Title|truncatechars:35 }}
+                                </p>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+<section class="blog_new_posts">
+    <div class="container">
+        <h5 class="_new_posts_heading">
+            <span><i class="fa fa-file-text"></i></span>
+            جدیدترین مطالب بلاگ
+        </h5>
+        <div class="row">
+            {% for post in Posts %}
+                {% if forloop.counter > 6 and forloop.counter < 15 %}
+                    <div class="col-lg-6 blog_post_">
+                        <a class="blog_post_index blog_page post_list" href="{% url 'post-detail' post.id post.slug %}">
+                            <div class="_list_post_cat">
+                                <p class="_blog_cat">
+                                    {{ post.Category }}
+                                </p>
+                            </div>
+                            <div>
+                                <img class="post_image_index post_list_img" src="{{ post.Image.url }}">
+                            </div>
+
+                            <div class="post_list_title two_col">
+                                <p class="_post_list_title two_col">
+                                    {{ post.Title|truncatechars:30 }}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<section class="all_post_list">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 list_post_">
+            <h5 class="_all_post_list_header">
+                <span><i class="fa fa-bars"></i></span>
+                مطالب وبلاگ گردشگری
+            </h5>
+            {% for post in data %}
+                    <div class="post_body_">
+                        <div class="row">
+                            <div class="col-lg-4 blog_list_image">
+                                <div class="post_image_">
+                                    <img src="{{ post.Image.url }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="post_title_body">
+                                    <h3 class="post_title_">{{ post.Title }}</h3>
+                                </div>
+                                <div class="post_desc_short">
+                                    {{ post.ShortDesc | safe | truncatechars:260 }}
+                                </div>
+                                <div class="post_read_more_">
+                                    <a class="read_more_btn_" href="{% url 'post-detail' post.id post.slug %}">
+                                        مطالعه بیشتر
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+            <div class="pagination">
+                <ul class="pagination">
+                    {% if data.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page=1" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">begin</span>
+                      </a>
+                    </li>   {% endif %}
+
+                    {% for n in data.paginator.page_range %}
+                      {% if data.number == n %}
+                        <li class="page-item active">
+                          <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+                        </li>
+                      {% elif n > data.number|add:'-10' and n < data.number|add:'10' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                      {% endif %}
+                    {% endfor %}
+                    {% if data.has_next %}
+                      <li class="page-item">
+                        <a class="page-link" href="?page={{ data.paginator.num_pages }}" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">end</span>
+                        </a>
+                      </li>
+                      {% endif %}   </ul>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+{% include 'ui/mobile/base/footer.html' %}
+</body>
+{% include 'ui/base/plugins.html' %}
+</html>

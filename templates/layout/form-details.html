@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta Tags -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta name="theme-color" content="" />
+        <!-- Title -->
+        <title>Froms</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
+        <!-- Theme CSS -->
+        <link rel="stylesheet" href="/static/layout/assets/css/style.css" />
+    </head>
+    <body>
+        {% include 'layout/header.html' %}
+        <main>
+            <section>
+                <div class="container">
+                    <form action="" class="box-main">
+                        <div class="child">
+                            <div>
+                                <label for="" class="disabled">Application Number</label>
+                                <b>ev-{{ item.trs_number }}</b>
+                                <p>توضیحات : <span>شماره اپلیکیشن</span></p>
+                            </div>
+                            <div>
+                                <label for="">Passport Number</label>
+                                <b>{{ item.cz_passport }}</b>
+                                <p>توضیحات : <span>شماره پاسپورت</span></p>
+                            </div>
+                            <div>
+                                <label for="">Date of issue</label>
+                                <b>{{ item.passport_issue}}</b>
+                                <p>توضیحات : <span>این یک مثال است</span></p>
+                            </div>
+                            <div>
+                                <label for="">Date of expiry</label>
+                                <b>{{ item.passport_expire}}</b>
+                                <p>توضیحات : <span>این یک مثال است</span></p>
+                            </div>
+                            <div>
+                                <label for="">Surname</label>
+                                <b>{{ item.requester_family }}</b>
+                                <p>توضیحات : <span>این یک مثال است</span></p>
+                            </div>
+                            <div>
+                                <label for="">Name</label>
+                                <b>{{ item.requester_name }}</b>
+                                <p>توضیحات : <span>این یک مثال است</span></p>
+                            </div>
+                            <div>
+                                <label for="">Travel history in  past 3 years</label>
+                                <b>{{ item.travel_history }}</b>
+                                <p>توضیحات : <span>این یک مثال است</span></p>
+                            </div>
+                            <div>
+                                <label for="">Date of entry to russia</label>
+                                <b>{{ item.data_entry_russia }}</b>
+                                <p>توضیحات : <span>این یک مثال است</span></p>
+                            </div>
+                            <div>
+                                <div>
+                                    <label for="">Military services date of start</label>
+                                    <b>{{ item.military_start_date}}</b>
+                                    <p>توضیحات : <span>این یک مثال است</span></p>
+                                </div>
+                                <div>
+                                    <label for="">Date of end</label>
+                                    <b>{{ item.military_end_date}}</b>
+                                    <p>توضیحات : <span>این یک مثال است</span></p>
+                                </div>
+                                <div>
+                                    <label for="">Military service branch</label>
+                                    <b>{{ item.military_type }}</b>
+                                    <p>توضیحات : <span>این یک مثال است</span></p>
+                                </div>
+                                <div>
+                                    <label for="">Military service place</label>
+                                    <b>{{ item.military_location }}</b>
+                                    <p>توضیحات : <span>این یک مثال است</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="child">
+                            <div class="upload-holder">
+                                <div class="child-upload">
+                                    <img src="{{ item.person_image.url}}" alt="">
+
+                                </div>
+                                <div class="child-upload">
+                                   <img src="{{ item.passport_image.url}}" alt="">
+                                </div>
+                            </div>
+                            <div>
+                                <h5>Father informartion :</h5>
+                                <ul>
+                                    <li>
+                                        <label for="">Surname</label>
+                                        <b>{{ item.rq_father_family }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Name</label>
+                                        <b>{{ item.rq_father_name }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Date of birth</label>
+                                        <b>{{ item.rq_father_brd }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Place of birth</label>
+                                        <b>{{ item.rq_father_brd_location }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5>Mother information :</h5>
+                                <ul>
+                                    <li>
+                                        <label for="">Surname</label>
+                                        <b>{{ item.rq_mother_family }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Name</label>
+                                        <b>{{ item.rq_mother_name }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Date of birth</label>
+                                        <b>{{ item.rq_mother_brd }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Place of birth</label>
+                                        <b>{{ item.rq_mother_brd_location }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5>Address :</h5>
+                                <label for="">Adress</label>
+                                <b>{{ item.address }}</b>
+                                <p>توضیحات : <span>این یک مثال است</span></p>
+                                <ul>
+                                    <li>
+                                        <label for="">Phone number</label>
+                                        <b>{{ item.phone }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Email</label>
+                                        <b>{{ item.email }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5>Job information :</h5>
+                                <b>Example</b>
+                                <ul>
+                                    <li>
+                                        <label for="">Job title</label>
+                                        <b>{{ item.job_title }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Job placename</label>
+                                        <b></b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Job address</label>
+                                        <b>{{ item.job_address }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Phone number</label>
+                                        <b>{{ item.job_phone }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Email</label>
+                                        <b>{{ item.job_email }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div>
+                                    <h5>Do you have any relatives in russia?</h5>
+                                    <p>توضیحات : <span>این یک مثال است</span></p>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <label for="">Relation degree</label>
+                                        <b>{{ item.relation_degree }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Name</label>
+                                        <b>{{ item.relation_name }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Surname</label>
+                                        <b>{{ item.relation_family }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Date of birth</label>
+                                        <b>{{ item.relation_brd_date }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Sex</label>
+                                        <b>{{ item.relation_sex }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Address</label>
+                                        <b>{{ item.relation_Address }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div>
+                                    <h5>Have you studied upper highschool?</h5>
+                                    <p>توضیحات : <span>این یک مثال است</span></p>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <label for="">Name of organization</label>
+                                        <b>{{ item.uni_name }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Address</label>
+                                        <b>{{ item.uni_address }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5>Which organization or wich person are you going to:</h5>
+                                <ul>
+                                    <li class="grid-col-full">
+                                        <label for="">Name of organization or person (name and family)</label>
+                                        <b>{{ item.origin_name }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Address</label>
+                                        <b>{{ item.origin_address }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Phone number</label>
+                                        <b>{{ item.origin_phone }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Email</label>
+                                        <b>{{ item.origin_email }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">City</label>
+                                        <b>{{ item.origin_city }}</b>
+                                        <p>توضیحات : <span>این یک مثال است</span></p>
+                                    </li>
+                                </ul>
+                                <button type="submit" class="btn btn-theme">Download</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+        <script src="/static/layout/assets/js/main.js"></script>
+        <!-- /scripts -->
+    </body>
+</html>

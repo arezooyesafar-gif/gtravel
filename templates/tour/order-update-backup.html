@@ -1,0 +1,152 @@
+<div class="row">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-body hs">
+                <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                    بروزرسانی رزرواسیون
+                </h4>
+            </div>
+            <div class="form-body">
+                <div class="alert-light">
+                    {% for message in messages %}
+                        <p class="error-body ap">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">نام<span class="required">*</span></p>
+                        {{ Form.Name }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">نام خانوادگی<span class="required">*</span></p>
+                        {{ Form.Family }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">شماره موبایل<span class="required">*</span></p>
+                        {{ Form.Mobile }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">تور <span class="required">*</span></p>
+                        {{ Form.OrderTour }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">تعداد بزرگسال <span class="required">*</span></p>
+                        {{ Form.adult }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">تعداد کودک <span class="required">*</span></p>
+                        {{ Form.chield }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">تعداد نوزاد <span class="required">*</span></p>
+                        {{ Form.infont }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">کد پیگیری <span class="required">*</span></p>
+                        {{ Form.OrderCode }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">زمان رزرواسیون<span class="required">*</span></p>
+                        <p class='order-time'>{{ Order.OrderTime | to_jalali:'%Y/%m/%d - %H:%M:%S' }}</p>
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">وضعیت ثبت<span class="required">*</span></p>
+                        {{ Form.OrderStat }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">رزرو مشاهده شده است <span class="required">*</span></p>
+                        {{ Form.View }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <button type="submit" class="btn btn-lg btn-info btn-block">
+                            <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                id="save-button-title">بروزرسانی رزرو</span>
+                        </button>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text">توضیحات <span class="required">*</span></p>
+                        {{ Form.description }}
+                    </div>
+                    {#                        <div class="hd-basic-info personal">#}
+                    {#                            <p class="label-text">بارگذاری فایل<span class="required">*</span></p>#}
+                    {#                            {{ Form.doc1 }}#}
+                    {#                        </div>#}
+                    {#                        <div class="hd-basic-info personal">#}
+                    {#                            <p class="label-text">بارگذاری فایل<span class="required">*</span></p>#}
+                    {#                            {{ Form.doc2 }}#}
+                    {#                        </div>#}
+                    {#                        <div class="hd-basic-info personal">#}
+                    {#                            <p class="label-text">بارگذاری فایل<span class="required">*</span></p>#}
+                    {#                            {{ Form.doc3 }}#}
+                    {#                        </div>#}
+                    {#                        <div class="hd-basic-info personal">#}
+                    {#                            <p class="label-text">بارگذاری فایل<span class="required">*</span></p>#}
+                    {#                            {{ Form.doc4 }}#}
+                    {#                        </div>#}
+                    {#                        <div class="hd-basic-info personal">#}
+                    {#                            <p class="label-text">بارگذاری فایل<span class="required">*</span></p>#}
+                    {#                            {{ Form.doc5 }}#}
+                    {#                        </div>#}
+                    {#                        <div class="hd-basic-info personal">#}
+                    {#                            <p class="label-text">بارگذاری فایل<span class="required">*</span></p>#}
+                    {#                            {{ Form.doc6 }}#}
+                    {#                        </div>#}
+                    {#                        <div class="hd-basic-info personal">#}
+                    {#                            <p class="label-text">بارگذاری فایل<span class="required">*</span></p>#}
+                    {#                            {{ Form.doc7 }}#}
+                    {#                        </div>#}
+                    {#                        <div class="hd-basic-info personal">#}
+                    {#                            <p class="label-text">بارگذاری فایل<span class="required">*</span></p>#}
+                    {#                            {{ Form.doc8 }}#}
+                    {#                        </div>#}
+                    {#                        <div class="hd-basic-info personal">#}
+                    {#                            <p class="label-text">بارگذاری فایل<span class="required">*</span></p>#}
+                    {#                            {{ Form.doc9 }}#}
+                    {#                        </div>#}
+                    {#                        <div class="hd-basic-info personal">#}
+                    {#                            <p class="label-text">بارگذاری فایل<span class="required">*</span></p>#}
+                    {#                            {{ Form.doc10 }}#}
+                    {#                        </div>#}
+                    {#                        <hr>#}
+                    {#                        <div class="hd-basic-info block-tlt">#}
+                    {#                            <p class="label-text">مدارک ارسالی<span class="required">*</span></p>#}
+                    {#                        </div>#}
+                    {#                        {% for d in docs %}#}
+                    {#                        {% if d.doc1 %}#}
+                    {#                        <img class="submited-images" src="{{d.doc1.url}}">#}
+                    {#                        {% endif %}#}
+                    {#                        {% if d.doc2 %}#}
+                    {#                        <img class="submited-images" src="{{d.doc2.url}}">#}
+                    {#                        {% endif %}#}
+                    {#                        {% if d.doc3 %}#}
+                    {#                        <img class="submited-images" src="{{d.doc3.url}}">#}
+                    {#                        {% endif %}#}
+                    {#                        {% if d.doc4 %}#}
+                    {#                        <img class="submited-images" src="{{d.doc4.url}}">#}
+                    {#                        {% endif %}#}
+                    {#                        {% if d.doc5 %}#}
+                    {#                        <img class="submited-images" src="{{d.doc5.url}}">#}
+                    {#                        {% endif %}#}
+                    {#                        {% if d.doc6 %}#}
+                    {#                        <img class="submited-images" src="{{d.doc6.url}}">#}
+                    {#                        {% endif %}#}
+                    {#                        {% if d.doc7 %}#}
+                    {#                        <img class="submited-images" src="{{d.doc7.url}}">#}
+                    {#                        {% endif %}#}
+                    {#                        {% if d.doc8%}#}
+                    {#                        <img class="submited-images" src="{{d.doc8.url}}">#}
+                    {#                        {% endif %}#}
+                    {#                        {% if d.doc9 %}#}
+                    {#                        <img class="submited-images" src="{{d.doc9.url}}">#}
+                    {#                        {% endif %}#}
+                    {#                        {% if d.doc10 %}#}
+                    {#                        <img class="submited-images" src="{{d.doc10.url}}">#}
+                    {#                        {% endif %}#}
+                    {#                        {% endfor %}#}
+                    {#                        {{ form.media }}#}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

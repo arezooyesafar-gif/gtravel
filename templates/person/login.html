@@ -1,0 +1,40 @@
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=>, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'asset/css/style.css' %}">
+    <link href="/static/asset/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <title>ورود به مدیریت</title>
+</head>
+<body style="background: #F3F5FA;">
+<div class="container login_page">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="login_image_">
+                <img src="/static/assets/images/logo.png">
+            </div>
+        </div>
+        <div class="col-lg-8">
+             <form method="POST" class="login_form_">
+            {% csrf_token %}
+            <div class="user-in">
+                {{  form.Username }}
+            </div>
+            <div class="pass-in">
+                {{ form.Password }}
+            </div>
+            <div class="btn-block">
+                <button class="login-btn" type="submit"> ورود</button>
+            </div>
+            <div class="btn-block">
+{#                <a href="{% url 'register' %}" class="login-btn" type="submit"> ثبت نام</a>#}
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

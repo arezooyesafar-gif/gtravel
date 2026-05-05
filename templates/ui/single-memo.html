@@ -1,0 +1,230 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    {% include 'ui/base/head.html' %}
+    <link rel=“canonical” href=“https://arezoosafar.com/read-jounery/{{ Memo.id }}”/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description"
+          content="آرزوی سفر ارائه دهنده انواع تورهای مسافرتی (داخلی، خارجی، لوکس و نمایشگاهی) به صورت نقد و اقساط، اخذ و مشاوره انواع ویزای توریستی، رزور بلیط و هتل. آرزوی شما را برآورده میکنیم">
+    <meta name="keywords"
+          content="تورهای داخلی,تورهای خارجی,تورهای نمایشگاهی,تورهای ارزان قیمت,تور ترکیه,تور روسیه,تور قسطی,تور اقساطی,آرزوی سفر">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-35DTMEQBTC');
+    </script>
+    <title> سفرنامه - {{ Memo.Name }} {{ Memo.Family }} | شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان</title>
+</head>
+<body>
+{% include 'ui/base/header.html' %}
+<div class="warp">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <section class="memories">
+                    <div class="memo-list-card">
+                        <div class="memories-image view-page">
+                            {% if Memo.img1 %}
+                                <img loading="lazy" src="{{ Memo.img1.url }}">
+                            {% endif %}
+                        <div class="data-box">
+                            <div class="row">
+                                    <div class="col-sm-12 col-lg-6">
+                                        <div class="memo-sender">
+                                            <div class="row">
+                                                <div class="col-sm-7 col-lg-4">
+                                                    <div class="memo-sender-info">
+                                                        {{ Memo.Name }} {{ Memo.Family }}
+                                                    </div>
+                                                </div>
+                                                <div class="d-sm-none col-lg-4 d-lg-block">
+                                                    <div class="view-counter">
+                                                <span><i class="fa fa-eye memories-page"></i> </span>
+                                                {{ Memo.viewCount }}
+                                            </div>
+                                                </div>
+                                                <div class="col-sm-5 col-lg-4">
+                                                    <div class="date-time-box">
+                                                <span><i class="fa fa-pen memories-page"></i> </span>
+                                                {{ Memo.created_date|to_jalali:'%Y/%m/%d'}}
+                                            </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        </div>
+                        <div class="memory-detail list">
+                            <div class="memory-detail-info">
+                                <h1 class="headline-memo">
+                                    {{ Memo.headline }}
+                                </h1>
+                                <div class="memo-message">
+                                    <p> {{ Memo.Message|safe }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+            <div class="col-lg-3">
+                <div class="contact-banner" style="margin-top: 100px">
+                    <p class="reseve-title">
+                        دریافت مشاوره و رزرو تور
+                    </p>
+                    <p class="reseve-phone">
+                        021-45128
+                    </p>
+                    <p class="reseve-desc">
+                        کارشناسان ما پاسخگوی شما خواهند بود
+                    </p>
+                </div>
+                <div class="spacial-tours">
+                    {% for tours, cities, packages in pubTours %}
+                        {% if forloop.counter < 5 %}
+                            <div class="col-lg-12 tour_grid">
+                                <div class="row tour_data_box">
+                                    <div class="col-lg-12 tour image no-padding">
+                                        {% if tours.Feature %}
+                                            <div class="spacial_baget">
+                                                <p>
+                                                    تور ویژه
+                                                </p>
+                                            </div>
+                                        {% endif %}
+                                        {% if tours.TourImage %}
+                                            <img loading="lazy" class="tour-main-img" src="{{ tours.TourImage.url }}">
+                                        {% else %}
+                                            <img loading="lazy" class="tour-main-img"
+                                                 src="/static/asset/css/images/No_Image_Available.jpg">
+                                        {% endif %}
+                                        <span class="country_flag_list">
+                                            <img loading="lazy" src="{{ tours.Tcountry.Flagimg.url }}" alt="پرچم {{ tours.Tcountry.TitleC }}" width="30" height="30" loading="lazy">
+                                            {{ tours.Tcountry.TitleC }}
+                                        </span>
+                                        {% if tours.satrap_gte %}
+                                            <span class="grte_">
+                                        گارانتی هتل
+                                    </span>
+                                        {% endif %}
+                                        {% if tours.Cash %}
+                                            <span class="cashe_">
+                                        نقدی
+                                    </span>
+                                        {% endif %}
+                                        {% if tours.Installment %}
+                                            <span class="installment_">
+                                        اقساطی
+                                    </span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-12 no-padding">
+                                        <div class="row">
+                                            <div class="col-lg-12 no-padding">
+                                                <p class="tour_title_">
+                                                    {{ tours.Title }}
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-6 no-padding">
+                                                <p class="duration_">
+                                                    <img loading="lazy" class="day_icon" alt="روز" src="/static/asset/css/images/icon/day.png">
+                                                    {{ tours.DayCount }}
+                                                    روز و
+                                                    {{ tours.NightCount }}
+                                                    شب
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-6 no-padding">
+                                                <p class="duration_">
+                                                    <img loading="lazy" class="day_icon" alt="تاریخ" src="/static/asset/css/images/icon/date.png">
+                                                    {{ tours.StartDate|to_jalali:'%Y/%m/%d' }}
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-12 col-lg-12 no-padding">
+                                                <div class="row">
+                                                    {#                            <div class="col-sm-6 col-lg-6 no-padding">#}
+                                                    {#                                <p class="duration_">#}
+                                                    {#                                    {% if cities.0.QTransfer or cities.0.GTransfer  %}#}
+                                                    {#                                        ساعت حرکت: #}
+                                                    {#                                {{ cities.0.FlightTime }}#}
+                                                    {#                                        {% else %}#}
+                                                    {#                                ساعت پرواز: #}
+                                                    {#                                {{ cities.0.FlightTime }}#}
+                                                    {#                                        {% endif %}#}
+                                                    {#                                </p>#}
+                                                    {#                            </div>#}
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-12 col-lg-12 no-padding ir_price">
+                                                <p class="irprice">
+                                                    {{ packages.0.DoubleBedPrice | intcomma:False }}
+                                                    {{ packages.0.Pcry }}
+                                                    {% if packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
+                                                        + {{ packages.0.DollerPrice | intcomma:False }}
+                                                        {{ packages.0.fr_Pcry }}
+                                                    {% endif %}
+                                                    {% if not packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
+                                                        + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                                        {{ packages.0.fr_Pcry }}
+                                                    {% endif %}
+                                                    {% if packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
+                                                        + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                                        {{ packages.0.fr_Pcry }}
+                                                    {% endif %}
+                                                    {% if not packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-6 no-padding">
+                                                <p class="more_detail">
+                                                    <a class="more_detail_link"
+                                                       href="{% url 'tour-detail' tours.id tours.Slug %}">
+                                                        مشاهده جزئیات
+                                                    </a>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-6 no-padding">
+                                                <p class="pdf_download">
+                                                    <a class="pdf_download_link"
+                                                       href="{% url 'pdf-download' tours.id %}">
+                                                        دریافت پکیج ها
+                                                    </a>
+
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'ui/base/footer.html' %}
+    {% include 'ui/base/plugins.html' %}
+    <script>
+        $('.sub-menu ul').hide();
+        $(".menu-toggle-box").click(function () {
+            $(this).parent(".sub-menu").children("ul").slideToggle("100");
+            $(this).find(".left").toggleClass("fa-caret-up fa-caret-down");
+        });
+    </script>
+</div>
+</body>
+</html>

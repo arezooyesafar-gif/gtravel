@@ -1,0 +1,81 @@
+<html lang="en" dir="rtl">
+<head>
+    {% load static %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static '/asset/css/uistyle.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/media/favicon-32x32.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <title>موسسه گردشگری آرزو سفر پارسیان | {{ Post.Title }}</title>
+</head>
+<body>
+<div class="main-warper">
+    <div class="top-container">
+        {% include 'ui/topbar.html' %}
+        <div class="secd-row detail">
+            <div class="tour-detail-title">
+                <p>مجله گردشگری | {{ Post.Title }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="content-container col-sm-12 col-lg-11">
+        <div class="right-side">
+            <div class="post-card">
+                <div class="post-detail-title">
+                    <p>{{ Post.Title }} <span class="pubdate">{{ Post.PubDate | to_jalali:'%Y/%m/%d' }}</span></p>
+                </div>
+                <div class="post-detail-sdesc">
+                    {{ Post.ShortDesc | safe }}
+                </div>
+                <div class="post-detail-descrition">
+                    {{ Post.Description | safe }}
+                </div>
+            </div>
+        </div>
+        <div class="left-side">
+        <div class="spacial-offer post-spacial">
+        <p class="spacial-offer-heading post-page-head"><ion-icon id="tour-icon" name="airplane-sharp"></ion-icon> تــــورهای ویـــژه</p>
+        {% if SpacialData %}
+            {% for spacialtour, packages in SpacialData %}
+                <div class="spacial-tour post">
+                    <div class="spacial-tour-img">
+                        <span class="time-detail"> {{ spacialtour.NightCount }} شب</span>
+                        <a href="{% url 'tour-detail' spacialtour.id spacialtour.Slug %}" target="_blank">
+                            {% if spacialtour.TourImage %}
+                            <img class="item-image" src="{{ spacialtour.TourImage.url }}">
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="spacial-tour-detail">
+                        <div class="spacial-tour-title">
+                            <a href="{% url 'tour-detail' spacialtour.id spacialtour.Slug %}" target="_blank">
+                                <p> {{ spacialtour.Title }}</p>
+                            </a>
+                        </div>
+                        <div class="spacial-tour-airline">
+                            <p>{{ spacialtour.AirLine }} </p>
+                        </div>
+                    </div>
+                    <div class="spacial-tour-price">
+                        <div class="price-text"> آغاز قیمت از :</div>
+                        <div class="price-value">{{ packages.0.SingleBedPrice | intcomma:False }} تومان</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+            
+        </div>
+
+    </div>
+    {% include 'ui/footer.html' %}
+</div>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

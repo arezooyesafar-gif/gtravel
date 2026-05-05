@@ -1,0 +1,115 @@
+                {% if AllTour %}
+                    {% for tours, cities, packages in AllData %}
+                        <div class="row all_tour_list_">
+                            <div class="col-lg-9 tour_data_right">
+                                <div class="row tour_container_list">
+                                    <div class="col-lg-4">
+                                        <div class="tlt"><span>{{ tours.Title }}</span></div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="installment">
+                                            {% if tours.Installment %}
+                                                <p class="instm"> اقساطی</p>
+                                            {% endif %}
+                                            {% if tours.Cash %}
+                                                <p class="cash">نقدی</p>
+                                            {% endif %}
+                                            {% if tours.satrap_gte %}
+                                                <p class="grt_">گارانتی ساتراپ</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="time-text">
+                                            <span> {{ tours.NightCount }} شب و {{ tours.DayCount }} روز</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        {% if cities.0.Airline.AirlineLogo %}
+                                        <p class="airline_tlt_">
+                                                <img style="width: 80px;height: 35px;"
+                                                     src="{{ cities.0.Airline.AirlineLogo.url }}"> </p>
+                                            {% endif %}
+                                            {% if cities.0.Airline.AirLineTitle %}
+                                            <p class="airline_name">{{ cities.0.Airline.AirLineTitle }}</p>
+                                            {% else %}
+                                            <p class="airline_name" style="margin-top: 32px;">تــور زمینی</p>
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p class="airline_tlt_">رفت</p>
+                                        <p class="airline_name">{{ tours.StartDate | to_jalali:'%Y/%m/%d' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 tour_data_left">
+                                <div class="row">
+                                    <div class="col-lg-8" style="text-align: center;">
+                                        {% if packages.0.DollerPrice %}
+                                            <p class="main_price_">{{ packages.0.DoubleBedPrice | intcomma:False }}
+                                                {% if packages.0.Pcry %}
+                                                    {{ packages.0.Pcry }}
+                                                {% endif %}
+                                            </p>
+                                            <p class="doller-price">
+                                                + {{ packages.0.DollerPrice | intcomma:False }}  </p>
+                                        {% else %}
+                                            <p class="singel-price">{{ packages.0.DoubleBedPrice | intcomma:False }}
+                                                {% if packages.0.Pcry %}
+                                                    {{ packages.0.Pcry }}
+                                                {% endif %}
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-4" style="padding: 0;">
+                                        <a href="{% url 'tour-detail' tours.id tours.Slug %}" target="_blank">
+                                            <div class="tour-more"><span>جزئیات بیشتر</span></div>
+                                        </a>
+                                        {% if not tours.pdfAvb and tours.TourPdf %}
+                                            <a href="{{ tours.TourPdf.url }}" target="_blank">
+                                                <div class="tour-more pdf"><span>ذخیره PDF</span></div>
+                                            </a>
+                                        {% elif tours.pdfAvb %}
+                                            <a href="{% url 'pdf-download' tours.id %}" target="_blank">
+                                                <div class="tour-more pdf"><span>ذخیره PDF</span></div>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="pagination">
+                        <ul class="pagination tour_list_">
+                            {% if AllTour.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">begin</span>
+                                    </a>
+                                </li>   {% endif %}
+
+                            {% for n in AllTour.paginator.page_range %}
+                                {% if AllTour.number == n %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+                                    </li>
+                                {% elif n > AllTour.number|add:'-10' and n < AllTour.number|add:'10' %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if AllTour.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ AllTour.paginator.num_pages }}"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">end</span>
+                                    </a>
+                                </li>
+                            {% endif %}   </ul>
+                    </div>
+                {% else %}
+                    <p class="no-tours_">
+                        متاسفانه در این بخش تور ثبت نشده است.
+                    </p>
+                {% endif %}

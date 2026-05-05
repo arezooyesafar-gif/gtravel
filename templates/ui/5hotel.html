@@ -1,0 +1,583 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<div class="col-lg-2 col-sm-4 no-padding">
+    <div class="hotel_image_">
+        <a href="{% url 'hotel-detail' i.HotelName.id i.HotelName.Slug %}">
+            {% if i.HotelName.HotelImage %}
+                <img loading="lazy" alt="{{ i.HotelName }}" src="{{ i.HotelName.HotelImage.url }}" width="100%">
+            {% endif %}
+            {% if i.HotelName.top_rate %}
+                <p class="top_rate_">TOP</p>
+            {% endif %}
+            {% if i.HotelName.satrap_gte %}
+                <p class="gte_hotel">گارانتی</p>
+            {% endif %}
+        </a>
+    </div>
+</div>
+<div class="col-lg-10 col-sm-8 no-padding {% if i.Mhotel %}border-bottom-dashed{% endif %}">
+    <div class="row">
+        <div class="col-lg-6">
+            <p class="hotel_fa_tlt_">{{ i.HotelName.HotelName|truncatechars:50 }}</p>
+            <p class="hotel_en_tlt_">{{ i.HotelName.HotelNameEnglish|truncatechars:50 }}</p>
+        </div>
+        <div class="col-sm-6 col-lg-2 no-padding">
+            <p class="night_count_ hotel_view_text_">ویو :
+                {% if i.view_hotel %}
+                    {{ i.view_hotel }}
+                {% else %}
+                    -
+                {% endif %}
+            </p>
+            {% if i.HotelName.HotelRating == '1' %}
+                <p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
+            {% endif %}
+            {% if i.HotelName.HotelRating == '2' %}
+                <p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
+            {% endif %}
+            {% if i.HotelName.HotelRating == '3' %}
+                <p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
+            {% endif %}
+            {% if i.HotelName.HotelRating == '4' %}
+                <p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
+            {% endif %}
+            {% if i.HotelName.HotelRating == '5' %}
+                <p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
+            {% endif %}
+        </div>
+        <div class="col-sm-6 col-lg-2 no-padding">
+            <div class="hotel-service-mobile-wrapper">
+                <p class="night_count_">
+                    <span class="hotel-desktop-text">خدمات هتل</span>
+                    <i class="fa fa-coffee hotel-mobile-icon"></i>
+                </p>
+                <div class="hotel-services-list">
+                    {% if i.service_hotel %}
+                        <p class="hotel_class_">{{ i.service_hotel }}</p>
+                    {% else %}
+                        {% if i.HotelName.HotelOR %}
+                            <p class="hotel_class_">OR</p>
+                        {% endif %}
+                        {% if i.HotelName.HotelBB %}
+                            <p class="hotel_class_">BB</p>
+                        {% endif %}
+                        {% if i.HotelName.HotelHB %}
+                            <p class="hotel_class_">HB</p>
+                        {% endif %}
+                        {% if i.HotelName.HotelFB %}
+                            <p class="hotel_class_">FB</p>
+                        {% endif %}
+                        {% if i.HotelName.HotelAll %}
+                            <p class="hotel_class_">All</p>
+                        {% endif %}
+                        {% if i.HotelName.HotelUall %}
+                            <p class="hotel_class_">U All</p>
+                        {% endif %}
+                        {% if i.HotelName.HotelMaxAll %}
+                            <p class="hotel_class_">Max All</p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="d-sm-none col-sm-12 col-lg-2 d-lg-block">
+            <p class="hotel_booking_tlt_">امتیاز بوکینگ</p>
+            <p class="hotel_booking_rate_">{{ i.HotelName.HotelBookingRate }}</p>
+        </div>
+    </div>
+</div>
+{% if i.Mhotel %}
+    <div class="col-lg-2 col-sm-4 no-padding">
+        <div class="hotel_image_">
+            <a href="{% url 'hotel-detail' i.Mhotel.id i.Mhotel.Slug %}">
+                {% if i.Mhotel.HotelImage %}
+                    <img loading="lazy" alt="{{ i.Mhotel }}" src="{{ i.Mhotel.HotelImage.url }}" width="100%">
+                {% endif %}
+                {% if i.Mhotel.top_rate %}
+                    <p class="top_rate_">TOP</p>
+                {% endif %}
+                {% if i.Mhotel.satrap_gte %}
+                    <p class="gte_hotel">گارانتی</p>
+                {% endif %}
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-10 col-sm-8 no-padding {% if i.M1hotel %}border-bottom-dashed{% endif %}">
+        <div class="row">
+            <div class="col-lg-6">
+                <p class="hotel_fa_tlt_">{{ i.Mhotel.HotelName|truncatechars:50 }}</p>
+                <p class="hotel_en_tlt_">{{ i.Mhotel.HotelNameEnglish|truncatechars:50 }}</p>
+            </div>
+            <div class="col-sm-6 col-lg-2 no-padding">
+                <p class="night_count_ hotel_view_text_">ویو :
+                    {% if i.view_mhotel %}
+                        {{ i.view_mhotel }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </p>
+                {% if i.Mhotel.HotelRating == '1' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
+                {% endif %}
+                {% if i.Mhotel.HotelRating == '2' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
+                {% endif %}
+                {% if i.Mhotel.HotelRating == '3' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
+                {% endif %}
+                {% if i.Mhotel.HotelRating == '4' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
+                {% endif %}
+                {% if i.Mhotel.HotelRating == '5' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
+                {% endif %}
+            </div>
+            <div class="col-sm-6 col-lg-2 no-padding">
+                <div class="hotel-service-mobile-wrapper">
+                    <p class="night_count_">
+                        <span class="hotel-desktop-text">خدمات هتل</span>
+                        <i class="fa fa-coffee hotel-mobile-icon"></i>
+                    </p>
+                    <div class="hotel-services-list">
+                        {% if i.service_mhotel %}
+                            <p class="hotel_class_">{{ i.service_mhotel }}</p>
+                        {% else %}
+                            {% if i.Mhotel.HotelOR %}
+                                <p class="hotel_class_">OR</p>
+                            {% endif %}
+                            {% if i.Mhotel.HotelBB %}
+                                <p class="hotel_class_">BB</p>
+                            {% endif %}
+                            {% if i.Mhotel.HotelHB %}
+                                <p class="hotel_class_">HB</p>
+                            {% endif %}
+                            {% if i.Mhotel.HotelFB %}
+                                <p class="hotel_class_">FB</p>
+                            {% endif %}
+                            {% if i.Mhotel.HotelAll %}
+                                <p class="hotel_class_">All</p>
+                            {% endif %}
+                            {% if i.Mhotel.HotelUall %}
+                                <p class="hotel_class_">U All</p>
+                            {% endif %}
+                            {% if i.Mhotel.HotelMaxAll %}
+                                <p class="hotel_class_">Max All</p>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="d-sm-none col-lg-2 d-lg-block">
+                <p class="hotel_booking_tlt_">امتیاز بوکینگ</p>
+                <p class="hotel_booking_rate_">{{ i.Mhotel.HotelBookingRate }}</p>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if i.M1hotel %}
+    <div class="col-lg-2 col-sm-4 no-padding">
+        <div class="hotel_image_">
+            <a href="{% url 'hotel-detail' i.M1hotel.id i.M1hotel.Slug %}">
+                {% if i.M1hotel.HotelImage %}
+                    <img loading="lazy" alt="{{ i.M1hotel }}" src="{{ i.M1hotel.HotelImage.url }}" width="100%">
+                {% endif %}
+                {% if i.M1hotel.top_rate %}
+                    <p class="top_rate_">TOP</p>
+                {% endif %}
+                {% if i.M1hotel.satrap_gte %}
+                    <p class="gte_hotel">گارانتی</p>
+                {% endif %}
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-10 col-sm-8 no-padding {% if i.M2hotel %}border-bottom-dashed{% endif %}">
+        <div class="row">
+            <div class="col-lg-6">
+                <p class="hotel_fa_tlt_">{{ i.M1hotel.HotelName|truncatechars:50 }}</p>
+                <p class="hotel_en_tlt_">{{ i.M1hotel.HotelNameEnglish|truncatechars:50 }}</p>
+            </div>
+            <div class="col-sm-6 col-lg-2 no-padding">
+                <p class="night_count_ hotel_view_text_">ویو :
+                    {% if i.view_m1hotel %}
+                        {{ i.view_m1hotel }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </p>
+                {% if i.M1hotel.HotelRating == '1' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
+                {% endif %}
+                {% if i.M1hotel.HotelRating == '2' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
+                {% endif %}
+                {% if i.M1hotel.HotelRating == '3' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
+                {% endif %}
+                {% if i.M1hotel.HotelRating == '4' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
+                {% endif %}
+                {% if i.M1hotel.HotelRating == '5' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
+                {% endif %}
+            </div>
+            <div class="col-sm-6 col-lg-2 no-padding">
+                <div class="hotel-service-mobile-wrapper">
+                    <p class="night_count_">
+                        <span class="hotel-desktop-text">خدمات هتل</span>
+                        <i class="fa fa-coffee hotel-mobile-icon"></i>
+                    </p>
+                    <div class="hotel-services-list">
+                        {% if i.service_m1hotel %}
+                            <p class="hotel_class_">{{ i.service_m1hotel }}</p>
+                        {% else %}
+                            {% if i.M1hotel.HotelOR %}
+                                <p class="hotel_class_">OR</p>
+                            {% endif %}
+                            {% if i.M1hotel.HotelBB %}
+                                <p class="hotel_class_">BB</p>
+                            {% endif %}
+                            {% if i.M1hotel.HotelHB %}
+                                <p class="hotel_class_">HB</p>
+                            {% endif %}
+                            {% if i.M1hotel.HotelFB %}
+                                <p class="hotel_class_">FB</p>
+                            {% endif %}
+                            {% if i.M1hotel.HotelAll %}
+                                <p class="hotel_class_">All</p>
+                            {% endif %}
+                            {% if i.M1hotel.HotelUall %}
+                                <p class="hotel_class_">U All</p>
+                            {% endif %}
+                            {% if i.M1hotel.HotelMaxAll %}
+                                <p class="hotel_class_">Max All</p>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="d-sm-none col-lg-2 d-lg-block">
+                <p class="hotel_booking_tlt_">امتیاز بوکینگ</p>
+                <p class="hotel_booking_rate_">{{ i.M1hotel.HotelBookingRate }}</p>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if i.M2hotel %}
+    <div class="col-lg-2 col-sm-4 no-padding">
+        <div class="hotel_image_">
+            <a href="{% url 'hotel-detail' i.M2hotel.id i.M2hotel.Slug %}">
+                {% if i.M2hotel.HotelImage %}
+                    <img loading="lazy" alt="{{ i.M2hotel }}" src="{{ i.M2hotel.HotelImage.url }}" width="100%">
+                {% endif %}
+                {% if i.M2hotel.top_rate %}
+                    <p class="top_rate_">TOP</p>
+                {% endif %}
+                {% if i.M2hotel.satrap_gte %}
+                    <p class="gte_hotel">گارانتی ساتراپ</p>
+                {% endif %}
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-10 col-sm-8 no-padding {% if i.M3hotel %}border-bottom-dashed{% endif %}">
+        <div class="row">
+            <div class="col-lg-6">
+                <p class="hotel_fa_tlt_">{{ i.M2hotel.HotelName|truncatechars:50 }}</p>
+                <p class="hotel_en_tlt_">{{ i.M2hotel.HotelNameEnglish|truncatechars:50 }}</p>
+            </div>
+            <div class="col-sm-6 col-lg-2 no-padding">
+                <p class="night_count_ hotel_view_text_">ویو :
+                    {% if i.view_m2hotel %}
+                        {{ i.view_m2hotel }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </p>
+                {% if i.M2hotel.HotelRating == '1' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
+                {% endif %}
+                {% if i.M2hotel.HotelRating == '2' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
+                {% endif %}
+                {% if i.M2hotel.HotelRating == '3' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
+                {% endif %}
+                {% if i.M2hotel.HotelRating == '4' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
+                {% endif %}
+                {% if i.M2hotel.HotelRating == '5' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
+                {% endif %}
+            </div>
+            <div class="col-sm-6 col-lg-2 no-padding">
+                <div class="hotel-service-mobile-wrapper">
+                    <p class="night_count_">
+                        <span class="hotel-desktop-text">خدمات هتل</span>
+                        <i class="fa fa-coffee hotel-mobile-icon"></i>
+                    </p>
+                    <div class="hotel-services-list">
+                        {% if i.service_m2hotel %}
+                            <p class="hotel_class_">{{ i.service_m2hotel }}</p>
+                        {% else %}
+                            {% if i.M2hotel.HotelOR %}
+                                <p class="hotel_class_">OR</p>
+                            {% endif %}
+                            {% if i.M2hotel.HotelBB %}
+                                <p class="hotel_class_">BB</p>
+                            {% endif %}
+                            {% if i.M2hotel.HotelHB %}
+                                <p class="hotel_class_">HB</p>
+                            {% endif %}
+                            {% if i.M2hotel.HotelFB %}
+                                <p class="hotel_class_">FB</p>
+                            {% endif %}
+                            {% if i.M2hotel.HotelAll %}
+                                <p class="hotel_class_">All</p>
+                            {% endif %}
+                            {% if i.M2hotel.HotelUall %}
+                                <p class="hotel_class_">U All</p>
+                            {% endif %}
+                            {% if i.M2hotel.HotelMaxAll %}
+                                <p class="hotel_class_">Max All</p>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="d-sm-none col-lg-2 d-lg-block">
+                <p class="hotel_booking_tlt_">امتیاز بوکینگ</p>
+                <p class="hotel_booking_rate_">{{ i.M2hotel.HotelBookingRate }}</p>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if i.M3hotel %}
+    <div class="col-lg-2 col-sm-4 no-padding">
+        <div class="hotel_image_">
+            <a href="{% url 'hotel-detail' i.M3hotel.id i.M3hotel.Slug %}">
+                {% if i.M3hotel.HotelImage %}
+                    <img loading="lazy" alt="{{ i.M3hotel }}" src="{{ i.M3hotel.HotelImage.url }}" width="100%">
+                {% endif %}
+                {% if i.M3hotel.top_rate %}
+                    <p class="top_rate_">TOP</p>
+                {% endif %}
+                {% if i.M3hotel.satrap_gte %}
+                    <p class="gte_hotel">گارانتی ساتراپ</p>
+                {% endif %}
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-10 col-sm-8 no-padding ">
+        <div class="row">
+            <div class="col-lg-6">
+                <p class="hotel_fa_tlt_">{{ i.M3hotel.HotelName|truncatechars:50 }}</p>
+                <p class="hotel_en_tlt_">{{ i.M3hotel.HotelNameEnglish|truncatechars:50 }}</p>
+            </div>
+            <div class="col-sm-6 col-lg-2 no-padding">
+                <p class="night_count_ hotel_view_text_">ویو :
+                    {% if i.view_m3hotel %}
+                        {{ i.view_m3hotel }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </p>
+                {% if i.M3hotel.HotelRating == '1' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
+                {% endif %}
+                {% if i.M3hotel.HotelRating == '2' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
+                {% endif %}
+                {% if i.M3hotel.HotelRating == '3' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
+                {% endif %}
+                {% if i.M3hotel.HotelRating == '4' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
+                {% endif %}
+                {% if i.M3hotel.HotelRating == '5' %}
+                    <p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
+                {% endif %}
+            </div>
+            <div class="col-sm-6 col-lg-2 no-padding">
+                <div class="hotel-service-mobile-wrapper">
+                    <p class="night_count_">
+                        <span class="hotel-desktop-text">خدمات هتل</span>
+                        <i class="fa fa-coffee hotel-mobile-icon"></i>
+                    </p>
+                    <div class="hotel-services-list">
+                        {% if i.service_m3hotel %}
+                            <p class="hotel_class_">{{ i.service_m3hotel }}</p>
+                        {% else %}
+                            {% if i.M3hotel.HotelOR %}
+                                <p class="hotel_class_">OR</p>
+                            {% endif %}
+                            {% if i.M3hotel.HotelBB %}
+                                <p class="hotel_class_">BB</p>
+                            {% endif %}
+                            {% if i.M3hotel.HotelHB %}
+                                <p class="hotel_class_">HB</p>
+                            {% endif %}
+                            {% if i.M3hotel.HotelFB %}
+                                <p class="hotel_class_">FB</p>
+                            {% endif %}
+                            {% if i.M3hotel.HotelAll %}
+                                <p class="hotel_class_">All</p>
+                            {% endif %}
+                            {% if i.M3hotel.HotelUall %}
+                                <p class="hotel_class_">U All</p>
+                            {% endif %}
+                            {% if i.M3hotel.HotelMaxAll %}
+                                <p class="hotel_class_">Max All</p>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="d-sm-none col-lg-2 d-lg-block">
+                <p class="hotel_booking_tlt_">امتیاز بوکینگ</p>
+                <p class="hotel_booking_rate_">{{ i.M3hotel.HotelBookingRate }}</p>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<div class="col-lg-12 no-padding">
+    <div class="row">
+        <div class="col-sm-12 col-lg-2 price_">
+            <p class="bed_price_tlt_ double-res">دو تخته</p>
+            <p class="bed_price_ price-{{ i.id }} double-res" data-price="{{ i.DoubleBedPrice }}"
+               data-new-price="{{ i.DoubleBedPrice }}">
+                {{ i.DoubleBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+            {% if i.DoubleBedPrice_doller %}
+                <p class="doller d_price-{{ i.id }} double-res" data-doller-price="{{ i.DoubleBedPrice_doller }}">
+                    + {{ i.DoubleBedPrice_doller | intcomma:False }}
+                    {% if i.fr_Pcry %}
+                        {{ i.fr_Pcry }}
+                    {% else %}
+                        دلار
+                    {% endif %}
+                </p>
+            {% endif %}
+            {% if not i.DoubleBedPrice_doller and DollerPrice %}
+                <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.DollerPrice }}">
+                    + {{ i.DollerPrice | intcomma:False }}
+                    {% if i.fr_Pcry %}
+                        {{ i.fr_Pcry }}
+                    {% else %}
+                        دلار
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-sm-6 col-lg-2 price_">
+            <p class="bed_price_tlt_">یک تخته</p>
+            <p class="bed_price_ price-{{ i.id }}" data-price="{{ i.SingleBedPrice }}"
+               data-new-price="{{ i.SingleBedPrice }}">
+                {{ i.SingleBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+            {% if i.SingleBedPrice_doller %}
+                <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.SingleBedPrice_doller }}">
+                    + {{ i.SingleBedPrice_doller | intcomma:False }}
+                    {% if i.fr_Pcry %}
+                        {{ i.fr_Pcry }}
+                    {% else %}
+                        دلار
+                    {% endif %}
+                </p>
+            {% endif %}
+            {% if not i.SingleBedPrice_doller and DollerPrice %}
+                <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.DollerPrice }}">
+                    + {{ i.DollerPrice | intcomma:False }}
+                    {% if i.fr_Pcry %}
+                        {{ i.fr_Pcry }}
+                    {% else %}
+                        دلار
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-sm-6 col-lg-2 price_">
+            <p class="bed_price_tlt_">کودک با تخت</p>
+            <p class="bed_price_ price-{{ i.id }}" data-price="{{ i.BabyWithBedPrice }}"
+               data-new-price="{{ i.BabyWithBedPrice }}">
+                {{ i.BabyWithBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+            {% if i.BabyWithBedPrice_doller %}
+                <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.BabyWithBedPrice_doller }}">
+                    + {{ i.BabyWithBedPrice_doller | intcomma:False }}
+                    {% if i.fr_Pcry %}
+                        {{ i.fr_Pcry }}
+                    {% else %}
+                        دلار
+                    {% endif %}
+                </p>
+            {% endif %}
+            {% if not i.BabyWithBedPrice_doller and DollerPrice %}
+                <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.DollerPrice }}">
+                    + {{ i.DollerPrice | intcomma:False }}
+                    {% if i.fr_Pcry %}
+                        {{ i.fr_Pcry }}
+                    {% else %}
+                        دلار
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-sm-6 col-lg-2 price_">
+            <p class="bed_price_tlt_">کودک بدون تخت</p>
+            <p class="bed_price_ price-{{ i.id }}" data-price="{{ i.BabyWithoutBedPrice }}"
+               data-new-price="{{ i.BabyWithoutBedPrice }}">
+                {{ i.BabyWithoutBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+            {% if i.BabyWithoutBedPrice_doller %}
+                <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.BabyWithoutBedPrice_doller }}">
+                    + {{ i.BabyWithoutBedPrice_doller | intcomma:False }}
+                    {% if i.fr_Pcry %}
+                        {{ i.fr_Pcry }}
+                    {% else %}
+                        دلار
+                    {% endif %}
+                </p>
+            {% endif %}
+            {% if not i.BabyWithoutBedPrice_doller and DollerPrice %}
+                <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.DollerPrice }}">
+                    + {{ i.DollerPrice | intcomma:False }}
+                    {% if i.fr_Pcry %}
+                        {{ i.fr_Pcry }}
+                    {% else %}
+                        دلار
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-sm-6 col-lg-2 price_">
+            <p class="bed_price_tlt_">نوزاد</p>
+            <p class="infont price-{{ i.id }}" data-price='{{ i.InfontPrice }}' data-new-price="{{ i.InfontPrice }}">
+                {{ i.InfontPrice | intcomma:False }} {{ i.Pcry }}
+            </p>
+            {% if i.InfontPrice_doller %}
+                <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.InfontPrice_doller }}">
+                    + {{ i.InfontPrice_doller | intcomma:False }}
+                    {% if i.fr_Pcry %}
+                        {{ i.fr_Pcry }}
+                    {% else %}
+                        دلار
+                    {% endif %}
+                </p>
+            {% endif %}
+         {% if not i.InfontPrice_doller and DollerPrice %}
+                <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.DollerPrice }}">
+                    + {{ i.DollerPrice | intcomma:False }}
+                    {% if i.fr_Pcry %}
+                        {{ i.fr_Pcry }}
+                    {% else %}
+                        دلار
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-lg-2 reservation">
+            <button type="button"
+                    class="dd_to_cart {% if i.DoubleBedPrice_doller or i.DollerPrice %}with-doller-price{% endif %}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal{{ forloop.counter }}" onclick="calculateprice('{{ i.id }}')">
+                رزرو تــور
+            </button>
+        </div>
+    </div>
+</div>

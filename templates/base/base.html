@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="en">
+{% load static %}
+{% load humanize %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/asset/images/favicon.png' %}">
+    <title>سامانه مدیریت تور و گردشگری</title>
+    <!-- Custom CSS -->
+    <link href="{% static '/dist/css/style.min.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="{% static '/dist/js/mainFunction.js' %}"></script>
+</head>
+
+<body>
+<!-- ============================================================== -->
+<!-- Preloader - style you can find in spinners.css -->
+<!-- ============================================================== -->
+{#    <div class="preloader">#}
+{#        <div class="lds-ripple">#}
+{#            <div class="lds-pos"></div>#}
+{#            <div class="lds-pos"></div>#}
+{#        </div>#}
+{#    </div>#}
+<!-- ============================================================== -->
+<!-- Main wrapper -->
+<!-- ============================================================== -->
+<div id="main-wrapper">
+    <!-- Start Topbar header -->
+    {% include 'base/top-bar.html' %}
+    <!-- End Topbar header -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    {% include 'base/sidebar.html' %}
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- Page wrapper  -->
+    <div class="page-wrapper">
+        <!-- Bread crumb and right sidebar toggle -->
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-5 align-self-center">
+                    <h4 class="page-title"></h4>
+                </div>
+            </div>
+        </div>
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- Container fluid  -->
+        <div class="container-fluid">
+            <!-- Info chart -->
+            {% block Info %}{% endblock %}
+            <!-- Info chart -->
+            <!-- Products Mini List -->
+            {% block Data %}{% endblock %}
+            <!-- Products Mini List -->
+            <!-- Branch Mini List -->
+            <div class="row">
+                {% block Branch %}{% endblock %}
+                {% block Category %}{% endblock %}
+
+
+            </div>
+            <!-- Branch Mini List -->
+        </div>
+        <!-- End Container fluid  -->
+        <!-- footer -->
+        <footer class="footer text-center">
+            تمامی حقوق مادی و معنوی متعلق به شرکت خدمات مسافرتی و گردشگری ساتراپ سیر میباشد.
+        </footer>
+        <!-- End footer -->
+    </div>
+    <!-- End Page wrapper  -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- customizer Panel -->
+<!-- ============================================================== -->
+
+<div class="chat-windows"></div>
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="{% static '/asset/libs/jquery/dist/jquery.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<script src="{% static 'admin/js/django_jalali.js' %}"></script>
+<script src="{% static '/asset/libs/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- apps -->
+<script src="{% static '/dist/js/app.min.js' %}"></script>
+<script src="{% static '/dist/js/app.init.js' %}"></script>
+{#<script src="{% static '/dist/js/app-style-switcher.js' %}"></script>#}
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="{% static '/asset/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js' %}"></script>
+{#<script src="{% static '/asset/extra-libs/sparkline/sparkline.js' %}"></script>#}
+<!--Wave Effects -->
+{#<script src="{% static '/dist/js/waves.js' %}"></script>#}
+<!--Menu sidebar -->
+<script src="{% static '/dist/js/sidebarmenu.js' %}"></script>
+<!--Custom JavaScript -->
+<script src="{% static '/dist/js/custom.js' %}"></script>
+
+<script src="{% static '/dist/js/pages/dashboards/dashboard3.js' %}"></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+<script src="/static/asset/js/convertDate.js"></script>
+</body>
+
+</html>

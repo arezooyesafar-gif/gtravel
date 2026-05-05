@@ -1,0 +1,39 @@
+<table class="table BranchTable">
+    <thead>
+    <tr>
+        <th class="TbHead">ردیف</th>
+        <th class="TbHead">نام</th>
+        <th class="TbHead"> نام خانولدگی</th>
+        <th class="TbHead">شماره تماس</th>
+        <th class="TbHead">متن پیام</th>
+        <th class="TbHead">اقدامات</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for message in allmsg %}
+            <td class="TbCells serial">{{ forloop.counter0|add:allmsg.start_index }}</td>
+            <td class="TbCells">{{ message.FirstName }}</td>
+            <td class="TbCells">{{ message.LastName }}</td>
+            <td class="TbCells">{{ message.Mobile }}</td>
+            <td class="TbCells">
+                {{ message.Message|truncatechars:80 }}
+            </td>
+            <td class="TbCells">
+                <a href="{% url 'message_delete' message.id %}" style="color: red">حذف</a>
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div>
+    <ul class="pagination">
+        {% for n in allmsg.paginator.page_range %}
+            {% if allmsg.number == n %}
+                <li data-page='{{ n }}' class="page-item {% if allmsg.number == n %}active{% endif %}"><a class="page-link" >{{ n }}</a></li>
+            {% elif n > allmsg.number|add:'-10' and n < allmsg.number|add:'10' %}
+                <li data-page='{{ n }}' class="page-item {% if allmsg.number == n %}active{% endif %}"><a class="page-link" >{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

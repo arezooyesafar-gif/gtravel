@@ -1,0 +1,145 @@
+{% extends 'base/base.html' %}
+{% load jalali_tags %}
+{% block Data %}
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-body hs">
+                    <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                        بروزرسانی اطلاعات تـــور
+                    </h4>
+                </div>
+                <div class="form-body">
+                    <div class="alert-light">
+                        {% for message in messages %}
+                            <p class="error-body ap">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                    <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">تصویر تور <span class="required">*</span></p>
+                            <label for="id_TourImage" class="custom-file-upload text-input">
+                                <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر تور</span>
+                            </label>
+                            {{ form.TourImage }}
+                            <script>
+                                $(document).ready(function () {
+                                    $('input[type="file"]').change(function (e) {
+                                        var fileName = e.target.files[0].name;
+                                        document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                        
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">عنوان تـــور <span class="required">*</span></p>
+                            {{ form.Title }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> تاریخ شروع تور <span class="required">*</span></p>
+                            {{ form.StartDate }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> تاریخ اتمام تور <span class="required">*</span></p>
+                            {{ form.EndDate }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> تعداد شب های اقامت <span class="required">*</span></p>
+                            {{ form.NightCount }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> تعداد روزهای اقامت <span class="required">*</span></p>
+                            {{ form.DayCount }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> شهر مبدا <span class="required">*</span></p>
+                            {{ form.OriginCity }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> کشور مبدا <span class="required">*</span></p>
+                            {{ form.OriginCountry }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> شهر مقصد <span class="required">*</span></p>
+                            {{ form.DestCity }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> کشور مقصد <span class="required">*</span></p>
+                            {{ form.DestCountry }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> انتخاب ایــرلاین <span class="required">*</span></p>
+                            {{ form.AirLine }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> نام فرودگاه مبدا به فارسی <span class="required">*</span></p>
+                            {{ form.OriginAirportTitleFa }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> نام فرودگاه مبدا به انگلیسی <span class="required">*</span></p>
+                            {{ form.OriginAirportTitleEng }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> نام فرودگاه مقصد به فارسی <span class="required">*</span></p>
+                            {{ form.DestAirportTitleFa }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> نام فرودگاه مقصد به انگلیسی <span class="required">*</span></p>
+                            {{ form.DestAirportTitleEng }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">انتخاب کلاس پرواز<span class="required">*</span></p>
+                            {{ form.FlightClass }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">مدت زمان پرواز<span class="required">*</span></p>
+                            {{ form.FlightTime }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> لینک سئو <span class="required">*</span></p>
+                            {{ form.Slug }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> انتخاب منو تور  <span class="required">*</span></p>
+                            {{ form.TourMenu }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">میزان تخفیف %<span class="required">*</span></p>
+                            {{ form.Offer }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> پرداخت نقدی  {{ form.Cash }} </p>
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> پرداخت اقساطی  {{ form.Installment }} </p>
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> تور در بخش ویژه نمایش داده شود؟  {{ form.Feature }} </p>
+                        </div>
+                        <hr>
+                        <div class="">
+                            <p class="label-text short-desc"> توضیحات کوتاه مرتبط با تور را وارد کنید <span
+                                    class="required">*</span></p>
+                            {{ form.ShortDsc }}
+                        </div>
+                        <div class="">
+                            <p class="label-text short-desc"> توضیحات تکمیلی مرتبط با تور را وارد کنید <span
+                                    class="required">*</span></p>
+                            {{ form.Description }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <button type="submit" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                    id="save-button-title">بروزرسانی اطلاعات تور</span>
+                            </button>
+                        </div>
+                        {{ form.media }}
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

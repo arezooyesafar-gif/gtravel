@@ -1,0 +1,90 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% load jalali_tags %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                بروزرسانی اطلاعات حساب کاربری
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-sm-12 col-lg-12">
+            <div class="inner_section">
+                <form method="POST" novalidate="novalidate" class="prof_update">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-4 dashboard_update">
+                        <p class="label-text">نام کاربری</p>
+                            <input type="text"
+                                   name="username"
+                                   {% if data.username %}value="{{ data.username }}"{% endif %}
+                                   class="text-input"
+                                   placeholder="نام کاربری">
+                        </div>
+                        <div class="col-lg-4 dashboard_update">
+                        <p class="label-text">نام</p>
+                            <input type="text"
+                                   name="first_name"
+                                   {% if data.first_name %}value="{{ data.first_name }}"{% endif %}
+                                   class="text-input"
+                                   placeholder="نام">
+                        </div>
+                        <div class="col-lg-4 dashboard_update">
+                        <p class="label-text">نام خانوادگی</p>
+                            <input type="text"
+                                   name="last_name"
+                                   {% if data.last_name %}value="{{ data.last_name }}"{% endif %}
+                                   class="text-input"
+                                   placeholder="نام خانوادگی">
+                        </div>
+                        <div class="col-lg-4 dashboard_update">
+                        <p class="label-text">شماره موبایل</p>
+                            <input type="text"
+                                   name="mobile_number"
+                                   {% if info.mobile_number %}value="{{ info.mobile_number }}"{% endif %}
+                                   class="text-input" disabled
+                                   placeholder="شماره موبایل">
+                        </div>
+                        <div class="col-lg-4 dashboard_update">
+                        <p class="label-text">استان</p>
+                            <input type="text"
+                                   name="proviance"
+                                   {% if info.provinace %}value="{{ info.provinace }}"{% endif %}
+                                   class="text-input"
+                                   placeholder="استان">
+                        </div>
+                        <div class="col-lg-4 dashboard_update">
+                        <p class="label-text">شهر</p>
+                            <input type="text"
+                                   name="city"
+                                   {% if info.city %}value="{{ info.city }}"{% endif %}
+                                   class="text-input"
+                                   placeholder="شهر">
+                        </div>
+                        <div class="col-lg-12 dashboard_update">
+                        <p class="label-text">آدرس</p>
+                            <input type="text"
+                                   name="address"
+                                   {% if info.adress %}value="{{ info.adress }}"{% endif %}
+                                   class="text-input"
+                                   placeholder="آدرس">
+                        </div>
+                    </div>
+                    <button id="save-button-hd" type="submit" class="btn btn-lg btn-info btn-block">
+                        <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                            id="save-button-title"> ذخیره تغییرات  </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

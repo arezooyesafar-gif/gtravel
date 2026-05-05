@@ -1,0 +1,128 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+<div class="row" style="margin-bottom: 5px">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card city_list_heading">
+            <div class="row">
+                <div class="col-lg-1 city_list">
+                    <p class="row_head">ردیف</p>
+                </div>
+                <div class="col-lg-2 city_list">
+                    <p class="row_head"> کشور</p>
+                </div>
+                <div class="col-lg-2 city_list">
+                    <p class="row_head">نام شهر</p>
+                </div>
+                <div class="col-lg-3 city_list">
+                    <p class="row_head">ویژه لیست تور</p>
+                </div>
+                <div class="col-lg-3 city_list">
+                    <p class="row_head view_cont">ویژه صفحه اصلی</p>
+                </div>
+                <div class="col-lg-1 city_list">
+                    <p class="row_head">اقدامات</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% for item in items %}
+    <div class="row m-b-5">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card countries_data_row">
+                <div class="row">
+                    <div class="col-lg-1 city_list">
+                        <p class="country_num">{{ forloop.counter }}</p>
+                    </div>
+                    <div class="col-lg-2 city_list">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            {% if item.city %}
+                            <img class="country_falg_city" src="{{ item.city.CountryName.Flagimg.url }}">
+                                {% elif item.country %}
+                                    <img class="country_falg_city" src="{{ item.country.Flagimg.url }}">
+                                {% else %}
+                                <img class="country_falg_city" src="/static/img/no-img.jpg">
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-9">
+                            {% if item.city %}
+                            <span class="country_name_city">{{ item.city.CountryName }}</span>
+                            {% else %}
+                            <span class="country_name_city">{{ item.country }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-lg-2 city_list">
+                        <p class="city_name">
+                            {{ item.city.Name }}
+                        </p>
+                    </div>
+                    <div class="col-lg-3 city_list">
+                        <p class="country_tour_title">
+                            {% if item.show_tourpage %}
+                            بله
+                            {% else %}
+                            خیر
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-lg-3 city_list">
+                        <p class="country_hotel_title">
+                            {% if item.show_homepage %}
+                            بله
+                            {% else %}
+                            خیر
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-lg-1 city_list">
+                        <div class="dropdown" style="margin-top: 12px;">
+                            <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                                    class="icon ni ni-more-h"></em></a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                <ul class="link-list-plain">
+                                    <li><a href="{% url 'update_city_to_spacial' item.id %}">ویرایش</a></li>
+                                    <li><a style="color: red"
+                                         data-bs-toggle="modal"
+                                         data-bs-target="#exampleModal"
+                                         data-item-id="{{ item.id }}"
+                                         onclick="setDeleteId(this)">
+                                         حذف
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+    
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">آیا مطمئن هستید؟</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">خیر</button>
+        <a id="confirmDeleteBtn" type="button" class="btn btn-danger">بله</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    let selectedItemID = null;
+
+    function setDeleteId(el) {
+        selectedItemID = el.dataset.itemId;
+        const deleteBtn = document.getElementById("confirmDeleteBtn");
+        deleteBtn.href = `/dashboard/delete_city_to_spacial/${selectedItemID}`;
+    }
+</script>    
+{% endblock %}

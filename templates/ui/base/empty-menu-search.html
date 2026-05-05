@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-lg-3 menu_inner_col">
+        <div class="col-menu-1">
+            <ul class="country_menu">
+                {% for i in tour_countries %}
+                    {% if i.menu_position == '1' %}
+                        <a onclick="getCityList({{ i.id }}, {{ i.menu_position }})"
+                           target="_blank">
+                            <li class="submenu_link">
+                                <img class="country_flag_menu" src="{{ i.Flagimg.url }}" alt="پرچم {{ i.TitleC }}">
+                                <span class="city_title_menu">تور {{ i.TitleC }}</span>
+                                <span class="plus_menu">  </span>
+                            </li>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sub-menu-1">
+
+        </div>
+    </div>
+    <div class="col-lg-3 menu_inner_col">
+        <div class="col-menu-2">
+            <ul class="country_menu">
+                {% for i in tour_countries %}
+                    {% if i.menu_position == '2' %}
+                        <a onclick="getCityList({{ i.id }}, {{ i.menu_position }})"
+                           target="_blank">
+                            <li class="submenu_link">
+                                <img class="country_flag_menu" src="{{ i.Flagimg.url }}" alt="پرچم {{ i.TitleC }}">
+                                <span class="city_title_menu">تور {{ i.TitleC }}</span>
+                                <span class="plus_menu">  </span>
+                            </li>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sub-menu-2">
+
+        </div>
+    </div>
+    <div class="col-lg-3 menu_inner_col">
+        <div class="col-menu-3">
+            <ul class="country_menu">
+                {% for i in tour_countries %}
+                    {% if i.menu_position == '3' %}
+                        <a onclick="getCityList({{ i.id }}, {{ i.menu_position }})"
+                           target="_blank">
+                            <li class="submenu_link">
+                                <img class="country_flag_menu" src="{{ i.Flagimg.url }}"  alt="پرچم {{ i.TitleC }}">
+                                <span class="city_title_menu">تور {{ i.TitleC }}</span>
+                                <span class="plus_menu">  </span>
+                            </li>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sub-menu-3">
+
+        </div>
+    </div>
+    <div class="col-lg-3 menu_inner_col">
+        <div class="col-menu-4">
+            <ul class="country_menu">
+                {% for i in tour_countries %}
+                    {% if i.menu_position == '4' %}
+                        <a onclick="getCityList({{ i.id }}, {{ i.menu_position }})"
+                           target="_blank">
+                            <li class="submenu_link">
+                                <img class="country_flag_menu" src="{{ i.Flagimg.url }}"  alt="پرچم {{ i.TitleC }}">
+                                <span class="city_title_menu">تور {{ i.TitleC }}</span>
+                                <span class="plus_menu">  </span>
+                            </li>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sub-menu-4">
+
+        </div>
+    </div>
+</div>

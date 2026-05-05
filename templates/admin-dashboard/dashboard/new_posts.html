@@ -1,0 +1,30 @@
+{% for post in new_post %}
+        <div class="row post_data">
+            <div class="col-md-3 text-center">
+                <span class=""><img  width="80px" src="{{ post.Image.url }}"></span>
+            </div>
+            <div class="col-md-6 text-center">
+                <p class="post_title">{{ post.Title|truncatechars:35 }}</p>
+                <p class="post_category">
+                    <i class="ni ni-file"></i>
+                    {{ post.Category }}</p>
+            </div>
+            <div class="col-md-2 text-center">
+                <span class="ariline_text"> بازدید :
+                    <br>
+                    {{ post.viewCount }}</span>
+            </div>
+            <div class="col-md-1 text-center">
+                <div class="dropdown">
+                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                            class="icon ni ni-more-h"></em></a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                        <ul class="link-list-plain">
+                            <li><a href="{% url 'update-post' post.id %}">ویرایش</a></li>
+                            <li><a style="color: red" href="{% url 'delete-post' post.id %}">حذف</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endfor %}

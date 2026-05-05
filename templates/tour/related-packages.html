@@ -1,0 +1,107 @@
+﻿{% extends 'base/base.html' %}
+{% block Data %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div>
+                <div class="table-block">
+                    <table class="table BranchTable have-bg">
+                        <thead>
+                        <tr>
+                            <th class="TbHead">نام تور</th>
+                            <th class="TbHead"> تاریخ رفت</th>
+                            <th class="TbHead"> تاریخ برگشت</th>
+                            <th class="TbHead">تعداد شب اقامت</th>
+                            <th class="TbHead">تعداد روز اقامت</th>
+                            <th class="TbHead">اقدامات لازم</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="TbCells">{{ Tour.Title }}</td>
+                            <td class="TbCells num-class">{{ Tour.StartDate | to_jalali:'%Y/%m/%d' }}</td>
+                            <td class="TbCells num-class">{{ Tour.EndDate | to_jalali:'%Y/%m/%d' }}</td>
+                            <td class="TbCells num-class">{{ Tour.NightCount }}</td>
+                            <td class="TbCells num-class">{{ Tour.DayCount }}</td>
+                            <td class="TbCells">
+                                <a data-toggle="tooltip" data-placement="bottom" title="ویرایش تور"
+                                   class="EditBtn" href="{% url 'update-tour' Tour.id %}">
+                                    <i class="mdi mdi-table-edit font-20 edit-btn"></i>
+                                </a>
+                                <a data-toggle="tooltip" data-placement="bottom" title="حذف تور"
+                                   class="EditBtn" href="{% url 'delet-tour' Tour.id %}">
+                                    <i class="mdi mdi-delete font-20 del-btn"></i>
+                                </a>
+                                <a data-toggle="tooltip" data-placement="bottom" title="افزودن تور به پکیج"
+                                   class="DelBtn" href="{% url 'add-to-package' Tour.id %}">
+                                    <i class="fa fa-plus font-20 add-btn"></i></a>
+                                    <a data-toggle="tooltip" data-placement="bottom" title="مشاهده پکیج ها"
+                                    class="DelBtn view" href="{% url 'main-package-list' Tour.id %}">
+                                     <i class="fa fa-eye font-20 add-btn"></i>
+                                 </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% for mpkgNames, Rpackages in AllData %}
+            <div class="col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-body hs pkg">
+                        <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                            {{ mpkgNames }}
+                        </h4>
+                    </div>
+                    <div class="table-block">
+                        <table class="table BranchTable">
+                            <thead>
+                            <tr>
+                                <th class="TbHead">ردیف</th>
+                                <th class="TbHead">نام هتل</th>
+                                <th class="TbHead">نام هتل دوم</th>
+                                <th class="TbHead">نام تور</th>
+                                <th class="TbHead">قیمت تخت یک نفره</th>
+                                <th class="TbHead">اقدامات لازم</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                {% for package in Rpackages %}
+                                    {% if package.MainPkg.id == mpkgNames.id %}
+                                        <td class="TbCells serial">{{ forloop.counter }}</td>
+                                        <td class="TbCells amount">{{ package.HotelName }}</td>
+                                        <td class="TbCells amount">{{ package.Mhotel }}</td>
+                                        <td class="TbCells">{{ package.TourName }}</td>
+                                        <td class="TbCells">{{ package.SingleBedPrice | intcomma:False }}</td>
+                                        <td class="TbCells">
+                                            <a data-toggle="tooltip" data-placement="bottom"
+                                               title="ویرایش پکیج"
+                                               class="EditBtn"
+                                               href="{% url 'update-package' package.id %}"
+                                               >
+                                                <i class="mdi mdi-table-edit font-20 edit-btn"></i>
+                                            </a>
+                                            <a data-toggle="tooltip" data-placement="bottom"
+                                               title="حذف پکیج"
+                                               class="DelBtn"
+                                               href="{% url 'delet-package' package.id %}"
+                                               >
+                                                <i class="mdi mdi-delete font-20 del-btn"></i>
+                                            </a>
+                                        </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+        {% endfor %}
+{% endblock %}

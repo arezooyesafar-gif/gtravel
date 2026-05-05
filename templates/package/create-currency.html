@@ -1,0 +1,82 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                واحد های پولی
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-sm-12 col-lg-12">
+            <div class="inner_section">
+                <div class="form-body">
+                    <form class="input-forms" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <p class="label-text">واحد پول <span class="required">*</span></p>
+                                {{ Form.Title }}
+                            </div>
+                            <div class="col-lg-4">
+                                <button style="line-height: 25px;" type="submit" class="btn btn-lg btn-info btn-block">
+                                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                        id="save-button-title">ذخیره واحد پول </span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+            لیست واحد های پولی موجود
+        </h4>
+        <div class="col-sm-12 col-lg-12">
+            <div class="table-block">
+                <table class="table BranchTable">
+                    <thead>
+                    <tr>
+                        <th class="TbHead">ردیف</th>
+                        <th class="TbHead">نام واحد</th>
+                        <th class="TbHead">اقدامات لازم</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        {% if Data %}
+                            {% for c in Data %}
+                                <td class="TbCells serial">{{ forloop.counter }}</td>
+                                <td class="TbCells">{{ c.Title }}</td>
+                                <td class="TbCells">
+                                    <div class="dropdown" >
+                                        <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                           data-bs-toggle="dropdown"><em
+                                                class="icon ni ni-more-h"></em></a>
+                                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                            <ul class="link-list-plain">
+                                                <li><a href="{% url 'update-currency' c.id %}">ویرایش</a></li>
+                                                <li><a style="color: red"
+                                                       href="{% url 'delete-currency' c.id %}">حذف</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

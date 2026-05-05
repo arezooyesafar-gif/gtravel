@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    {% load static %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <meta charset="UTF-8">
+    <link rel=“canonical” href=“https://arezoosafar.com/all-tour”/>
+    <meta name="description"
+          content="مجله گردشگری آرزوی سفر راهنمای سفر به تمامی نقاط جهان. اطلاعات جاذبه های گردشگری، مکان های دیدنی، بناهای تاریخی، مراکز خرید، تفریحات و سرگرمی">
+    <meta name="keywords" content="جاذبه های گردشگری, مکان های دیدنی,بناهای تاریخی,آرزوی سفر،تور قسطی ، تور اقساطی">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% include 'ui/base/head.html' %}
+    <title> لیست تور های اقساطی ساتراپ  </title>
+</head>
+<body>
+{% include 'ui/base/header.html' %}
+{#<section class="filter_section tour_list_page_">#}
+{#    <div class="filter-container all_tour_page">#}
+{#        <!-- <p class="filter-title">جستجو</p> -->#}
+{#        <ul class="nav nav-tabs" id="myTab" role="tablist">#}
+{#            <li class="nav-item" role="presentation">#}
+{#                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#tour"#}
+{#                        type="button" role="tab" aria-controls="tour" aria-selected="true">#}
+{#                    تـــور#}
+{#                </button>#}
+{#            </li>#}
+{#            <li class="nav-item" role="presentation">#}
+{#                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#hotel"#}
+{#                        type="button" role="tab" aria-controls="hotel" aria-selected="false"> هتـــل#}
+{#                </button>#}
+{#            </li>#}
+{#        </ul>#}
+{#        <div class="tab-content" id="myTabContent">#}
+{#            <div class="tab-pane fade show active" id="tour" role="tabpanel" aria-labelledby="home-tab">#}
+{#                {% include 'ui/base/search.html' %}#}
+{#            </div>#}
+{#            <div class="tab-pane fade" id="incountry" role="tabpanel" aria-labelledby="profile-tab">#}
+{#                <p class="coming soone">سرویس به زودی فعال میگردد. از شکیبایی شما سپاسگذاریم.</p>#}
+{#            </div>#}
+{#            <div class="tab-pane fade" id="outcontry" role="tabpanel" aria-labelledby="contact-tab">#}
+{#                <p class="coming soone">سرویس به زودی فعال میگردد. از شکیبایی شما سپاسگذاریم.</p>#}
+{#            </div>#}
+{#            <div class="tab-pane fade" id="hotel" role="tabpanel" aria-labelledby="contact-tab">#}
+{#                {% include 'ui/base/hotel_search.html' %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</section>#}
+<section class="country_list">
+    <div class="container">
+        <h5 class="blog_sec_title">مقصد خود را انتخاب کنید:</h5>
+        <p class="spacial_tour_subtitle_">سفر هیجان انگیز شما از اینجا شروع میشود. کافی است یک مقصد را انتخاب کنید</p>
+        <div class="owl-one owl-carousel owl-theme">
+                {% if countries %}
+                    {% for countries, ctry_tour_count in countries %}
+                        <div class="item">
+                            <div class="country_list_">
+                                <div class="country_image">
+                                    <a href="{% url 'all-tour-country' countries.slug countries.id   %}">
+                                        <img loading="lazy" alt="{{ countries.TitleC }}" class="country_image_"
+                                             src="{{ countries.Flagimg.url }}">
+                                    </a>
+                                </div>
+                                <div class="country_name_">
+                                    <a href="{% url 'all-tour-country' countries.slug countries.id   %}"
+                                       class="Country_name">
+                                        {{ countries.TitleC }}
+                                    </a>
+                                    <p class="country_tours">
+                                        {{ ctry_tour_count }} تور {{ countries.TitleC }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+    </div>
+
+</section>
+<section class="tour_list_page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h5 class="blog_sec_title" style="margin-bottom: 30px;padding-right: 0;">لیست آخرین تورهای اقساطی</h5>
+                {% if AllTour %}
+                    {% for tours, cities, packages in AllData %}
+                        <div class="row all_tour_list_">
+                            <div class="col-lg-9 tour_data_right">
+                            <a href="{% url 'tour-detail' tours.id tours.Slug %}" target="_blank">
+                                <div class="row tour_container_list">
+                                    <div class="col-lg-4">
+                                        <div class="tlt"><span>{{ tours.Title }}</span></div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="installment">
+                                            {% if tours.Installment %}
+                                                <p class="instm"> اقساطی</p>
+                                            {% endif %}
+                                            {% if tours.Cash %}
+                                                <p class="cash">نقدی</p>
+                                            {% endif %}
+                                            {% if tours.satrap_gte %}
+                                            <p class="grt_">گارانتی ساتراپ</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="time-text">
+                                            <span> {{ tours.NightCount }} شب و {{ tours.DayCount }} روز</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        {% if cities.0.Airline.AirlineLogo %}
+                                                <img loading="lazy" style="width: 80px;height: 35px;"
+                                                  alt="{{ cities.0.Airline.AirLineTitle }}"
+                                                     src="{{ cities.0.Airline.AirlineLogo.url }}">
+                                            {% endif %}
+                                            {% if cities.0.Airline.AirLineTitle %}
+                                            <p class="airline_name">{{ cities.0.Airline.AirLineTitle }}</p>
+                                            {% else %}
+                                            <p class="airline_name">حمل و نقل زمینی</p>
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p class="airline_tlt_">رفت</p>
+                                        <p class="airline_name">{{ tours.StartDate | to_jalali:'%Y/%m/%d' }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                            </div>
+                            <div class="col-lg-3 tour_data_left">
+                                <div class="row">
+                                    <div class="col-lg-8" style="text-align: center;">
+                                        {% if packages.0.DollerPrice %}
+                                            <p class="main_price_">{{ packages.0.DoubleBedPrice | intcomma:False }}
+                                                {% if packages.0.Pcry %}
+                                                    {{ packages.0.Pcry }}
+                                                {% endif %}
+                                            </p>
+                                            <p class="doller-price">
+                                                + {{ packages.0.DollerPrice | intcomma:False }}  </p>
+                                        {% else %}
+                                            <p class="singel-price">{{ packages.0.DoubleBedPrice | intcomma:False }}
+                                                {% if packages.0.Pcry %}
+                                                    {{ packages.0.Pcry }}
+                                                {% endif %}
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-4" style="padding: 0;">
+                                        <a href="{% url 'tour-detail' tours.id tours.Slug %}" target="_blank">
+                                            <div class="tour-more"><span>جزئیات بیشتر</span></div>
+                                        </a>
+                                        <a href="{% url 'pdf-download' tours.id %}" target="_blank">
+                                            <div class="tour-more pdf"><span>ذخیره PDF</span></div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="pagination">
+                        <ul class="pagination tour_list_">
+                            {% if AllTour.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">begin</span>
+                                    </a>
+                                </li>   {% endif %}
+
+                            {% for n in AllTour.paginator.page_range %}
+                                {% if AllTour.number == n %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+                                    </li>
+                                {% elif n > AllTour.number|add:'-10' and n < AllTour.number|add:'10' %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if AllTour.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ AllTour.paginator.num_pages }}"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">end</span>
+                                    </a>
+                                </li>
+                            {% endif %}   </ul>
+                    </div>
+                {% else %}
+                    <p class="no-tours_">
+                        متاسفانه در این بخش تور ثبت نشده است.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'ui/base/slagon.html' %}
+{% include 'ui/base/faq.html' %}
+{% include 'ui/base/feature.html' %}
+{% include 'ui/base/footer.html' %}
+{% include 'ui/base/plugins.html' %}
+</body>
+</html>

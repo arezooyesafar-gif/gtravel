@@ -1,0 +1,123 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="row m-t-40">
+            <div class="col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">
+                                    افزودن مطلب مرتبط به
+                                    <span class="change down">{{ post.Title }}</span>
+                                </h6>
+                            </div>
+                            <div class="card-tools">
+                                {% if Data %}
+                                    <a href="{% url 'create-post' %}" class="link">ایجاد تور</a>
+                                {% endif %}
+                                <a href="{% url 'update-post' post.id %}" class="link m-r-20"> ویرایش مطلب </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-40">
+            <div class="col-lg-4">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="tour_info"> {{ post.Title }} - {{ post.Category }}</p>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="tour_info" style="color: orangered"> {{ post.PubDate|to_jalali:'%Y/%m/%d' }}
+                            - {{ post.modified_date|to_jalali:'%Y/%m/%d' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p class="label-text">دسته بندی<span class="required">*</span></p>
+                            <select id="category" class="form-select" onchange="getPstList()">
+                                <option value="">دسته بندی مطلب را انتخاب کنید</option>
+                            {{ related_item }}
+                                {% for i in categories %}
+                                    {{ related_item }}
+                                    <option {% if related_item.related_post.Category.CatName == i.CatName %}selected{% endif %}
+                                            value="{{ i.id }}">{{ i.CatName }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text">پست مرتبط<span class="required">*</span></p>
+                            {{ form.related_post }}
+                        </div>
+                        <div class="col-lg-12 mrg-tp-35">
+                            <button type="submit" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                    id="save-button-title">افزودن پست مرتبط </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <h4 class="card-title hs m-t-20">
+                لیست پست های مرتبط
+            </h4>
+        </div>
+        <div class="col-sm-12 col-lg-12">
+            <div class="card hotel_list_heading">
+                <div class="row">
+                    <div class="col-lg-5 city_list">
+                        <p class="row_head city_head"> پست مرتبط</p>
+                    </div>
+                    <div class="col-lg-5 city_list">
+                        <p class="row_head city_head">پست اصلی</p>
+                    </div>
+                    <div class="col-lg-2 city_list">
+                        <p class="row_head city_head">اقدامات</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for i in all_related %}
+            <div class="col-sm-12 col-lg-12">
+                <div class="card dates_data_row">
+                    <div class="row">
+                        <div class="col-lg-5 tour_list">
+                            <p class="tour_data_">{{ i.related_post.Title }}</p>
+                        </div>
+                        <div class="col-lg-5 tour_list" style="padding: 0;">
+                            <p class="tour_data_">{{ i.post.Title }}</p>
+                        </div>
+                        <div class="col-lg-2 dates_list">
+                            <div class="dropdown" style="margin-top: 12px;">
+                                <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                   data-bs-toggle="dropdown"><em
+                                        class="icon ni ni-more-h"></em></a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                    <ul class="link-list-plain">
+                                        <li><a href="{% url 'update_related_post' i.id %}">ویرایش</a>
+                                        </li>
+                                        <li><a style="color: red"
+                                               href="{% url 'delete_related_post' i.id %}">حذف</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

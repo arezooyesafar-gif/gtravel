@@ -1,0 +1,53 @@
+<table class="table BranchTable">
+    <thead>
+    <tr>
+        <th class="TbHead">ردیف</th>
+        <th class="TbHead">تصویر</th>
+        <th class="TbHead">نام فایل</th>
+        <th class="TbHead">لینک فایل</th>
+        <th class="TbHead">اقدامات لازم</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% if files %}
+            {% for file in files %}
+                <td class="TbCells serial">{{ forloop.counter0|add:files.start_index }}</td>
+                <td class="TbCells serial">
+                    <img width="50px" height="50px" src="/media/ads/{{ file }}">
+                </td>
+                <td class="TbCells">{{ file }}</td>
+                <td class="TbCells">
+                    {% if media_url %}
+                        <a href="" target="_blank">مشاهده فایل</a>
+                    {% else %}
+                        <a href="/media/ads/{{ file }}" target="_blank">مشاهده فایل</a>
+                    {% endif %}
+                </td>
+                <td class="TbCells">
+                    <form method="post" action="{% url 'file_list' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="file_to_delete" value="{{ file }}">
+                        <button style="color:red;background: none;border: none;" type="submit">
+                            حذف فایل از سرور
+                        </button>
+                    </form>
+                </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+<ul class="pagination">
+    {% for n in files.paginator.page_range %}
+        {% if files.number == n %}
+            <li data-page='{{ n }}'
+                class="page-item {% if files.number == n %}active{% endif %}"><a
+                    class="page-link">{{ n }}</a></li>
+        {% elif n > files.number|add:'-10' and n < files.number|add:'10' %}
+            <li data-page='{{ n }}'
+                class="page-item {% if files.number == n %}active{% endif %}"><a
+                    class="page-link">{{ n }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>

@@ -1,0 +1,12 @@
+
+    {% for city in cities %}
+        <div class="checkbox-city">
+                                                                <span class="input-check">
+                                                                    <input onclick="SidebarFilter()"
+                                                                           name="city-checkbox"
+                                                                           class="city-checkbox"
+                                                                           type="checkbox"
+                                                                           data-city-id="{{ city.id }}"></span>
+            {{ city }}
+        </div>
+    {% endfor %}

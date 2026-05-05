@@ -1,0 +1,50 @@
+<table class="table BranchTable">
+    <thead>
+        <tr>
+            <th class="TbHead">ردیف</th>
+            <th class="TbHead">نام</th>
+            <th class="TbHead">نام خانوادگی</th>
+            <th class="TbHead">شماره تماس</th>
+            <th class="TbHead">آدرس ایمیل</th>
+            <th class="TbHead">وضعیت</th>
+            <th class="TbHead">اقدامات</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for memo in memories %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ memo.Name }}</td>
+            <td>{{ memo.Family }}</td>
+            <td>{{ memo.Mobile }}</td>
+            <td>{{ memo.Email }}</td>
+            <td>
+                {% if memo.publish %}
+                    <span style="color: green;">فعال و قابل مشاهده</span>
+                {% else %}
+                    <span style="color: orangered;">غیرفعال</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'memo-update' memo.id %}">ویرایش</a> |
+                <a style="color: red;" href="{% url 'memo-delete' memo.id %}">حذف</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" style="text-align:center;">هیچ سفرنامه‌ای یافت نشد</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div>
+    <ul class="pagination">
+        {% for n in memories.paginator.page_range %}
+            {% if memories.number == n %}
+                <li data-page='{{ n }}' class="page-item {% if memories.number == n %}active{% endif %}"><a class="page-link" >{{ n }}</a></li>
+            {% elif n > memories.number|add:'-10' and n < memories.number|add:'10' %}
+                <li data-page='{{ n }}' class="page-item {% if memories.number == n %}active{% endif %}"><a class="page-link" >{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

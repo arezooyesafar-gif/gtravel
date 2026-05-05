@@ -1,0 +1,49 @@
+<html lang="fa-IR" dir="rtl">
+<head>{% load static %}{% load humanize %}{% load jalali_tags %}{% load webp_converter %}
+    {% include 'ui/mobile/base/head.html' %}
+    <link rel=“canonical” href=""/>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>تماس با ما | ساتراپ </title>
+</head>
+<body>
+{% include 'ui/mobile/base/header.html' %}
+<section class="contact_us_">
+    <div class="col-lg-12">
+        <div class="contact-box">
+            {% if messages %}
+                {% for message in messages %}
+                    <p  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </p>
+                {% endfor %}
+            {% endif %}
+            <p class="contact-text">
+                {{ Text.0.TextContact }}
+            </p>
+            <div class="contact-form">
+                <form method="POST" novalidate="novalidate" action="/contact-us">
+                    {% csrf_token %}
+                    <div class="form-input">
+                        {{ form.FirstName }}
+                    </div>
+                    <div class="form-input">
+                        {{ form.LastName }}
+                    </div>
+                    <div class="form-input">
+                        {{ form.Mobile }}
+                    </div>
+                    <div class="form-input">
+                        {{ form.Message }}
+                    </div>
+                    <button id="save-button-hd" type="submit" class="btn btn-lg btn-info btn-block">
+                        <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                            id="save-button-title"> ارسال پیام  </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'ui/mobile/base/footer.html' %}
+</body>
+{% include 'ui/base/plugins.html' %}
+</html>

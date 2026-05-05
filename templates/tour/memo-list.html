@@ -1,0 +1,50 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست سفرنامه ها
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row m-20">
+                        <div class="col-lg-4">
+                            <input id="mobile" type="text" name="mobile" class="text-input search-input" placeholder="موبایل را وارد کنید">
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="email" type="text" name="email" class="text-input search-input" placeholder="ایمیل را وارد کنید">
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="memo_stat" class="text-input search-input" name="memo_stat">
+                                   <option value="">انتخاب وضعیت سفرنامه</option>
+                                   <option value="1">منتشر شده</option>
+                                   <option value="0">منتشر نشده</option>
+                               </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <button id="searchBtn" type="submit"
+                                        class="btn btn-lg btn-info btn-block">
+                                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                        id="save-button-title">جستجو سفرنامه </span>
+                                </button>
+                            {{ forms.media }}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+    <div class="col-sm-12 col-lg-12">
+        <div class="">
+            <div id="memo_list" class="table-block">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

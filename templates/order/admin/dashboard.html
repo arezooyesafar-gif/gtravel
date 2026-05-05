@@ -1,0 +1,11 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% include 'order/admin/dashboard/top_counter.html' %}
+    {% include 'order/admin/dashboard/paid_order_list.html' %}
+    {% include 'order/admin/dashboard/pending_order_list.html' %}
+    {% include 'order/admin/dashboard/wallet_transactions.html' %}
+{#    {% include 'admin-dashboard/dashboard/airlines.html' %}#}
+{#    {% include 'admin-dashboard/dashboard/posts.html' %}#}
+{#    {% include 'admin-dashboard/dashboard/hotels.html' %}#}
+    <!-- .col -->
+{% endblock %}

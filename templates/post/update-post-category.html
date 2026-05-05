@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+{% block Data %}
+<div class="row">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-body hs">
+                <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                    بروزرسانی دسته بندی مطلب
+                </h4>
+            </div>
+            <div class="form-body">
+                <div class="alert-light">
+                    {% for message in messages %}
+                    <p class="error-body ap">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">نام منو <span class="required">*</span></p>
+                        {{ form.CatName }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">لینک سئو<span class="required">*</span></p>
+                        {{ form.slug }}
+                    </div>
+
+                    <div class="hd-basic-info personal">
+                        <button type="submit" class="btn btn-lg btn-info btn-block">
+                            <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">بروزرسانی
+                                دسته بندی</span>
+                        </button>
+                    </div>
+                    {{ form.media }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{{ Tour.MetaDescription }}">
+    <meta name="keyword" content="{{ Tour.MetaKeywords }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'ui/base/head.html' %}
+    {% if Tour.tstitle %}
+        <title>{{ Tour.tstitle }}</title>
+    {% else %}
+        <title>ثبت رزرواسیون</title>
+    {% endif %}
+</head>
+<body>
+<div class="warp">
+    {% include 'ui/base/header.html' %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="container">
+                    <div class="order-container">
+                    <div class="reserv-info">
+                        <p class="form-title headline">مشخصات رزرواسیون</p>
+                        <p class="inform">
+                            کاربر گرامی، {{Order.Name}} {{ Order.Family}} عزیز
+                            رزرو شما با شماره تماس {{Order.Mobile}} و کد پیگیری {{Order.OrderCode}} ثبت گردید.
+                        </p>
+                        <a href="/" class="home-link">بازگشت به صفحه اصلی</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <section class="contact-us">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="office-img">
+                        <img loading="lazy" src="/static/asset/css/images/office-1.jpg">
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="contact-us-section">
+                        <p class="headline">ارتباط با آرزوی سفر پارسیان</p>
+                        <p class="sub-headline">کارشناسان ما در آرزوی سفر پارسیان آماده پاسخگویی به سوالات شما
+                            هستند.</p>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <p class="phone-title">
+                                    شماره تماس :
+                                </p>
+                                <p class="phone-number">
+                                    45128 021
+                                </p>
+                                <p class="address-headline">تهران، بلوار مرزداران بین خیابان نارون و سپهر پلاک 143
+                                    ساختمان دیپلمات طبقه چهارم</p>
+                            </div>
+                            <div class="col-lg-4">
+                                <p class="phone-title">
+                                    شبکه های اجتماعی
+                                </p>
+                                <p class="address-headline">ما در فضای مجازی همراهی کنید</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    {% include 'ui/base/footer.html' %}
+    </div>
+{% include 'ui/base/plugins.html' %}
+</body>
+
+</html>

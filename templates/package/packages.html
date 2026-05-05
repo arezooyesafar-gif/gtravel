@@ -1,0 +1,352 @@
+{% load humanize %}
+<div class="accordion accordion-flush packages-accordion-container" id="accordionPanelsStayOpenExample">
+    {% for package in AllData %}
+        <div class="accordion-item package-accordion">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#panelsStayOpen-collapse{{ forloop.counter }}" aria-expanded="false"
+                        aria-controls="panelsStayOpen-collapse{{ forloop.counter }}"><input
+                        style="vvertical-align: middle;margin-left: 12px;"
+                        type="checkbox" class="checkbox"
+                        value="{{ package.id }}">
+                    {{ forloop.counter }} - {{ package.HotelName.HotelName }}
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapse{{ forloop.counter }}" class="accordion-collapse collapse"
+                 data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="row package-price-container">
+                        <div class="col-lg-3">
+                            <select name="hotel-1" id="hotel1-{{ package.id }}" class="form-select hotels margin-b-5"
+                                    onclick="getHotelsList('{{ package.id }}', 'hotel1-{{ package.id }}')">
+                                {% if package.HotelName %}
+                                    <option value="{{ package.HotelName.id }}">{{ package.HotelName }}</option>
+                                {% else %}
+                                    <option value="">هتل اول پکیج را انتخاب کنید</option>
+                                {% endif %}
+                            </select>
+                            <select name="hotel-2" id="hotel2-{{ package.id }}" class="hotels form-select margin-b-5"
+                                    onclick="getHotelsList('{{ package.id }}', 'hotel2-{{ package.id }}')">
+                                {% if package.Mhotel %}
+                                    <option value="{{ package.Mhotel.id }}">{{ package.Mhotel }}</option>
+                                {% else %}
+                                    <option value="">هتل دوم پکیج را انتخاب کنید</option>
+                                {% endif %}
+                            </select>
+                            <select name="hotel-3" id="hotel3-{{ package.id }}" class="hotels form-select margin-b-5"
+                                    onclick="getHotelsList('{{ package.id }}', 'hotel3-{{ package.id }}')">
+                                {% if package.M1hotel %}
+                                    <option value="{{ package.M1hotel.id }}">{{ package.M1hotel }}</option>
+                                {% else %}
+                                    <option value="">هتل سوم پکیج را انتخاب کنید</option>
+                                {% endif %}
+                            </select>
+                            <select name="hotel-4" id="hotel4-{{ package.id }}" class="hotels form-select margin-b-5"
+                                    onclick="getHotelsList('{{ package.id }}', 'hotel4-{{ package.id }}')">
+                                {% if package.M2hotel %}
+                                    <option value="{{ package.M2hotel.id }}">{{ package.M2hotel }}</option>
+                                {% else %}
+                                    <option value="">هتل چهارم پکیج را انتخاب کنید</option>
+                                {% endif %}
+                            </select>
+                            <select name="hotel-5" id="hotel5-{{ package.id }}" class="hotels form-select margin-b-5"
+                                    onclick="getHotelsList('{{ package.id }}', 'hotel5-{{ package.id }}')">
+                                {% if package.M3hotel %}
+                                    <option value="{{ package.M3hotel.id }}">{{ package.M3hotel }}</option>
+                                {% else %}
+                                    <option value="">هتل پنجم پکیج را انتخاب کنید</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <select name="hotel-1-view" id="hotel1-view-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب ویو</option>
+                                <option {% if package.view_hotel == 'land View' %}selected{% endif %} value="land View">
+                                    Land View
+                                </option>
+                                <option {% if package.view_hotel == 'Sea View' %}selected{% endif %} value="Sea View">
+                                    Sea View
+                                </option>
+                                <option {% if package.view_hotel == 'Seaside View' %}selected{% endif %}
+                                        value="Seaside View">Seaside View
+                                </option>
+                            </select>
+                            <select name="hotel-2-view" id="hotel2-view-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب ویو</option>
+                                <option {% if package.view_mhotel == 'land View' %}selected{% endif %}
+                                        value="land View">Land View
+                                </option>
+                                <option {% if package.view_mhotel == 'Sea View' %}selected{% endif %} value="Sea View">
+                                    Sea View
+                                </option>
+                                <option {% if package.view_mhotel == 'Seaside View' %}selected{% endif %}
+                                        value="Seaside View">Seaside View
+                                </option>
+                            </select>
+                            <select name="hotel-3-view" id="hotel3-view-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب ویو</option>
+                                <option {% if package.view_m1hotel == 'land View' %}selected{% endif %}
+                                        value="land View">Land View
+                                </option>
+                                <option {% if package.view_m1hotel == 'Sea View' %}selected{% endif %} value="Sea View">
+                                    Sea View
+                                </option>
+                                <option {% if package.view_m1hotel == 'Seaside View' %}selected{% endif %}
+                                        value="Seaside View">Seaside View
+                                </option>
+                            </select>
+                            <select name="hotel-4-view" id="hotel4-view-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب ویو</option>
+                                <option {% if package.view_m2hotel == 'land View' %}selected{% endif %}
+                                        value="land View">Land View
+                                </option>
+                                <option {% if package.view_m2hotel == 'Sea View' %}selected{% endif %} value="Sea View">
+                                    Sea View
+                                </option>
+                                <option {% if package.view_m2hotel == 'Seaside View' %}selected{% endif %}
+                                        value="Seaside View">Seaside View
+                                </option>
+                            </select>
+                            <select name="hotel-5-view" id="hotel5-view-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب ویو</option>
+                                <option {% if package.view_m3hotel == 'land View' %}selected{% endif %}
+                                        value="land View">Land View
+                                </option>
+                                <option {% if package.view_m3hotel == 'Sea View' %}selected{% endif %} value="Sea View">
+                                    Sea View
+                                </option>
+                                <option {% if package.view_m3hotel == 'Seaside View' %}selected{% endif %}
+                                        value="Seaside View">Seaside View
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <select name="hotel-1-service" id="hotel1-service-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب سرویس</option>
+                                <option {% if package.service_hotel == 'OR' %}selected{% endif %} value="OR">
+                                    OR
+                                </option>
+                                <option {% if package.service_hotel == 'BB' %}selected{% endif %} value="BB">
+                                    BB
+                                </option>
+                                <option {% if package.service_hotel == 'HB' %}selected{% endif %} value="HB">
+                                    HB                            
+                                </option>
+                                <option {% if package.service_hotel == 'FB' %}selected{% endif %} value="FB">
+                                    FB                            
+                                </option>
+                                <option {% if package.service_hotel == 'ALL' %}selected{% endif %} value="ALL">
+                                    ALL                            
+                                </option>
+                                <option {% if package.service_hotel == 'UALL' %}selected{% endif %} value="UALL">
+                                    UALL                            
+                                </option>
+                                <option {% if package.service_hotel == 'maxALL' %}selected{% endif %} value="maxALL">
+                                    maxALL                            
+                                </option>
+                            </select>
+                            <select name="hotel-2-service" id="hotel2-service-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب سرویس</option>
+                                <option {% if package.service_mhotel == 'OR' %}selected{% endif %} value="OR">
+                                    OR
+                                </option>
+                                <option {% if package.service_mhotel == 'BB' %}selected{% endif %} value="BB">
+                                    BB
+                                </option>
+                                <option {% if package.service_mhotel == 'HB' %}selected{% endif %} value="HB">
+                                    HB                            
+                                </option>
+                                <option {% if package.service_mhotel == 'FB' %}selected{% endif %} value="FB">
+                                    FB                            
+                                </option>
+                                <option {% if package.service_mhotel == 'ALL' %}selected{% endif %} value="ALL">
+                                    ALL                            
+                                </option>
+                                <option {% if package.service_hotel == 'UALL' %}selected{% endif %} value="UALL">
+                                    UALL                            
+                                </option>
+                                <option {% if package.service_hotel == 'maxALL' %}selected{% endif %} value="maxALL">
+                                    maxALL                            
+                                </option>
+                            </select>
+                            <select name="hotel-3-service" id="hotel3-service-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب سرویس</option>
+                                <option {% if package.service_m1hotel == 'OR' %}selected{% endif %} value="OR">
+                                    OR
+                                </option>
+                                <option {% if package.service_m1hotel == 'BB' %}selected{% endif %} value="BB">
+                                    BB
+                                </option>
+                                <option {% if package.service_m1hotel == 'HB' %}selected{% endif %} value="HB">
+                                    HB                            
+                                </option>
+                                <option {% if package.service_m1hotel == 'FB' %}selected{% endif %} value="FB">
+                                    FB                            
+                                </option>
+                                <option {% if package.service_m1hotel == 'ALL' %}selected{% endif %} value="ALL">
+                                    ALL                            
+                                </option>
+                                <option {% if package.service_m1hotel == 'UALL' %}selected{% endif %} value="UALL">
+                                    UALL                            
+                                </option>
+                                <option {% if package.service_m1hotel == 'maxALL' %}selected{% endif %} value="maxALL">
+                                    maxALL                            
+                                </option>
+                            </select>
+                            <select name="hotel-4-service" id="hotel4-service-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب سرویس</option>
+                                <option {% if package.service_m2hotel == 'OR' %}selected{% endif %} value="OR">
+                                    OR
+                                </option>
+                                <option {% if package.service_m2hotel == 'BB' %}selected{% endif %} value="BB">
+                                    BB
+                                </option>
+                                <option {% if package.service_m2hotel == 'HB' %}selected{% endif %} value="HB">
+                                    HB                            
+                                </option>
+                                <option {% if package.service_m2hotel == 'FB' %}selected{% endif %} value="FB">
+                                    FB                            
+                                </option>
+                                <option {% if package.service_m2hotel == 'ALL' %}selected{% endif %} value="ALL">
+                                    ALL                            
+                                </option>
+                                <option {% if package.service_m2hotel == 'UALL' %}selected{% endif %} value="UALL">
+                                    UALL                            
+                                </option>
+                                <option {% if package.service_m2hotel == 'maxALL' %}selected{% endif %} value="maxALL">
+                                    maxALL                            
+                                </option>
+                            </select>
+                            <select name="hotel-5-service" id="hotel5-service-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب سرویس</option>
+                                <option {% if package.service_m3hotel == 'OR' %}selected{% endif %} value="OR">
+                                    OR
+                                </option>
+                                <option {% if package.service_m3hotel == 'BB' %}selected{% endif %} value="BB">
+                                    BB
+                                </option>
+                                <option {% if package.service_m3hotel == 'HB' %}selected{% endif %} value="HB">
+                                    HB                            
+                                </option>
+                                <option {% if package.service_m3hotel == 'FB' %}selected{% endif %} value="FB">
+                                    FB                            
+                                </option>
+                                <option {% if package.servicem3hotel == 'ALL' %}selected{% endif %} value="ALL">
+                                    ALL                            
+                                </option>
+                                <option {% if package.service_m3hotel == 'UALL' %}selected{% endif %} value="UALL">
+                                    UALL                            
+                                </option>
+                                <option {% if package.service_m3hotel == 'maxALL' %}selected{% endif %} value="maxALL">
+                                    maxALL                            
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <select name="main-package" id="mainpackages-{{ package.id }}" class="form-select margin-b-5">
+                                {% for i in main_packages %}
+                                    <option {% if package.MainPkg.PackageName == i.PackageName %}selected{% endif %}
+                                            value="{{ i.id }}">{{ i.PackageName }}</option>
+                                {% endfor %}
+                            </select>
+                            <select name="main-currency" id="prcy-{{ package.id }}" class="form-select margin-b-5">
+                                {% for i in all_currency %}
+                                    <option {% if package.Pcry.Title == i.Title %}selected{% endif %}
+                                            value="{{ i.id }}">{{ i.Title }}</option>
+                                {% endfor %}
+                            </select>
+                            <select name="main-currency" id="fr_Pcry-{{ package.id }}" class="form-select margin-b-5">
+                            <option value="">انتخاب واحد ارزی</option>
+                                {% for i in all_currency %}
+                                    <option {% if package.fr_Pcry.Title == i.Title %}selected{% endif %}
+                                            value="{{ i.id }}">{{ i.Title }}</option>
+                                {% endfor %}
+                            </select>
+                            <select name="all-packages-view" id="main-view-{{ package.id }}" class="form-select margin-b-5">
+                                <option value="">انتخاب ویو برای کل پکیج</option>
+                                <option {% if package.view == 'land View' %}selected{% endif %}
+                                        value="land View">Land View
+                                </option>
+                                <option {% if package.view == 'Sea View' %}selected{% endif %} value="Sea View">
+                                    Sea View
+                                </option>
+                                <option {% if package.view == 'Seaside View' %}selected{% endif %}
+                                        value="Seaside View">Seaside View
+                                </option>
+                            </select>
+                            <input type="text" name="DollerPrice" maxlength="300" class="form-control"
+                                   id="static_DollerPrice-{{ package.id }}" {% if package.DollerPrice %}value="{{ package.DollerPrice }}"{% endif %} placeholder="قیمت ثابت دلاری">
+                        </div>
+                        <div class="col-lg-2 position-relative">
+                            <span class="ir-currency">{{ package.Pcry }}</span>
+                            <input type="number" class="form-control margin-b-5" id="doubel-price-{{ package.id }}"
+                                   value="{{ package.DoubleBedPrice }}">
+                            <input type="number" class="form-control " id="doller-doubel-price-{{ package.id }}"
+                                   value="{{ package.DoubleBedPrice_doller }}">
+                            <span class="fr-currency">
+                            {% if package.fr_Pcry %}
+                                {{ package.fr_Pcry }}
+                            {% endif %}
+                            </span>
+                        </div>
+                        <div class="col-lg-2 position-relative">
+                            <span class="ir-currency">{{ package.Pcry }}</span>
+                            <input type="number" class="form-control margin-b-5" id="single-price-{{ package.id }}"
+                                   value="{{ package.SingleBedPrice }}">
+                            <input type="number" class="form-control " id="doller-single-price-{{ package.id }}"
+                                   value="{{ package.SingleBedPrice_doller }}">
+                            <span class="fr-currency">
+                            {% if package.fr_Pcry %}
+                                {{ package.fr_Pcry }}
+                            {% endif %}
+                            </span>
+                        </div>
+                        <div class="col-lg-2 position-relative">
+                            <span class="ir-currency">{{ package.Pcry }}</span>
+                            <input type="number" class="form-control margin-b-5" id="bwb-{{ package.id }}"
+                                   value="{{ package.BabyWithBedPrice }}">
+                            <input type="number" class="form-control" id="doller-bwb-{{ package.id }}"
+                                   value="{{ package.BabyWithBedPrice_doller }}">
+                            <span class="fr-currency">
+                            {% if package.fr_Pcry %}
+                                {{ package.fr_Pcry }}
+                            {% endif %}
+                            </span>
+                        </div>
+                        <div class="col-lg-2 position-relative">
+                            <span class="ir-currency">{{ package.Pcry }}</span>
+                            <input type="number" class="form-control margin-b-5" id="bwob-{{ package.id }}"
+                                   value="{{ package.BabyWithoutBedPrice }}">
+                            <input type="number" class="form-control" id="doller-bwob-{{ package.id }}"
+                                   value="{{ package.BabyWithoutBedPrice_doller }}">
+                            <span class="fr-currency">
+                                {% if package.fr_Pcry %}
+                                    {{ package.fr_Pcry }}
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="col-lg-2 position-relative">
+                            <span class="ir-currency">{{ package.Pcry }}</span>
+                            <input type="number" class="form-control margin-b-5" id="infont-{{ package.id }}"
+                                   value="{{ package.InfontPrice }}">
+                            <input type="number" class="form-control" id="doller-infont-{{ package.id }}"
+                                   value="{{ package.InfontPrice_doller }}">
+                            <span class="fr-currency">
+                            {% if package.fr_Pcry %}
+                                {{ package.fr_Pcry }}
+                            {% endif %}
+                            </span>
+                        </div>
+                        <div class="col-lg-2 position-relative">
+                            <a class="remove-package-item" href="{% url 'delet-package' package.id %}">حذف پکیج</a>
+                            <button onclick="packageChangeSingle('{{ package.id }}')"
+                                    class="btn-submit">ثبت تغییرات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<!--  -->

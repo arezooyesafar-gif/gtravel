@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta name="theme-color" content=""/>
+    <!-- Title -->
+    <title>Froms</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"/>
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/static/layout/assets/css/style-thai.css"/>
+    <link rel="stylesheet" href="/static/layout/assets/css/responsive.css"/>
+</head>
+<body>
+{% include 'layout/header.html' %}
+<main>
+    <section>
+        <div class="container">
+            {% if forms.errors %}
+                {% for field in forms %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ field.label }}{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            <form method="POST" novalidate="novalidate" enctype="multipart/form-data" class="box-main">
+                {% csrf_token %}
+                <div class="child" style="
+                padding-right: 15px;
+">
+                    <div>
+                        <label for="" class="disabled">Application Number</label>
+                        <input type="text" class="form-control" value="thai-ev-{{ item.trs_number }}" disabled/>
+                        <p>توضیحات : <span>شماره اپلیکیشن</span></p>
+                    </div>
+                    <div>
+                        <label for="">Passport Number</label>
+                        {{ forms.passport_number }}
+                        <p>توضیحات : <span>شماره پاسپورت</span></p>
+                    </div>
+                    <div>
+                        <label for="">Date of issue</label>
+                        {{ forms.passport_issue }}
+                        <p>توضیحات : <span>تاریخ صدور پاسپورت</span></p>
+                    </div>
+                    <div>
+                        <label for="">Date of expire</label>
+                        {{ forms.passport_expire }}
+                        <p>توضیحات : <span>تاریخ انقضا پاسپورت</span></p>
+                    </div>
+                    <div>
+                        <label for="">Date of entry to Thailand</label>
+                        {{ forms.thai_entry }}
+                        <p>توضیحات : <span>تاریخ ورود به تایلند</span></p>
+                    </div>
+                    <div>
+                        <label for="">Date of exit from Thailand</label>
+                        {{ forms.thai_exit }}
+                        <p>توضیحات : <span>تاریخ خروج از تایلند</span></p>
+                    </div>
+                    {% if request.user.is_superuser %}
+                        <div>
+                            <label for="">Request Status</label>
+                            <select name="req_stat" class="form-select">
+                                <option {% if item.req_stat == 'Submitted' %}selected{% endif %} value="Submitted">
+                                    Submitted
+                                </option>
+                                <option {% if item.req_stat == 'Edit' %}selected{% endif %} value="Edit">Edit</option>
+                                <option {% if item.req_stat == 'Confirmed' %}selected{% endif %} value="Confirmed">
+                                    Confirmed
+                                </option>
+                                <option {% if item.req_stat == 'Processing' %}selected{% endif %} value="Processing">
+                                    Processing
+                                </option>
+                                <option {% if item.req_stat == 'Approved' %}selected{% endif %} value="Approved">
+                                    Approved
+                                </option>
+                            </select>
+                            <p>توضیحات : <span>تعیین وضعیت درخواست</span></p>
+                        </div>
+
+                        <div>
+                            <label for="">Visa File</label>
+                            {{ forms.visa_file }}
+                            <p>توضیحات : <span>فایل ویزا</span></p>
+                        </div>
+                        <div>
+                            <label for="">Payment Status</label>
+                            <select name="payment_stat" class="form-select">
+                                <option value="Pending">Pending</option>
+                                <option value="Paid">Paid</option>
+                            </select>
+                            <p>توضیحات : <span>تعیین وضعیت درخواست</span></p>
+                        </div>
+                    {% endif %}
+                    {% if item.person_image %}
+                        <div>
+                            <p style="text-align:left;">Person Image</p>
+                            <img width="200px" src="{{ item.person_image.url }}">
+                        </div>
+                    {% endif %}
+                    {% if item.passport_image %}
+                        <div>
+                            <p style="text-align:left;">Passport Image</p>
+                            <img width="200px" src="{{ item.passport_image.url }}">
+                        </div>
+                    {% endif %}
+                    {% if item.person_id_image %}
+                        <div>
+                            <p style="text-align:left;">National Card Image</p>
+                            <img width="200px" src="{{ item.person_id_image.url }}">
+                        </div>
+                    {% endif %}
+                    {% if item.person_brd_image %}
+                        <div>
+                            <p style="text-align:left;">Bitrh Certificate Image</p>
+                            <img width="200px" src="{{ item.person_brd_image.url }}">
+                        </div>
+                    {% endif %}
+                    {% if item.person_hotel_image %}
+                        <div>
+                            <p style="text-align:left;"> Hotel Voucher  Image</p>
+                            <img width="200px" src="{{ item.person_hotel_image.url }}">
+                        </div>
+                    {% endif %}
+                    {% if item.person_flight_image %}
+                        <div>
+                            <p style="text-align:left;">Ticket Image</p>
+                            <img width="200px" src="{{ item.person_flight_image.url }}">
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="child">
+                    <div class="upload-holder">
+                        <div class="child-upload">
+                            <label for="id_person_image" class="upload-label">
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512"
+                                     height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                            d="M400 421.3V154.7c0-23.5-19.2-42.7-42.7-42.7H90.7C67.2 112 48 131.2 48 154.7v266.7c0 23.5 19.2 42.7 42.7 42.7h266.7c23.4-.1 42.6-19.3 42.6-42.8zM157.3 304l45.3 64 66.7-96 88 128H90.7l66.6-96z"
+                                    ></path>
+                                    <path d="M421.3 48H154.7C131.2 48 112 67.2 112 90.7V96h261.3c23.5 0 42.7 19.2 42.7 42.7V400h5.3c23.5 0 42.7-19.2 42.7-42.7V90.7c0-23.5-19.2-42.7-42.7-42.7z"></path>
+                                </svg>
+                                Photo Upload <span>(بارگذاری تصویر)</span>
+                                <p class="w-100"></p>
+                            </label>
+                            {{ forms.person_image }}
+                        </div>
+                        <div class="child-upload">
+                            <label for="id_passport_image" class="upload-label">
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512"
+                                     height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                            d="M0 64C0 28.7 28.7 0 64 0H384c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM183 278.8c-27.9-13.2-48.4-39.4-53.7-70.8h39.1c1.6 30.4 7.7 53.8 14.6 70.8zm41.3 9.2l-.3 0-.3 0c-2.4-3.5-5.7-8.9-9.1-16.5c-6-13.6-12.4-34.3-14.2-63.5h47.1c-1.8 29.2-8.1 49.9-14.2 63.5c-3.4 7.6-6.7 13-9.1 16.5zm40.7-9.2c6.8-17.1 12.9-40.4 14.6-70.8h39.1c-5.3 31.4-25.8 57.6-53.7 70.8zM279.6 176c-1.6-30.4-7.7-53.8-14.6-70.8c27.9 13.2 48.4 39.4 53.7 70.8H279.6zM223.7 96l.3 0 .3 0c2.4 3.5 5.7 8.9 9.1 16.5c6 13.6 12.4 34.3 14.2 63.5H200.5c1.8-29.2 8.1-49.9 14.2-63.5c3.4-7.6 6.7-13 9.1-16.5zM183 105.2c-6.8 17.1-12.9 40.4-14.6 70.8H129.3c5.3-31.4 25.8-57.6 53.7-70.8zM352 192A128 128 0 1 0 96 192a128 128 0 1 0 256 0zM112 384c-8.8 0-16 7.2-16 16s7.2 16 16 16H336c8.8 0 16-7.2 16-16s-7.2-16-16-16H112z"
+                                    ></path>
+                                </svg>
+                                Passport Upload <span>(بارگذاری پاسپورت)</span>
+                                <p class="w-100"></p>
+                            </label>
+                            {{ forms.passport_image }}
+                        </div>
+                        <div class="child-upload">
+                            <label for="id_person_id_image" class="upload-label">
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 576 512"
+                                     height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M528 64H48C21.5 64 0 85.5 0 112v288c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48zm-16 64v96H64v-96h448zM64 384v-96h448v96H64z"/>
+                                </svg>
+                                National Card <span>(بارگذاری کارت ملی)</span>
+                                <p class="w-100"></p>
+                            </label>
+                            {{ forms.person_id_image }}
+                        </div>
+                        <div class="child-upload">
+                            <label for="id_person_brd_image" class="upload-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                                     class="size-4">
+                                    <path fill-rule="evenodd"
+                                          d="M3 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H3Zm2.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM10 5.75a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75Zm.75 3.75a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5h-1.5ZM10 8a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 10 8Zm-2.378 3c.346 0 .583-.343.395-.633A2.998 2.998 0 0 0 5.5 9a2.998 2.998 0 0 0-2.517 1.367c-.188.29.05.633.395.633h4.244Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                                birth certificate <span>(بارگذاری شناسنامه)</span>
+                                <p class="w-100"></p>
+                            </label>
+                            {{ forms.person_brd_image }}
+                        </div>
+                        <div class="child-upload">
+                            <label for="id_person_hotel_image" class="upload-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                                     class="size-4">
+                                    <path fill-rule="evenodd"
+                                          d="M3.75 2a.75.75 0 0 0 0 1.5H4v9h-.25a.75.75 0 0 0 0 1.5H6a.5.5 0 0 0 .5-.5v-3A.5.5 0 0 1 7 10h2a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h2.25a.75.75 0 0 0 0-1.5H12v-9h.25a.75.75 0 0 0 0-1.5h-8.5ZM6.5 4a.5.5 0 0 0-.5.5V5a.5.5 0 0 0 .5.5H7a.5.5 0 0 0 .5-.5v-.5A.5.5 0 0 0 7 4h-.5ZM6 7a.5.5 0 0 1 .5-.5H7a.5.5 0 0 1 .5.5v.5A.5.5 0 0 1 7 8h-.5a.5.5 0 0 1-.5-.5V7Zm3-3a.5.5 0 0 0-.5.5V5a.5.5 0 0 0 .5.5h.5A.5.5 0 0 0 10 5v-.5a.5.5 0 0 0-.5-.5H9Zm-.5 3a.5.5 0 0 1 .5-.5h.5a.5.5 0 0 1 .5.5v.5a.5.5 0 0 1-.5.5H9a.5.5 0 0 1-.5-.5V7Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                                Hotel Voucher <span>(بارگذاری واچر هتل)</span>
+                                <p class="w-100"></p>
+                            </label>
+                            {{ forms.person_hotel_image }}
+                        </div>
+                        <div class="child-upload">
+                            <label for="id_person_flight_image" class="upload-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                                     class="size-4">
+                                    <path fill-rule="evenodd"
+                                          d="M1 4.5A1.5 1.5 0 0 1 2.5 3h11A1.5 1.5 0 0 1 15 4.5v1c0 .276-.227.494-.495.562a2 2 0 0 0 0 3.876c.268.068.495.286.495.562v1a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 11.5v-1c0-.276.227-.494.495-.562a2 2 0 0 0 0-3.876C1.227 5.994 1 5.776 1 5.5v-1Zm9 1.25a.75.75 0 0 1 1.5 0v1a.75.75 0 0 1-1.5 0v-1Zm.75 2.75a.75.75 0 0 0-.75.75v1a.75.75 0 0 0 1.5 0v-1a.75.75 0 0 0-.75-.75Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                                Ticket <span>(بارگذاری بلیط)</span>
+                                <p class="w-100"></p>
+                            </label>
+                            {{ forms.person_flight_image }}
+                        </div>
+
+                    </div>
+                    <div>
+                        <div>
+                            <h5>Sex :</h5>
+                            <div class="form-check">
+                                <input {% if item.gender == 'Male' %}checked{% endif %} class="form-check-input"
+                                 value="male" type="radio" name="gender" id="gender1"/>
+                                <label class="form-check-label" for="gender1">
+                                    Male
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input {% if item.gender == 'Female' %}checked{% endif %} class="form-check-input"
+                                 value="female" type="radio" name="gender" id="gender2"/>
+                                <label class="form-check-label" for="gender2">
+                                    Female
+                                </label>
+                            </div>
+                            <p>توضیحات : <span>جنسیت را انتخاب کنید</span></p>
+                        </div>
+                        </br>
+                        <h5>Personal informartion :</h5>
+                        <ul>
+                            <li>
+                                <label for="">Surname</label>
+                                {{ forms.requester_name }}
+                                <p>توضیحات : <span> نام خانوادگی</span></p>
+                            </li>
+                            <li>
+                                <label for="">Name</label>
+                                {{ forms.requester_family }}
+                                <p>توضیحات : <span>نام</span></p>
+                            </li>
+                            <li>
+                                <label for="">Date of birth</label>
+                                {{ forms.rqquester_brd }}
+                                <p>توضیحات : <span>تاریخ تولد</span></p>
+                            </li>
+                            <li>
+                                <label for="">Nationality</label>
+                                {{ forms.requester_Nationality }}
+                                <p>توضیحات : <span>ملیت</span></p>
+                            </li>
+                            <li>
+                                <label for="">city of birth</label>
+                                {{ forms.requester_brd_city }}
+                                <p>توضیحات : <span>شهر تولد</span></p>
+                            </li>
+                            <li>
+                                <label for="">Phone number</label>
+                                {{ forms.phone }}
+                                <p>توضیحات : <span>شماره تلفن</span></p>
+                            </li>
+                            <li>
+                                <label for="">Email</label>
+                                {{ forms.email }}
+                                <p>توضیحات : <span>آدرس ایمیل</span></p>
+                            </li>
+                    </div>
+                    <div>
+                        <h5>Are you single or married?</h5>
+                        <div class="form-check">
+                            <input {% if not item.marial_stat %}checked{% endif %} class="form-check-input" type="radio"
+                             id="maried1" name="marial" value="single" checked=""/>
+                            <label class="form-check-label" for="maried1">
+                                single
+                            </label>
+                            <p>توضیحات : <span>مجرد</span></p>
+                        </div>
+                        <div class="form-check">
+                            <input {% if item.marial_stat %}checked{% endif %} class="form-check-input" type="radio"
+                             id="maried2" name="marial" value="married"/>
+                            <label class="form-check-label" for="maried2">
+                                married
+                            </label>
+                            <p>توضیحات : <span>متاهل</span></p>
+                        </div>
+                        <p>توضیحات : <span>مجرد هستید یا متاهل؟</span></p>
+                    </div>
+                    <div>
+                        <h5>Address :</h5>
+                        <ul>
+                            <li>
+                                <label for="">Country</label>
+                                {{ forms.requester_country }}
+                                <p>توضیحات : <span>کشور</span></p>
+                            </li>
+                            <li>
+                                <label for="">City</label>
+                                {{ forms.requester_city }}
+                                <p>توضیحات : <span>شهر</span></p>
+                            </li>
+                        </ul>
+                        <label for="">Address</label>
+                        {{ forms.address }}
+                        <p>توضیحات : <span>آدرس محل سکونت متقاضی</span></p>
+
+                    </div>
+                    <div>
+                        <h5>Job information :</h5>
+                        <ul>
+                            <li>
+                                <label for="">Job title</label>
+                                {{ forms.job_title }}
+                                <p>توضیحات : <span>عنوان شغلی</span></p>
+                            </li>
+                            <li>
+                                <label for="">Company name</label>
+                                {{ forms.job_company }}
+                                <p>توضیحات : <span>نام محل کار</span></p>
+                            </li>
+                            <li>
+                                <label for="">salary</label>
+                                {{ forms.income }}
+                                <p>توضیحات : <span>میزان حقوق دریافتی</span></p>
+                            </li>
+                        </ul>
+                        </br>
+                        <h5>Are you a business owner?</h5>
+                        <div class="form-check">
+                            <input {% if item.job_owner %}checked{% endif %} class="form-check-input" type="radio"
+                                   name="owner1" value="yes" id="owner1"/>
+                            <label class="form-check-label" for="owner1">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input {% if not item.job_owner %}checked{% endif %} class="form-check-input" type="radio"
+                                   name="owner1" value="no" id="owner2"/>
+                            <label class="form-check-label" for="owner2">
+                                No
+                            </label>
+                        </div>
+                        <p>توضیحات : <span>آیا شما صاحب کسب و کار هستید؟</span></p>
+                    </div>
+                    <div>
+                        <div>
+                            <h5>Have you ever been to Thailand?</h5>
+                            <div class="form-check">
+                                <input {% if item.thai_trip %}checked{% endif %} class="form-check-input" type="radio"
+                                       name="tripthai1"  value="yes" id="tripthai1"/>
+                                <label class="form-check-label" for="tripthai">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input {% if not item.thai_trip %}checked{% endif %} class="form-check-input"
+                                       type="radio" name="tripthai1"  value="no" id="tripthai2"/>
+                                <label class="form-check-label" for="tripthai2">
+                                    No
+                                </label>
+                            </div>
+                            <p>توضیحات : <span>آیا تا به حال به تایلند رفته اید؟</span></p>
+                        </div>
+                        </br>
+                        <div>
+                            <h5>Have you ever applied for a Thailand visa?</h5>
+                            <div class="form-check">
+                                <input {% if item.thai_applied %}checked{% endif %} class="form-check-input"
+                                       type="radio" name="thaiapply1"  value="yes" id="thaiapply1"/>
+                                <label class="form-check-label" for="thaiapply1">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input {% if not item.thai_applied %}checked{% endif %} class="form-check-input"
+                                       type="radio" name="thaiapply1" value="no" id="thaiapply2"/>
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    No
+                                </label>
+                            </div>
+                            <p>توضیحات : <span>آیا تا به حال برای ویزای تایلند اقدام کرده اید؟</span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <h5>Which organization or wich person are you going to:</h5>
+                        <ul>
+                            <li class="grid-col-full">
+                                <label for="">Name of organization or person (name and family)</label>
+                                {{ forms.inviter_name }}
+                                <p>توضیحات : <span>نام هتل یا محل اقامت شما در تایلند</span></p>
+                            </li>
+                            <li>
+                                <label for="">Address</label>
+                                {{ forms.inviter_address }}
+                                <p>توضیحات : <span>آدرس محل اقامت</span></p>
+                            </li>
+                            <li>
+                                <label for="">Phone number</label>
+                                {{ forms.inviter_phone }}
+                                <p>توضیحات : <span> شماره تماس محل اقامت</span></p>
+                            </li>
+                            <li>
+                                <label for="">Email</label>
+                                {{ forms.inviter_email }}
+                                <p>توضیحات : <span>ایمیل محل اقامت</span></p>
+                            </li>
+                            <li>
+                                <label for="">City</label>
+                                {{ forms.inviter_city }}
+                                <p>توضیحات : <span>شهر محل اقامت</span></p>
+                            </li>
+                        </ul>
+                        <button type="submit" class="btn btn-theme">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+        integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+        crossorigin="anonymous"></script>
+<script src="/static/layout/assets/js/main.js"></script>
+<!-- /scripts -->
+</body>
+</html>

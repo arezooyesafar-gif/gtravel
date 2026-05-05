@@ -1,0 +1,384 @@
+﻿{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <div class="row m-t-40">
+    <ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+        {{form.errors}}
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                افزودن پکیج به
+                                <span class="change down">{{ Tour.Title }}</span>
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            {% if Data %}
+                                <a href="{% url 'create-hotel' %}" class="link">ایجاد تور</a>
+                            {% endif %}
+                            <a href="{% url 'update-tour' Tour.id %}" class="link m-r-20"> ویرایش تور </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-40">
+        <div class="col-lg-12">
+            <div class="inner_section">
+                <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                    لیست شهرها
+                </h4>
+                <table class="table BranchTable">
+                    <thead>
+                    <tr>
+                        <th class="TbHead">ردیف</th>
+                        <th class="TbHead">نام کشور</th>
+                        <th class="TbHead">نام شهر</th>
+                        <th class="TbHead">نام ایرلاین</th>
+                        <th class="TbHead">از فرودگاه</th>
+                        <th class="TbHead">به فرودگاه</th>
+                        <th class="TbHead">مدت اقامت</th>
+                        <th class="TbHead">اقدامات لازم</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        {% for city in Cities %}
+                            <td class="TbCells serial">{{ forloop.counter }}</td>
+                            <td class="TbCells amount">{{ city.CyName }}</td>
+                            <td class="TbCells amount">{{ city.CtName }}</td>
+                            <td class="TbCells">{{ city.Airline }}</td>
+                            <td class="TbCells">{{ city.FromAirport }}</td>
+                            <td class="TbCells">{{ city.ToAirport }}</td>
+                            <td class="TbCells">{{ city.NightCount }}</td>
+                            <td class="TbCells">
+                                <div class="dropdown" style="margin-top: 0;">
+                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                       data-bs-toggle="dropdown"><em
+                                            class="icon ni ni-more-h"></em></a>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                        <ul class="link-list-plain">
+                                            <li><a href="{% url 'tour-city-update' city.id %}">ویرایش</a>
+                                            </li>
+                                            <li><a style="color: red"
+                                                   href="{% url 'tour-city-delete' city.id %}">حذف</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                ایجاد/بروزرسانی پکیج
+            </h4>
+        </div>
+        <form method="post" novalidate="novalidate">
+            {% csrf_token %}
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <p class="label-text">انتخاب پکیج<span class="required">*</span></p>
+                            {{ form.MainPkg }}
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="label-text">انتخاب واحد پول<span class="required">*</span></p>
+                            {{ form.Pcry }}
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="label-text">انتخاب واحد پول خارجی<span class="required">*</span></p>
+                            {{ form.fr_Pcry }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p class="label-text">انتخاب هتل اول<span class="required">*</span></p>
+                            <select name="HotelName" class="text-input-hts" required=""
+                                    id="id_HotelName">
+                                {% if package.HotelName %}
+                                    <option selected
+                                            value="{{ package.HotelName.id }}">{{ package.HotelName.HotelName }}
+                                        - {{ package.HotelName.Hcity }}</option>
+                                {% else %}
+                                    <option value=""></option>
+                                {% endif %}
+                            </select>
+                            <input value="" id="hotelname_id" type="text" name="hname" style="display: none; ">
+                            <div class='hotel-view'>
+                                <p class="label-text">انتخاب ویو هتل اول<span class="required"></span></p>
+                                {{ form.view_hotel }}
+                            </div>
+                            <div class='hotel-view'>
+                                <p class="label-text">انتخاب سرویس هتل اول<span class="required"></span></p>
+                                {{ form.service_hotel }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text">انتخاب هتل دوم<span class="required">*</span></p>
+                            <select name="HotelName" class="text-input-hts" required=""
+                                    id="id_Mhotel">
+                                {% if package.Mhotel %}
+                                    <option value="{{ package.Mhotel.id }}">{{ package.Mhotel.HotelName }}
+                                        - {{ package.Mhotel.Hcity }}</option>
+                                {% else %}
+                                    <option value=""></option>
+                                {% endif %}
+                            </select>
+                            <input value="" id="hotelname2_id" type="text" name="h2name" style="display: none; ">
+                            <div class='hotel-view'>
+                                <p class="label-text">انتخاب ویو هتل دوم<span class="required"></span></p>
+                                {{ form.view_mhotel }}
+                            </div>
+                            <div class='hotel-view'>
+                                <p class="label-text">انتخاب سرویس هتل دوم<span class="required"></span></p>
+                                {{ form.service_mhotel }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text">انتخاب هتل سوم<span class="required">*</span></p>
+                            <select name="HotelName" class="text-input-hts" required=""
+                                    id="id_M1hotel">
+                                {% if package.M1hotel %}
+                                    <option value="{{ package.M1hotel.id }}">{{ package.M1hotel.HotelName }}
+                                        - {{ package.M1hotel.Hcity }}</option>
+                                {% else %}
+                                    <option value=""></option>
+                                {% endif %}
+                            </select>
+                            <input value="" id="hotelname3_id" type="text" name="h3name" style="display: none; ">
+                            <div class='hotel-view'>
+                                <p class="label-text">انتخاب ویو هتل سوم<span class="required"></span></p>
+                                {{ form.view_m1hotel }}
+                            </div>
+                            <div class='hotel-view'>
+                                <p class="label-text">انتخاب سرویس هتل سوم<span class="required"></span></p>
+                                {{ form.service_m1hotel }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text">انتخاب هتل چهارم<span class="required">*</span></p>
+                            <select name="HotelName" class="text-input-hts" required=""
+                                    id="id_M2hotel">
+                                {% if package.M2hotel %}
+                                    <option value="{{ package.M2hotel.id }}">{{ package.M2hotel.HotelName }}
+                                        - {{ package.M2hotel.Hcity }}</option>
+                                {% else %}
+                                    <option value=""></option>
+                                {% endif %}
+                            </select>
+                            <input value="" id="hotelname4_id" type="text" name="h4name" style="display: none; ">
+                        <div class='hotel-view'>
+                                <p class="label-text">انتخاب ویو هتل چهارم<span class="required"></span></p>
+                                {{ form.view_m2hotel }}
+                            </div>
+                            <div class='hotel-view'>
+                                <p class="label-text">انتخاب سرویس هتل چهارم<span class="required"></span></p>
+                                {{ form.service_m2hotel }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text">انتخاب هتل پنجم<span class="required">*</span></p>
+                            <select name="HotelName" class="text-input-hts" required=""
+                                    id="id_M3hotel">
+                                {% if package.M3hotel %}
+                                    <option value="{{ package.M3hotel.id }}">{{ package.M3hotel.HotelName }}
+                                        - {{ package.M3hotel.Hcity }}</option>
+                                {% else %}
+                                    <option value="">هتل مقصد را انتخاب کنید</option>
+                                {% endif %}
+                            </select>
+                            <input value="" id="hotelname5_id" type="text" name="h5name" style="display: none; ">
+                        <div class='hotel-view'>
+                                <p class="label-text">انتخاب ویو هتل پنجم<span class="required"></span></p>
+                                {{ form.view_m3hotel }}
+                            </div>
+                            <div class='hotel-view'>
+                                <p class="label-text">انتخاب سرویس هتل پنجم<span class="required"></span></p>
+                                {{ form.service_m3hotel }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text">انتخاب نوع ویو<span class="required">*</span></p>
+                            {{ form.view }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="inner_section">
+                        <h6 class="section_title">
+                            قیمت پکیج بر اساس تومان
+                        </h6>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <p class="label-text"> قیمت دو تخته <span class="required">*</span></p>
+                                {{ form.DoubleBedPrice }}
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="label-text">قیمت یک تخته <span class="required">*</span></p>
+                                {{ form.SingleBedPrice }}
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="label-text"> قیمت کودک با تخت <span class="required">*</span></p>
+                                {{ form.BabyWithBedPrice }}
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="label-text"> قیمت کودک بدون تخت <span class="required">*</span></p>
+                                {{ form.BabyWithoutBedPrice }}
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="label-text"> قیمت نوزاد<span class="required">*</span></p>
+                                {{ form.InfontPrice }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="inner_section">
+                        <h6 class="section_title">
+                            قیمت پکیج بر اساس دلار
+                        </h6>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <p class="label-text"> قیمت دو تخته <span class="required">*</span></p>
+                                {{ form.DoubleBedPrice_doller }}
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="label-text">قیمت یک تخته <span class="required">*</span></p>
+                                {{ form.SingleBedPrice_doller }}
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="label-text"> قیمت کودک با تخت <span class="required">*</span></p>
+                                {{ form.BabyWithBedPrice_doller }}
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="label-text"> قیمت کودک بدون تخت <span class="required">*</span></p>
+                                {{ form.BabyWithoutBedPrice_doller }}
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="label-text"> قیمت نوزاد<span class="required">*</span></p>
+                                {{ form.InfontPrice_doller }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <h6 class="section_title">
+                        قیمت ثابت دلاری پکیج
+                    </h6>
+                    <div class="col-lg-12">
+                        <p class="label-text"> قیمت دلاری<span class="required">*</span></p>
+                        {{ form.DollerPrice }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <button style="margin-bottom: 20px" name="p_data_sub" type="submit"
+                        class="btn btn-lg btn-info btn-block">
+                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">ذخیره
+                                اطلاعات پکیج</span>
+                </button>
+            </div>
+        </form>
+        <div class="col-lg-12">
+            <div class="inner_section">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <a class="export_packages" href="{% url 'export_tour_packages' %}?id={{ Tour.id }}">خروجی
+                            اکسل
+                            پکیج ها</a>
+                    </div>
+                    <div class="col-lg-8">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input class="file_input" type="file" name="myfile">
+                            <button class="upload_file" name="submit_file" type="submit">بارگذاری فایل</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div id="package_data" class="table-block">
+
+            </div>
+            <a class="back-to-list" href="/dashboard/tour-list">ذخیره و اتمام</a>
+        </div>
+        <div class="col-lg-12">
+            <div class="inner_section">
+                <h4 style="margin-bottom: 40px;" class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                    افزایش یا کاهش مقدار ثابت به قیمت پکیج های انتخابی
+                </h4>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <p class="label-text"> قیمت دو تخته<span class="required"></span></p>
+                        <input value="0" type="number" id="dubel" class="form-control package_price">
+                    </div>
+                    <div class="col-lg-4">
+                        <p class="label-text"> قیمت یک تخته<span class="required"></span></p>
+                        <input value="0" type="number" id="single" class="form-control package_price">
+                    </div>
+                    <div class="col-lg-4">
+                        <p class="label-text"> قیمت کودک با تخت<span class="required"></span></p>
+                        <input value="0" type="number" id="bwb" class="form-control package_price">
+                    </div>
+                    <div class="col-lg-4">
+                        <p class="label-text"> قیمت کودک بدون تخت<span class="required"></span></p>
+                        <input value="0" type="number" id="bwob" class="form-control package_price">
+                    </div>
+                    <div class="col-lg-4">
+                        <p class="label-text">نوزاد<span class="required"></span></p>
+                        <input value="0" type="number" id="infont" class="form-control package_price">
+                    </div>
+                    <div class="col-lg-4">
+                        <button class="change_price_btn" id="getValues">اعمال تغییرات قیمت</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        a = document.getElementById('id_HotelName').value
+        b = document.getElementById('hotelname_id').value = a
+        c = document.getElementById('id_Mhotel').value
+        d = document.getElementById('hotelname2_id').value = c
+        e = document.getElementById('id_M1hotel').value
+        f = document.getElementById('hotelname3_id').value = e
+        g = document.getElementById('id_M2hotel').value
+        i = document.getElementById('hotelname4_id').value = g
+        h = document.getElementById('id_M3hotel').value
+        j = document.getElementById('hotelname5_id').value = g
+        var url = '/dashboard/packages/'
+        var tour_id = {{ Tour.id }};
+        $.ajax({
+            url: url,
+            data: {
+                'tour_id': tour_id
+            },
+            success: function (data) {
+                $("#package_data").html(data);
+            }
+        });
+    </script>
+{% endblock %}

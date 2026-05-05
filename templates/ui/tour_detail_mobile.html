@@ -1,0 +1,242 @@
+<html lang="fa-IR" dir="rtl">
+<head>{% load static %}{% load humanize %}{% load jalali_tags %}{% load webp_converter %}
+    {% include 'ui/mobile/base/head.html' %}
+    <link rel=“canonical” href=""/>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    {% if Tour.tstitle %}
+        <title>{{ Tour.tstitle }}</title>
+    {% else %}
+        <title>{{ Tour.Title }} | گروه شرکت های ساتراپ </title>
+    {% endif %}
+    <script>
+        jQuery(document).ready(function ($) {
+            $('.owl-one').owlCarousel({
+                rtl: true,
+                margin: 10,
+                nav: false,
+                loop: false,
+                autoplay: false,
+                responsive: {
+                    0: {
+                        items: 3,
+                        loop: true,
+                        dots: false,
+                    },
+                    600: {
+                        items: 3,
+                        loop: true,
+                        dots: true,
+                    },
+                    1000: {
+                        items: 4,
+                        loop: true,
+                        dots: true,
+                    }
+                }
+            });
+            $('.owl-two').owlCarousel({
+                rtl: true,
+                margin: 10,
+                nav: true,
+                loop: false,
+                autoplay: false,
+                responsive: {
+                    0: {
+                        items: 1,
+                        loop: true,
+                        dots: false,
+                    },
+                    600: {
+                        items: 1,
+                        loop: true,
+                        dots: true,
+                    },
+                    1000: {
+                        items: 3,
+                        loop: true,
+                        dots: true,
+                    }
+                }
+            });
+            $('.owl-tree').owlCarousel({
+                rtl: true,
+                margin: 10,
+                nav: true,
+                loop: false,
+                autoplay: false,
+                responsive: {
+                    0: {
+                        items: 1,
+                        loop: true,
+                        dots: false,
+                    },
+                    600: {
+                        items: 1,
+                        loop: true,
+                        dots: true,
+                    },
+                    1000: {
+                        items: 3,
+                        loop: true,
+                        dots: true,
+                    }
+                }
+            });
+        })
+    </script>
+</head>
+<body>
+{% include 'ui/mobile/base/header.html' %}
+{#<section class="tour_detail_page tour_image">#}
+{#    {% if Tour.tour_main %}#}
+{#        <img src="{{ Tour.tour_main.url }}" alt="{{ Tour.Title }}">#}
+{#    {% else %}#}
+{#        <img src="/static/Homepage/Tour-Single-Page-Slide-01.jpg">#}
+{#    {% endif %}#}
+{#</section>#}
+<section class="tour_data">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="tour_title_">{{ Tour.Title }}</h1>
+            <p class="tour_info_data_">
+                اقامت : {{ Tour.NightCount }} |
+                شروع تور : {{ Tour.StartDate | to_jalali:'%Y/%m/%d' }} |
+                پایان تور : {{ Tour.EndDate | to_jalali:'%Y/%m/%d' }}
+            </p>
+        </div>
+        <div class="col-lg-12">
+            <h2 class="tour_dest_data">اطلاعات پرواز</h2>
+        </div>
+        {% for city in Cities %}
+            <div class="row city_data {% if forloop.first %}border_top_crv {% endif %}{% if forloop.last %}border_bottom_crv{% endif %}">
+                <div class="col-lg-1 border_left_">
+                    {% if city.GTransfer %}
+                        <img class="transfer_type_" src="/static/IconPack/PNG/bus-icon.png">
+                    {% elif city.QTransfer %}
+                        <img class="transfer_type_ train_icon" width="84px" height="82px"
+                             src="/static/IconPack/train.png">
+                    {% else %}
+                        {% if forloop.last %}
+                            <img class="transfer_type_ rotate_"
+                                 src="/static/IconPack/PNG/airplane-takeoff.png">
+                        {% elif city.flight_return %}
+                            <img class="transfer_type_ rotate_"
+                                 src="/static/IconPack/PNG/airplane-takeoff.png">
+                        {% else %}
+                            <img class="transfer_type_"
+                                 src="/static/IconPack/PNG/airplane-takeoff.png">
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="col-lg-4 border_left_">
+                    {% if city.GTransfer or city.QTransfer %}
+                        <p class="airline_eng_tlt_">ترمینال</p>
+                    {% else %}
+                        <p class="airline_eng_tlt_">{{ city.FromAirport.AirportEn }}</p>
+                    {% endif %}
+                    {% if city.GTransfer or city.QTransfer %}
+                        <p class="airline_fa_tlt_">{{ city.CtName }}</p>
+                    {% else %}
+                        <p class="airline_fa_tlt_">{{ city.FromAirport.AirportFa }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-4 border_left_">
+                    {% if city.GTransfer or city.QTransfer %}
+                        <p class="airline_eng_tlt_">ترمینال</p>
+                    {% else %}
+                        <p class="airline_eng_tlt_">{{ city.ToAirport.AirportEn }}</p>
+                    {% endif %}
+                    {% if city.GTransfer or city.QTransfer %}
+                        <p class="airline_fa_tlt_">{{ city.GDest }}</p>
+                    {% else %}
+                        <p class="airline_fa_tlt_">{{ city.ToAirport.AirportFa }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-3 border_left_">
+                    {% if city.GTransfer %}
+                        <p class="tour_airline_tlt_">اتوبوس</p>
+                    {% elif city.QTransfer %}
+                        <p class="tour_airline_tlt_">قطار</p>
+                    {% else %}
+                        <p class="tour_airline_tlt_">{{ city.Airline }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-4 second_row">
+                    {% if city.GTransfer or city.QTransfer %}
+                        <p class="flight_class_">حمل و نقل زمینی</p>
+                    {% else %}
+                        <p class="flight_class_">{{ city.FlightClass }}</p>
+                    {% endif %}
+                    {% if city.GTransfer or city.QTransfer %}
+                        <p class="cargo_limit_"> - </p>
+                    {% else %}
+                        <p class="cargo_limit_">میزان بار مجاز : {{ city.Airline.AirlineCargo }} کیلوگرم</p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-4 second_row">
+                    <p class="Flight_time_">
+                        {% if city.GTransfer or city.QTransfer %}
+                            <p class="flight_class_">ساعت حرکت :</p>
+                            <p class="cargo_limit_ line_after">{{ city.FlightTime }}</p>
+                        {% else %}
+                            <p class="flight_class_">ساعت پرواز :</p>
+                            <p class="cargo_limit_ line_after">{{ city.FlightTime }}</p>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-lg-4 second_row">
+                    <p class="Flight_duration_">
+                        {% if city.GTransfer or city.QTransfer %}
+                            <p class="flight_class_">مدت سفر :</p>
+                            {% if city.FlightDuration %}
+                                <p class="cargo_limit_ line_after">{{ city.FlightDuration }}</p>
+                            {% else %}
+                                -
+                            {% endif %}
+                        {% else %}
+                            <p class="flight_class_"> مدت پرواز :</p>
+                            <p class="cargo_limit_ line_after">{{ city.FlightDuration }}</p>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+        {% if Tour.ShortDsc %}
+            <div class="short-desc">
+                {{ Tour.ShortDsc | safe }}
+            </div>
+        {% endif %}
+        {% for i in package %}
+            {% if i.HotelName.satrap_gte or i.Mhotel.satrap_gte or i.M1hotel.satrap_gte or i.M2hotel.satrap_gte or i.M3hotel.satrap_gte %}
+            <div class="row pakage_container">
+                {% include 'ui/mobile/5hotel.html' %}
+            </div>
+            {% endif %}
+        {% endfor %}
+        {% for i in package %}
+            {% if not i.HotelName.satrap_gte and not i.Mhotel.satrap_gte and not i.M1hotel.satrap_gte and not i.M2hotel.satrap_gte and not i.M3hotel.satrap_gte %}
+            <div class="row pakage_container">
+                {% include 'ui/mobile/5hotel.html' %}
+            </div>
+            {% endif %}
+        {% endfor %}
+        {% if Tour.Description %}
+            <div class="short-desc">
+                {{ Tour.Description | safe }}
+            </div>
+        {% endif %}
+    </div>
+</section>
+<section class="mobile_footer">
+    <div class="col-lg-12">
+        <div class="mobile_footer_inner">
+            <div class="col-lg-2">
+                <a href="/" class="logo-link mobile_view_"><img src="/static/Homepage/logo.png"></a>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+{% include 'ui/base/plugins.html' %}
+</html>

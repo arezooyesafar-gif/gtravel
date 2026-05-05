@@ -1,0 +1,117 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% load jalali_tags %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                مشاهده رزرو با شماره پیگیری
+                                <span style="color: red">{{ Order.OrderCode }}</span>
+                                به نام
+                                <span style="color: green">{{ Order.Name }} {{ Order.Family }}</span>
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'order-list' %}" class="link">لیست رزروها </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+    <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                    {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-6">
+            <div class="inner_section">
+                <div class="col-lg-12">
+                    <p class="label-text">نام<span class="required">*</span></p>
+                    {{ Form.Name }}
+                </div>
+                <div class="col-lg-12">
+                    <p class="label-text">نام خانوادگی<span class="required">*</span></p>
+                    {{ Form.Family }}
+                </div>
+                <div class="col-lg-12">
+                    <p class="label-text">شماره موبایل<span class="required">*</span></p>
+                    {{ Form.Mobile }}
+                </div>
+                <div class="col-lg-12">
+                    <p class="label-text">کد پیگیری <span class="required">*</span></p>
+                    {{ Form.OrderCode }}
+                </div>
+                <div class="col-lg-12" style="padding-bottom: 20px;">
+                    <p class="label-text">زمان رزرواسیون<span class="required">*</span></p>
+                    <p class='order-time'>{{ Order.OrderTime | to_jalali:'%Y/%m/%d - %H:%M:%S' }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="inner_section">
+                <div class="row">
+                    <div class="col-lg-12">
+                    <p class="label-text">تور <span class="required">*</span></p>
+                    {{ Form.OrderTour }}
+                </div>
+                <div class="col-lg-12">
+                    <p class="label-text">پکیج <span class="required">*</span></p>
+                    {{ Form.Orderpackage }}
+                </div>
+                <div class="col-lg-6">
+                    <p class="label-text">تعداد بزرگسال دو تخته <span class="required">*</span></p>
+                    {{ Form.adult }}
+                </div>
+                <div class="col-lg-6">
+                    <p class="label-text">تعداد بزرگسال یک تخته <span class="required">*</span></p>
+                    {{ Form.adult2 }}
+                </div>
+                <div class="col-lg-6">
+                    <p class="label-text">تعداد کودک با تخت <span class="required">*</span></p>
+                    {{ Form.chield }}
+                </div>
+                <div class="col-lg-6">
+                    <p class="label-text">تعداد کودک بدون تخت <span class="required">*</span></p>
+                    {{ Form.chield2 }}
+                </div>
+                <div class="col-lg-12">
+                    <p class="label-text">تعداد نوزاد <span class="required">*</span></p>
+                    {{ Form.infont }}
+                </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="inner_section">
+                <div class="col-lg-12">
+                    <p class="label-text">وضعیت ثبت<span class="required">*</span></p>
+                    {{ Form.OrderStat }}
+                </div>
+                <div class="col-lg-12">
+                    <p class="label-text">رزرو مشاهده شده است <span class="required">*</span></p>
+                    {{ Form.View }}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="inner_section">
+                <div class="col-lg-12" style="padding-bottom: 24px;">
+                    <p class="label-text">توضیحات <span class="required">*</span></p>
+                    {{ Form.description }}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <button type="submit" class="btn btn-lg btn-info btn-block">
+                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                    id="save-button-title">بروزرسانی رزرو</span>
+            </button>
+        </div>
+        </div>
+    </form>
+    </div>
+{% endblock %}

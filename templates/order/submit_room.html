@@ -1,0 +1,280 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'ui/base/head.html' %}
+
+    <title> ثبت رزرو تور {{ tour.Title }} </title>
+</head>
+<body>
+<div class="main-warper">
+    {% include 'ui/base/header.html' %}
+    {#    <section class="filter_section tour_detail_page">#}
+    {#        {% if Tour.tour_main %}#}
+    {#            <img src="{{ Tour.tour_main.url }}" alt="{{ Tour.Title }}">#}
+    {#        {% else %}#}
+    {#            <img src="/static/Homepage/Tour-Single-Page-Slide-01.jpg">#}
+    {#        {% endif %}#}
+    {#    </section>#}
+    <section class="tour_data">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="tour_data">
+                        <h6 class="side_title">مشخصات تور</h6>
+                        <div class="tour_info">
+                            <p class="tour_title_">{{ tour.Title }}</p>
+                            <p class="hotel_title_">{{ package.HotelName.HotelName }}</p>
+                            <p class="tour_date">تاریخ رفت : {{ tour.StartDate|to_jalali:'%Y/%m/%d' }}</p>
+                            <p class="tour_duration">مدت اقامت : {{ tour.NightCount }}</p>
+                            <p class="tour_airline">ایرلاین : {{ cities.Airline.AirLineTitle }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="reserve_form">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <p class="reserve_title">
+                                    تعداد مسافران اتاق را مشخص کنید
+                                    <span class="info_label">ظرفیت اتاق حداکثر سه نفر میباشد.</span>
+                                </p>
+                            </div>
+                            <div class="col-lg-4">
+                                {% if order_items %}
+                                    <p id="alert_box" class="alert_text">
+                                        تعداد اتاق های رزرو شده :
+                                        {{ order_items.count }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <p class="label-text">تعداد بزرگسال</p>
+                                <input id="adult_c" type="number" min="1" value="2" max="3" class="form-control">
+                            </div>
+                            <div class="col-lg-3">
+                                <p class="label-text">تعداد کودک با تخت</p>
+                                <input id="baby_wb_c" type="number" min="0" max="1" value="0" class="form-control">
+                            </div>
+                            <div class="col-lg-3">
+                                <p class="label-text">تعداد کودک بدون تخت</p>
+                                <input id="baby_wob_c" type="number" min="0" max="1" value="0" class="form-control">
+                            </div>
+                            <div class="col-lg-3">
+                                <p class="label-text">تعداد نوزاد</p>
+                                <input id="infont_c" type="number" min="0" max="1" value="0" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="reserve_billing_info">
+                        <p class="reserve_title">
+                            جزئیات صورتحساب اتاق جدید
+                        </p>
+                        <div class="row" style="padding-right: 40px;">
+                            <div class="col-lg-6 biliing_row">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p class="label-text"> بزرگسال</p>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p id="adult_count" class="label-text count">2</p>
+                                    </div>
+                                    <div class="col-lg-6 price_culm">
+                                        <p id="adult_price" class="label-text price">
+                                            {% widthratio package.DoubleBedPrice 1 2 as result %}
+                                            {{ result|intcomma }}
+                                        </p>
+                                        <span class="currency">تومان</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6 biliing_row">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p class="label-text"> کودک با تخت</p>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p id="Baby_wb_count" class="label-text count">0</p>
+                                    </div>
+                                    <div class="col-lg-6 price_culm">
+                                        <p id="Baby_wb_price" class="label-text price">0</p>
+                                        <span class="currency">تومان</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 biliing_row">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p class="label-text"> کودک بدون تخت</p>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p id="baby_wob_count" class="label-text count">0</p>
+                                    </div>
+                                    <div class="col-lg-6 price_culm">
+                                        <p id="Baby_wob_price" class="label-text price">0</p>
+                                        <span class="currency">تومان</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 biliing_row">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p class="label-text">تعداد نوزاد</p>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p id="infont_count" class="label-text count">0</p>
+                                    </div>
+                                    <div class="col-lg-6 price_culm">
+                                        <p id="infont_price" class="label-text price">0</p>
+                                        <span class="currency">تومان</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 biliing_row total_">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <p class="label-text total_price_legend">جمع کل مبلغ :</p>
+                                    </div>
+                                    <div class="col-lg-6 price_culm">
+                                        <p id="total_price" class="label-text total_price">0</p>
+                                        <span class="currency total">تومان</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <a id="room" href="" class="add_room">ثبت اتاق و افزودن اتاق جدید</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="rooms_data">
+                        <p class="rooms_data_header">
+                            اتاق های ثبت شده
+                        </p>
+                        <div class="row" style="padding-right: 35px;">
+                            <div class="col-lg-1 rooms_headers">
+                                ردیف
+                            </div>
+                            <div class="col-lg-1 rooms_headers">
+                                بزرگسال
+                            </div>
+                            <div class="col-lg-2 rooms_headers">
+                                کودک با تخت
+                            </div>
+                            <div class="col-lg-2 rooms_headers">
+                                کودک بدون تخت
+                            </div>
+                            <div class="col-lg-1 rooms_headers">
+                                نوزاد
+                            </div>
+                            <div class="col-lg-3 rooms_headers">
+                                جمع کل
+                            </div>
+                            <div class="col-lg-2 rooms_headers">
+                                حذف اتاق
+                            </div>
+                        </div>
+                        {% for i in order_items %}
+                            <div class="row" style="padding-right: 35px;">
+                                <div class="col-lg-12" style="padding: 0;">
+                                    <p class="reserve_main_info">
+                                        <span class="tour_name">
+                                            نام تور :
+                                        {{ i.tour }}
+                                        </span>
+                                         -
+                                        <span class="package_name">
+                                            پکیج انتخابی :
+                                        {{ i.package.HotelName.HotelName }}
+                                        </span>
+
+                                    </p>
+                                </div>
+                                <div class="col-lg-1 rooms_data_cell">
+                                    {{ forloop.counter }}
+                                </div>
+                                <div class="col-lg-1 rooms_data_cell">
+                                    {{ i.adults }} نفر
+                                </div>
+                                <div class="col-lg-2 rooms_data_cell">
+                                    {{ i.baby_with_bed }} نفر
+                                </div>
+                                <div class="col-lg-2 rooms_data_cell">
+                                    {{ i.baby_with_out_bed }} نفر
+                                </div>
+                                <div class="col-lg-1 rooms_data_cell">
+                                    {{ i.infont }} نفر
+                                </div>
+                                <div class="col-lg-3 rooms_data_cell">
+                                    {{ i.total_item_price|intcomma }} تومان
+                                </div>
+                                <div class="col-lg-2 rooms_data_cell">
+                                   <a href="{% url 'remove_order_item' i.id %}" class="remove_room"> حذف اتاق</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="row" style="padding-right: 35px;padding-bottom: 25px;">
+                            <div class="col-lg-8 total_biling_header">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <p class="label-text total_price_legend">
+                                            مجموع مبلغ رزروها
+                                        </p>
+{#                                        <p class="label-text total_price_legend">#}
+{#                                            مبلغ پیش پرداخت :#}
+{#                                        </p>#}
+
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <p id="total_price" class="label-text total_price">
+                                            {{ total_items_price|intcomma }}
+                                        </p>
+                                        <span class="currency total">تومان</span>
+{#                                        <div>#}
+{#                                            <p id="total_price" class="label-text total_price">#}
+{#                                            {{ pre_paid_price|intcomma }}#}
+{#                                        </p>#}
+{#                                        <span class="currency total">تومان</span>#}
+{#                                        </div>#}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4 total_billing_price">
+                                <a id="submit" href="{% url 'order_view' order_items.0.order.id %}" class="submit_order">تایید اطلاعات رزرو و پرداخت</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% include 'ui/base/feature.html' %}
+    {% include 'ui/base/footer.html' %}
+</div>
+{% include 'ui/base/plugins.html' %}
+<script>
+    var DoubleBedPrice = {{ package.DoubleBedPrice }}
+    var SingleBedPrice = {{ package.SingleBedPrice }}
+    var BabyWithBedPrice = {{ package.BabyWithBedPrice }}
+    var BabyWithoutBedPrice = {{ package.BabyWithoutBedPrice }}
+    var InfontPrice = {{ package.InfontPrice }}
+    var basePrice = {{ result }}
+    var tour_id = {{ tour.id }}
+    var pacjage_id = {{ package.id }}
+</script>
+</body>
+</html>

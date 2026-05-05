@@ -1,0 +1,231 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    {% include 'ui/base/head.html' %}
+    <link rel=“canonical” href="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{{ category.meta_desc }}">
+    <meta name="keywords" content="{{ category.meta_keyword }}">
+    {% if category.page_title %}
+        <title>{{ category.page_title }}</title>
+    {% else %}
+        <title>مجله گردشگری | {{ category }} |شرکت خدمات مسافرت هوایی و گردشگری آرزوی سفر پارسیان</title>
+    {% endif %}
+</head>
+<body>
+{% include 'ui/base/header.html' %}
+{% include 'ui/base/preloader.html' %}
+<div class="warp">
+    <section class="blog_intro_posts">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <a style="height:301px;" class="blog_post_index blog_page" href="{% url 'post-detail' Posts.0.id Posts.0.slug %}">
+                        <div class="_blog_page_post_cat">
+                            <p class="_blog_cat">
+                                {{ Posts.0.Category }}
+                            </p>
+                        </div>
+                        <div>
+                            <img alt="{{ Posts.0.Title }}" class="post_image_index" src="{{ Posts.0.Image.url }}">
+                        </div>
+
+                        <div class="post_title_index">
+                            <p class="_index_title blog_page">
+                                {{ Posts.0.Title|truncatechars:40 }}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    {% for post in Posts %}
+                        {% if forloop.counter > 1 and forloop.counter < 4 %}
+                            <a class="blog_post_index blog_page" href="{% url 'post-detail' post.id post.slug %}">
+                                <div class="_blog_page_post_cat">
+                                    <p class="_blog_cat">
+                                        {{ post.Category }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <img alt=" {{ post.Title }}" class="post_image_index" src="{{ post.Image.url }}">
+                                </div>
+
+                                <div class="post_title_index">
+                                    <p class="_index_title blog_page mini_blog">
+                                        {{ post.Title|truncatechars:35 }}
+                                    </p>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col-lg-3">
+                    {% for post in Posts %}
+                        {% if forloop.counter > 4 and forloop.counter < 7 %}
+                            <a class="blog_post_index blog_page" href="{% url 'post-detail' post.id post.slug %}">
+                                <div class="_blog_page_post_cat">
+                                    <p class="_blog_cat">
+                                        {{ post.Category }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <img alt="{{ post.Title }}" class="post_image_index" src="{{ post.Image.url }}">
+                                </div>
+
+                                <div class="post_title_index">
+                                    <p class="_index_title blog_page mini_blog">
+                                        {{ post.Title|truncatechars:35 }}
+                                    </p>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="all_post_list">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 list_post_">
+                    <h5 class="_all_post_list_header">
+                        <span><i class="fa fa-bars"></i></span>
+                        مطالب وبلاگ گردشگری
+                    </h5>
+                    {% for post in data %}
+                        <a href="/blog/{{ post.id }}/{{ post.slug }}">
+                        <div class="post_body_">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="post_image_">
+                                            <img alt="{{ post.Title }}" src="{{ post.Image.url }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="post_title_body">
+                                            <h3 class="post_title_">{{ post.Title }}</h3>
+                                        </div>
+                                        <div class="post_desc_short">
+                                            {{ post.ShortDesc | safe | truncatechars:260 }}
+                                        </div>
+                                        <div class="post_read_more_">
+                                            <span class="read_more_btn_">
+                                                مطالعه بیشتر
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                        </a>
+                    {% endfor %}
+                    <div class="pagination">
+                        <ul class="pagination">
+                            {% if data.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">begin</span>
+                                    </a>
+                                </li>   {% endif %}
+
+                            {% for n in data.paginator.page_range %}
+                                {% if data.number == n %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+                                    </li>
+                                {% elif n > data.number|add:'-10' and n < data.number|add:'10' %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if data.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ data.paginator.num_pages }}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">end</span>
+                                    </a>
+                                </li>
+                            {% endif %}   </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 category_list">
+                    <div class="container">
+                        <div class="fav_box">
+                            <h5 class="_all_fav_list_header">
+                                <span><i class="fa fa-podcast"></i></span>
+                                دسته بندی ها
+                            </h5>
+                            <nav class='animated bounceInDown bg-white'>
+                                <ul>
+                                    {% for i , k in categories %}
+                                        {% if not i.parentCat %}
+                                            <li class="main-category sub-menu">
+                                                <a href='{% url 'blog-category' i.slug i.id %}'>{{ i.CatName }}
+                                                </a>
+                                                {% if k != 0 %}
+                                                    <div class='menu-toggle-box left'>
+                                                        <img src="/media/down-arrow.png">
+                                                    </div>
+                                                {% endif %}
+                                                <ul>
+                                                    {% for j in ch_categories %}
+                                                        {% if j.parentCat == i %}
+                                                            <li>
+                                                                <a href='{% url 'blog-category' j.slug j.id %}'>{{ j.CatName }}</a>
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                </ul>
+                            </nav>
+                        </div>
+                        {#                        <div class="link_box">#}
+                        {#                            <h5 class="_all_satrap_links_header">#}
+                        {#                                <span><i class="fa fa-info-circle"></i></span>#}
+                        {#                                لینک های مفید#}
+                        {#                            </h5>#}
+                        {#                            <ul class="useful_links">#}
+                        {#                                <li class="link_item">#}
+                        {#                                    <a href="" class="link_item_url">#}
+                        {#                                        <span><i class="fa fa-plane link_item rotate"></i> </span>#}
+                        {#                                        خرید بیلط هواپیما داخلی و خارجی#}
+                        {#                                    </a>#}
+                        {#                                </li>#}
+                        {#                                <li class="link_item">#}
+                        {#                                    <a href="" class="link_item_url">#}
+                        {#                                        <span><i class="fa fa-briefcase link_item"></i> </span>#}
+                        {#                                        خرید تــور داخلی و خارجی#}
+                        {#                                    </a>#}
+                        {#                                </li>#}
+                        {#                                <li class="link_item">#}
+                        {#                                    <a href="" class="link_item_url">#}
+                        {#                                        <span><i class="fa fa-building link_item"></i> </span>#}
+                        {#                                        خرید هتــل داخلی و خارجی#}
+                        {#                                    </a>#}
+                        {#                                </li>#}
+                        {#                            </ul>#}
+                        {#                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% include 'ui/base/footer.html' %}
+    {% include 'ui/base/plugins.html' %}
+    <script>
+        $('.sub-menu ul').hide();
+        $(".menu-toggle-box").click(function () {
+            $(this).parent(".sub-menu").children("ul").slideToggle("100");
+            $(this).find(".left").toggleClass("fa-caret-up fa-caret-down");
+        });
+    </script>
+</div>
+</body>
+</html>

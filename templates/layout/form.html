@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta Tags -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta name="theme-color" content="" />
+        <!-- Title -->
+        <title>E-Visa request submmition</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
+        <!-- Theme CSS -->
+        <link rel="stylesheet" href="/static/layout/assets/css/style.css" />
+        <link rel="stylesheet" href="/static/layout/assets/css/responsive.css" />
+    </head>
+    <body>
+        <header>
+            <nav>
+                <div class="top-header">
+                    <div class="container">
+                        <div>
+                            <a href=""><img src="/static/layout/assets/images/logo.png" alt="" /></a>
+                        </div>
+                        <div>
+                            <ul>
+                                <li><a href="/">Home</a></li>
+                                {% if request.user.is_superuser %}
+                                <li><a href="">Admin</a></li>
+                                {% endif %}
+                                <li><a href="" style="font-family: 'yekan';">
+                                    {% if prof.agancy_name %}
+                                        {{ prof.agancy_name }}
+                                    {% else %}
+                                    {{ user.get_full_name }}
+                                    {% endif %}
+                                </a></li>
+                                <li><a href="{% url 'logout' %}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-header">
+                    <div class="container">
+                        <span>Personal account</span>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <section>
+                <div class="container">
+                    <form method="post" class="box-main" novalidate="validate">
+                        {% csrf_token %}
+                        <div class="child">
+                            <div>
+                                <label for="" class="disabled">Application Number</label>
+                                <input type="text" class="form-control" value="ev-{{ item.trs_number }}" disabled/>
+                                <p>توضیحات : <span>شماره اپلیکیشن</span></p>
+                            </div>
+                            <div>
+                                <label for="">Passport Number</label>
+                                {{forms.cz_passport}}
+                                <p>توضیحات : <span>شماره پاسپورت</span></p>
+                    
+                            </div>
+                            <div>
+                                <label for="">Date of issue</label>
+                                {{forms.passport_issue}}
+                                <p>توضیحات : <span>تاریخ صدور پاسپورت</span></p>
+                            </div>
+                            <div>
+                                <label for="">Date of expiry</label>
+                                {{forms.passport_expire}}
+                                <p>توضیحات : <span>تاریخ انقضا پاسپورت</span></p>
+                            </div>
+                            <div>
+                                <label for="">Surname</label>
+                                {{forms.requester_family}}
+                                <p>توضیحات : <span>نام خانوادگی</span></p>
+                            </div>
+                            <div>
+                                <label for="">Name</label>
+                                {{forms.requester_name}}
+                                <p>توضیحات : <span>نام</span></p>
+                            </div>
+                            <div>
+                                <h5>Sex :</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault1" />
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Male
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input  class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault1" />
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Female
+                                    </label>
+                                </div>
+                                <p>توضیحات : <span>جنسیت را انتخایب کنید</span></p>
+                            </div>
+                            <div>
+                                <label for="">Travel history in  past 3 years</label>
+                                {{forms.travel_history}}
+                                <p>توضیحات : <span>تاریخچه سفر متقاضی </span></p>
+                            </div>
+                            <div>
+                                <label for="">Date of entry to russia</label>
+                                {{forms.data_entry_russia}}
+                                <p>توضیحات : <span>تاریخ سفر به روسیه</span></p>
+                            </div>
+                            <div>
+                                <div>
+                                    <label for="">Military services date of start</label>
+                                    {{ forms.military_start_date }}
+                                    <p>توضیحات : <span>زمان آغاز خدمت سربازی</span></p>
+                                </div>
+                                <div>
+                                    <label for="">Date of end</label>
+                                    {{forms.military_end_date}}
+                                    <p>توضیحات : <span>زمان پایان خدمت سربازی</span></p>
+                                </div>
+                                <div>
+                                    <label for="">Military service branch</label>
+                                    {{forms.military_type}}
+                                    <p>توضیحات : <span>شاخه نظامی خدمت سربازی</span></p>
+                                </div>
+                                <div>
+                                    <label for="">Military service place</label>
+                                    {{forms.military_location}}
+                                    <p>توضیحات : <span>محل خدمت سربازی</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="child">
+                            <div class="upload-holder">
+                                <div class="child-upload">
+                                    <label for="upload1" class="upload-label">
+                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M400 421.3V154.7c0-23.5-19.2-42.7-42.7-42.7H90.7C67.2 112 48 131.2 48 154.7v266.7c0 23.5 19.2 42.7 42.7 42.7h266.7c23.4-.1 42.6-19.3 42.6-42.8zM157.3 304l45.3 64 66.7-96 88 128H90.7l66.6-96z"
+                                            ></path>
+                                            <path d="M421.3 48H154.7C131.2 48 112 67.2 112 90.7V96h261.3c23.5 0 42.7 19.2 42.7 42.7V400h5.3c23.5 0 42.7-19.2 42.7-42.7V90.7c0-23.5-19.2-42.7-42.7-42.7z"></path>
+                                        </svg>
+                                        Photo Upload <span>(بارگذاری تصویر)</span>
+                                        <p class="w-100"></p>
+                                    </label>
+                                    <input type="file" id="upload1" hidden />
+                                </div>
+                                <div class="child-upload">
+                                    <label for="upload2" class="upload-label">
+                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M0 64C0 28.7 28.7 0 64 0H384c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM183 278.8c-27.9-13.2-48.4-39.4-53.7-70.8h39.1c1.6 30.4 7.7 53.8 14.6 70.8zm41.3 9.2l-.3 0-.3 0c-2.4-3.5-5.7-8.9-9.1-16.5c-6-13.6-12.4-34.3-14.2-63.5h47.1c-1.8 29.2-8.1 49.9-14.2 63.5c-3.4 7.6-6.7 13-9.1 16.5zm40.7-9.2c6.8-17.1 12.9-40.4 14.6-70.8h39.1c-5.3 31.4-25.8 57.6-53.7 70.8zM279.6 176c-1.6-30.4-7.7-53.8-14.6-70.8c27.9 13.2 48.4 39.4 53.7 70.8H279.6zM223.7 96l.3 0 .3 0c2.4 3.5 5.7 8.9 9.1 16.5c6 13.6 12.4 34.3 14.2 63.5H200.5c1.8-29.2 8.1-49.9 14.2-63.5c3.4-7.6 6.7-13 9.1-16.5zM183 105.2c-6.8 17.1-12.9 40.4-14.6 70.8H129.3c5.3-31.4 25.8-57.6 53.7-70.8zM352 192A128 128 0 1 0 96 192a128 128 0 1 0 256 0zM112 384c-8.8 0-16 7.2-16 16s7.2 16 16 16H336c8.8 0 16-7.2 16-16s-7.2-16-16-16H112z"
+                                            ></path>
+                                        </svg>
+                                        Passport Upload <span>(بارگذاری پاسپورت)</span>
+                                        <p class="w-100"></p>
+                                    </label>
+                                    <input type="file" id="upload2" hidden />
+                                </div>
+                            </div>
+                            <div>
+                                <h5>Father informartion :</h5>
+                                <ul>
+                                    <li>
+                                        <label for="">Surname</label>
+                                        {{forms.rq_father_family}}
+                                        <p>توضیحات : <span>نام خانوادگی پدر</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Name</label>
+                                        {{forms.rq_father_name}}
+                                        <p>توضیحات : <span>نام پدر</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Date of birth</label>
+                                        {{forms.rq_father_brd}}
+                                        <p>توضیحات : <span>تاریخ تولد پدر</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Place of birth</label>
+                                        {{forms.rq_father_brd_location}}
+                                        <p>توضیحات : <span>محل تولد پدر</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5>Mother information :</h5>
+                                <ul>
+                                    <li>
+                                        <label for="">Surname</label>
+                                        {{forms.rq_mother_family}}
+                                        <p>توضیحات : <span>نام خانوادگی مادر</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Name</label>
+                                        {{forms.rq_mother_name}}
+                                        <p>توضیحات : <span>نام مادر</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Date of birth</label>
+                                        {{forms.rq_mother_brd}}
+                                        <p>توضیحات : <span>تاریخ تولد مادر</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Place of birth</label>
+                                        {{forms.rq_mother_brd_location}}
+                                        <p>توضیحات : <span>محل تولد مادر</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5>Where do you currently live?</h5>
+                                <label for="">Adress</label>
+                                {{forms.address}}
+                                <p>توضیحات : <span> آدرس محل سکونت متقاضی </span></p>
+                                <ul>
+                                    <li>
+                                        <label for="">Phone number</label>
+                                        {{forms.phone}}
+                                        <p>توضیحات : <span>شماره تماس</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Personal email</label>
+                                        {{forms.email}}
+                                        <p>توضیحات : <span> آدرس ایمیل متقاضی </span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5>Work/Study information :</h5>
+                                <ul>
+                                    <li>
+                                        <label for="">Job title</label>
+                                        {{forms.job_title}}
+                                        <p>توضیحات : <span>نام محل کار/تحصیل متقاضی </span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Job placename</label>
+                                        <input type="text" class="form-control" />
+                                        <p>توضیحات : <span>سمت شغلی متقاضی </span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Job address</label>
+                                        {{forms.job_address}}
+                                        <p>توضیحات : <span>آدرس کار/تحصیل متقاضی </span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Phone number</label>
+                                        {{forms.job_phone}}
+                                        <p>توضیحات : <span>شماره تلفن کار/تحصیل متقاضی </span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Email</label>
+                                        {{forms.job_email}}
+                                        <p>توضیحات : <span>آدرس ایمیل کار/تحصیل متقاضی </span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div>
+                                    <h5>Do you have any relatives in russia?</h5>
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="yes" type="radio" name="russia" id="russia1" />
+                                        <label class="form-check-label" id="russia1">
+                                            Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="no" type="radio" name="russia" id="russia2" />
+                                        <label class="form-check-label" id="russia2">
+                                            No
+                                        </label>
+                                    </div>
+                                    <p>توضیحات : <span>افوام و بستگان در روسیه</span></p>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <label for="">Relation degree</label>
+                                        {{forms.relation_degree}}
+                                        <p>توضیحات : <span>نوع نسبت</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Name</label>
+                                        {{forms.relation_name}}
+                                        <p>توضیحات : <span>نام</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Surname</label>
+                                        {{forms.relation_family}}
+                                        <p>توضیحات : <span>نام خانوادگی</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Date of birth</label>
+                                        {{forms.relation_brd_date}}
+                                        <p>توضیحات : <span>تاریخ تولد</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Sex</label>
+                                        {{forms.relation_sex}}
+                                        <p>توضیحات : <span>جنسیت</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Address</label>
+                                        {{forms.relation_Address}}
+                                        <p>توضیحات : <span>آدرس</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div>
+                                    <h5>Have you studied upper highschool?</h5>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault3" id="flexRadioDefault1" />
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault3" id="flexRadioDefault1" />
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            No
+                                        </label>
+                                    </div>
+                                    <p>توضیحات : <span>تحصیلات دانشگاهی</span></p>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <label for="">Name of organization</label>
+                                        {{forms.uni_name}}
+                                        <p>توضیحات : <span>نام دانشگاه</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Address</label>
+                                        {{forms.uni_address}}
+                                        <p>توضیحات : <span>آدرس دانشگاه</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5>Which organization or which person are you going to:</h5>
+                                <ul>
+                                    <li class="grid-col-full">
+                                        <label for="">Name of organization or person (name and family)</label>
+                                        {{forms.orogin_name}}
+                                        <p>توضیحات : <span>نام هتل یا محل اقامت شما در روسیه</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Address</label>
+                                        {{ forms.orogin_address }}
+                                        <p>توضیحات : <span>آدرس محل اقامت</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Phone number</label>
+                                        {{forms.orogin_phone}}
+                                        <p>توضیحات : <span>شماره تماس محل اقامت</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">Email</label>
+                                        {{forms.orogin_email}}
+                                        <p>توضیحات : <span>ایمیل محل اقامت</span></p>
+                                    </li>
+                                    <li>
+                                        <label for="">City</label>
+                                        {{forms.orogin_city}}
+                                        <p>توضیحات : <span>شهر محل اقامت</span></p>
+                                    </li>
+                                </ul>
+                                <button type="submit" class="btn btn-theme">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+        <script src="/static/layout/assets/js/main.js"></script>
+        <!-- /scripts -->
+    </body>
+</html>

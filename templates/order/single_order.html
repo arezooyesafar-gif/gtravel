@@ -1,0 +1,146 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% load humanize %}
+{% block Main %}
+    {% load jalali_tags %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                مشاهده سفارش شماره
+                                <span class="change down">{{ order.order_number }}</span>
+                            </h6>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-lg-3">
+            <div class="inner_section">
+                <p class="order_label">
+                    رزرو کننده تور:
+                </p>
+                <p class="order_creator change down">
+                    {{ order.user.get_full_name }}
+                </p>
+                <p class="order_label">
+                    تاریخ ثبت:
+                </p>
+                <p class="order_date">
+                    {{ order.paid_date|to_jalali:"%Y/%m/%d" }}
+                </p>
+                <p class="order_label">
+                    وضعیت پرداخت:
+                </p>
+                <p class="payment_stat">
+                    {% if order.paid %}
+                        <span class="change up">
+                        پرداخت شده
+                        </span>
+                    {% else %}
+                        <span class="change down">
+                        پرداخت نشده
+                        </span>
+                    {% endif %}
+                </p>
+                <p class="order_label">
+                    مبلغ پرداخت:
+                </p>
+                <p class="order_price change up">
+                    {{ order.paid_amount|intcomma }} تومان
+                </p>
+                <p class="order_label">
+                    مبلغ مانده:
+                </p>
+                <p class="order_price change down">
+                    {{ order.debit|intcomma }} تومان
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="inner_section">
+                <table class="table BranchTable">
+                    <thead>
+                    <tr>
+                        <th class="TbHead">ردیف</th>
+                        <th class="TbHead">پکیج</th>
+                        <th class="TbHead">تعداد بزرگسال</th>
+                        <th class="TbHead">تعداد کودک با تخت</th>
+                        <th class="TbHead">تعداد کودک بدون تخت</th>
+                        <th class="TbHead">تعداد نوزاد</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in order_items %}
+                        <tr>
+                            <td class="TbCells serial">{{ forloop.counter }}</td>
+                            <td class="TbCells serial">{{ item.package }}</td>
+                            <td class="TbCells serial">
+                                {{ item.adults }} نفر
+                            </td>
+                            <td class="TbCells serial">
+                                {{ item.baby_with_bed }} نفر
+                            </td>
+                            <td class="TbCells serial">
+                                {{ item.baby_with_out_bed }} نفر
+                            </td>
+                            <td class="TbCells serial">
+                                {{ item.infont }} نفر
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <table class="table BranchTable" style="margin-top: 30px">
+                    <thead>
+                    <tr>
+                        <th class="TbHead">ردیف</th>
+                        <th colspan="4" class="TbHead">پکیج</th>
+                        <th class="TbHead">جمع کل مبلغ</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in order_items %}
+                        <tr>
+                            <td class="TbCells serial">{{ forloop.counter }}</td>
+                            <td colspan="4" class="TbCells serial">{{ item.package }}</td>
+                            <td class="TbCells serial">
+                                {{ item.total_item_price|intcomma }} تومان
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="5" class="TbCells total">
+                            مجموع مبلغ قابل پرداخت
+                        </td>
+                        <td class="TbCells total_price">
+                            {{ order.order_total|intcomma }} تومان
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="TbCells total">
+                            مبلغ پرداخت شده
+                        </td>
+                        <td class="TbCells total_price">
+                            {{ order.paid_amount|intcomma }} تومان
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #efefef;">
+                        <td colspan="5" class="TbCells total">
+                            مبلغ مانده
+                        </td>
+                        <td class="TbCells debit_price">
+                            {{ order.debit|intcomma }} تومان
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

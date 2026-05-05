@@ -1,0 +1,45 @@
+﻿{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                ایجاد/بروزرسانی پکیج
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-lg-12">
+            <div class="inner_section">
+                <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <p class="label-text">نام پکیج<span class="required">*</span></p>
+                            {{ form.PackageName }}
+                        </div>
+                        <div class="col-lg-4">
+                            <button type="submit" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                    id="save-button-title">ذخیره اطلاعات پکیج</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="row ">
+        <div id="Mpackages">
+
+        </div>
+    </div>
+{% endblock %}

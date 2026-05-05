@@ -1,0 +1,71 @@
+{% load jalali_tags %}
+<table class="table BranchTable">
+    <thead>
+    <tr>
+        <th class="TbHead">ردیف</th>
+        <th class="TbHead">نام کاربری</th>
+        <th class="TbHead">نام و نام خانوادگی</th>
+        <th class="TbHead">وضعیت حساب</th>
+        <th class="TbHead">تاریخ ثبت نام</th>
+        <th class="TbHead">تاریخ آخرین ورود</th>
+        <th class="TbHead">اقدامات لازم</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for user in users %}
+            <td class="TbCells serial">{{ forloop.counter }}</td>
+            <td class="TbCells">{{ user.username }}</td>
+            <td class="TbCells">{{ user.get_full_name }}</td>
+            <td class="TbCells">
+                {% if user.is_active %}
+                    فعال
+                {% else %}
+                    غیر فعال
+                {% endif %}
+            </td>
+            <td class="TbCells">{{ user.date_joined|to_jalali:'%Y/%m/%d' }}</td>
+            <td class="TbCells">{{ user.last_login|to_jalali:'%Y/%m/%d' }}</td>
+            <td class="TbCells">
+                <div class="dropdown">
+                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                       data-bs-toggle="dropdown"><em
+                            class="icon ni ni-more-h"></em></a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                        <ul class="link-list-plain">
+                            <li><a href="{% url 'user_profile_update' user.id %}">ویرایش</a>
+                            </li>
+                        {% if request.user.id == user.id %}
+                            <li><a href="{% url 'reset_password_admin' user.id %}">تغییر گذرواژه</a>
+                            </li>
+                        {% endif %}
+                            <li><a href="{% url 'wallet_data' user.id %}">کیف پول</a>
+                            </li>
+                            {% if request.user.id == user.id %}
+                            <li><a style="color: red"
+                                   href="{% url 'delete_user' user.id %}">حذف</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div>
+    <ul class="pagination">
+        {% for n in users.paginator.page_range %}
+            {% if users.number == n %}
+                <li data-page='{{ n }}'
+                    class="page-item {% if users.number == n %}active{% endif %}"><a
+                        class="page-link">{{ n }}</a></li>
+            {% elif n > users.number|add:'-10' and n < users.number|add:'10' %}
+                <li data-page='{{ n }}'
+                    class="page-item {% if users.number == n %}active{% endif %}"><a
+                        class="page-link">{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,38 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                بارگذاری فایل بر روی سرور
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'file_list' %}" class="link">لیست فایل ها </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-8" style="margin-top: 20px; margin-bottom: 20px; padding-right: 40px">
+                            {{ form.file }}
+                        </div>
+                        <div class="col-lg-4">
+                            <button class="file_upload_" type="submit">بارگذاری فایل  بر روی سرور</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

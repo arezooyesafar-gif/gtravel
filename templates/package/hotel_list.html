@@ -1,0 +1,4 @@
+<option value="">انتخاب هتل</option>
+{% for i in hotels %}
+    <option value="{{ i.id }}">{{ i.HotelName }} - {{ i.Hcity.Name }}</option>
+{% endfor %}

@@ -1,0 +1,16 @@
+<div class="citt_list">
+<a onclick="backToList({{ country.menu_position }})" class="all_tour_country">
+بازگشت
+</a>
+<a href="{% url 'all-tour-country' country.slug country.id %}">
+<img loading="lazy" class="country_flag_menu" src="{{country.Flagimg.url}}">
+                                                <span class="city_title_menu">تور {{ country.TitleC }}</span>
+</a>
+    {% for i in tours_cities %}
+        <a href="{% url 'city-tours' i.slug i.id %}">
+            <li class="city_manu_name">
+                تور {{ i }}
+            </li>
+        </a>
+    {% endfor %}
+</div>

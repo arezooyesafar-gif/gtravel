@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    {% load static %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://arezoosafar.com/all-tour"/>
+    {% if Menu %}
+        <meta name="description" content="{{ Menu.meta_description }}">
+        <meta name="keywords" content="{{ Menu.meta_keywords }}">
+    {% else %}
+        <meta name="description"
+              content=" رزرو تور اقساطی بدون ضامن | آرزوی سفر پارسیان ارائه دهنده تورهای قسطی با پایین ترین کارمزد– مشاوره و رزرو تور قسطی تماس با 02145128">
+        <meta name="keywords" content="تورهای قسطی، تور قسطی ،تورهای اقساطی ، تور اقساطی">
+    {% endif %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-35DTMEQBTC');
+    </script>
+    {% include 'ui/base/head.html' %}
+    {% if Menu.page_title %}
+        <title> {{ Menu.page_title }} </title>
+    {% else %}
+        <title> تور اقساطی بدون ضامن | تور قسطی با آرزوی سفر✈️ </title>
+    {% endif %}
+
+</head>
+<body>
+{% include 'ui/base/header.html' %}
+<div class="warp">
+    {% csrf_token %}
+    <section class="destinaton_selector">
+        <div class="container">
+            <div class="row country_box">
+                <div class="col-sm-12 col-lg-4">
+                    <img loading="lazy" class="country_main_image d-sm-none d-lg-block"
+                         src="/static/asset/css/images/world-map.png">
+                </div>
+                <div class="col-sm-12 col-lg-8">
+                    <h5 class="blog_sec_title">مقصدت کجاس؟</h5>
+                    <p class="spacial_tour_subtitle_">
+                        کشور و شهر مورد نظرت رو انتخاب کن و تورهاش رو ببین
+                    </p>
+                    <div class="row">
+                        <div class="owl-dest owl-carousel owl-theme">
+                            {% for i in spacialDest_tour %}
+                                <div class="text-center spacial-distenation">
+                                    {% if i.country %}
+                                        <a href="{% url 'all-tour-country' i.country.slug i.country.id %}">
+                                    {% else %}
+                                        <a href="{% url 'city-tours' i.city.slug i.city.id %}">{% endif %}
+                                    <div class="pdest_image">
+                                        <img loading="lazy" src="{{ i.tourpage_icon.url }}" width="84" height="84">
+                                    </div>
+                                    <div class="pdest_name">
+                                        <p>تور
+                                            {% if i.country %}
+                                                {{ i.country }}
+                                            {% else %}
+                                                {{ i.city }}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="tour_list_page
+        {% if not cities or not countries %}margin_top{% endif %}
+        {% if origins %}origin_top{% endif %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="blog_sec_title" style="margin-bottom: 30px;padding-right: 0;">لیست آخرین تورهای
+                        {{ Menu.MenuTitle }}</h1>
+                    <div class="row">
+                        <div class="order-sm-last col-lg-3 order-lg-first">
+                            <div id="sidebar" class="sticky_menu">
+                                <div class="contact-banner">
+                                    <p class="reseve-title">
+                                        دریافت مشاوره و رزرو تور
+                                    </p>
+                                    <p class="reseve-phone">
+                                        021-45128
+                                    </p>
+                                    <p class="reseve-desc">
+                                        کارشناسان ما پاسخگوی شما خواهند بود
+                                    </p>
+                                </div>
+                                <div class="sidebar-container">
+                                    <div class="accordion" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <p class="accordion-header" id="headingOne">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseOne" aria-expanded="true"
+                                                        aria-controls="collapseOne">
+                                                    محدوده قیمت
+                                                </button>
+                                            </p>
+                                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                                 aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body filter-side">
+                                                    <div class="range-input">
+                                                        <div class="range_container">
+                                                            <div class="sliders_control">
+                                                                <input id="toSlider" onchange="SidebarFilter()"
+                                                                       type="range" value="100000000"
+                                                                       min="0"
+                                                                       max="100000000"
+                                                                       aria-label="حداکثر قیمت"/>
+                                                                <input id="fromSlider" onchange="SidebarFilter()"
+                                                                       type="range" value="0"
+                                                                       min="5000000"
+                                                                       max="100000000"
+                                                                       aria-label="حداقل قیمت"/>
+                                                                <div class="row label-box">
+                                                                    <div class="col-sm-6 col-lg-6 no-padding right-label">
+                                                                        <span class="range-label">ارزان ترین</span>
+                                                                    </div>
+                                                                    <div class="col-sm-6 col-lg-6 no-padding left-label">
+                                                                        <span class="range-label">گران ترین</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12">
+                                                                    <span class="from-input-text">از</span>
+                                                                    <input disabled
+                                                                           class="form-control placeholder-left"
+                                                                           type="text" id="fromInput"
+                                                                           value="5,000,000"
+                                                                           aria-label="حداقل قیمت"/>
+                                                                    <span class="from-input-cry">تومان</span>
+                                                                    <span class="to-input-text">تا</span>
+                                                                    <input disabled
+                                                                           class="form-control placeholder-left"
+                                                                           type="text" id="toInput"
+                                                                           value="100,000,000"
+                                                                           aria-label="حداکثر قیمت"/>
+                                                                    <span class="to-input-cry">تومان</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if countries %}
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingTwo">
+                                                    <button class="accordion-button collapsed" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#collapseCountry"
+                                                            aria-expanded="false" aria-controls="collapseCountry">
+                                                        کشور مقصد
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseCountry" class="accordion-collapse collapse"
+                                                     aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body filter-side">
+                                                        {% for countries, countries_tours in countries %}
+                                                            <div class="checkbox-city">
+                                                        <span class="input-check"><input
+                                                                onclick="SidebarFilter(); get_cities()"
+                                                                name="country-checkbox"
+                                                                class="city-checkbox"
+                                                                type="checkbox"
+                                                                data-ctry-id="{{ countries.id }}"></span>
+                                                                {{ countries }}
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if countries %}
+                                            <div class="accordion-item">
+                                                <p class="accordion-header" id="headingTwo">
+                                                    <button class="accordion-button collapsed" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                            aria-expanded="false" aria-controls="collapseTwo">
+                                                        شهر مقصد
+                                                    </button>
+                                                </p>
+                                                <div id="collapseTwo" class="accordion-collapse collapse"
+                                                     aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body filter-side">
+                                                        <div id="filter-city">
+                                                            {% for city in dest_cities %}
+                                                                <div class="checkbox-city">
+                                                                <span class="input-check">
+                                                                    <input onclick="SidebarFilter()"
+                                                                           name="city-checkbox"
+                                                                           class="city-checkbox"
+                                                                           type="checkbox"
+                                                                           data-city-id="{{ city.id }}"></span>
+                                                                    {{ city }}
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if not countries and dest_cities %}
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingTwo">
+                                                    <button class="accordion-button collapsed" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                            aria-expanded="false" aria-controls="collapseTwo">
+                                                        شهر مقصد
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseTwo" class="accordion-collapse collapse"
+                                                     aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                    <div id='filter-city' class="accordion-body filter-side">
+                                                        {% for city in dest_cities %}
+                                                            <div class="checkbox-city">
+                                                        <span class="input-check"><input onclick="SidebarFilter()"
+                                                                                         name="city-checkbox"
+                                                                                         class="city-checkbox"
+                                                                                         type="checkbox"
+                                                                                         data-city-id="{{ city.id }}"></span>
+                                                                {{ city }}
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingThree">
+                                                <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                                        aria-expanded="false" aria-controls="collapseThree">
+                                                    هتل
+                                                </button>
+                                            </h2>
+                                            <div id="collapseThree" class="accordion-collapse collapse"
+                                                 aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body filter-side">
+                                                    <div class="checkbox-city">
+                                                    <span class="input-check"><input onclick="SidebarFilter()"
+                                                                                     name="hotel-rate"
+                                                                                     class="city-checkbox"
+                                                                                     type="checkbox"
+                                                                                     data-rate="3"></span>
+                                                        <img loading="lazy" class="rating-hotel" src="/media/rating/rating-3.png"  alt="هتل ۳ ستاره">
+                                                    </div>
+                                                    <div class="checkbox-city">
+                                                    <span class="input-check"><input onclick="SidebarFilter()"
+                                                                                     name="hotel-rate"
+                                                                                     class="city-checkbox"
+                                                                                     type="checkbox"
+                                                                                     data-rate="4"></span>
+                                                        <img loading="lazy" class="rating-hotel" src="/media/rating/rating-4.png" alt="هتل ۴ ستاره">
+                                                    </div>
+                                                    <div class="checkbox-city">
+                                                    <span class="input-check"><input onclick="SidebarFilter()"
+                                                                                     name="hotel-rate"
+                                                                                     class="city-checkbox"
+                                                                                     type="checkbox"
+                                                                                     data-rate="5"></span>
+                                                        <img loading="lazy" class="rating-hotel" src="/media/rating/rating-5.png" alt="هتل ۵ ستاره">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingThree">
+                                                <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapsefour"
+                                                        aria-expanded="false" aria-controls="collapsefour">
+                                                    مدت اقامت
+                                                </button>
+                                            </h2>
+                                            <div id="collapsefour" class="accordion-collapse collapse"
+                                                 aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body filter-side">
+                                                    <div class="trip-period">
+                                                        <input onchange="SidebarFilter()" id="day-Count" type="number"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingThree">
+                                                <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapsefive"
+                                                        aria-expanded="false" aria-controls="collapsefive">
+                                                    هواپیمایی
+                                                </button>
+                                            </h2>
+                                            <div id="collapsefive" class="accordion-collapse collapse"
+                                                 aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body filter-side">
+                                                    {% for airline in airlines %}
+                                                        <div class="checkbox-city">
+                                                        <span class="input-check"><input onclick="SidebarFilter()"
+                                                                                         name="airline-checkbox"
+                                                                                         class="city-checkbox"
+                                                                                         type="checkbox"
+                                                                                         data-airline="{{ airline.id }}"></span>
+                                                            {{ airline }}
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 no-padding">
+                            <div id="all-tours" class="row">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% include 'ui/base/slagon.html' %}
+    {% if  cities or Menu or not countries %}
+        <section>
+            <div class="container">
+                <div class="insta">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="insta-box">
+                                <div class="col-lg-12">
+                                    <div class="insta-motion">
+                                        <img loading="lazy" alt="گیف اینستا" src="/media/instaarezoosafar.gif">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <h3 class="about_title">
+                                معرفی تورهای جذاب و شگفت انگیـــز
+                            </h3>
+                            <p>با ما در اینستاگرام همراه شو تا از پیشنهادات لحظه آخری و تورهای جذاب مطلع بشی!</p>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="input-section">
+                                <div class="row">
+                                    <div class="col-lg-12 t-center">
+                                        <a href="#" class="btn-insta-subscribe">
+                                        <span class="logo-insta">
+                                            <img loading="lazy" alt="اینستاگرام" src="/static/asset/css/images/insta-logo.webp">
+                                        </span>
+                                            ایــنستاگـــرام</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    {% include 'ui/base/faq.html' %}
+    {% include 'ui/base/footer.html' %}
+    {% include 'ui/base/plugins.html' %}
+    <script>
+        var country = {% if country %}
+            '{{ country.slug }}'
+        {% else %}
+            '{{ city.CountryName.slug }}'
+        {% endif %}
+        var country_id = {% if country %}
+            '{{ country.id }}'
+        {% else %}
+            '{{ city.CountryName.id }}'
+        {% endif %}
+        var city = '{{ city.slug }}'
+        var city_id = '{{ city.id }}'
+        var tour_id = '{{ Tour.id }}'
+        var tour_slug = '{{ Tour.Slug }}'
+        var tour_menu = '{{ Menu.slug }}'
+    </script>
+    <script>
+        function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
+            const [from, to] = getParsed(fromInput, toInput);
+            fillSlider(fromInput, toInput, '#0d6efd', '#0d6efd', controlSlider);
+            if (from > to) {
+                fromSlider.value = to;
+                fromInput.value = to.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                ;
+            } else {
+                fromSlider.value = from;
+            }
+        }
+
+        function controlToInput(toSlider, fromInput, toInput, controlSlider) {
+            const [from, to] = getParsed(fromInput, toInput);
+            fillSlider(fromInput, toInput, '#0d6efd', '#0d6efd', controlSlider);
+            setToggleAccessible(toInput);
+            if (from <= to) {
+                toSlider.value = to;
+                toInput.value = to.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                ;
+            } else {
+                toInput.value = from.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                ;
+            }
+        }
+
+        function controlFromSlider(fromSlider, toSlider, fromInput) {
+            const [from, to] = getParsed(fromSlider, toSlider);
+            fillSlider(fromSlider, toSlider, '#C6C6C6', '#0d6efd', toSlider);
+            if (from > to) {
+                fromSlider.value = to;
+                fromInput.value = to.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                ;
+            } else {
+                fromInput.value = from.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                ;
+            }
+        }
+
+        function controlToSlider(fromSlider, toSlider, toInput) {
+            const [from, to] = getParsed(fromSlider, toSlider);
+            fillSlider(fromSlider, toSlider, '#C6C6C6', '#0d6efd', toSlider);
+            setToggleAccessible(toSlider);
+            if (from <= to) {
+                toSlider.value = to;
+                toInput.value = to.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            } else {
+                toInput.value = from.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                ;
+                toSlider.value = from;
+            }
+        }
+
+        function getParsed(currentFrom, currentTo) {
+            const from = parseInt(currentFrom.value, 10);
+            const to = parseInt(currentTo.value, 10);
+            return [from, to];
+        }
+
+        function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
+            const rangeDistance = to.max - to.min;
+            const fromPosition = from.value - to.min;
+            const toPosition = to.value - to.min;
+            controlSlider.style.background = `linear-gradient(
+                                                              to left,
+                                                              ${sliderColor} 0%,
+                                                              ${sliderColor} ${(fromPosition) / (rangeDistance) * 100}%,
+                                                              ${rangeColor} ${((fromPosition) / (rangeDistance)) * 100}%,
+                                                              ${rangeColor} ${(toPosition) / (rangeDistance) * 100}%, 
+                                                              ${sliderColor} ${(toPosition) / (rangeDistance) * 100}%, 
+                                                              ${sliderColor} 100%)`;
+        }
+
+        function setToggleAccessible(currentTarget) {
+            const toSlider = document.querySelector('#toSlider');
+            if (Number(currentTarget.value) <= 0) {
+                toSlider.style.zIndex = 2;
+            } else {
+                toSlider.style.zIndex = 1;
+            }
+        }
+
+        const fromSlider = document.querySelector('#fromSlider');
+        const toSlider = document.querySelector('#toSlider');
+        const fromInput = document.querySelector('#fromInput');
+        const toInput = document.querySelector('#toInput');
+        fillSlider(fromSlider, toSlider, '#C6C6C6', '#0d6efd', toSlider);
+        setToggleAccessible(toSlider);
+
+        fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
+        toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
+        fromInput.oninput = () => controlFromInput(fromSlider, fromInput, toInput, toSlider);
+        toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
+    </script>
+</div>
+</body>
+</html>

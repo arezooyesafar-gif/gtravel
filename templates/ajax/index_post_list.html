@@ -1,0 +1,51 @@
+<div class="row">
+    {% for post in Posts %}
+        {% if forloop.counter > 2 and forloop.counter < 6 %}
+            <div class="col-lg-4">
+                <a class="blog_post_index mini_list" href="{% url 'post-detail' post.id post.slug %}">
+                    <div>
+                        <img class="post_image_index" src="{{ post.Image.url }}">
+                    </div>
+                    <div class="post_title_index">
+                        <p class="post_category_index_">
+                            {{ post.Category }}
+                        </p>
+                        <p class="_index_title mini_show">
+                            {{ post.Title |truncatechars:30 }}
+                        </p>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="col-lg-6">
+        <a class="blog_post_index" href="{% url 'post-detail' Posts.0.id Posts.0.slug %}">
+            <div>
+                <img class="post_image_index" src="{{ Posts.0.Image.url }}">
+            </div>
+            <div class="post_title_index">
+                <p class="post_category_index_">
+                    {{ Posts.0.Category }}
+                </p>
+                <p class="_index_title">
+                    {{ Posts.0.Title }}
+                </p>
+            </div>
+        </a>
+    </div>
+{#    <div class="col-lg-6">#}
+{#        <a class="blog_post_index" href="{% url 'post-detail' Posts.1.id Posts.1.slug %}">#}
+{#            <div>#}
+{#                <img class="post_image_index" src="{{ Posts.1.Image.url }}">#}
+{#            </div>#}
+{#            <div class="post_title_index">#}
+{#                <p class="post_category_index_">#}
+{#                    {{ Posts.1.Category }}#}
+{#                </p>#}
+{#                <p class="_index_title">#}
+{#                    {{ Posts.1.Title }}#}
+{#                </p>#}
+{#            </div>#}
+{#        </a>#}
+{#    </div>#}
+</div>

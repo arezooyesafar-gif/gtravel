@@ -1,0 +1,61 @@
+﻿{% extends 'base/base.html' %}
+{% block Data %}
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-body hs">
+                    <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                        ایجاد پکیج
+                    </h4>
+                </div>
+                <div class="form-body">
+                    <div class="alert-light">
+                        {% for message in messages %}
+                            <p class="error-body ap">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                    <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">نام پکیج <span class="required">*</span></p>
+                            {{ form.MainPkg }}
+                        </div>
+                        
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">انتخاب هتل<span class="required">*</span></p>
+                            {{ form.HotelName }}
+                        </div>
+                        <hr>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">قیمت یک تخته <span class="required">*</span></p>
+                            {{ form.SingleBedPrice }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> قیمت دو تخته <span class="required">*</span></p>
+                            {{ form.DoubleBedPrice }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> قیمت کودک با تخت <span class="required">*</span></p>
+                            {{ form.BabyWithBedPrice }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> قیمت کودک بدون تخت <span class="required">*</span></p>
+                            {{ form.BabyWithoutBedPrice }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text"> قیمت اینفانت <span class="required">*</span></p>
+                            {{ form.InfontPrice }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <button type="submit" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                    id="save-button-title">ذخیره اطلاعات پکیج</span>
+                            </button>
+                        </div>
+                        {{ form.media }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

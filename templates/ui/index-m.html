@@ -1,0 +1,325 @@
+<html lang="en" dir="rtl">
+
+<head>
+    {% load static %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static '/asset/css/uistyle.css' %}" rel="stylesheet">
+    <link href="{% static '/asset/css/rescss.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.theme.default.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <title>موسسه گردشگری آرزوی سفر پارسیان</title>
+    <link rel="icon" type="image/x-icon" href="/media/favicon-32x32.png">
+</head>
+
+<body>
+    <div class="main-warper">
+        <div class="top-container">
+            {% include 'ui/topbar.html' %}
+            <div class="secd-row">
+                <div class="filter-section">
+                    <p class="filter-title">جستوجوی تورها</p>
+                    <form class="filter-form" method="get" action="{% url 'search-result' %}"
+                            style="text-align: center">
+                            {% csrf_token %}
+                            <div class="form-input">
+                                {{ Search.DestCountry }}
+                            </div>
+                            <div class="form-input">
+                                {{ Search.NightCount }}
+                            </div>
+                            <div class="form-input">
+                                <input type="text" name="StartDate" class="jalali_date-date hasDatepicker" size="10" placeholder="تاریخ رفت را انتخاب کنبد" id="id_StartDate">
+                            </div>
+                            <div class="form-input submit">
+                                <button type="" onclick='convertDate()' class="submit-search">جست و جو تـور</button>
+                            </div>
+                        </form>
+                </div>
+                <div class="featur-logo">
+                    <div class="w3-content w3-section">
+                        <!-- <img class="mySlides" src="/media/1.png"> -->
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="spacial-offer">
+            <p class="spacial-offer-heading">تــــورهای ویـــژه</p>
+            <div class='tour-box'>
+            {% if SpacialData %}
+            {% for spacialtour, packages in SpacialData %}
+            {% if forloop.counter <= 5 %}
+                <div class="spacial-tour ">
+                    <div class="spacial-tour-img">
+                        <span class="time-detail"> {{ spacialtour.NightCount }} شب</span>
+                        <a href="{% url 'tour-detail' spacialtour.id spacialtour.Slug %}" target="_blank">
+                            {% if spacialtour.TourImage %}
+                            <img class="item-image" src="{{ spacialtour.TourImage.url }}">
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="spacial-tour-detail">
+                        <div class="spacial-tour-title">
+                            <a href="{% url 'tour-detail' spacialtour.id spacialtour.Slug %}" target="_blank">
+                                <p> {{ spacialtour.Title }}</p>
+                            </a>
+                        </div>
+                        <div class="spacial-tour-airline">
+                            <p>{{ spacialtour.AirLine }} </p>
+                        </div>
+                    </div>
+                    <div class="spacial-tour-price">
+                        <div class="price-text"> آغاز قیمت از :</div>
+                        <div class="price-value">{{ packages.0.DoubleBedPrice | intcomma:False }} تومان</div>
+                    </div>
+                </div>
+            
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+        
+        </div>
+        <div class="content-container col-sm-12 col-lg-11">
+            <div class="right-side ">
+                {% if AllData %}
+                <div class="tour-heading">
+                    <div class="tour-heading-title">
+                        <p class="heading">
+                            عنوان تور
+                        </p>
+                    </div>
+                    <div class="tour-heading-title time">
+                        <p class="heading">
+                            مدت اقامت
+                        </p>
+                    </div>
+                    <div class="tour-heading-title">
+                        <p class="heading">
+                            ایرلاین
+                        </p>
+                    </div>
+                    <div class="tour-heading-title date">
+                        <p class="heading">
+                            تاریخ رفت
+                        </p>
+                    </div>
+                    <div class="tour-heading-title">
+                        <p class="heading">
+                            قیمت ها
+                        </p>
+                    </div>
+                </div>
+                {% for tourList, packages in AllData %}
+                {% if forloop.counter <= 10 %} <a href="{% url 'tour-detail' tourList.id tourList.Slug %}"
+                    target="_blank">
+                    <div class="tour-container">
+                        <div class="tour-title">
+                            <div class="tlt"><span>{{ tourList.Title }}</span>
+                            </div>
+                            <div class="installment">
+                                {% if tourList.Installment %}
+                                <span> اقساطی</span>
+                                {% endif %}
+                                {% if tourList.Cash %}
+                                <span class="cash">نقدی</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="tour-time">
+                            <div class="time-icon"><span> <img src="{% static '/asset/css/images/moon.png' %}"
+                                        width="24"></span></div>
+                            <div class="time-text">
+                                <span> {{ tourList.NightCount }} شب و {{ tourList.DayCount }} روز</span>
+                            </div>
+                        </div>
+                        <div class="tour-airline">
+                            <div class="airline-logo"><span><img src="{{ tourList.AirLine.AirlineLogo.url }}"
+                                        width="50"></span></div>
+                            <div class="airline-text"><span>{{ tourList.AirLine.AirLineTitle }}</span></div>
+                        </div>
+                        <div class="tour-date">
+                            <div class="tour-date-time">
+                                <span>{{ tourList.StartDate | to_jalali:'%Y/%m/%d' }}</span>
+                            </div>
+                        </div>
+                        <div class="tour-detail">
+                            {% if packages.0.DollerPrice %}
+                            <div class="tour-price">
+                                <span>{{ packages.0.DoubleBedPrice | intcomma:False }} تومان</span>
+                                <p class="doller-price">+ {{packages.0.DollerPrice}} دلار</p>
+                            </div>
+                            {% else %}
+                            <div class="tour-price irr-only">
+                                <span>{{ packages.0.DoubleBedPrice | intcomma:False }} تومان</span>
+                            </div>
+                            {% endif %}
+                            <div class="tour-more"><span>جزئیات بیشتر</span></div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+            </div>
+            <div class="left-side ">
+                <div class="airline-heading">
+                    <p>تورهای تخفیفی</p>
+                </div>
+                <div class="offer-list">
+                    {% if OfferTour %}
+                    {% for tour in OfferTour %}
+                    {% if tour.Offer %}
+                    {% if forloop.counter <= 1 %} <a href="{% url 'tour-detail' tour.id tour.Slug %}" target="_blank">
+                        <div class="offer-detail">
+                            <div class="spacial-tour-img">
+                                <span class="time-detail"> {{ tour.NightCount }} شب</span>
+                                <a href="{% url 'tour-detail' tour.id tour.Slug %}" target="_blank">
+                                    {% if tour.TourImage %}
+                                    <img class="item-image" src="{{ tour.TourImage.url }}">
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="spacial-tour-title">
+                                <a href="{% url 'tour-detail' tour.id tour.Slug %}" target="_blank">
+                                    <p> {{ tour.Title | truncatechars:30 }}</p>
+                                </a>
+                            </div>
+                            <div class="spacial-tour-price">
+                                <div class="price-text"> میزان تخفیف :</div>
+                                <div class="offer-value">{{ tour.Offer }} درصدی</div>
+                            </div>
+                        </div>
+                        </a>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                </div>
+                <div class="hotel-list-heading">
+                    <div class="hotels-list">
+                        <p class="hotel-list-title">هتل های ویژه</p>
+                        {% for hotel in Hotels %}
+                        {% if forloop.counter <= 2 %} <a href="{% url 'hotel-detail' hotel.id hotel.Slug %}">
+                            <div class="list-hotels">
+                                <div class="hotel-image">
+                                    {% if hotel.HotelImage %}
+                                    <img src="{{ hotel.HotelImage.url }}">
+                                    {% else %}
+                                    <img src="/media/no-hotel-img.jpg">
+                                    {% endif %}
+                                </div>
+                                <div class="hotel-titles">
+                                    <p>{{ hotel.HotelName | truncatechars:17 }}</p>
+                                    <p class="hotel-eng-name">{{ hotel.HotelNameEnglish | truncatechars:17 }}</p>
+                                </div>
+                                <div class="hotel-rating-star">
+                                    <p>تعداد ستاره هتل </p>
+                                    <p class="star-rating-i">
+                                        {% if hotel.HotelRating == '1' %}
+                                        <img src="/media/rating/rating-1.png" width="50">
+                                        {% endif %}
+                                        {% if hotel.HotelRating == '2' %}
+                                        <img src="/media/rating/rating-2.png" width="50">
+                                        {% endif %}
+                                        {% if hotel.HotelRating == '3' %}
+                                        <img src="/media/rating/rating-3.png" width="50">
+                                        {% endif %}
+                                        {% if hotel.HotelRating == '4' %}
+                                        <img src="/media/rating/rating-4.png" width="50">
+                                        {% endif %}
+                                        {% if hotel.HotelRating == '5' %}
+                                        <img src="/media/rating/rating-5.png" width="50">
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            </a>
+                            {% endif %}
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="blog-container">
+            <div class="blog-row">
+                <p class="blog-heading-title">مجله گردشگری <span><a href="/blog" class="more-blog-post">مشاهده مطالب
+                            بیشتر</a> </span>
+                </p>
+                {% for post in Posts %}
+                <a href="{% url 'post-detail' post.id post.slug %}">
+                    <div class="blog-post">
+                        <div class="post-img">
+                            <img src="{{ post.Image.url }}">
+                        </div>
+                        <div class="post-content">
+                            <div class="post-title">
+                                <p>{{ post.Title }}</p>
+                            </div>
+                            <div class="post-date">
+                                <p>30 - 05 -1400</p>
+                            </div>
+                            <div class="post-short-desc">
+                                <p>دسته بندی مطلب : مطالب جهانگردی
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% include 'ui/footer.html' %}
+    </div>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script src="/static/asset/js/convertDate.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+    <script src="{% static 'admin/js/django_jalali.js' %}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet"
+    async>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" 
+        crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    <script>
+        $(".blog_slider_area").owlCarousel({
+				autoplay: true,
+				slideSpeed:1000,
+				items : 3,
+				loop: true,
+				nav:false,
+				margin: 30,
+				dots: true,
+				responsive:{
+					320:{
+						items:1
+					},
+					767:{
+						items:2
+					},
+					600:{
+						items:2
+					},
+					1000:{
+						items:3
+					}
+				}
+
+			});
+    </script>
+</body>
+
+</html>

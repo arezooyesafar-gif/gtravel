@@ -1,0 +1,52 @@
+<section id="calc_sec" class="installment_calculator">
+    <div class="container">
+        <div class="row">
+        <div class="col-lg-12">
+            <p class="installment_calc_header">محاسبه گر اقساط</p>
+            <p class="input_label">مبلغ تور(تومان)</p>
+            <input id="tour_price"  onkeypress="return isNumberKey(event)"
+                   onkeyup="return separateDigits()"
+                   type="text" class="form-control price_input line_1"
+                   placeholder="مبلغ تور مورد نظر خود را وارد کنید">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p class="input_label">مبلغ پیش پرداخت (تومان)</p>
+                    <input disabled id="pre_paid" onkeypress="return isNumberKey(event)"
+                           onkeyup="return separateDigits2()"
+                           type="text" class="form-control price_input">
+                </div>
+                <div class="col-lg-6">
+                    <p class="input_label">تعداد اقساط</p>
+                    <input id="inst_num" min="3" value="3" max="6" type="number" class="form-control price_input">
+                </div>
+                <div class="col-lg-12">
+                    <button onclick="installment_calculation()" type="button" class="calc_btn">محاسبه اقساط</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="result_tab">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="installment_result_heading">مبلغ هر قسط :</p>
+                        <p class="installment_value"><span id="instal_val">0</span> <span class="currency"> تومان </span></p>
+                    </div>
+                    <div class="col-lg-6 installment_data">
+                        <p class="data_heading_">پیش پرداخت</p>
+                        <p id="price_val" class="data_value_">0</p>
+                        <p class="data_currency_">تومان</p>
+                    </div>
+                    <div class="col-lg-6 installment_data">
+                        <p class="data_heading_">مبلغ کل تور </p>
+                        <p id="tour_total_price" class="data_value_">0</p>
+                        <p class="data_currency_">تومان</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="colse_pane" class="colse_btn">
+        <i class="fa fa-times" aria-hidden="true"></i>
+    </div>
+</section>

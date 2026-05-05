@@ -1,0 +1,194 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% load jalali_tags %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                ایجاد و بروزرسانی مطلب
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'post-list' %}" class="link">لیست مطالب </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row m-t-40">
+            <div class="col-lg-6">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="label-text">عنوان مطلب <span class="required">*</span></p>
+                        {{ form.Title }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text">عنوان صفحه مطلب <span class="required">*</span></p>
+                        {{ form.ptitle }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text">دسته بندی مطلب <span class="required">*</span></p>
+                        {{ form.Category }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="label-text">لینک سئو <span class="required">*</span></p>
+                        {{ form.slug }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="label-text">تصویر مطلب <span class="required">*</span></p>
+                        <label for="id_Image" class="custom-file-upload text-input">
+                            <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر مطلب</span>
+                        </label>
+                        {{ form.Image }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="spacial_feat bg-success"> جهت انتشار پست تیک روبرو را بزنید {{ form.Publish }} </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section" style="padding: 25px;">
+                    <p class=""> توضیحات کوتاه <span class="required">*</span></p>
+                    {{ form.ShortDesc }}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section" style="padding: 25px;">
+                    <p class=" short-desc"> توضیحات تکمیلی <span class="required">*</span></p>
+                    {{ form.Description }}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section" style="padding: 25px;">
+                    <p class=" short-desc"> فهرست مطلب <span class="required">*</span></p>
+                    {{ form.post_links }}
+                </div>
+            </div>
+            <div class="{% if post %}col-lg-4{% else %}col-lg-6{% endif %}">
+                <div class="inner_section">
+                    <p class=" short-desc"> توضیحات متا مرتبط با هتل را وارد کنید <span
+                            class="required">*</span></p>
+                    {{ form.metaDescription }}
+                </div>
+            </div>
+            <div class="{% if post %}col-lg-4{% else %}col-lg-6{% endif %}">
+                <div class="inner_section">
+                    <p class=" short-desc"> کلمات کلیدی مرتبط با هتل را وارد کنید <span
+                            class="required">*</span></p>
+                    {{ form.metaKeyword }}
+                </div>
+            </div>
+            {% if post %}
+            <div class="col-lg-4">
+                <div class="inner_section">
+                    <img class="post-image" src="{{ post.Image.url }}">
+                </div>
+            </div>
+            {% endif %}
+            <div class="col-lg-12">
+                <button type="submit" class="btn btn-lg btn-info btn-block">
+                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">ایجاد
+                                مطلب</span>
+                </button>
+            </div>
+            {{ form.media }}
+        </div>
+    </form>
+{% endblock %}
+<div class="row">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-body hs">
+                <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                    ایجاد مطلب
+                </h4>
+            </div>
+            <div class="form-body">
+                <div class="alert-light">
+                    {% for message in messages %}
+                        <p class="error-body ap">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">تصویر مطلب <span class="required">*</span></p>
+                        <label for="id_Image" class="custom-file-upload text-input">
+                            <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر مطلب</span>
+                        </label>
+                        {{ form.Image }}
+                        <script>
+                            $(document).ready(function () {
+                                $('input[type="file"]').change(function (e) {
+                                    var fileName = e.target.files[0].name;
+                                    document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                    {
+                                        #alert('The file "' + fileName + '" has been selected.');
+                                    #
+                                    }
+                                });
+                            });
+                        </script>
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">عنوان مطلب <span class="required">*</span></p>
+                        {{ form.Title }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">عنوان صفحه مطلب <span class="required">*</span></p>
+                        {{ form.ptitle }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">دسته بندی مطلب <span class="required">*</span></p>
+                        {{ form.Category }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">لینک سئو <span class="required">*</span></p>
+                        {{ form.slug }}
+                    </div>
+                    <div class="hd-basic-info personal check-box">
+                        <p class="label-text"> پست نمایش داده شود؟ {{ form.Publish }} </p>
+                    </div>
+                    <hr>
+                    <div class="">
+                        <p class="label-text short-desc"> توضیحات کوتاه <span class="required">*</span></p>
+                        {{ form.ShortDesc }}
+                    </div>
+                    <div class="">
+                        <p class="label-text short-desc"> توضیحات تکمیلی <span class="required">*</span></p>
+                        {{ form.Description }}
+                    </div>
+                    <hr>
+                    <div class="hd-basic-info" style="width: 45%;">
+                        <p class="label-text short-desc"> توضیحات متا مرتبط با هتل را وارد کنید <span
+                                class="required">*</span></p>
+                        {{ form.metaDescription }}
+                    </div>
+                    <div class="hd-basic-info" style="width: 45%;">
+                        <p class="label-text short-desc"> کلمات کلیدی مرتبط با هتل را وارد کنید <span
+                                class="required">*</span></p>
+                        {{ form.metaKeyword }}
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <button type="submit" class="btn btn-lg btn-info btn-block">
+                            <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">ایجاد
+                                مطلب</span>
+                        </button>
+                    </div>
+                    {{ form.media }}
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

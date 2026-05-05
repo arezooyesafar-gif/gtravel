@@ -1,0 +1,58 @@
+{% load humanize %}
+{% load jalali_tags %}
+<table class="table BranchTable">
+    <thead>
+    <tr>
+        <th class="TbHead">ردیف</th>
+        <th class="TbHead">مبلغ تراکنش</th>
+        <th class="TbHead">تاریخ تراکنش</th>
+        <th class="TbHead">زمان تراکنش</th>
+        <th class="TbHead">شماره سفارش</th>
+        <th class="TbHead">شماره پیگیری</th>
+        <th class="TbHead">وضعیت تراکنش</th>
+        <th class="TbHead">نوع تراکنش</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for item in all_records %}
+            <td class="TbCells serial">{{ forloop.counter0|add:all_records.start_index }}</td>
+            <td class="TbCells">{{ item.amount|intcomma }} تومان</td>
+            <td class="TbCells">{{ item.timestamp|to_jalali:"%Y/%m/%d" }}</td>
+            <td class="TbCells">{{ item.timestamp|to_jalali:"%H:%m" }}</td>
+            <td class="TbCells">{{ item.order.order_number }}</td>
+            <td class="TbCells">{{ item.payment_refId }}</td>
+            <td class="TbCells">
+            {% if item.payment_stat %}
+                <span class="success">موفق</span>
+            {% else %}
+                <span class="danger">ناموفق</span>
+            {% endif %}
+            </td>
+            <td class="TbCells">
+            {% if item.deposit %}
+                <span class="success">واریز</span>
+            {% endif %}
+            {% if item.withdrawal %}
+                <span class="danger">برداشت</span>
+            {% endif %}
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div>
+    <ul class="pagination">
+        {% for n in all_records.paginator.page_range %}
+            {% if orders.number == n %}
+                <li data-page='{{ n }}'
+                    class="page-item-wallet {% if all_records.number == n %}active{% endif %}"><a
+                        class="page-link">{{ n }}</a></li>
+            {% elif n > all_records.number|add:'-10' and n < all_records.number|add:'10' %}
+                <li data-page='{{ n }}'
+                    class="page-item-wallet {% if all_records.number == n %}active{% endif %}"><a
+                         class="page-link">{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

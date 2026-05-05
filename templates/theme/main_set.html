@@ -1,0 +1,51 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <form method="POST">
+    {% csrf_token %}
+    <div class="row m-t-40">
+            <div class="col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">
+                                    متن صفحه تمام تورها
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="row m-t-40">
+            <div class="alert-light">
+                {% for message in messages %}
+                    <p class="error-body ap">{{ message }}</p>
+                {% endfor %}
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p class="label-text city_form">عنوان صفحه اقساط <span class="required">*</span></p>
+                            {{ forms.about_title }}
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text city_form">متن صفحه اقساط <span class="required">*</span></p>
+                            {{ forms.about_text }}
+                        </div>
+                        {{ forms.media }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="hd-basic-info " style="display: block;">
+                <button type="submit" class="btn btn-lg btn-info btn-block">
+                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                        id="save-button-title">ذخیره کشور </span>
+                </button>
+            </div>
+            {{ Form.media }}
+        </div>
+    </form>
+{% endblock %}

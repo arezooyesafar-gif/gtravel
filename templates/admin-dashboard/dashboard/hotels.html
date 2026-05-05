@@ -1,0 +1,75 @@
+{% load jalali_tags %}
+    <div class="col-xl-12 col-xxl-12">
+        <div class="card card-bordered card-full">
+            <div class="card-inner border-bottom">
+                <div class="card-title-group">
+                    <div class="card-title">
+                        <h6 class="title">
+                            لیست هتل های
+                            <span class="change up">گارانتی</span>
+                        </h6>
+                    </div>
+                    <div class="card-tools">
+                        <a href="#" class="link">مشاهده همه</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-preview">
+    <div class="row tour_heading">
+        <div class="col-md-1 text-center">
+            <span class="">ردیف</span>
+        </div>
+        <div class="col-md-5 text-center">
+            <span class="">نام هتل</span>
+        </div>
+        <div class="col-md-2 text-center">
+            <span class=""> ریتینگ</span>
+        </div>
+        <div class="col-md-2 text-center">
+            <span class=""> کشور</span>
+        </div>
+        <div class="col-md-1 text-center">
+            <span class=""> شهر</span>
+        </div>
+        <div class="col-md-1 text-center">
+            <span class=""> اقدامات</span>
+        </div>
+    </div>
+    {% for hotel in gte_hotels %}
+        {% if forloop.counter < 6 %}
+            <div class="row tour_data">
+                <div class="col-md-1 text-center">
+                    <span class="">{{ forloop.counter }}</span>
+                </div>
+                <div class="col-md-5 text-center">
+                    <span class="">{{ hotel.HotelName }}</span>
+                </div>
+                <div class="col-md-2 text-center">
+                    <span class="hotel_rating">{{ hotel.HotelRating }} ستاره</span>
+                </div>
+                <div class="col-md-2 text-center">
+                    <span class=""><img class="country_flag" src="{{ hotel.Hcountry.Flagimg.url }}">{{ hotel.Hcountry }}</span>
+                </div>
+                <div class="col-md-1 text-center">
+                    <span class="">{{ hotel.Hcity }}</span>
+                </div>
+                <div class="col-md-1 text-center">
+                    <div class="dropdown">
+                        <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                                class="icon ni ni-more-h"></em></a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                            <ul class="link-list-plain">
+                                <li><a href="{% url 'update_hotel' hotel.id %}">ویرایش</a></li>
+                                <li><a style="color: red" href="{% url 'delete_hotel' hotel.id %}">حذف</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+        </div>
+        <!-- .card -->
+    </div>
+    <!-- .col -->

@@ -1,0 +1,41 @@
+{% load humanize %}
+{% load jalali_tags %}
+<table class="table BranchTable">
+    <thead>
+    <tr>
+        <th class="TbHead">ردیف</th>
+        <th class="TbHead">نام و نام خانوادگی</th>
+        <th class="TbHead">مبلغ سغارش</th>
+        <th class="TbHead">تاریخ سفارش</th>
+        <th class="TbHead">شماره سفارش</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for item in orders %}
+            <td class="TbCells serial">{{ forloop.counter0|add:orders.start_index }}</td>
+            <td class="TbCells serial">{{ item.user.get_full_name }}</td>
+            <td class="TbCells">{{ item.order_total|intcomma }} تومان</td>
+            <td class="TbCells">{{ item.order_date|to_jalali:"%Y/%m/%d" }}</td>
+            <td class="TbCells">
+                <a href="{% url 'single_order' item.id %}">{{ item.order_number }}</a>
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div>
+    <ul class="pagination">
+        {% for n in orders.paginator.page_range %}
+            {% if orders.number == n %}
+                <li data-page='{{ n }}'
+                    class="page-item {% if orders.number == n %}active{% endif %}"><a
+                        class="page-link">{{ n }}</a></li>
+            {% elif n > orders.number|add:'-10' and n < orders.number|add:'10' %}
+                <li data-page='{{ n }}'
+                    class="page-item {% if orders.number == n %}active{% endif %}"><a
+                         class="page-link">{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,145 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <form class="input-forms" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row m-t-40">
+            <div class="col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                {% if item %}
+                                    <h6 class="title">
+                                        {% if city %}
+                                            <img class="country_flag_update" src="{{ city.CountryName.Flagimg.url }}">
+                                        {% endif %}
+                                        بروزرسانی
+                                        {% if item.city %}
+                                            شهر
+                                            <span class="change up"> {{ item.city }}</span>
+                                        {% else %}
+                                            کشور
+                                            <span class="change up"> {{ item.country }}</span>
+                                        {% endif %}
+                                        در لیست ویژه
+
+                                    </h6>
+                                {% else %}
+                                    <h6 class="title">
+                                        {% if city %}
+                                            <img class="country_flag_update" src="{{ city.CountryName.Flagimg.url }}">
+                                        {% endif %}
+                                        افزودن شهر
+                                        <span class="change up"> {{ city.Name }}</span>
+                                        به لیست ویژه
+
+                                    </h6>
+                                {% endif %}
+                            </div>
+                            <div class="card-tools">
+                                <a href="{% url 'city_list' %}" class="link">مشاهده لیست شهر ها</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-40">
+
+            <div class="alert-light">
+                {% for message in messages %}
+                    <p class="error-body ap">{{ message }}</p>
+                {% endfor %}
+            </div>
+            <div class="col-lg-6">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="spacial_feat bg-warning">
+                            نمایش در صفحه اصلی ؟{{ forms.show_homepage }}
+                        </p>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="spacial-label">تصویر صفحه اصلی <span class="required"></span></p>
+                        {{ forms.homepage_img }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="spacial-label">ایکون صفحه اصلی <span class="required"></span></p>
+                        {{ forms.homepage_icon }}
+
+                    </div>
+                    <div class="col-lg12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="image-container">
+                                    {% if item.homepage_img %}
+                                        <img src="{{ item.homepage_img.url }}">
+                                        <p>تصویر صفحه اصلی</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="image-container">
+                                    {% if item.homepage_icon %}
+                                        <img src="{{ item.homepage_icon.url }}">
+                                        <p>آیکون صفحه اصلی</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="inner_section">
+                    <div class="col-lg-12">
+                        <p class="spacial_feat bg-warning">
+                            نمایش در صفحه لیست تورها ؟{{ forms.show_tourpage }}
+                        </p>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="spacial-label">تصویر صفحه تورها <span class="required"></span></p>
+                        {{ forms.tourpage_img }}
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="spacial-label">ایکون صفحه تورها <span class="required"></span></p>
+                        {{ forms.tourpage_icon }}
+                    </div>
+                    <div class="col-lg12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="image-container">
+                                    {% if item.tourpage_img %}
+                                        <img src="{{ item.tourpage_img.url }}">
+                                        <p>تصویر صفحه تور</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="image-container">
+                                    {% if item.tourpage_icon %}
+                                        <img src="{{ item.tourpage_icon.url }}">
+                                        <p>آیکون صفحه تور</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if item %}
+                <div class="col-lg-12" style="margin-top: 20px">
+                    <div class="inner_section">
+
+                    </div>
+                </div>
+            {% endif %}
+            <div class="hd-basic-info " style="display: block;">
+                <button type="submit" class="btn btn-lg btn-info btn-block">
+                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                        id="save-button-title">ذخیره </span>
+                </button>
+            </div>
+            {{ Form.media }}
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,475 @@
+<div class="nk-header nk-header-fluid is-theme is-regular">
+    <div class="container-xl wide-xl">
+        <div class="nk-header-wrap">
+            <div class="nk-menu-trigger me-sm-2 d-lg-none">
+                <a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="headerNav"><em
+                        class="icon ni ni-menu"></em></a>
+            </div>
+            <div class="nk-header-brand">
+                <a href="/dashboard" class="logo-link">
+                    <img class="logo-light logo-img" src="/static/assets/images/logo-dark.png"
+                         srcset="/static/assets/images/logo2x.png 2x" alt="لوگو">
+                    <img class="logo-dark logo-img" src="/static/assets/images/logo-dark.png"
+                         srcset="/static/assets/images/logo-dark.png 2x" alt="لوگوی تاریک">
+                </a>
+            </div>
+            <!-- .nk-header-brand -->
+            <div class="nk-header-menu" data-content="headerNav">
+                <div class="nk-header-mobile">
+                    <div class="nk-header-brand">
+                        <a href="https://demo.farshidtarnian.ir/html/dashlite/demo6/index.html"
+                           class="logo-link">
+                        </a>
+                    </div>
+                    <div class="nk-menu-trigger me-n2">
+                        <a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="headerNav"><em
+                                class="icon ni ni-arrow-left"></em></a>
+                    </div>
+                </div>
+                <ul class="nk-menu nk-menu-main ui-s2">
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-text">مدیریت پروازها</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item has-sub">
+                                <a class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">فرودگاه ها</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'create-airport' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">تعریف فرودگاه</span></a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">ایرلاین ها</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'Create-Airline' %}" class="nk-menu-link"><span
+                                                class="nk-menu-text">تعریف ایرلاین</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'airlines-list' %}" class="nk-menu-link"><span
+                                                class="nk-menu-text">لیست ایرلاین ها</span></a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-text">مدیریت مقاصد</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item has-sub">
+                                <a class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">کشورها</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'create-country' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">تعریف کشور</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'country_list' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">لیست کشور ها</span></a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">شهر ها</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'create-city' %}" class="nk-menu-link"><span
+                                                class="nk-menu-text">تعریف شهر</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'city_list' %}" class="nk-menu-link"><span
+                                                class="nk-menu-text">لیست شهر ها</span></a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a href="{% url 'spacial_destinations_list' %}" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">لیست مقاصد ویژه</span>
+                                </a>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-text">مدیریت هتل ها</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item has-sub">
+                                <a href="{% url 'create_hotel' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">تعریف هتل</span>
+                                </a>
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a href="{% url 'hotel_list' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">لیست هتل ها</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item has-sub">
+                                <a href="{% url 'comment_list' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">لیست کامنت ها</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-text">مدیریت تورها</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">مدیریت پکیج</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a class="nk-menu-link" href="{% url 'create-package' %}"><span
+                                                class="nk-menu-text">ایجاد پکیج</span></a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a href="{% url 'create-tour' %}" class="nk-menu-link ">
+                                    <span class="nk-menu-text">ایجاد تور</span>
+                                </a>
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item">
+                                <a href="{% url 'tour-list' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">لیست تورها</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{% url 'create-tour-menu' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">منوی تور</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{% url 'tour-menu-list' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">لیست منوی تور</span></a>
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-text">مجله گردشگری</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">دسته بندی مطالب</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'create-post-category' %}" class="nk-menu-link"><span
+                                                class="nk-menu-text">ایجاد دسته بندی</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a class="nk-menu-link" href="{% url 'post-category-list' %}">
+                                            <span class="nk-menu-text">لیست دسته بندی ها</span></a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a href="{% url 'create-post' %}" class="nk-menu-link ">
+                                    <span class="nk-menu-text"> ایجاد مطلب </span>
+                                </a>
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item">
+                                <a href="{% url 'post-list' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">لیست مطالب</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{% url 'comments_list' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">لیست کامنت ها</span></a>
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-text">کامپوننت ها</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item has-sub">
+                                <a class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">مدیریت صفحات</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'create_page' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">ایجاد صفحه جدید</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'page_list' %}" class="nk-menu-link"><span
+                                                class="nk-menu-text">لیست صفحات ها</span></a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">مدیریت فایل ها</span></a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'upload_file' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">بارگذاری فایل</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'ads_upload_file' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">بارگذاری فایل تبلیغاتی</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'file_list' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">لیست فایل ها</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'ads_file_list' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">لیست فایل های تبلیغاتی</span></a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">رزرواسیون</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'order-list' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">لیست کامل رزروها</span></a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">سفارشات</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'online_order_dashboard' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">لیست کامل سفارشات</span></a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">واحد پولی</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'create-currency' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">ایجاد واحد پولی</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">بخش سفرنامه</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'create-memory' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">ثبت سفرنامه</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'memo-list' %}" class="nk-menu-link">
+                                            <span class="nk-menu-text">لیست سفرنامه ها</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'create-memo-category' %}" class="nk-menu-link"><span
+                                            class="nk-menu-text">ایجاد دسته بندی</span>
+                                        </a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a class="nk-menu-link" href="{% url 'memo-category-list' %}">
+                                            <span class="nk-menu-text">لیست دسته بندی ها</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a href="{% url 'messages' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">صندوق پیام های ورودی</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item has-sub">
+                                <a href="{% url 'subscribe' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">لیست مخاطبین</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item has-sub">
+                                <a href="{% url 'main_page_settings' 1 %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">متن صفحه تمام تورها</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item has-sub">
+                                <a href="{% url 'create_home_faq' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">پرسش و پاسخ صفحه اصلی</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item has-sub">
+                                <a href="/user/applications" class="nk-menu-link">
+                                    <span class="nk-menu-text">لیست درخواست های ویزا</span>
+                                </a>
+                            </li>
+                            <!-- .nk-menu-item -->
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-text">مدیریت کاربران</span>
+                                </a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a class="nk-menu-link"><span
+                                                class="nk-menu-text">ایجاد کاربر</span></a>
+                                    </li>
+                                    <!-- .nk-menu-item -->
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'user_list' %}" class="nk-menu-link"><span
+                                                class="nk-menu-text">لیست کاربران</span></a>
+                                    </li>
+                                    <!-- .nk-menu-item -->
+                                </ul>
+                                <!-- .nk-menu-sub -->
+                            </li>
+                            <!-- .nk-menu-item -->
+{#                            <li class="nk-menu-item has-sub">#}
+{#                                <a href="#" class="nk-menu-link nk-menu-toggle">#}
+{#                                    <span class="nk-menu-text">تنظیمات</span>#}
+{#                                </a>#}
+{#                                <ul class="nk-menu-sub">#}
+{#                                    <li class="nk-menu-item">#}
+{#                                        <a class="nk-menu-link">#}
+{#                                            <span class="nk-menu-text">تنظیمات صفحه اصلی</span></a>#}
+{#                                    </li>#}
+{#                                    <!-- .nk-menu-item -->#}
+{#                                </ul>#}
+{#                                <!-- .nk-menu-sub -->#}
+{#                            </li>#}
+                            <!-- .nk-menu-item -->
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                </ul>
+                <!-- .nk-menu -->
+            </div>
+            <!-- .nk-header-menu -->
+            <div class="nk-header-tools">
+                <ul class="nk-quick-nav">
+                    <!-- .dropdown -->
+                    <li class="dropdown user-dropdown order-sm-first">
+                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-toggle">
+                                <div class="user-avatar sm">
+                                    <em class="icon ni ni-user-alt"></em>
+                                </div>
+                                <div class="user-info d-none d-xl-block">
+                                    <div class="user-status">
+                                        {% if request.user.is_superuser %}
+                                            مدیر
+                                        {% else %}
+                                            کارمند
+                                        {% endif %}
+                                    </div>
+                                    <div class="user-name dropdown-indicator">{{ request.user.get_full_name }}</div>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end dropdown-menu-s1 is-light"
+                             style="">
+                            <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
+                                <div class="user-card">
+                                    <div class="user-avatar">
+                                        <span></span>
+                                    </div>
+                                    <div class="user-info">
+                                        <span class="lead-text">{{ request.user.get_full_name }}</span>
+                                        <span class="sub-text">{{ request.user.email }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-inner">
+                                <ul class="link-list">
+                                    <li>
+                                        <a href="/">
+                                            <em class="icon ni ni-setting-alt"></em>
+                                            <span>مشاهده وبسایت</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'user_profile_update' request.user.id %}"><em class="icon ni ni-user-alt"></em>
+                                            <span>مشاهده پروفایل</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'reset_password_admin' request.user.id %}">
+                                            <em class="icon ni ni-activity-alt"></em>
+                                            <span>تغییر گذرواژه</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="dropdown-inner">
+                                <ul class="link-list">
+                                    <li>
+                                        <a href="{% url 'logout' %}">
+                                            <em class="icon ni ni-signout"></em>
+                                            <span>خروج</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <!-- .nk-quick-nav -->
+            </div>
+            <!-- .nk-header-tools -->
+        </div>
+        <!-- .nk-header-wrap -->
+    </div>
+    <!-- .container-fliud -->
+</div>

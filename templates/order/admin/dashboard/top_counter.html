@@ -1,0 +1,113 @@
+{% load humanize %}
+<div class="col-lg-4">
+    <div class="card card-bordered card-full">
+        <div class="card-inner">
+            <div class="card-title-group align-start mb-0">
+                <div class="card-title">
+                    <h6 class="subtitle">جمع کل سفارشات</h6>
+                </div>
+                <div class="card-tools">
+                    <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip"
+                        data-bs-placement="right" aria-label="کل پول برداشتی"
+                        data-bs-original-title="کل پول برداشتی"></em>
+                </div>
+            </div>
+            <div class="card-amount">
+                <span class="amount"> {{ total_orders_price|intcomma }} <span class="change up currency currency-usd">تومان</span> </span>
+            </div>
+            <div class="invest-data">
+                <div class="invest-data-amount g-2">
+                    <div class="invest-data-history">
+                        <div class="title">پرداخت شده</div>
+                        <div class="amount change up">{{ all_paid_order }}<span
+                                class="change up currency currency-usd"> عدد </span></div>
+                    </div>
+                    <div class="invest-data-history">
+                        <div class="title">پرداخت نشده</div>
+                        <div class="amount change down">{{ all_pending_order }}<span
+                                class="change down currency currency-usd"> عدد </span></div>
+                    </div>
+                </div>
+                <div class="invest-data-ck">
+                    <canvas class="iv-data-chart" id="totalDeposit"
+                            style="display: block; box-sizing: border-box; height: 48px; width: 74px;"
+                            width="74" height="48"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .card -->
+</div>
+<!-- .col -->
+<div class="col-lg-4">
+    <div class="card card-bordered card-full">
+        <div class="card-inner">
+            <div class="card-title-group align-start mb-0">
+                <div class="card-title">
+                    <h6 class="subtitle">جمع سفارشات پرداخت شده </h6>
+                </div>
+                <div class="card-tools">
+                    <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip"
+                        data-bs-placement="right" aria-label="کل پول برداشتی"
+                        data-bs-original-title="کل پول برداشتی"></em>
+                </div>
+            </div>
+            <div class="card-amount">
+                <span class="amount"> {{ total_paid_orders|intcomma }} <span
+                        class="change up currency currency-usd">تومان</span> </span>
+            </div>
+            <div class="invest-data">
+                <div class="invest-data-amount g-2">
+                    <div class="invest-data-history">
+                        <div class="title">تعداد کل</div>
+                        <div class="amount">{{ all_paid_order }}<span
+                                class="currency currency-usd">  عدد</span></div>
+                    </div>
+                </div>
+                <div class="invest-data-ck">
+                    <canvas class="iv-data-chart" id="totalWithdraw"
+                            style="display: block; box-sizing: border-box; height: 48px; width: 74px;"
+                            width="74" height="48"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .card -->
+</div>
+<!-- .col -->
+<div class="col-lg-4">
+    <div class="card card-bordered card-full">
+        <div class="card-inner">
+            <div class="card-title-group align-start mb-0">
+                <div class="card-title">
+                    <h6 class="subtitle">جمع سفارشات پرداخت نشده</h6>
+                </div>
+                <div class="card-tools">
+                    <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip"
+                        data-bs-placement="right" aria-label="کل موجودی در حساب"
+                        data-bs-original-title="کل موجودی در حساب"></em>
+                </div>
+            </div>
+            <div class="card-amount">
+                <span class="amount"> {{ total_pending_orders|intcomma }} <span
+                        class="change down currency currency-usd"> تومان</span> </span>
+            </div>
+            <div class="invest-data">
+                <div class="invest-data-amount g-2">
+                    <div class="invest-data-history">
+                        <div class="title">تعدادکل </div>
+                        <div class="amount">{{ all_pending_order }}<span
+                                class="currency currency-usd">  عدد</span></div>
+                    </div>
+                </div>
+                <div class="invest-data-ck">
+                    <canvas class="iv-data-chart" id="totalBalance"
+                            style="display: block; box-sizing: border-box; height: 48px; width: 74px;"
+                            width="74" height="48"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .card -->
+</div>
+<!-- .col -->

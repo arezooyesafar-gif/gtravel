@@ -1,0 +1,145 @@
+{% load jalali_tags %}
+<div class="row" style="margin-bottom: 5px">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card hotel_list_heading">
+            <div class="row">
+                <div class="col-lg-1 hotel_list">
+                    <p class="row_head">ردیف</p>
+                </div>
+                <div class="col-lg-3 hotel_list">
+                    <p class="row_head">نام هتل</p>
+                </div>
+                <div class="col-lg-2 hotel_list">
+                    <p class="row_head">ستاره و امتیاز</p>
+                </div>
+                <div class="col-lg-2 hotel_list">
+                    <p class="row_head">شهر و کشور</p>
+                </div>
+                <div class="col-lg-1 hotel_list">
+                    <p class="row_head">تعداد اتاق</p>
+                </div>
+                <div class="col-lg-2 hotel_list">
+                    <p class="row_head view_cont">تعداد بازدید</p>
+                </div>
+                <div class="col-lg-1 hotel_list">
+                    <p class="row_head">اقدامات</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% if Hotels %}
+{% for hotel in Hotels %}
+    <div class="row m-b-5">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card hotel_data_row">
+                <div class="row">
+                    <div class="col-lg-1 hotel_list">
+                        <p class="hotel_num">{{ forloop.counter0|add:Hotels.start_index }}</p>
+                    </div>
+                    <div class="col-lg-3 hotel_list">
+                        <p class="hotel_name">
+                            {{ hotel.HotelName }}
+                            <br>
+                            {{ hotel.HotelNameEnglish }}
+                        </p>
+                    </div>
+                    <div class="col-lg-2 hotel_list">
+                        <p class="hotel_rate_score">
+                            <span class="hotel_star">
+                                <i class="ni ni-star-fill"></i>
+                                تعداد ستاره :
+                            {{ hotel.HotelRating }}
+                            </span>
+                            <br>
+                            <span class="hotel_score">
+                                <i class="ni ni-chart-down"></i>
+                            امتیاز بوکینگ :
+                            {{ hotel.HotelBookingRate }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-lg-2 hotel_list">
+                        <p class="hotel_country_city">
+                            <span class="country_flag_"><img src="{{ hotel.Hcountry.Flagimg.url }}"> </span>
+                            کشور :
+                            {{ hotel.Hcountry }}
+                            <br>
+                            <span class="city_icob">
+                                <i class="ni ni-building"></i>
+                            شهر :
+                            {{ hotel.Hcity }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-lg-1 hotel_list">
+                        <p class="hotel_room">
+                            {{ hotel.HotelRoom }}
+                        </p>
+                    </div>
+                    <div class="col-lg-2 hotel_list">
+                        <p class="hotel_view">
+                            {{ hotel.viewCount }}
+                        </p>
+                    </div>
+                    <div class="col-lg-1 hotel_list">
+                        <div class="dropdown" style="margin-top: 12px;">
+                            <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                                    class="icon ni ni-more-h"></em></a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                <ul class="link-list-plain">
+                                    <li><a href="{% url 'update_hotel' hotel.id %}">ویرایش</a></li>
+                                    <li><a style="color: red"
+                                         data-bs-toggle="modal"
+                                         data-bs-target="#exampleModal"
+                                         data-item-id="{{ hotel.id }}"
+                                         onclick="setDeleteId(this)">
+                                         حذف
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endif %}
+<div>
+    <ul class="pagination">
+        {% for n in Hotels.paginator.page_range %}
+            {% if Hotels.number == n %}
+                <li data-page='{{ n }}' class="page-item {% if Hotels.number == n %}active{% endif %}"><a class="page-link" >{{ n }}</a></li>
+            {% elif n > Hotels.number|add:'-10' and n < Hotels.number|add:'10' %}
+                <li data-page='{{ n }}' class="page-item {% if Hotels.number == n %}active{% endif %}"><a class="page-link" >{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">آیا مطمئن هستید؟</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">خیر</button>
+        <a id="confirmDeleteBtn" type="button" class="btn btn-danger">بله</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    let selectedItemID = null;
+
+    function setDeleteId(el) {
+        selectedItemID = el.dataset.itemId;
+        const deleteBtn = document.getElementById("confirmDeleteBtn");
+        deleteBtn.href = `/dashboard/hotels/delete_hotel/${selectedItemID}`;
+    }
+</script>

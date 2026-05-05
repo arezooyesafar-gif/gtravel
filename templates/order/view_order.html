@@ -1,0 +1,275 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'ui/base/head.html' %}
+
+    <title>مشاهده رزروهای سفارش شماره {{ order_items.0.order.order_number }}</title>
+</head>
+<body>
+<div class="main-warper">
+    {% include 'ui/base/header.html' %}
+    <section class="tour_data">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="rooms_data">
+                        <p class="rooms_data_header">
+                            اتاق های ثبت شده برای سفارش شماره
+                            <span class="order_number">{{ order_items.0.order.order_number }}</span>
+                        </p>
+                        <div class="row" style="padding-right: 35px;">
+                            <div class="col-lg-1 rooms_headers">
+                                ردیف
+                            </div>
+                            <div class="col-lg-1 rooms_headers">
+                                بزرگسال
+                            </div>
+                            <div class="col-lg-2 rooms_headers">
+                                کودک با تخت
+                            </div>
+                            <div class="col-lg-2 rooms_headers">
+                                کودک بدون تخت
+                            </div>
+                            <div class="col-lg-1 rooms_headers">
+                                نوزاد
+                            </div>
+                            <div class="col-lg-3 rooms_headers">
+                                جمع کل
+                            </div>
+                            <div class="col-lg-2 rooms_headers">
+                                حذف اتاق
+                            </div>
+                        </div>
+                        {% for i in order_items %}
+                            <div class="row" style="padding-right: 35px;">
+                                <div class="col-lg-12" style="padding: 0;">
+                                    <p class="reserve_main_info">
+                                        <span class="tour_name">
+                                            نام تور :
+                                        {{ i.tour }}
+                                        </span>
+                                        -
+                                        <span class="package_name">
+                                            پکیج انتخابی :
+                                        {{ i.package.HotelName.HotelName }}
+                                        </span>
+
+                                    </p>
+                                </div>
+                                <div class="col-lg-1 rooms_data_cell">
+                                    {{ forloop.counter }}
+                                </div>
+                                <div class="col-lg-1 rooms_data_cell">
+                                    {{ i.adults }} نفر
+                                </div>
+                                <div class="col-lg-2 rooms_data_cell">
+                                    {{ i.baby_with_bed }} نفر
+                                </div>
+                                <div class="col-lg-2 rooms_data_cell">
+                                    {{ i.baby_with_out_bed }} نفر
+                                </div>
+                                <div class="col-lg-1 rooms_data_cell">
+                                    {{ i.infont }} نفر
+                                </div>
+                                <div class="col-lg-3 rooms_data_cell">
+                                    {{ i.total_item_price|intcomma }} تومان
+                                </div>
+                                <div class="col-lg-2 rooms_data_cell">
+                                    {% if order_items.0.order.paid_amount %}
+                                         امکان حذف اتاف وجود ندارد
+                                    {% else %}
+                                    <a href="{% url 'remove_order_item' i.id %}" class="remove_room"> حذف اتاق</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="row" style="padding-right: 35px;padding-bottom: 25px;">
+                            <div class="col-lg-12 total_biling_header">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <p class="label-text total_price_legend">
+                                            مجموع مبلغ رزروها
+                                        </p>
+                                        {#                                        <p class="label-text total_price_legend">#}
+                                        {#                                            مبلغ پیش پرداخت :#}
+                                        {#                                        </p>#}
+
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <p id="total_price" class="label-text total_price">
+                                            {{ order_items.0.order.debit|intcomma }}
+                                        </p>
+                                        <span class="currency total">تومان</span>
+                                        {#                                        <div>#}
+                                        {#                                            <p id="total_price" class="label-text total_price">#}
+                                        {#                                            {{ pre_paid_price|intcomma }}#}
+                                        {#                                        </p>#}
+                                        {#                                        <span class="currency total">تومان</span>#}
+                                        {#                                        </div>#}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6 total_billing_price">
+                                {% if wallet.balance %}
+                                    <div class="wallet_info">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <p class="wallet_balance_title">
+                                                    موجودی کیف پول شما :
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <p class="wallet_balance">
+                                                    {{ wallet.balance|intcomma }}
+                                                    <span class="currency wallet">تومان</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-3">
+
+                            </div>
+                            <div class="col-lg-3">
+                                {% if wallet.balance > 0 %}
+                                    <a id="submit" href="{% url 'payWithWallet' order_items.0.order.id %}"
+                                       class="submit_order">
+                                        پرداخت با کیف پول
+                                    </a>
+                                {% endif %}
+                                {% if order_items %}
+                                <a id="submit" href="{% url 'startPayment' order_items.0.order.id %}"
+                                   class="submit_order">
+                                    پرداخت آنلاین از درگاه بانکی
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% if recoreds %}
+                <div class="col-lg-12">
+                    <div class="rooms_data" style="padding-bottom: 30px;">
+                        <p class="rooms_data_header">
+                            تاریخچه تراکنش های ثبت شده از کیف پول
+                        </p>
+                        <div class="row" style="padding-right: 35px;">
+                            <div class="col-lg-1 rooms_headers">
+                                ردیف
+                            </div>
+                            <div class="col-lg-3 rooms_headers">
+                                مبلغ
+                            </div>
+                            <div class="col-lg-2 rooms_headers">
+                                تاریخ
+                            </div>
+                            <div class="col-lg-2 rooms_headers">
+                                زمان
+                            </div>
+                            <div class="col-lg-2 rooms_headers">
+                                شماره تراکنش
+                            </div>
+                            <div class="col-lg-2 rooms_headers">
+                                وضعیت تراکنش
+                            </div>
+                        </div>
+                        {% for i in recoreds %}
+                            <div class="row" style="padding-right: 35px;">
+                                <div class="col-lg-1 rooms_data_cell">
+                                    {{ forloop.counter }}
+                                </div>
+                                <div class="col-lg-3 rooms_data_cell">
+                                    {{ i.amount|intcomma }} تومان
+                                </div>
+                                <div class="col-lg-2 rooms_data_cell">
+                                    {{ i.timestamp|to_jalali:"%Y/%m/%d" }}
+                                </div>
+                            <div class="col-lg-2 rooms_data_cell">
+                                    {{ i.timestamp|to_jalali:'%H:%m' }}
+                                </div>
+                                <div class="col-lg-2 rooms_data_cell">
+                                    {{ i.payment_refId }}
+                                </div>
+                                <div class="col-lg-2 rooms_data_cell">
+                                    {% if i.payment_stat %}
+                                    <span class="success">موفق</span>
+                                    {% else %}
+                                    <span class="danger">ناموفق</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+{#                <div class="col-lg-12">#}
+{#                    <div class="rooms_data" style="padding-bottom: 30px;">#}
+{#                        <p class="rooms_data_header">#}
+{#                            تاریخچه تراکنش های ثبت شده از درگاه بانکی#}
+{#                        </p>#}
+{#                        <div class="row" style="padding-right: 35px;">#}
+{#                            <div class="col-lg-1 rooms_headers">#}
+{#                                ردیف#}
+{#                            </div>#}
+{#                            <div class="col-lg-3 rooms_headers">#}
+{#                                مبلغ#}
+{#                            </div>#}
+{#                            <div class="col-lg-2 rooms_headers">#}
+{#                                تاریخ#}
+{#                            </div>#}
+{#                            <div class="col-lg-2 rooms_headers">#}
+{#                                شماره تراکنش#}
+{#                            </div>#}
+{#                            <div class="col-lg-2 rooms_headers">#}
+{#                                وضعیت تراکنش#}
+{#                            </div>#}
+{#                            <div class="col-lg-2 rooms_headers">#}
+{#                                لغو تراکنش#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        {% for i in recoreds %}#}
+{#                            <div class="row" style="padding-right: 35px;">#}
+{#                                <div class="col-lg-1 rooms_data_cell">#}
+{#                                    {{ forloop.counter }}#}
+{#                                </div>#}
+{#                                <div class="col-lg-3 rooms_data_cell">#}
+{#                                    {{ i.amount|intcomma }} تومان#}
+{#                                </div>#}
+{#                                <div class="col-lg-2 rooms_data_cell">#}
+{#                                    {{ i.timestamp|to_jalali:'%H:%m  -  %Y/%m/%d ' }}#}
+{#                                </div>#}
+{#                                <div class="col-lg-2 rooms_data_cell">#}
+{#                                    {{ i.payment_refId }}#}
+{#                                </div>#}
+{#                                <div class="col-lg-2 rooms_data_cell">#}
+{#                                    {% if i.payment_stat %}#}
+{#                                    <span class="success">موفق</span>#}
+{#                                    {% else %}#}
+{#                                    <span class="danger">ناموفق</span>#}
+{#                                    {% endif %}#}
+{#                                </div>#}
+{#                                <div class="col-lg-2 rooms_data_cell">#}
+{#                                    <a href="{% url 'remove_order_item' i.id %}" class="remove_room"> لغو پرداخت </a>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        {% endfor %}#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+    </section>
+    {% include 'ui/base/feature.html' %}
+    {% include 'ui/base/footer.html' %}
+</div>
+{% include 'ui/base/plugins.html' %}
+</body>
+</html>

@@ -1,0 +1,54 @@
+﻿{% extends 'admin-dashboard/base/base.html' %}
+{% load jalali_tags %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست تورهای ثبت شده
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'create-tour' %}" class="link">ایجاد تور جدید </a>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row m-20">
+                        <div class="col-lg-4">
+                            {{ forms.tour_name }}
+                        </div>
+                        <div class="col-lg-2">
+                            {{ forms.start_date }}
+                            <input type="hidden" id="hide_start_date">
+                        </div>
+                        <div class="col-lg-2">
+                            {{ forms.end_date }}
+                            <input type="hidden" id="hide_end_date">
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="tour_stat" class="text-input search-input" name="active">
+                                   <option value="">انتخاب وضعیت تور</option>
+                                   <option value="0">تور غیر فعال</option>
+                                   <option value="1">تور فعال</option>
+                               </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <button id="searchBtn" type="submit" onclick="convertDateadmin()"
+                                        class="btn btn-lg btn-info btn-block">
+                                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                        id="save-button-title">جستجو تور </span>
+                                </button>
+                            {{ forms.media }}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-40">
+        <div id="tour_list" class="table-block">
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<html lang="fa-IR" dir="rtl">
+<head>{% load static %}{% load humanize %}{% load jalali_tags %}{% load webp_converter %}
+    {% include 'ui/mobile/base/head.html' %}
+    <link rel=“canonical” href=""/>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    {% if Post.ptitle %}
+        <title>{{ Post.ptitle }}</title>
+    {% else %}
+        <title>{{ Post.Title }} | ساتراپ</title>
+    {% endif %}
+</head>
+<body>
+{% include 'ui/mobile/base/header.html' %}
+<section class="post_detail">
+    <div class="col-lg-12">
+        {% if  Post.Image %}
+            <img class="_post_image" src="{{ Post.Image.url }}">
+        {% endif %}
+    </div>
+    <div class="col-lg-12">
+        <div class="_post_page_cat">
+            <span class="_post_cat">{{ Post.Category }}</span>
+            <span class="_post_cat">{{ Post.PubDate|to_jalali:'%Y/%m/%d' }}</span>
+        </div>
+        <div class="_post_page_title">
+            <p class="_post_page_title">{{ Post.Title }}</p>
+        </div>
+        <div class="_post_page_short_desc">
+            {{ Post.ShortDesc|safe }}
+        </div>
+        <div class="_post_page_full_desc">
+            {{ Post.Description|safe }}
+        </div>
+    </div>
+</section>
+{% include 'ui/mobile/base/footer.html' %}
+</body>
+{% include 'ui/base/plugins.html' %}
+</html>

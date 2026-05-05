@@ -1,0 +1,97 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    {% include 'ui/base/head.html' %}
+    <link rel=“canonical” href="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{{ category.meta_desc }}">
+    <meta name="keywords" content="{{ category.meta_keyword }}">
+    {% if category.page_title %}
+    {{ category.page_title }}
+    {% else %}
+    <title>مجله گردشگری | {{ category }} |شرکت خدمات مسافرت هوایی و گردشگری آرزوی سفر پارسیان</title>
+    {% endif %}
+</head>
+<body>
+{% include 'ui/base/header.html' %}
+    {% include 'ui/base/preloader.html' %}
+<div class="warp">
+    <section class="blog_intro_posts">
+        <div class="container">
+            <div class="row">
+               <div class="col-lg-12">
+                   <div class="page-not-found">
+                       <p>404</p>
+                       <p class="sub-title-en">Request failed with status code 404</p>
+                       <p class="sub-title">صفحه مورد نظر پیدا نشد!</p>
+                       <a href="/" class="back-to-home">بازگشت به صفحه اصلی</a>
+                   </div>
+                   <div class="icon-section-not-found">
+                       <a class="show-inline" href="/all-tour">
+                           <div class="icon-box-not-fonnd">
+                               <div class="icon-section-not">
+                                   <i class="fa-solid fa-suitcase-rolling not-found"></i>
+                               </div>
+                               <p class="menu-link-text">تورها</p>
+                           </div>
+                       </a>
+                       <a class="show-inline" href="/all-hotel">
+                           <div class="icon-box-not-fonnd">
+                               <div class="icon-section-not">
+                                   <i class="fa-solid fa-hotel not-found"></i>
+                               </div>
+                               <p class="menu-link-text">هتل ها</p>
+                           </div>
+                       </a>
+                       <a class="show-inline" href="/blog">
+                           <div class="icon-box-not-fonnd">
+                               <div class="icon-section-not">
+                                   <i class="fa-solid fa-newspaper not-found"></i>
+                               </div>
+                               <p class="menu-link-text">مجله گردشگری</p>
+                           </div>
+                       </a>
+                       <a class="show-inline" href="/russia_visa">
+                           <div class="icon-box-not-fonnd">
+                               <div class="icon-section-not">
+                                   <i class="fa-solid fa-passport not-found"></i>
+                               </div>
+                               <p class="menu-link-text">ویزا روسیه</p>
+                           </div>
+                       </a>
+                       <a class="show-inline" href="/blog/15/Installment-tours">
+                           <div class="icon-box-not-fonnd">
+                               <div class="icon-section-not">
+                                   <i class="fa-solid fa-calculator not-found"></i>
+                               </div>
+                               <p class="menu-link-text">شرایط اقساط</p>
+                           </div>
+                       </a>
+                       <a class="show-inline" href="/contact-us">
+                           <div class="icon-box-not-fonnd">
+                               <div class="icon-section-not">
+                                   <i class="fa-solid fa-address-book not-found"></i>
+                               </div>
+                               <p class="menu-link-text">تماس با ما</p>
+                           </div>
+                       </a>
+                   </div>
+               </div>
+            </div>
+        </div>
+    </section>
+    {% include 'ui/base/footer.html' %}
+    {% include 'ui/base/plugins.html' %}
+<script>
+    $('.sub-menu ul').hide();
+    $(".menu-toggle-box").click(function () {
+        $(this).parent(".sub-menu").children("ul").slideToggle("100");
+        $(this).find(".left").toggleClass("fa-caret-up fa-caret-down");
+    });
+</script>
+</div>
+</body>
+</html>

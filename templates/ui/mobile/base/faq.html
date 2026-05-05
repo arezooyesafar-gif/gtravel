@@ -1,0 +1,32 @@
+<section class="faq_section">
+    <div class="container">
+        <h5 class="blog_sec_title">{{ set.faq_title }}</h5>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    {% for q in all_faqs %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-heading-{{ forloop.counter }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapse-{{ forloop.counter }}" aria-expanded="false"
+                                        aria-controls="flush-collapse-{{ forloop.counter }}">
+                                    <div class="row">
+                                        <div class="col-lg-2 faq_image_"><img class="faq_image" alt="سوال" src="/static/Homepage/faq-icon.png"></div>
+                                        <div class="col-lg-10 faq_qas_"><span class="faq_item_">{{ q.question }}</span></div>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="flush-collapse-{{ forloop.counter }}" class="accordion-collapse collapse"
+                                 aria-labelledby="flush-heading-{{ forloop.counter }}"
+                                 data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    {{ q.answer }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

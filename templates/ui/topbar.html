@@ -1,0 +1,74 @@
+<div class="col-lg-12 top_bar_menu">
+    <div class="top-bar">
+        <div class="logo-hozental">
+            <a href="/"><img alt="لوگو آرزوی سفر" src="/static/asset/images/logo-horzental.png"></a>
+        </div>
+        <div class="navbar">
+            <ul id="nav" class="navbar-link">
+                <li class="item-link">
+                    <a href="/">
+                        صفحه اصلی
+                    </a>
+                </li>
+                <li class="item-link">
+                    <a href="/all-tour">
+                        تور
+                    </a>
+                </li>
+                {{ set.internal_ticket }}
+                {% if set.internal_ticket or set.external_ticket  %}
+                <li class="item-link">
+                    <a href="">
+                        بلیط هواپیما
+                    </a>
+                </li>
+                {% endif %}
+                {% if set.hotel_reserve %}
+                <li class="item-link">
+                    <a href="/all-hotel">
+                        هتل
+                    </a>
+                </li>
+                {% endif %}
+                <li class="item-link">
+                    <a href="/blog">
+                        وبلاگ
+                    </a>
+                </li>
+                <li class="item-link">
+                    <a href="/about-us">
+                        درباره ما
+                    </a>
+                </li>
+                <li class="item-link">
+                    <a href="/contact-us">
+                        تماس با ما
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    const menuItem = document.querySelectorAll('.navbar-link a');
+    for (i in menuItem)
+
+        menuItem.forEach(el => {
+            x = el.getAttribute('href')
+            y = location.pathname
+            console.log(y)
+            // current
+            if (x === y) {
+                el.classList.add("active")
+
+            }
+
+            // handle click
+            el.addEventListener("click", e => {
+                // remove others
+                menuItem.forEach(el => el.classList.remove("active"))
+                // set active
+                e.target.classList.add("active")
+            })
+        })
+</script>

@@ -1,0 +1,28 @@
+﻿{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست دسته بندی مطالب سفرنامه
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'create-memo-category' %}" class="link">ایجاد دسته بندی جدید </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-sm-12 col-lg-12">
+            <div id="memo_category_list" class="">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

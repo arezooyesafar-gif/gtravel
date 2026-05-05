@@ -1,0 +1,6 @@
+<select name="city" class="form-select" required="" id="id_city">
+  <option value="" selected="">شهر مورد نظر را انتخاب کنید</option>
+    {% for i in cities %}
+        <option value="{{ i.id }}">{{ i.Name }}</option>
+    {% endfor %}
+</select>

@@ -1,0 +1,6 @@
+
+<option value="">انتخاب شهر</option>
+{% for i in cities %}
+    <option {% if request.GET.city == i.id %}selected{% endif %} value="{{ i.id }}">{{ i }}</option>
+{% endfor %}
+

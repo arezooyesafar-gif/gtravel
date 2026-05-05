@@ -1,0 +1,938 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="{% url 'tour-detail' Tour.id Tour.Slug %}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{{ Tour.MetaDescription }}">
+    <meta name="keyword" content="{{ Tour.MetaKeywords }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'ui/base/head.html' %}
+    {% if Tour.tstitle %}
+        <title>{{ Tour.tstitle }}</title>
+    {% else %}
+        <title>{{ Tour.Title }} | شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان</title>
+    {% endif %}
+</head>
+<body>
+<div class="warp">
+    {% include 'ui/base/header.html' %}
+    <section class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    {% if Tour.tour_main %}
+                        <img loading="lazy" class="tour-img" src="{{ Tour.tour_main.url }}" alt="{{ Tour.Title }}">
+                    {% else %}
+                        <img loading="lazy" src="/static/Homepage/Tour-Single-Page-Slide-01.jpg">
+                    {% endif %}
+                </div>
+                <div class="tour-info">
+                    <div class="row">
+                        <div class="col-lg-5 no-padding">
+                            <img loading="lazy" class="country-flag-detail-page" src="{{ Tour.Tcountry.Flagimg.url }}">
+                            <h1 class="tour_title_detail_page">{{ Tour.Title }}</h1></div>
+                        <div class="no-padding col-lg-7">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-12">
+                                    <p class="tour_info_data_">
+                                        <span><img loading="lazy" class="day_icon" alt="روز" src="/static/asset/css/images/icon/day.png"></span>
+                                        اقامت :
+                                        {{ Tour.NightCount }}
+                                        شب و
+                                        {{ Tour.DayCount }}
+                                        روز
+                                    </p>
+                                </div>
+                                <div class="col-lg-8 col-sm-12">
+                                    <p class="tour_info_data_">
+                                        <span><img loading="lazy" class="day_icon" alt="تاریخ" src="/static/asset/css/images/icon/date.png"
+                                                   width="10px"></span>
+                                        شروع تور : {{ Tour.StartDate | to_jalali:'%Y/%m/%d' }} |
+                                        پایان تور : {{ Tour.EndDate | to_jalali:'%Y/%m/%d' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for i in gallery %}
+                    {% if forloop.counter < 7 %}
+                        <div class="col-sm-6 col-lg-2">
+                            <img loading="lazy" class="gallery-item" src="{{ i.image.url }}">
+                            {% if forloop.counter == 6 %}
+                                <button class="gallery-more">مشاهده تصاویر بیشتر</button>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section class="tour_data">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12 scrol-tab">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="contact-tab" data-bs-toggle="tab"
+                                            data-bs-target="#contact-tab-pane" type="button" role="tab"
+                                            aria-controls="contact-tab-pane" aria-selected="false">پکیج ها
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="home-tab" data-bs-toggle="tab"
+                                            data-bs-target="#home-tab-pane" type="button" role="tab"
+                                            aria-controls="home-tab-pane" aria-selected="true">اطلاعات تکمیلی پرواز
+                                    </button>
+                                </li>
+                                {% if tipe_plan %}
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                                                data-bs-target="#jounery-tab-pane" type="button" role="tab"
+                                                aria-controls="jounery-tab-pane" aria-selected="false">برنامه سفر تور
+                                        </button>
+                                    </li>
+                                {% endif %}
+                                {% if Tour.ShortDsc %}
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                                                data-bs-target="#short-desc-tab-pane" type="button" role="tab"
+                                                aria-controls="short-desc-tab-pane" aria-selected="false">توضیحات تور
+                                        </button>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade" id="home-tab-pane" role="tabpanel"
+                                     aria-labelledby="home-tab" tabindex="0">
+                                    <div class="flight-plan">
+                                        {% for city in Cities %}
+                                            <div class="row city_data">
+                                                <p class="origin-city">{{ city.CtName.Name }}
+                                                    {% if forloop.first and city.NightCount == '0' %}
+
+                                                    {% endif %}
+                                                    {% if city.Waiting != '0' %}
+                                                        <span class="start-city">(مدت انتظار: {{ city.Waiting }})</span>
+                                                    {% endif %}
+                                                    {% if city.NightCount != '0' %}
+                                                        <span class="start-city">(مدت اقامت: {{ city.NightCount }} شب)</span>
+                                                    {% endif %}
+                                                </p>
+                                                <div class="col-sm-5 col-lg-2 airport no-padding">
+                                                    {% if city.GTransfer %}
+                                                        <p class="airline_eng_tlt_">ترمینال</p>
+                                                        {% elif city.QTransfer %}
+                                                        <p class="airline_eng_tlt_">ایستگاه</p>
+                                                    {% elif city.STransfer %}
+                                                        <p class="airline_eng_tlt_">بندر</p>
+                                                    {% else %}
+                                                        <p class="airline_eng_tlt_">
+                                                            از
+                                                            {{ city.FromAirport.AirportFa }}</p>
+                                                    {% endif %}
+                                                    {% if city.GTransfer or city.QTransfer or city.STransfer %}
+                                                        <p class="airline_fa_tlt_">{{ city.CtName }}</p>
+                                                    {% else %}
+                                                        <p class="airline_fa_tlt_">
+                                                            {{ city.FromAirport.AirportEn }}</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-sm-2 col-lg-2 transfer">
+                                                    {% if city.GTransfer %}
+                                                        <img loading="lazy" alt="{{ Tour.Title }}" class="g-transfer"
+                                                             src="/static/IconPack/PNG/bus-icon.png">
+                                                    {% elif city.QTransfer %}
+                                                        <img loading="lazy" alt="{{ Tour.Title }}" class=" train_icon" width="84px"
+                                                             height="82px"
+                                                             src="/static/IconPack/train.png">
+                                                    {% elif city.STransfer %}
+                                                        <img loading="lazy" alt="{{ Tour.Title }}" class=" ship_icon" width="84px"
+                                                             height="82px"
+                                                             src="/static/IconPack/PNG/ship.png">
+                                                    {% else %}
+                                                        {% if forloop.last %}
+                                                            <img loading="lazy" alt="{{ Tour.Title }}" class="transfer_type_ rotate_"
+                                                                 src="/static/IconPack/PNG/airplane-takeoff.png">
+                                                        {% elif city.flight_return %}
+                                                            <img loading="lazy" alt="{{ Tour.Title }}" class="transfer_type_ rotate_"
+                                                                 src="/static/IconPack/PNG/airplane-takeoff.png">
+                                                        {% elif city.flight_inbound %}
+                                                            <img loading="lazy" alt="{{ Tour.Title }}"
+                                                                 class="transfer_type_ rotate_inbound"
+                                                                 src="/static/IconPack/PNG/airplane-takeoff.png">
+                                                        {% else %}
+                                                            <img loading="lazy" alt="{{ Tour.Title }}" class="transfer_type_"
+                                                                 src="/static/IconPack/PNG/airplane-takeoff.png">
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-sm-5 col-lg-2 airport no-padding">
+                                                    {% if city.GTransfer %}
+                                                        <p class="airline_eng_tlt_">ترمینال</p>
+                                                    {% elif city.QTransfer %}
+                                                        <p class="airline_eng_tlt_">ایستگاه</p>
+                                                    {% elif city.STransfer %}
+                                                        <p class="airline_eng_tlt_">بندر</p>
+                                                    {% else %}
+                                                        <p class="airline_eng_tlt_">
+                                                            به
+                                                            {{ city.ToAirport.AirportFa }}</p>
+                                                    {% endif %}
+                                                    {% if city.GTransfer or city.QTransfer or city.STransfer %}
+                                                        <p class="airline_fa_tlt_">{{ city.GDest }}</p>
+                                                    {% else %}
+                                                        <p class="airline_fa_tlt_">
+                                                            {{ city.ToAirport.AirportEn }}</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-sm-6 col-lg-2 border_left_">
+                                                    {% if city.GTransfer %}
+                                                        <p class="tour_transfer_tlt_">اتوبوس</p>
+                                                    {% elif city.QTransfer %}
+                                                        <p class="tour_transfer_tlt_">قطار</p>
+                                                    {% elif city.STransfer %}
+                                                        <p class="tour_transfer_tlt_">قایق</p>
+                                                    {% elif city.flight_inbound %}
+                                                        <p class="tour_transfer_tlt_">پرواز داخلی</p>
+                                                    {% else %}
+                                                        <p class="tour_airline_tlt_">
+                                                            <img loading="lazy" class="tour-airline-logo"
+                                                                 src="{{ city.Airline.AirlineLogo.url }}">
+                                                            ایرلاین:
+                                                            {{ city.Airline }}</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-sm-6 col-lg-2 border_left_">
+                                                    {% if city.GTransfer or city.QTransfer %}
+                                                        <p class="transfer_type_txt">حمل و نقل زمینی</p>
+                                                    {% elif city.STransfer %}
+                                                        <p class="transfer_type_txt">حمل و نقل دریایی</p>
+                                                    {% else %}
+                                                        <p class="flight_class_">
+                                                            {{ city.FlightClass }}</p>
+                                                    {% endif %}
+                                                    {% if city.GTransfer or city.QTransfer or city.STransfer %}
+                                                    {% else %}
+                                                        <p class="cargo_limit_">میزان بار مجاز
+                                                            : {{ city.Airline.AirlineCargo }}
+                                                            کیلوگرم</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-sm-12 col-lg-2">
+                                                    <p class="Flight_time_">
+                                                        {% if city.GTransfer or city.QTransfer %}
+                                                            ساعت حرکت : {{ city.FlightTime }}
+                                                        {% else %}
+                                                            ساعت پرواز : {{ city.FlightTime }}
+                                                        {% endif %}
+
+                                                    </p>
+                                                    <p class="Flight_duration_">
+                                                        {% if city.GTransfer or city.QTransfer %}
+                                                            مدت سفر :
+                                                            {% if city.FlightDuration %}
+                                                                {{ city.FlightDuration }}
+                                                            {% else %}
+                                                                -
+                                                            {% endif %}
+                                                        {% else %}
+                                                            مدت پرواز : {{ city.FlightDuration }}
+                                                        {% endif %}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade " id="jounery-tab-pane" role="tabpanel"
+                                     aria-labelledby="jounery-tab"
+                                     tabindex="0">
+                                    {% for i in tipe_plan %}
+                                        <div class="col-lg-12">
+                                            <div class="trip-plan-box">
+                                                <div class="row">
+                                                    <div class="col-lg-2">
+                                                        <div class="trip-plan-image">
+                                                            {% if i.plan_image %}
+                                                                <img loading="lazy" src="{{ i.plan_image.url }}">
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <p class="trip-plan-headline">{{ i.title }}</p>
+                                                        <div onclick="toggleService({{ i.id }})"
+                                                             class="toggle-services item-{{ i.id }}">
+                                                            <img loading="lazy" class="arrow" src="/media/down-arrow.png">
+                                                        </div>
+                                                        <div class="trip-data">
+                                                            {{ i.description|safe }}
+                                                        </div>
+                                                    </div>
+                                                    <div id="service-section"
+                                                         class="col-lg-12 no-padding sub-{{ i.id }}">
+                                                        <div class='row'>
+                                                            <div class="col-lg-4">
+                                                                <div class="trip-plan-info-box">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-4 col-lg-3">
+                                                                            <img loading="lazy" class="trip-location"
+                                                                                 src="/static/IconPack/PNG/location.png">
+                                                                        </div>
+                                                                        <div class="col-sm-8 col-lg-9">
+                                                                            <p class="location-headline">
+                                                                                محل اقامت:
+                                                                                <span class="trip-plan-info-text">
+                                                                                {{ i.location }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="trip-plan-info-box">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-4 col-lg-3">
+                                                                            <img loading="lazy" class="trip-location"
+                                                                                 style="width: 73%;"
+                                                                                 src="/static/IconPack/PNG/trip.png">
+                                                                        </div>
+                                                                        <div class="col-sm-8 col-lg-9">
+                                                                            <p class="location-headline">
+                                                                                برنامه بازدید:
+                                                                                <span class="trip-plan-info-text">
+                                                                                {{ i.views }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="trip-plan-info-box">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-4 col-lg-3">
+                                                                            <img loading="lazy" class="trip-location"
+                                                                                 src="/static/IconPack/PNG/dinner.png">
+                                                                        </div>
+                                                                        <div class="col-sm-8 col-lg-9">
+                                                                            <p class="location-headline">
+                                                                                وعده ها :
+                                                                                <span class="trip-plan-info-text">
+                                                                                {{ i.services }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                                <div class="tab-pane fade show active" id="contact-tab-pane" role="tabpanel"
+                                     aria-labelledby="contact-tab"
+                                     tabindex="0">
+                                    <div class="row">    
+                                        <div class="col-lg-3">                                      
+                                            <div class="package-side">
+                                            {% if Tour.pdfAvb and Tour.TourPdf %}
+                                                <a class="pdf-download-link" href="{{ Tour.TourPdf.url }}">دانلود
+                                                    پکیج</a>
+                                            {% else %}
+                                                <a class="pdf-download-link" href="{% url 'pdf-download' Tour.id %}">دانلود
+                                                    پکیج</a>
+                                            {% endif %}
+                                                <div class="flight-info">
+                                                    <p class="origin-flight-info-headline">
+                                                        آغاز سفر :
+                                                        {{ Tour.StartDate|to_jalali:'%Y/%m/%d' }}
+                                                        ساعت :
+                                                        {{ Cities.0.FlightTime }}
+                                                    </p>
+                                                    <div class="flight">
+                                                        <p class="flight-info-detail">
+                                                            {{ Cities.0.CtName }}
+                                                            ،
+                                                            {{ Cities.0.FromAirport }}
+                                                        </p>
+                                                        <p class="flight-duration-data">
+                                                            مدت پرواز:
+                                                            {{ Cities.0.FlightDuration }}
+                                                        </p>
+                                                        <p class="flight-info-detail">
+                                                            {{ Cities.1.CtName }}
+                                                            ،
+                                                            {{ Cities.0.ToAirport }}
+                                                        </p>
+                                                    </div>
+                                                    <p class="flight-airline-info">
+                                                        شرکت هواپیمایی :
+                                                        {{ Cities.0.Airline }}
+                                                    </p>
+                                                    <p class="dest-flight-info-headline">
+                                                        پایان سفر :
+                                                        {{ Tour.EndDate|to_jalali:'%Y/%m/%d' }}
+                                                        ساعت :
+                                                        {{ Cities.last.FlightTime }}
+                                                    </p>
+                                                    <div class="flight">
+                                                        <p class="flight-info-detail">
+                                                            {{ Cities.last.CtName }}
+                                                            ،
+                                                            {{ Cities.last.FromAirport }}
+                                                        </p>
+                                                        <p class="flight-duration-data">
+                                                            مدت پرواز:
+                                                            {{ Cities.last.FlightDuration }}
+                                                        </p>
+                                                        <p class="flight-info-detail">
+                                                            {{ Cities.0.CtName }}
+                                                            ،
+                                                            {{ Cities.0.FromAirport }}
+                                                        </p>
+                                                    </div>
+                                                    <p class="flight-airline-info">
+                                                        شرکت هواپیمایی :
+                                                        {{ Cities.last.Airline }}
+                                                    </p>
+                                                </div>
+                                                {% if date_plans %}
+                                                    <p class="tour-dates">تاریخ های برگزاری</p>
+                                                    <div class="date-plans">
+                                                        <div class="row date-plan-box">
+                                                            <div class="col-lg-12">
+                                                                <p>
+                                                                    <input onclick="changeDatePrice('0', 'طبق پکیج اصلی')"
+                                                                           class="date-radio-button" type="radio"
+                                                                           name="date"
+                                                                           data-value="{{ 0 }}">
+                                                                  
+                                                                    <span class="start-date">پکیج اصلی</span>
+                                                                </p>
+
+                                                            </div>
+
+                                                        </div>
+                                                        {% for i in date_plans %}
+                                                            <div class="row date-plan-box">
+                                                                <div class="col-lg-12">
+                                                                    <p>
+                                                                        <input onclick="changeDatePrice('{{ i.price }}', '{{ i.price_type }}')"
+                                                                               class="date-radio-button" type="radio"
+                                                                               name="date"
+                                                                               data-value="{{ i.price }}">
+                                                                        از
+                                                                        <span class="start-date">{{ i.start_date|to_jalali:'%Y/%m/%d' }} </span>
+                                                                        تا
+                                                                        <span class="start-date">{{ i.end_date|to_jalali:'%Y/%m/%d' }}</span>
+                                                                        {% if i.price_type == 'افزایش' %}
+                                                                            <span class="up change">
+                                                                    {% if i.price %}
+                                                                        {{ i.price|intcomma }}
+                                                                    {% else %}
+                                                                    طبق پکیج اصلی
+                                                                    {% endif %}
+                                                                    </span>
+                                                                        {% endif %}
+                                                                        {% if i.price_type == 'کاهش' %}
+                                                                            <span class="down change">
+                                                                    {% if i.price %}
+                                                                        {{ i.price|intcomma }}
+                                                                    {% else %}
+                                                                        طبق پکیج اصلی
+                                                                    {% endif %}
+                                                                    </span>
+                                                                        {% endif %}
+                                                                        {% if i.price_type == 'طبق پکیج اصلی' %}
+                                                                            <span class="no change">
+                                                                    {% if i.price %}
+                                                                        {{ i.price|intcomma }}
+                                                                    {% else %}
+                                                                        طبق پکیج اصلی
+                                                                    {% endif %}
+                                                                    </span>
+                                                                        {% endif %}
+                                                                    </p>
+
+                                                                </div>
+
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                <div class="country-link-box m-b-15">
+                                                    <a href="{% url 'all-tour-country' Tour.Tcountry.slug Tour.Tcountry.id %}">
+                                                        <div class="row intext-list">
+                                                            <div class="col-sm-3 col-lg-3 no-padding">
+                                                                {% if Tour.Tcountry.country_iamge %}
+                                                                    <img loading="lazy" class="city-img-text"
+                                                                         src="{{ Tour.Tcountry.country_iamge.url }}"
+                                                                         alt="تور{{ Tour.Tcountry.TitleC }}">
+                                                                {% endif %}
+                                                            </div>
+                                                            <div class="col-sm-9 col-lg-9 no-padding">
+                                                                <span class="ctry_name_arc"> تور {{ Tour.Tcountry.TitleC }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="city-link-box" style="margin-bottom:15px;">
+                                                    <a href="{% url 'city-tours' Tour.Tcity.slug Tour.Tcity.id %}">
+                                                        <div class="row intext-list align-items-center">
+                                                            <div class="col-sm-3 col-lg-3 no-padding">
+                                                                {% if Tour.Tcity.cityImg %}
+                                                                    <img loading="lazy" class="city-img-text"
+                                                                         src="{{ Tour.Tcity.cityImg.url }}"
+                                                                         alt="تورهای {{ Tour.Tcity.Name }}">
+                                                                {% endif %}
+                                                            </div>
+                                                            <div class="col-sm-9 col-lg-9 no-padding">
+                                                                <span class="ctry_name_arc"> تور {{ Tour.Tcity.Name }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div style="height:20px;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <div id="package-content">
+                                                {% for i in package %}
+                                                    <div class="row pakage_container">
+                                                        {% include 'ui/5hotel.html' %}
+                                                    </div>
+                                                    <div class="modal fade" id="exampleModal{{ forloop.counter }}"
+                                                         tabindex="-1"
+                                                         aria-labelledby="exampleModalLabel"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h2 class="modal-title fs-5"
+                                                                        id="exampleModalLabel">
+                                                                        درخواست رزرو {{ Tour.Title }}
+                                                                    </h2>
+                                                                    <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                </div>
+                                                                <form method="post">
+                                                                    {% csrf_token %}
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-6 col-lg-6">
+                                                                                <input type="text" name="orderform-Name"
+                                                                                       maxlength="300"
+                                                                                       class="form-control reserve"
+                                                                                       placeholder="نام " required=""
+                                                                                       id="id_orderform-Name">
+                                                                            </div>
+                                                                            <div class="col-sm-6 col-lg-6">
+                                                                                <input type="text"
+                                                                                       name="orderform-Family"
+                                                                                       maxlength="300"
+                                                                                       class="form-control reserve"
+                                                                                       placeholder="نام خانوادگي"
+                                                                                       required=""
+                                                                                       id="id_orderform-Family">
+                                                                            </div>
+                                                                            <div class="col-sm-12 col-lg-12">
+                                                                                <input type="text"
+                                                                                       name="orderform-Mobile"
+                                                                                       maxlength="15"
+                                                                                       class="form-control reserve"
+                                                                                       placeholder="شماره موبايل"
+                                                                                       onkeypress="return isNumber(event)"
+                                                                                       pattern="09(0[1-2]|1[0-9]|3[0-9]|2[0-1])-?[0-9]{3}-?[0-9]{4}"
+                                                                                       required=""
+                                                                                       id="id_orderform-Mobile">
+                                                                            </div>
+                                                                            <div class="col-sm-12 col-lg-4">
+                                                                                <div class="order-input">
+                                                                                    <span class="modal_label">بزرگسال دو تخته</span>
+                                                                                    <input type="number"
+                                                                                           name="orderform-adult"
+                                                                                           value="1"
+                                                                                           min="0"
+                                                                                           class="form-control reserve count-{{ i.id }}"
+                                                                                           onchange="calculateprice('{{ i.id }}')"
+                                                                                           id="id_orderform-adult-{{ i.id }}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-6 col-lg-4">
+                                                                                <div class="order-input">
+                                                                                    <span class="modal_label">بزرگسال یک تخته</span>
+                                                                                    <input type="number"
+                                                                                           name="orderform-adult2"
+                                                                                           value="0"
+                                                                                           min="0"
+                                                                                           class="form-control reserve count-{{ i.id }}"
+                                                                                           onchange="calculateprice('{{ i.id }}')"
+                                                                                           id="id_orderform-adult2-{{ i.id }}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-6 col-lg-4">
+                                                                                <div class="order-input">
+                                                                                    <span class="modal_label">کودک با تخت</span>
+                                                                                    <input type="number"
+                                                                                           name="orderform-chield"
+                                                                                           value="0"
+                                                                                           min="0"
+                                                                                           class="form-control reserve count-{{ i.id }}"
+                                                                                           onchange="calculateprice('{{ i.id }}')"
+                                                                                           id="id_orderform-chield-{{ i.id }}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-6 col-lg-6">
+                                                                                <div class="order-input">
+                                                                                    <span class="modal_label">کودک بدون تخت</span>
+                                                                                    <input type="number"
+                                                                                           name="orderform-chield2"
+                                                                                           value="0"
+                                                                                           min="0"
+                                                                                           class="form-control reserve count-{{ i.id }}"
+                                                                                           onchange="calculateprice('{{ i.id }}')"
+                                                                                           id="id_orderform-chield2-{{ i.id }}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-6 col-lg-6">
+                                                                                <div class="order-input">
+                                                                                    <span class="modal_label">نوزاد</span>
+                                                                                    <input type="number"
+                                                                                           name="orderform-infont"
+                                                                                           value="0"
+                                                                                           min="0"
+                                                                                           class="form-control reserve count-{{ i.id }}"
+                                                                                           onchange="calculateprice('{{ i.id }}')"
+                                                                                           id="id_orderform-infont-{{ i.id }}">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-12">
+                                                                            <div class="calculate-box">
+                                                                                <div class="row">
+                                                                                    <div class="col-lg-6">
+                                                                                        <p class="calculate-headline">
+                                                                                            هزینه رزرواسیون پکیج انتخابی
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div class="col-lg-6">
+                                                                                        <p id="price-{{ i.id }}"
+                                                                                           class="calculate-price">
+                                                                                            {{ i.DoubleBedPrice|intcomma }}
+                                                                                            تومان
+                                                                                            {% if i.DoubleBedPrice_doller %}
+                                                                                                +
+                                                                                                {{ i.DoubleBedPrice_doller|intcomma }}
+                                                                                                دلار
+                                                                                            {% endif %}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-12">
+                                                                            <span class="modal_label">توضیحات</span>
+                                                                            <textarea name="orderform-description"
+                                                                                      cols="40" rows="2"
+                                                                                      maxlength="1000"
+                                                                                      class="form-control reserve"
+                                                                                      id="id_orderform-description"></textarea>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="submit"
+                                                                                class="btn btn-primary">ثبت درخواست
+                                                                        </button>
+                                                                        <input id="DoubleBedPrice-{{ i.id }}"
+                                                                               type="number"
+                                                                               value="{{ i.DoubleBedPrice }}" hidden>
+                                                                        <input id="SingleBedPrice-{{ i.id }}"
+                                                                               type="number"
+                                                                               value="{{ i.SingleBedPrice }}" hidden>
+                                                                        <input id="BabyWithBedPrice-{{ i.id }}"
+                                                                               type="number"
+                                                                               value="{{ i.BabyWithBedPrice }}" hidden>
+                                                                        <input id="BabyWithoutBedPrice-{{ i.id }}"
+                                                                               type="number"
+                                                                               value="{{ i.BabyWithoutBedPrice }}"
+                                                                               hidden>
+                                                                        <input id="InfontPrice-{{ i.id }}" type="number"
+                                                                               value="{{ i.InfontPrice }}" hidden>
+                                                                        <input name="orderpack" type="number"
+                                                                               value="{{ i.id }}" hidden>
+                                                                        <input id="DoubleBedPrice_doller-{{ i.id }}"
+                                                                               type="number"
+                                                                               value="{{ i.DoubleBedPrice_doller }}"
+                                                                               hidden>
+                                                                        <input id="SingleBedPrice_doller-{{ i.id }}"
+                                                                               type="number"
+                                                                               value="{{ i.SingleBedPrice_doller }}"
+                                                                               hidden>
+                                                                        <input id="BabyWithBedPrice_doller-{{ i.id }}"
+                                                                               type="number"
+                                                                               value="{{ i.BabyWithBedPrice_doller }}"
+                                                                               hidden>
+                                                                        <input id="BabyWithoutBedPrice_doller-{{ i.id }}"
+                                                                               type="number"
+                                                                               value="{{ i.BabyWithoutBedPrice_doller }}"
+                                                                               hidden>
+                                                                        <input id="InfontPrice_doller-{{ i.id }}"
+                                                                               type="number"
+                                                                               value="{{ i.InfontPrice_doller }}"
+                                                                               hidden>
+                                                                        <input name="orderpack" type="number"
+                                                                               value="{{ i.id }}" hidden>
+                                                                        <script>
+                                                                            var pack_id = {{ i.id }}
+                                                                        </script>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade" id="short-desc-tab-pane" role="tabpanel"
+                                     aria-labelledby="short-desc-tab"
+                                     tabindex="0">
+                                    <div class="tour-more-info">
+                                        <div class="row more-info">
+                                            <div class="col-lg-2 tour-icon-side">
+                                                <img loading="lazy" class="icon-documents" src="/media/documents.png">
+                                                <p class="documents-headline">مدارک لازم</p>
+                                            </div>
+                                            <div class="col-lg-10 tour-data-side">{{ Tour.documents | safe }}</div>
+                                        </div>
+                                        <div class="row more-info">
+                                            <div class="col-lg-2 tour-icon-side">
+                                                <img loading="lazy" class="icon-documents" src="/media/tour-service.png">
+                                                <p class="documents-headline">خدمات تور</p>
+                                            </div>
+                                            <div class="col-lg-10 tour-data-side">{{ Tour.ShortDsc | safe }}</div>
+                                        </div>
+                                        <div class="row more-info">
+                                            <div class="col-lg-2 tour-icon-side">
+                                                <img loading="lazy" class="icon-documents" src="/media/desc-icon.png">
+                                                <p class="documents-headline">توضیحات تور</p>
+                                            </div>
+                                            <div class="col-lg-10 tour-data-side">{{ Tour.Description | safe }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="insta">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="insta-box">
+                            <div class="insta-motion">
+                                <img loading="lazy" alt="گیف اینستا" src="/media/instaarezoosafar.gif">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-7">
+                        <h4 class="about_title">
+                            معرفی تورهای جذاب و شگفت انگیـــز
+                        </h4>
+                        <p>با ما در اینستاگرام همراه شو تا از پیشنهادات لحظه آخری و تورهای جذاب مطلع بشی!</p>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="input-section">
+                            <div class="row">
+                                <div class="col-lg-12 t-center">
+                                    <a href="https://www.instagram.com/arezooyesafarparsian/" class="btn-insta-subscribe">
+                                        <span class="logo-insta">
+                                            <img loading="lazy" alt="اینستاگرام" src="/static/asset/css/images/insta-logo.webp">
+                                        </span>
+                                        ایــنستاگـــرام</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if related_tour %}
+        <section class="related_tour">
+            <div class="container">
+                <div class="row">
+                    <h5 class="blog_sec_title">تورهای مرتبط </h5>
+                    <p class="blog_subtitle_">تورهای مشابه با این تور رو اینجا ببین.</p>
+                    {% for i, j in related_tour %}
+                        <div class="col-lg-3 tour_grid">
+                            <div class="row tour_data_box">
+                                <div class="col-lg-12 tour image no-padding">
+                                    {% if i.Feature %}
+                                        <div class="spacial_baget">
+                                            <p>
+                                                تور ویژه
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                    {% if i.TourImage %}
+                                        <img loading="lazy" class="tour-main-img" src="{{ i.TourImage.url }}">
+                                    {% else %}
+                                        <img loading="lazy" class="tour-main-img"
+                                             src="/static/asset/css/images/No_Image_Available.jpg">
+                                    {% endif %}
+                                    <span class="country_flag_list">
+                                            <img loading="lazy" src="{{ i.Tcountry.Flagimg.url }}" alt="پرچم {{ tours.Tcountry.TitleC }}" width="30" height="30" loading="lazy">
+                                            {{ i.Tcountry.TitleC }}
+                                        </span>
+                                    {% if i.satrap_gte %}
+                                        <span class="grte_">
+                                        گارانتی هتل
+                                    </span>
+                                    {% endif %}
+                                    {% if i.Cash %}
+                                        <span class="cashe_">
+                                        نقدی
+                                    </span>
+                                    {% endif %}
+                                    {% if i.Installment %}
+                                        <span class="installment_">
+                                        اقساطی
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-12 no-padding">
+                                    <div class="row">
+                                        <div class="col-lg-12 no-padding">
+                                            <p class="tour_title_">
+                                                {{ i.Title }}
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6 no-padding">
+                                            <p class="duration_">
+                                                <img loading="lazy" class="day_icon" alt="روز"
+                                                     src="/static/asset/css/images/icon/day.png">
+                                                     {{ i.NightCount }}
+                                                     شب و
+                                                {{ i.DayCount }}
+                                                روز
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6 no-padding">
+                                            <p class="duration_">
+                                                <img loading="lazy" class="day_icon" alt="تاریخ"
+                                                     src="/static/asset/css/images/icon/date.png">
+                                                {{ i.StartDate|to_jalali:'%Y/%m/%d' }}
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-12 col-lg-12 no-padding">
+                                            <div class="row">
+                                                {#                            <div class="col-sm-6 col-lg-6 no-padding">#}
+                                                {#                                <p class="duration_">#}
+                                                {#                                    {% if cities.0.QTransfer or cities.0.GTransfer  %}#}
+                                                {#                                        ساعت حرکت: #}
+                                                {#                                {{ cities.0.FlightTime }}#}
+                                                {#                                        {% else %}#}
+                                                {#                                ساعت پرواز: #}
+                                                {#                                {{ cities.0.FlightTime }}#}
+                                                {#                                        {% endif %}#}
+                                                {#                                </p>#}
+                                                {#                            </div>#}
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-12 col-lg-12 no-padding ir_price">
+                                            <p class="irprice">
+                                                {{ j.0.DoubleBedPrice | intcomma:False }}
+                                                {{ j.0.Pcry }}
+                                                {% if j.0.DollerPrice and not j.0.DoubleBedPrice_doller %}
+                                                    + {{ j.0.DollerPrice | intcomma:False }}
+                                                    {{ j.0.fr_Pcry }}
+                                                {% endif %}
+                                                {% if not j.0.DollerPrice and j.0.DoubleBedPrice_doller %}
+                                                    + {{ j.0.DoubleBedPrice_doller | intcomma:False }}
+                                                    {{ j.0.fr_Pcry }}
+                                                {% endif %}
+                                                {% if j.0.DollerPrice and j.0.DoubleBedPrice_doller %}
+                                                    + {{ j.0.DoubleBedPrice_doller | intcomma:False }}
+                                                    {{ j.0.fr_Pcry }}
+                                                {% endif %}
+                                                {% if not j.0.DollerPrice and not j.0.DoubleBedPrice_doller %}
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6 no-padding">
+                                            <p class="more_detail">
+                                                <a class="more_detail_link"
+                                                   href="{% url 'tour-detail' i.id i.Slug %}">
+                                                    مشاهده جزئیات
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6 no-padding">
+                                            <p class="pdf_download">
+                                                <a class="pdf_download_link"
+                                                   href="{% url 'pdf-download' i.id %}">
+                                                    دریافت پکیج ها
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    <script>
+        var country = {% if contry %}
+            '{{ contry.slug }}'
+        {% else %}
+            '{{ city.CountryName.slug }}'
+        {% endif %}
+        var country_id = {% if contry %}
+            '{{ contry.id }}'
+        {% else %}
+            '{{ city.CountryName.id }}'
+        {% endif %}
+        var city = '{{ city.slug }}'
+        var city_id = '{{ city.id }}'
+        var tour_id = '{{ Tour.id }}'
+        var tour_slug = '{{ Tour.Slug }}'
+        var tour_menu = '{{ Menu.slug }}'
+    </script>
+    {#    {% include 'ui/base/about.html' %}#}
+    {#    {% include 'ui/base/feature.html' %}#}
+    {% include 'ui/base/footer.html' %}
+</div>
+{% include 'ui/base/plugins.html' %}
+</body>
+</html>

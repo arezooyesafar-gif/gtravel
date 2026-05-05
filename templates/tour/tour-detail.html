@@ -1,0 +1,453 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<html lang="en" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{{ Tour.Title }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static '/asset/css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static '/asset/css/uistyle.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/media/favicon-32x32.png">
+    <title>موسسه گردشگری آرزو سفر پارسیان | {{ Tour.Title }}</title>
+</head>
+
+<body>
+    <div class="main-warper">
+        <div class="top-container">
+            {% include 'ui/topbar.html' %}
+            <div class="secd-row detail">
+                <div class="tour-detail-title">
+                    <p>{{ Tour.Title }}</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button id="move-calc" onclick="MoveCalc()">محاسبه اقساط</button>
+            <div id="calc-hide" class="clac-warper">
+                <div class="calc-right">
+                    <div class="ins-title">
+                        <p>انتخاب تعداد اقساط </p>
+                    </div>
+                    <div class="btn-1row">
+                        <button class="calc-btn" onclick="claculate(2)">2</button>
+                        <button class="calc-btn" onclick="claculate(3)">3</button>
+                        <button class="calc-btn" onclick="claculate(4)">4</button>
+                    </div>
+                    <div class="btn-1row">
+                        <button class="calc-btn" onclick="claculate(5)">5</button>
+                        <button class="calc-btn" onclick="claculate(6)">6</button>
+                        <button class="calc-btn" onclick="claculate(7)">7</button>
+                    </div>
+                    <div class="btn-1row">
+                        <button class="calc-btn" onclick="claculate(8)">8</button>
+                        <button class="calc-btn" onclick="claculate(9)">9</button>
+                        <button class="calc-btn" onclick="claculate(10)">10</button>
+                    </div>
+                    <div class="btn-1row last-row">
+                        <button class="calc-btn" onclick="claculate(11)">11</button>
+                        <button class="calc-btn" onclick="claculate(12)">12</button>
+                    </div>
+                </div>
+                <div class="calc-left-side">
+                    <div class="tour-price-calc">
+                        <input id="tour-price-input" 
+                        autocomplete="false"
+                        placeholder="مبلغ تور را وارد کنید"
+                        onkeyup="seprateNum()" type="text" 
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
+                    </div>
+                    <div class="pre-paid">
+                        <p>مبلغ پیش پرداخت</p>
+                        <p id="pre-paid-value">0</p><span>تومان</span>
+                    </div>
+                    <div class="installments monthly">
+                        <P>مبلغ اقساط ماهانه</P>
+                        <p id="installment-fee">0</p><span>تومان</span>
+                    </div>
+                    <div class="installments">
+                        <p>جمع کل بازپرداخت</p>
+                        <p id="total-fee">0</p><span>تومان</span>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function MoveCalc() {
+                    elem = document.getElementById("calc-hide")
+                    elem2 = document.getElementById("move-calc")
+                    if (elem.classList.contains('show') === false) {
+                        elem.classList.add('show')
+                    } else {
+                        elem.classList.remove('show')
+                    }
+                    if (elem2.classList.contains('move-on') === false) {
+                        elem2.classList.add('move-on')
+                    } else {
+                        elem2.classList.remove('move-on')
+                    }
+                }
+                function seprateNum(){
+                    a = document.getElementById('tour-price-input').value
+                    a = a.replace(/,/g, '')
+                    a = parseInt(a)
+                    if (isNaN(a)){
+                        // document.getElementById('tour-price-input').value = 'مبلغ تور را وارد کنید'
+                        document.getElementById('installment-fee').innerHTML = 0
+                        document.getElementById('total-fee').innerHTML = 0
+                        document.getElementById('pre-paid-value').innerHTML = 0
+                    } else {
+                        document.getElementById('tour-price-input').value = a.toLocaleString("en-US")
+                    }
+                    
+                }
+                function claculate(x) {
+                    Price = document.getElementById('tour-price-input').value
+                    Price = Price.replace(/,/g, '')
+                    y = parseInt(Price) / 2
+                    y = Math.ceil(y)
+                    total = (y * 3) / 100
+                    // x = parseInt(x)
+                    paid = (y / x) + total
+                    paid = Math.ceil(paid)
+                    totalCost = paid * x + y
+                    if (y > 0) {
+                        document.getElementById('pre-paid-value').innerHTML = y.toLocaleString("en-US")
+                    } else {
+                        document.getElementById('pre-paid-value').innerHTML = 0
+                    }
+                    if (paid > 0) {
+                        document.getElementById('installment-fee').innerHTML = paid.toLocaleString("en-US")
+                        document.getElementById('total-fee').innerHTML = totalCost.toLocaleString("en-US")
+                    } else {
+                        document.getElementById('installment-fee').innerHTML = 0
+                        document.getElementById('total-fee').innerHTML = 0
+                    }
+                    console.log(price)
+        
+                }
+            </script>
+        </div>
+        <div class="content-container col-sm-12 col-lg-11">
+            <div class="right-side">
+                <div class="tour-card">
+                    <button type="button"  onclick="hotellist()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                        رزرو آنلاین
+                      </button>
+                    <!-- The Modal -->
+                    <div class="modal fade" id="myModal">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title"> رزرو تور</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                          </div>
+                    
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                            <form method="post" class='reserve-form' novalidate="novalidate">
+                                {% csrf_token %}
+                                <div class="order-input">
+                                    {{ Order.Name}}
+                                </div>
+                                <div class="order-input">
+                                    {{ Order.Family}}
+                                </div>
+                                <div class="order-input">
+                                    {{ Order.Mobile}}
+                                </div>
+                                <div class="order-input">
+                                    <select id="hotels-list" onclick="finalInsert()" class="text-input reserve"></select>
+                                </div>
+                                <div class="order-input">
+                                    {{ Order.OrderPack}}
+                                </div>
+                                <button type="submit" onclick="finalInsert()" class="btn btn-primary rsv-btn form-btn" data-bs-toggle="modal" data-bs-target="#myModal">
+                                     ارسال درخواست رزرو
+                                  </button>
+                            </form>
+                          </div>
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">انصراف</button>
+                          </div>
+                          <script>
+                            var select = document.getElementById("hotels-list");
+                            var x = document.getElementsByClassName('hotel-tlt');
+                            var y = document.getElementsByClassName('pkg-price');
+                            a = [];
+                            b= [];
+                            var elem = JSON.parse('{{id}}');
+                            var fun1 = (function () {
+                                var done = false;
+                                return function () {
+                                    if (!done) {
+                                        done = true;
+                                        for (let i = 0; i < x.length; i++) {
+                                    a.push(x[i].innerHTML)
+                                    b.push(y[i].innerHTML)
+                                    };
+                                    for (var i = 0; i < a.length; i++) {
+                                    var optn = a[i] + ' - ' + b[i];
+                                    var v = elem[i]
+                                    var el = document.createElement("option");
+                                    el.textContent = optn;
+                                    el.value = v
+                                    select.appendChild(el);
+                                    }
+                                        }
+                                        };
+                                    })();
+                                    function hotellist() {
+                                        fun1();  // It is called and result 
+                                        fun1();  // It is not called.
+                                    }
+                                    var order = document.getElementById('hotels-list')
+                                    function finalInsert() {
+                                        var text = order.options[order.selectedIndex].text;
+                                        document.getElementById('id_orderform-OrderPack').value = text
+                                    }
+                          </script>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <p class="orgin-city-name">
+                        {{ Cities.0.City }}
+                        <span class="start-text"> (شروع تور)</span>
+                        <span class="tour-start-date"> {{ Tour.StartDate | to_jalali:'%Y/%m/%d' }}</span>
+                    </p>
+                    {% for city in Cities %}
+                    {{ city.CityName }}
+                    {% if city.CityName is not Cities.0.CityName %}
+                    <p class="Dest-city-name">
+                        {{ city.CityName }}
+                        {% if city.NightCount < 0 %}
+                        <span class="stay-text"> ({{ city.NightCount }} شب اقامت)</span>
+                        {% endif %}
+                    </p>
+                    {% endif %}
+                    <div class="tour-origin">
+                        <div class="tour-origin-airport">
+                            <div class="airpoet-title"><span>{{ city.FromAirport.AirportEn }}</span>
+                            </div>
+                            <div class="airpoet-title-fa"><span>{{ city.FromAirport.AirportFa }}</span></div>
+                        </div>
+                        <div class="tour-type">
+                            <div class="type-icon"><span> <img src="{% static '/asset/css/images/airplane-icon.png' %}" width="70"></span>
+                            </div>
+                        </div>
+                        <div class="tour-dest-airport">
+                            <div class="airpoet-title"><span>{{ city.ToAirport.AirportEn }}</span>
+                            </div>
+                            <div class="airpoet-title-fa"><span>{{ city.ToAirport.AirportFa }} </span></div>
+                        </div>
+                        <div class="tour-detail-airline">
+                            <div class="detail-airline-logo">
+                                <span>
+                                    <img src="{{ city.Airline.AirlineLogo.url }}">
+                                </span>
+                            </div>
+                            <div class="detail-airline-text"><span>{{ city.Airline.AirLineTitle }}</span></div>
+                        </div>
+                        <div class="flight-class">
+                            <div class="flight-class-title"><span>{{ city.FlightClass }}</span>
+                            </div>
+                            <div class="flight-legal-cargo"><span>میزان بار مجاز : {{city.Airline.AirlineCargo}} کیلوگرم</span></div>
+                        </div>
+                        <div class="flight-time-detail">
+                            <div class="flight-time-title"><span>ساعت پرواز</span>
+                            </div>
+                            <div class="flight-time"><span>{{ city.FlightTime }}</span></div>
+                        </div>
+                        <div class="flight-time-detail without-border">
+                            <div class="flight-time-title"><span>مدت پرواز</span>
+                            </div>
+                            <div class="flight-time"><span>{{ city.FlightDuration }}</span></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <p class="orgin-city-name">
+                        {{ Cities.0.CityName }}
+                        <span class="start-text"> (پایان تور)</span>
+                        <span class="tour-start-date"> {{ Tour.EndDate | to_jalali:'%Y/%m/%d' }}</span>
+                    </p>
+                </div> -->
+                {% if Tour.ShortDsc %}
+                <div class="short-desc">
+                    {{ Tour.ShortDsc | safe }}
+                </div>
+                {% endif %}
+                {% if m3Hotel %}{% for package, hotelsData, mhotelsData, m1hotelsData, m2hotelsData, m3hotelsData in 5Hotel %}
+                    {% include 'ui/5hotel.html' %}
+                {% endfor %}
+                {% endif %}
+                {% if not m3Hotel %}{% for package, hotelsData, mhotelsData, m1hotelsData, m2hotelsData in 4Hotel %}
+                    {% include 'ui/4hotel.html' %}
+                {% endfor %}
+                {% endif %}
+                {% if not m2Hotel %}{% for package, hotelsData, mhotelsData, m1hotelsData in 3rdHotel %}
+                    {% include 'ui/3hotel.html' %}
+                {% endfor %}
+                {% endif %}
+                {% if not m1Hotel %}{% for package, hotelsData, mhotelsData in alldata %}
+                    {% include 'ui/2hotel.html' %}
+                {% endfor %}
+                {% endif %}
+                {% if not mHotel %} {% for package, hotelsData in singeldata %} 
+                <div class="hotel-card">
+                    {% include 'ui/1hotel.html' %}
+                    <div class="hotel-price">
+                        <div class="hotel-bed-price">
+                            <div class="bed-type">
+                                <p>دو تخته</p>
+                            </div>
+                            <div class="bed-price">
+                                <p class="pkg-price">{{ package.DoubleBedPrice | intcomma:False }}
+                                </p>
+                                {% if package.DollerPrice %}
+                                <p class="doller-price"> + {{ package.DollerPrice | intcomma:False }}  </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="hotel-bed-price">
+                            <div class="bed-type">
+                                <p>یک تخته</p>
+                            </div>
+                            <div class="bed-price">
+                                <p>{{ package.SingleBedPrice | intcomma:False }} <span class="courency">  </span>
+                                </p>
+                                {% if package.DollerPrice %}
+                                <p class="doller-price"> + {{ package.DollerPrice | intcomma:False }}  </p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="hotel-bed-price">
+                            <div class="bed-type">
+                                <p>کودک با تخت</p>
+                            </div>
+                            <div class="bed-price">
+                                <p>{{ package.BabyWithBedPrice | intcomma:False }} <span class="courency">  </span>
+                                </p>
+                                {% if package.DollerPrice %}
+                                <p class="doller-price"> + {{ package.DollerPrice | intcomma:False }}  </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="hotel-bed-price">
+                            <div class="bed-type">
+                                <p>کودک بدون تخت</p>
+                            </div>
+                            <div class="bed-price">
+                                <p>{{ package.BabyWithoutBedPrice | intcomma:False }} <span class="courency"> 
+                                    </span></p>
+                                    {% if package.DollerPrice %}
+                                    <p class="doller-price"> + {{ package.DollerPrice | intcomma:False }}  </p>
+                                    {% endif %}
+                            </div>
+                        </div>
+                        <div class="hotel-bed-price last">
+                            <div class="bed-type">
+                                <p>نوزاد</p>
+                            </div>
+                            <div class="bed-price">
+                                <p>{{ package.InfontPrice | intcomma:False }} <span class="courency">  </span></p>
+                                {% if package.DollerPrice %}
+                                <p class="doller-price"> + {{ package.DollerPrice | intcomma:False }}  </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                {% if Tour.Description %}
+                    <div class="short-desc">
+                {{ Tour.Description | safe }}
+                    </div>
+            {% endif %}
+            </div>
+        <div class="left-side">
+            <div class="hotel-list-heading">
+                <div class="hotels-list">
+                    <p class="hotel-list-title">لیست هتل ها</p>
+                    {% for hotel in Hotels %}
+                    {% if forloop.counter <= 4 %} <a href="{% url 'hotel-detail' hotel.id hotel.Slug%}">
+                        <div class="list-hotels">
+                            <div class="hotel-image">
+                                {% if hotel.HotelImage %}
+                                <img src="{{ hotel.HotelImage.url }}">
+                                {% else %}
+                                <img src="/media/no-hotel-img.jpg">
+                                {% endif %}
+                            </div>
+                            <div class="hotel-titles">
+                                <p>{{ hotel.HotelName|truncatechars:17 }}</p>
+                                <p class="hotel-eng-name">{{ hotel.HotelNameEnglish|truncatechars:17 }}</p>
+                            </div>
+                            <div class="hotel-rating-star">
+                                <p>تعداد ستاره هتل </p>
+                                <p class="star-rating-i">
+                                    {% if hotel.HotelRating == '1' %}
+                                    <img src="/media/rating/rating-1.png" width="50">
+                                    {% endif %}
+                                    {% if hotel.HotelRating == '2' %}
+                                    <img src="/media/rating/rating-2.png" width="50">
+                                    {% endif %}
+                                    {% if hotel.HotelRating == '3' %}
+                                    <img src="/media/rating/rating-3.png" width="50">
+                                    {% endif %}
+                                    {% if hotel.HotelRating == '4' %}
+                                    <img src="/media/rating/rating-4.png" width="50">
+                                    {% endif %}
+                                    {% if hotel.HotelRating == '5' %}
+                                    <img src="/media/rating/rating-5.png" width="50">
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                </div>
+            </div>
+            <div class="airline-list">
+                {% if ArilineList %}
+                {% for airline in ArilineList %}
+                <div class="airline-detail">
+                    <div class="air-line-logo">
+                        <img src="{{ airline.AirlineLogo.url }}" width="40">
+                    </div>
+                    <div class="air-line-title">
+                        <p>خطوط هوایی {{ airline.AirLineTitle }} </p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% include 'ui/footer.html' %}
+    </div>
+    </div>
+    <link href="{% static 'asset/css/rsc/all.min' %}" rel="stylesheet" async>
+    <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+    <script type="module" src="{% static 'asset/css/rsc/ionicons.esm.js' %}"></script>
+    <script type="module" src="{% static 'asset/css/rsc/ionicons.js' %}"></script>
+    <script src="{% static 'admin/js/django_jalali.js' %}"></script>
+    <script src="{% static 'asset/css/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="/static/asset/js/convertDate.js"></script>
+    
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    
+
+    
+    
+    
+    
+    <!-- CSS only -->
+</body>
+
+</html>

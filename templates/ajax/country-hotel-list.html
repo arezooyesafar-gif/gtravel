@@ -1,0 +1,56 @@
+{% for hotel in hotels %}
+    <div class="col-lg-3">
+        <a href="{% url 'hotel-detail' hotel.id hotel.Slug %}">
+            <div class="hotel-cat">
+                <div class="cat-img">
+                    {% if hotel.HotelImage %}
+                        <img alt="{{ hotel.HotelName }}" src="{{ hotel.HotelImage.url }}">
+                    {% else %}
+                        <img alt="{{ hotel.HotelName }}" src="/media/no-hotel-img.jpg">
+                    {% endif %}
+                    {% if hotel.top_rate %}
+                        <p class="top_rate_">TOP</p>
+                    {% endif %}
+                    {% if hotel.satrap_gte %}
+                        <p class="gte_hotel">گارانتی</p>
+                    {% endif %}
+                </div>
+                <div class="cat-title">
+                    <p class="title-cat hotel_list">{{ hotel.HotelName }}</p>
+                    <p data-bs-toggle="tooltip" data-bs-placement="top" title="{{ hotel.HotelNameEnglish }}" class="title-cat hotel_list en-title">{{ hotel.HotelNameEnglish|truncatechars:33 }}</p>
+                    <p class="hotel_list hotel_data_">{{ hotel.Hcity }} |
+                        {{ hotel.HotelRating }} ستاره
+                        |
+                        {% if hotel.HotelOR %}
+                            OR
+                        {% elif hotel.HotelBB %}
+                            BB
+                        {% elif hotel.HotelHB %}
+                            HB
+                        {% elif hotel.HotelFB %}
+                            FB
+                        {% elif hotel.HotelAll %}
+                            ALL
+                        {% elif hotel.HotelUall %}
+                            UALL
+                        {% elif hotel.HotelMaxAll %}
+                            MaxALL
+                        {% endif %}
+
+                    </p>
+                </div>
+            </div>
+        </a>
+    </div>
+{% endfor %}
+<ul class="pagination">
+    {% for n in hotels.paginator.page_range %}
+        {% if hotels.number == n %}
+            <li data-page='{{ n }}' class="page-item {% if hotels.number == n %}active{% endif %}"><a
+                    class="page-link">{{ n }}</a></li>
+        {% elif n > hotels.number|add:'-10' and n < hotels.number|add:'10' %}
+            <li data-page='{{ n }}' class="page-item {% if hotels.number == n %}active{% endif %}"><a
+                    class="page-link">{{ n }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>

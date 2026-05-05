@@ -1,0 +1,69 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست شماره های خبرنامه
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a class="export-csv" href="/dashboard/export-numbers">خروجی اکسل مخاطبین</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="table-block">
+
+                    {% if List %}
+                        <table class="table BranchTable">
+                            <thead>
+                            <tr>
+                                <th class="TbHead">ردیف</th>
+                                <th class="TbHead">شماره تماس</th>
+                                
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                {% for number in List %}
+                                    <td class="TbCells serial">{{ forloop.counter }}</td>
+                                    <td class="TbCells">{{ number.Mobile }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if List.has_previous %}
+                                    <a class="page-btn" href="?page=1">&laquo; ابندا</a>
+                                    <a class="page-btn" href="?page={{ List.previous_page_number }}">قبلی</a>
+                                {% endif %}
+
+                                <span class="current">
+                                    صفحه {{ List.number }} از {{ List.paginator.num_pages }}
+                                </span>
+
+                                {% if List.has_next %}
+                                    <a class="page-btn" href="?page={{ List.next_page_number }}">بعدی</a>
+                                    <a class="page-btn" href="?page={{ List.paginator.num_pages }}">انتها &raquo;</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+{% endblock %}

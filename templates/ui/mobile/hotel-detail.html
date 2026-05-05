@@ -1,0 +1,192 @@
+<html lang="fa-IR" dir="rtl">
+<head>{% load static %}{% load humanize %}{% load jalali_tags %}{% load webp_converter %}
+    {% include 'ui/mobile/base/head.html' %}
+    <link rel=“canonical” href=""/>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    {% if HotelData.htitle %}
+        <title>{{ HotelData.htitle }}</title>
+    {% else %}
+        <title> هتل | {{ HotelData.HotelName }} | </title>
+    {% endif %}
+</head>
+<body>
+{% include 'ui/mobile/base/header.html' %}
+<section class="hotel_image_">
+    <div class="col-lg-12">
+        <div class="hotel_main_image">
+            {% if HotelData.HotelImage %}
+                <img alt="{{ HotelData.HotelName }}" src="{{ HotelData.HotelImage.url }}">
+            {% else %}
+                <img alt="{{ HotelData.HotelName }}" src="/media/no-hotel-img.jpg">
+            {% endif %}
+        </div>
+    </div>
+</section>
+<section class="hotel_data_info">
+    <div class="row top_level_data">
+        <div class="col-lg-4 hotel_data_detail">
+            <div class="booking_rate_ prcy_mrg-top">
+                <p class="feature_title">شروع قیمت از:</p>
+                {% if HotelData.hotel_price %}
+                    <p class="feature_value">{{ HotelData.hotel_price }}</p>
+                {% else %}
+                    <p class="feature_value">-</p>
+                {% endif %}
+            </div>
+            <div class="booking_rate_ mrg-tp-35">
+                <p class="feature_title">امتیاز بوکینگ</p>
+                <p class="feature_value">{{ HotelData.HotelBookingRate }}</p>
+            </div>
+            <div class="booking_rate_">
+                <p class="feature_title">تعداد اتاق</p>
+                <p class="feature_value">{{ HotelData.HotelRoom }} اتاق</p>
+            </div>
+        </div>
+        <div class="col-lg-5 hotel_data_detail">
+            <div class="booking_rate_">
+                {% if HotelData.reseve_link %}
+                    <a target="_blank" href="{{ HotelData.reseve_link }}" class="feature_title">رزرو آنلاین</a>
+                {% else %}
+                    <a target="_blank" href="#" class="feature_title">رزرو آنلاین</a>
+                {% endif %}
+            </div>
+            <div class="booking_rate_ mrg-tp-35">
+                <p class="feature_title">موقعیت</p>
+                <p class="feature_value">-</p>
+            </div>
+            <div class="booking_rate_">
+                <p class="feature_title">شماره تماس</p>
+                <p style="direction: ltr" class="feature_value">{{ HotelData.HotelPhone }}</p>
+            </div>
+        </div>
+        <div class="col-lg-3 hotel_data_detail">
+            <div class="col-lg-12 hotel-data-i map">
+                <div class="map-link">
+                    <a href="{{ HotelData.HotelMap }}">هتل بر روی نقشه</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row title_line">
+        <div class="col-lg-12">
+            <div class="data-m">
+                {% if HotelData.HotelRating == '1' %}
+                    <img alt="rating-1" src="/media/rating/rating-1.png" width="150px">
+                {% endif %}
+                {% if HotelData.HotelRating == '2' %}
+                    <img alt="rating-1" src="/media/rating/rating-2.png" width="150px">
+                {% endif %}
+                {% if HotelData.HotelRating == '3' %}
+                    <img alt="rating-1" src="/media/rating/rating-3.png" width="150px">
+                {% endif %}
+                {% if HotelData.HotelRating == '4' %}
+                    <img alt="rating-1" src="/media/rating/rating-4.png" width="150px">
+                {% endif %}
+                {% if HotelData.HotelRating == '5' %}
+                    <img alt="rating-1" src="/media/rating/rating-5.png" width="150px">
+                {% endif %}
+            </div>
+            <div class="hotel_list_title_">
+                <p>{{ HotelData.HotelName }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="hotel_desc">
+                <p class="hotel_desc_head_">درباره هتل</p>
+                {{ HotelData.HotelDesc | safe }}
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="hotel_desc">
+                <p class="hotel_desc_head_">امکانات هتل</p>
+                {{ HotelData.HotelDesc | safe }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h5 class="related_tour_list" style="margin-bottom: 30px;padding-right: 0;">لیست تورهای این هتل</h5>
+            {% for tourData,cities, packages2 in Data %}
+                        <div class="row all_tour_list_">
+                            <div class="row top_section">
+                                <div class="col-lg-8 tour_top_right">
+                                    <div class="tlt"><span>{{ tourData.Title|truncatechars:30 }}</span></div>
+                                </div>
+                                <div class="col-lg-4 tour_top_left">
+                                    <div class="installment">
+                                        {% if tourData.Installment %}
+                                            <p class="instm"> اقساطی</p>
+                                        {% endif %}
+                                        {% if tourData.Cash %}
+                                            <p class="cash">نقدی</p>
+                                        {% endif %}
+                                        {% if tourData.satrap_gte %}
+                                            <p class="grt_">گارانتی ساتراپ</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-4 tour_bottom right">
+                                            <div class="time-text">
+                                                <span> {{ tourData.NightCount }} شب و {{ tourData.DayCount }} روز</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 tour_bottom center">
+                                            <p class="airline_tlt_">ایرلاین</p>
+                                            <p class="airline_name">{{ cities.0.Airline.AirLineTitle }}</p>
+                                        </div>
+                                        <div class="col-lg-4 tour_bottom left">
+                                            <p class="airline_tlt_">رفت</p>
+                                            <p class="airline_name">{{ tourData.StartDate | to_jalali:'%Y/%m/%d' }}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row bottom_section">
+                                <div class="col-lg-8 tour_top_right price_section">
+                                    {% if packages2.DollerPrice %}
+                                        <p class="main_price_">{{ packages2.DoubleBedPrice | intcomma:False }}
+                                            {% if packages2.Pcry %}
+                                                {{ packages2.Pcry }}
+                                            {% endif %}
+                                        </p>
+                                        <p class="doller-price">
+                                            + {{ packages2.DollerPrice | intcomma:False }}  </p>
+                                    {% else %}
+                                        <p class="singel-price">{{ packages2.DoubleBedPrice | intcomma:False }}
+                                            {% if packages2.Pcry %}
+                                                {{ packages2.Pcry }}
+                                            {% endif %}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-4 tour_top_left price_section">
+                                    <a class="" href="{% url 'tour-detail' tourData.id tourData.Slug %}" target="_blank">
+                                        <div class="tour-more"><span>جزئیات بیشتر</span></div>
+                                    </a>
+                                    {% if not tourData.pdfAvb and tourData.TourPdf %}
+                                        <a href="{{ tourData.TourPdf.url }}" target="_blank">
+                                            <div class="tour-more pdf"><span>ذخیره PDF</span></div>
+                                        </a>
+                                    {% elif tourData.pdfAvb %}
+                                        <a href="{% url 'pdf-download' tourData.id %}" target="_blank">
+                                            <div class="tour-more pdf"><span>ذخیره PDF</span></div>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+        </div>
+    </div>
+</section>
+{% include 'ui/mobile/base/feature.html' %}
+{% include 'ui/mobile/base/footer.html' %}
+</body>
+{% include 'ui/base/plugins.html' %}
+</html>

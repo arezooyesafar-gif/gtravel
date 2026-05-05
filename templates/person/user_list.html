@@ -1,0 +1,50 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+<div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست کاربران
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="" class="link">ایجاد کاربر جدید </a>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row m-20">
+                        <div class="col-lg-5">
+                            <input id="username" type="text" name="username" class="text-input search-input" placeholder="نام کاربری">
+                        </div>
+                        <div class="col-lg-5">
+                            <select id="user_stat" class="text-input search-input" name="user_stat">
+                                   <option value="">انتخاب وضعیت حساب</option>
+                                   <option value="1">فعال</option>
+                                   <option value="0">غیر فعال</option>
+                               </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <button id="searchBtn" type="submit"
+                                        class="btn btn-lg btn-info btn-block">
+                                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                        id="save-button-title">جستجو کاربر </span>
+                                </button>
+                            {{ forms.media }}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+<div class="row m-t-20">
+    <div class="col-sm-12 col-lg-12">
+        <div class="">
+            <div id="user_list" class="table-block">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

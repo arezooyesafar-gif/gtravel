@@ -1,0 +1,42 @@
+<div class="col-lg-6 col-xxl-6">
+        <div class="card card-bordered card-full">
+            <div class="card-inner" style="padding: 0">
+                <div class="card-title-group mb-1" style="padding: 1.5rem">
+                    <div class="card-title">
+                        <h6 class="title">لیست جدیدترین ایرلاین ها</h6>
+                    </div>
+                </div>
+                {% for airline in Airlines %}
+                    {% if forloop.counter < 8 %}
+                    <div class="row tour_data">
+                        <div class="col-md-2 text-center">
+                            <span class="">{{ forloop.counter }}</span>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <span class=""><img height="22px" width="300px" src="{{ airline.AirlineLogo.url }}"></span>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <span class="">{{ airline.AirLineTitle }}</span>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <span class="ariline_text">بار مجاز : {{ airline.AirlineCargo }} کیلوگرم</span>
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <div class="dropdown">
+                                <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                                        class="icon ni ni-more-h"></em></a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                    <ul class="link-list-plain">
+                                        <li><a href="{% url 'update-airline' airline.id %}">ویرایش</a></li>
+                                        <li><a style="color: red" href="{% url 'delet-airline' airline.id %}">حذف</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- .col -->

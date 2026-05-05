@@ -1,0 +1,415 @@
+﻿{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<html lang="en" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{{ Tour.MetaDescription }}">
+    <meta name="keyword" content="{{ Tour.MetaKeywords }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static '/asset/css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static '/asset/css/uistyle.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/media/favicon-32x32.png">
+    <title>آرزوی سفر پارسیان | {{ Tour.Title }}</title>
+    <style>
+        @font-face {
+            font-family: 'Iransans';
+            src: url('https://arezoosafar.com/static/asset/css/fonts/IRANSansWeb.ttf');
+        }
+
+        header {
+            position: relative;
+            right: 0;
+            top: -7mm;
+            height: 55mm;
+            text-align: right;
+            font-size: 10px;
+            background: url(https://arezoosafar.com/static/asset/css/images/header.png);
+            width: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top center
+        }
+
+        footer {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            height: 40mm;
+            width: 210mm;
+            text-align: right;
+            font-size: 10px;
+            margin-bottom: 0;
+            background: url(https://arezoosafar.com/static/asset/css/images/footer.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            width: 100%
+        }
+
+        .tour-desc {
+            display: block;
+            width: 90%;
+            height: 35mm;
+            overflow: hidden;
+            padding: 5px;
+            border: 3px dashed #61b3e5;
+            margin-left: 5mm;
+            bottom: 41mm;
+            margin-bottom: 3mm;
+            margin-right: 10mm;
+            font-family: 'Iransans';
+            text-align: justify;
+            font-size: 12px;
+            position: fixed;
+        }
+
+        p.tour-title-pdf {
+            margin-top: 0mm;
+            margin-right: 8mm;
+            font-family: 'Iransans';
+            text-align: right;
+            position: fixed;
+            top: 11mm;
+            background: #fff;
+            border-radius: 5px;
+            padding: 5px
+        }
+
+        p.tour-airline-pdf {
+            margin-top: 0mm;
+            margin-right: 13mm;
+            font-family: 'Iransans';
+            text-align: right;
+            position: fixed;
+            top: 11mm;
+            left: 20mm;
+            background: #fff;
+            border-radius: 5px;
+            padding: 5px
+        }
+
+        p.flight-time-pdf {
+            position: fixed;
+            top: 26.5mm;
+            font-family: Iransans;
+            font-size: 12px;
+            margin-right: 10mm
+        }
+
+        p.flight-time-re-pdf {
+            position: fixed;
+            top: 26.5mm;
+            left: 10mm;
+            font-family: Iransans;
+            font-size: 12px;
+            margin-right: 10mm
+        }
+
+        p.tour-desc {
+            line-height: 20px;
+            font-family: 'Iransans';
+        }
+
+        p.tour-title-pdf {
+            font-size: 18px;
+        }
+
+        p.flight-time-pdf {
+            font-size: 11px;
+        }
+
+        p.flight-time-re-pdf {
+            font-size: 11px;
+        }
+        .box-1 {
+            background: #61b3e5;
+            font-family: 'IranSans';
+            text-align: center;
+            font-size: 12px;
+            width: 200px;
+            position: absolute;
+            bottom: 85mm;
+            line-height: 35px;
+            left: 17mm;
+            border-radius: 5px
+        }
+        
+        .box-2 {
+            background: #61b3e5;
+            font-family: 'Iransans';
+            text-align: center;
+            font-size: 12px;
+            width: 200px;
+            position: absolute;
+            bottom: 85mm;
+            line-height: 35px;
+            left: 77mm;
+            border-radius: 5px
+        }
+        
+        .box-3 {
+            background: #61b3e5;
+            font-family: 'Iransans';
+            text-align: center;
+            font-size: 12px;
+            width: 200px;
+            position: absolute;
+            bottom: 85mm;
+            line-height: 35px;
+            left: 137mm;
+            border-radius: 5px
+        }
+    </style>
+</head>
+
+<body>
+
+<header></header>
+<div class="main-warper pdf-warp">
+    <p class="tour-title-pdf">{{ Tour.Title }}</p>
+    <p class="tour-airline-pdf">نام ایرلاین : {{ tourcity.Airline.AirLineTitle }} </p>
+    <p class="flight-time-pdf">
+        تاریخ پرواز رفت : {{ Tour.StartDate | to_jalali:'%Y/%m/%d' }}
+        - ساعت: {{ tourcity.FlightTime }}</p>
+    <p class="flight-time-re-pdf">
+        تاریخ پرواز برگشت :
+        {{ Tour.EndDate | to_jalali:'%Y/%m/%d' }}
+        - ساعت: {{ lc.FlightTime }}</p>
+    <div class="package-table">
+        <img src="http://localhost:8000/{{ tourcity.Airline.AirlineLogo.url }}">
+        <table class="table-inner">
+            <tbody>
+            <tr class="table-head">
+                <th>نام هتل</th>
+                <th> خدمات</th>
+                <th>دو تخت</th>
+                <th>یک تخت</th>
+                <th>کودک با تخت</th>
+                <th>کودک بدون تخت</th>
+            </tr>
+            {% for i in packages %}
+
+                <tr
+                        class="data-row {% if forloop.counter0|divisibleby:2 %}even{% endif %}">
+                    <td class="data-cell">
+                        {{ i.HotelName.HotelNameEnglish }}
+                        {% if i.Mhotel.HotelNameEnglish %}
+                            <br>
+                            {{ i.Mhotel.HotelNameEnglish }}
+                        {% endif %}
+                        {% if i.M1hotel.HotelNameEnglish %}
+                            <br>
+                            {{ i.M1hotel.HotelNameEnglish }}
+                        {% endif %}
+                        {% if i.M2hotel.HotelNameEnglish %}
+                            <br>
+                            {{ i.M2hotel.HotelNameEnglish }}
+                        {% endif %}
+                        {% if i.M3hotel.HotelNameEnglish %}
+                            <br>
+                            {{ i.M3hotel.HotelNameEnglish }}
+                        {% endif %}
+                    </td>
+                    <td class="data-cell">
+                        {% if i.HotelName.HotelOR %}
+                            OR
+                        {% endif %}
+                        {% if i.HotelName.HotelBB %}
+                            BB
+                        {% endif %}
+                        {% if i.HotelName.HotelHB %}
+                            HB
+                        {% endif %}
+                        {% if i.HotelName.HotelFB %}
+                            FB
+                        {% endif %}
+                        {% if i.HotelName.HotelAll %}
+                            All
+                        {% endif %}
+                        {% if i.HotelName.HotelUall %}
+                            U All
+                        {% endif %}
+                        {% if i.HotelName.HotelMaxAll %}
+                            Max All
+                        {% endif %}
+                        {% if i.Mhotel %}
+                            <br>
+                        {% endif %}
+                        {% if i.Mhotel.HotelOR %}
+                            OR
+                        {% endif %}
+                        {% if i.Mhotel.HotelBB %}
+                            BB
+                        {% endif %}
+                        {% if i.Mhotel.HotelHB %}
+                            HB
+                        {% endif %}
+                        {% if i.Mhotel.HotelFB %}
+                            FB
+                        {% endif %}
+                        {% if i.Mhotel.HotelAll %}
+                            All
+                        {% endif %}
+                        {% if i.Mhotel.HotelUall %}
+                            U All
+                        {% endif %}
+                        {% if i.Mhotel.HotelMaxAll %}
+                            Max All
+                        {% endif %}
+                        {% if i.M1hotel %}
+                            <br>
+                        {% endif %}
+                        {% if i.M1hotel.HotelOR %}
+                            OR
+                        {% endif %}
+                        {% if i.M1hotel.HotelBB %}
+                            BB
+                        {% endif %}
+                        {% if i.M1hotel.HotelHB %}
+                            HB
+                        {% endif %}
+                        {% if i.M1hotel.HotelFB %}
+                            FB
+                        {% endif %}
+                        {% if i.M1hotel.HotelAll %}
+                            All
+                        {% endif %}
+                        {% if i.M1hotel.HotelUall %}
+                            U All
+                        {% endif %}
+                        {% if i.M1hotel.HotelMaxAll %}
+                            Max All
+                        {% endif %}
+                        {% if i.M2hotel %}
+                            <br>
+                        {% endif %}
+                        {% if i.M2hotel.HotelOR %}
+                            OR
+                        {% endif %}
+                        {% if i.M2hotel.HotelBB %}
+                            BB
+                        {% endif %}
+                        {% if i.M2hotel.HotelHB %}
+                            HB
+                        {% endif %}
+                        {% if i.M2hotel.HotelFB %}
+                            FB
+                        {% endif %}
+                        {% if i.M2hotel.HotelAll %}
+                            All
+                        {% endif %}
+                        {% if i.M2hotel.HotelUall %}
+                            U All
+                        {% endif %}
+                        {% if i.M2hotel.HotelMaxAll %}
+                            Max All
+                        {% endif %}
+                        {% if i.M3hotel %}
+                            <br>
+                        {% endif %}
+                        {% if i.M3hotel.HotelOR %}
+                            OR
+                        {% endif %}
+                        {% if i.M3hotel.HotelBB %}
+                            BB
+                        {% endif %}
+                        {% if i.M3hotel.HotelHB %}
+                            HB
+                        {% endif %}
+                        {% if i.M3hotel.HotelFB %}
+                            FB
+                        {% endif %}
+                        {% if i.M3hotel.HotelAll %}
+                            All
+                        {% endif %}
+                        {% if i.M3hotel.HotelUall %}
+                            U All
+                        {% endif %}
+                        {% if i.M3hotel.HotelMaxAll %}
+                            Max All
+                        {% endif %}
+                    </td>
+                    <td class="data-cell">
+                        {{ i.DoubleBedPrice | intcomma:False }} تومان
+                        {%if i.DoubleBedPrice_doller %}
+                        <br>
+                        <span style='color:#3885ca; font-size:12px;'>
+                        + {{ i.DoubleBedPrice_doller }} دلار
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td class="data-cell">
+                        {{ i.SingleBedPrice | intcomma:False }} تومان
+                        {%if i.SingleBedPrice_doller %}
+                        <br>
+                        <span style='color:#3885ca; font-size:12px;'>
+                        + {{ i.SingleBedPrice_doller }} دلار
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td class="data-cell">
+                        {{ i.BabyWithBedPrice | intcomma:False }} تومان
+                        {%if i.BabyWithBedPrice_doller %}
+                        <br>
+                        <span style='color:#3885ca; font-size:12px;'>
+                        + {{ i.BabyWithBedPrice_doller }} دلار
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td class="data-cell">
+                        {{ i.BabyWithoutBedPrice | intcomma:False }} تومان
+                        {%if i.BabyWithoutBedPrice_doller %}
+                        <br>
+                        <span style='color:#3885ca; font-size:12px;'>
+                        + {{ i.BabyWithoutBedPrice_doller }} دلار
+                        </span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    <div class="box-1">
+        قیمت نوزاد: {{ infont| intcomma:False}}
+    </div>
+{% if packages.0.DollerPrice %}
+    <div class="box-2">
+        قیمت پکیج فوق + مبلغ 
+        {{ packages.0.DollerPrice }} دلار 
+    </div>
+    {% endif %}
+    {% comment %} {% if Tour.box_1_text %}
+    <div class="box-3">
+        {{ Tour.box_1_text }}
+    </div>
+    {% endif %} {% endcomment %}
+    {% if Tour.pdfdesc %}
+        <div class="tour-desc left-desc">
+            {{ Tour.pdfdesc | safe }}
+        </div>
+    {% endif %}
+
+</div>
+</div>
+<footer></footer>
+<link href="{% static 'asset/css/rsc/all.min' %}" rel="stylesheet" async>
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<script type="module" src="{% static 'asset/css/rsc/ionicons.esm.js' %}"></script>
+<script type="module" src="{% static 'asset/css/rsc/ionicons.js' %}"></script>
+<script src="{% static 'admin/js/django_jalali.js' %}"></script>
+<script src="{% static 'asset/css/bootstrap/bootstrap.bundle.min.js' %}"></script>
+<script src="/static/asset/js/convertDate.js"></script>
+
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<!-- JavaScript Bundle with Popper -->
+
+
+<!-- CSS only -->
+</body>
+
+</html>

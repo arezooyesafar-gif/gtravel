@@ -1,0 +1,23 @@
+{% load jalali_tags %}
+<div class="col-xl-6 col-xxl-6">
+    <div class="card card-bordered card-full">
+        <div class="card-inner border-bottom">
+            <div class="card-title-group">
+                <div class="card-title">
+                    <h6 class="title">
+                        لیست آخرین سفارشات
+                        <span class="change up">پرداخت شده</span>
+                    </h6>
+                </div>
+                <div class="card-tools">
+                    <a href="{% url 'all_paid_orders' %}" class="link">مشاهده همه</a>
+                </div>
+            </div>
+        </div>
+        <div class="card card-preview">
+            <div id="paid_orders" style="padding: 15px;">
+
+            </div>
+        </div>
+    </div>
+</div>

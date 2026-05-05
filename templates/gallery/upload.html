@@ -1,0 +1,61 @@
+{% extends 'base/base.html' %}
+{% block Data %}
+<div class="row">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-body hs">
+                <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                    گالری تصاویر  
+                </h4>
+            </div>
+            <div class="form-body">
+                <div class="alert-light">
+                    {% for message in messages %}
+                    <p class="error-body ap">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <form class="input-forms" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="hd-basic-info personal">
+                        <p class="label-text">انتخاب تصویر <span class="required">*</span></p>
+                        <label for="id_image" class="custom-file-upload text-input">
+                            <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر </span>
+                        </label>
+                        {{ form.file }}
+                        <script>
+                            $(document).ready(function () {
+                                $('input[type="file"]').change(function (e) {
+                                    var fileName = e.target.files[0].name;
+                                    document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                    { #alert('The file "' + fileName + '" has been selected.');# }
+                                });
+                            });
+                        </script>
+                    </div>
+                    <div class="hd-basic-info personal">
+                        <button type="submit" class="btn btn-lg btn-info btn-block">
+                            <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">بارگذاری تصویر
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-body hs">
+                <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                    تصاویر
+                </h4>
+            </div>
+            {% for item in data %}
+                <div class="img-gallery">
+                    <img src="{{ item.image.url }}" width="200" height="200px">
+                </div>
+                {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

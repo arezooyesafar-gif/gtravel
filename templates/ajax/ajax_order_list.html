@@ -1,0 +1,65 @@
+{% load jalali_tags %}
+<table class="table BranchTable">
+    <thead>
+    <tr>
+        <th class="TbHead">ردیف</th>
+        <th class="TbHead">نام</th>
+        <th class="TbHead"> نام خانولدگی</th>
+        <th class="TbHead">شماره تماس</th>
+        <th class="TbHead">کد پیگیری</th>
+        <th class="TbHead">نام تور</th>
+        <th class="TbHead">پکیج انتخابی</th>
+        <th class="TbHead">مشاهده</th>
+        <th class="TbHead">وضعیت</th>
+        <th class="TbHead"> تاریخ رزرو</th>
+        <th class="TbHead">اقدامات</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for order in orders %}
+            <td class="TbCells serial">{{ forloop.counter }}</td>
+            <td class="TbCells">{{ order.Name }}</td>
+            <td class="TbCells">{{ order.Family }}</td>
+            <td class="TbCells">{{ order.Mobile }}</td>
+            <td class="TbCells">{{ order.OrderCode }}</td>
+            <td class="TbCells">{{ order.OrderTour }}</td>
+            <td class="TbCells">{{ order.OrderPack }}</td>
+            <td class="TbCells">
+                {% if order.View %}
+                    مشاهده شده
+                {% else %}
+                    مشاهده نشده
+                {% endif %}
+            </td>
+            <td class="TbCells">{{ order.OrderStat }}</td>
+            <td class="TbCells">{{ order.OrderTime | to_jalali:'%Y/%m/%d - %H:%M:%S' }}</td>
+            <td class="TbCells">
+                <div class="dropdown">
+                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                            class="icon ni ni-more-h"></em></a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                        <ul class="link-list-plain">
+                            <li><a href="{% url 'order-update' order.id %}">ویرایش</a></li>
+                            <li><a style="color: red" href="{% url 'order-delete' order.id %}">حذف</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="card_pagination">
+    <ul class="pagination">
+        {% for n in orders.paginator.page_range %}
+            {% if orders.number == n %}
+                <li data-page='{{ n }}' class="page-item {% if orders.number == n %}active{% endif %}"><a
+                        class="page-link">{{ n }}</a></li>
+            {% elif n > orders.number|add:'-10' and n < orders.number|add:'10' %}
+                <li data-page='{{ n }}' class="page-item {% if orders.number == n %}active{% endif %}"><a
+                        class="page-link">{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

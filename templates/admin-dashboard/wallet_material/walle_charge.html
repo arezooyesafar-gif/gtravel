@@ -1,0 +1,39 @@
+{% load jalali_tags %}
+<div class="col-xl-12 col-xxl-12">
+    <div class="card card-bordered card-full">
+        <div class="card-inner border-bottom">
+            <div class="card-title-group">
+                <div class="card-title">
+                    <h6 class="title">
+                        افزایش
+                        <span class="change up">موجودی</span>
+                        کیف پول
+                    </h6>
+                </div>
+
+            </div>
+        </div>
+        <div class="card card-preview">
+            <div style="padding: 15px;">
+                <div class="row">
+                    {% for message in messages %}
+                    <div class="message_box">
+                        <div class="alert alert-success alert-icon">
+                            <em class="icon ni ni-check-circle"></em>
+                            {{ message }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="col-lg-10">
+                        <input onchange="wallet_charging()" id="wallet_balance" onkeypress="return isNumberKey(event)"
+                               onkeyup="return separateDigits()" type="text" class="form-control">
+                    </div>
+                    <div class="col-lg-2">
+                        <a id="charge_link" href="" class="btn btn-success">افزایش موجودی </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

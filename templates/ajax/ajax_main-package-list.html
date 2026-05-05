@@ -1,0 +1,46 @@
+<table class="table BranchTable">
+    <thead>
+    <tr>
+        <th class="TbHead">ردیف</th>
+        <th class="TbHead">نام پکیج</th>
+        <th class="TbHead">اقدامات لازم</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for package in MainPackages %}
+            <td class="TbCells serial">{{ forloop.counter0|add:MainPackages.start_index }}</td>
+            <td class="TbCells amount">{{ package.PackageName }}</td>
+            <td class="TbCells">
+                <div class="dropdown">
+                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                       data-bs-toggle="dropdown"><em
+                            class="icon ni ni-more-h"></em></a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                        <ul class="link-list-plain">
+                            <li><a href="{% url 'update-main-package' package.id %}">ویرایش</a>
+                            </li>
+                            <li><a style="color: red"
+                                   href="{% url 'delete-main-package' package.id %}">حذف</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<ul class="pagination">
+    {% for n in MainPackages.paginator.page_range %}
+        {% if MainPackages.number == n %}
+            <li data-page='{{ n }}'
+                class="page-item {% if MainPackages.number == n %}active{% endif %}"><a
+                     class="page-link">{{ n }}</a></li>
+        {% elif n > MainPackages.number|add:'-10' and n < MainPackages.number|add:'10' %}
+            <li data-page='{{ n }}'
+                class="page-item {% if MainPackages.number == n %}active{% endif %}"><a
+                     class="page-link">{{ n }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>

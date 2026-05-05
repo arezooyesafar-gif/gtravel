@@ -1,0 +1,79 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست صفحات
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'create_page' %}" class="link">ایجاد صفحه </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-lg-12">
+            <div class="inner_section">
+                <div class="table-block">
+                    <table class="table BranchTable">
+                        <thead>
+                        <tr>
+                            <th class="TbHead">ردیف</th>
+                            <th class="TbHead">نام صفحه</th>
+                            <th class="TbHead">محل نمایش</th>
+                            <th class="TbHead">اقدامات لازم</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            {% if all_pages %}
+                                {% for c in all_pages %}
+                                    <td class="TbCells serial">{{ forloop.counter }}</td>
+                                    <td class="TbCells">{{ c.title }}</td>
+                                    <td class="TbCells">
+                                        {% if c.reseller %}
+                                            منوی نمایندگی ها
+                                        {% endif %}
+                                        {% if c.footer_1 %}
+                                            منوی فوتر ستون اول
+                                        {% endif %}
+                                        {% if c.footer_2 %}
+                                            منوی فوتر ستون دوم
+                                        {% endif %}
+                                        {% if c.footer_3 %}
+                                            منوی فوتر ستون سوم
+                                        {% endif %}
+                                    </td>
+                                    <td class="TbCells">
+                                        <div class="dropdown">
+                                            <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                               data-bs-toggle="dropdown"><em
+                                                    class="icon ni ni-more-h"></em></a>
+                                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                                <ul class="link-list-plain">
+                                                    <li><a href="{% url 'page_update' c.id %}">ویرایش</a>
+                                                    </li>
+                                                    <li><a style="color: red"
+                                                           href="{% url 'page_delete' c.id %}">حذف</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

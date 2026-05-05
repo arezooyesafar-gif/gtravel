@@ -1,0 +1,35 @@
+<header>
+    <nav>
+        <div class="top-header">
+            <div class="container">
+                <div>
+                    <a href=""><img src="/static/layout/assets/images/logo.png" alt=""/></a>
+                </div>
+                <div>
+                    <ul>
+                    {{ user.get_full_name }}
+                        <li><a href="{% url 'visa_country' request.user.id %}">Back</a></li>
+                        <li><a href="{% url 'visa_panel' user.id %}">Russia Panel</a></li>
+                        <li><a href="{% url 'thai_visa_panel' user.id %}">Thai Panel</a></li>
+                        {% if request.user.is_superuser %}
+                            <li><a href="/dashboard">Admin</a></li>
+                        {% endif %}
+                        <li><a href="" style="font-family: 'yekan';">
+                            {% if prof.agancy_name %}
+                                {{ prof.agancy_name }}
+                            {% else %}
+                                {{ user.get_full_name }}
+                            {% endif %}
+                        </a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-header">
+            <div class="container">
+                <span>Personal account</span>
+            </div>
+        </div>
+    </nav>
+</header>

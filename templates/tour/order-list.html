@@ -1,0 +1,52 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+{% load jalali_tags %}
+     <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست رزروهای ثبت شده
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row m-20">
+                        <div class="col-lg-4">
+                            <input id="mobile" type="text" name="mobile" class="text-input search-input" placeholder="شماره موبایل را وارد کنید">
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="trs_code" type="text" name="trs_code" class="text-input search-input" placeholder="کد پیگیری را وارد کنید">
+
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="view" class="text-input search-input" name="view">
+                                   <option value="">انتخاب وضعیت رزرو</option>
+                                   <option value="1">مشاهده شده</option>
+                                   <option value="0">مشاهده نشده</option>
+                               </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <button id="searchBtn" type="submit" onclick="convertDateadmin()"
+                                        class="btn btn-lg btn-info btn-block">
+                                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                        id="save-button-title">جستجو رزرو </span>
+                                </button>
+                            {{ forms.media }}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+<div class="row m-t-20">
+    <div class="col-sm-12 col-lg-12">
+        <div class="">
+            <div id="order_list" class="table-block">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

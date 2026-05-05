@@ -1,0 +1,32 @@
+<html lang="fa-IR" dir="rtl">
+<head>{% load static %}{% load humanize %}{% load jalali_tags %}{% load webp_converter %}
+    {% include 'ui/mobile/base/head.html' %}
+    <link rel=“canonical” href=""/>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>کد پیگیری رزرو | ساتراپ</title>
+</head>
+<body>
+{% include 'ui/mobile/base/header.html' %}
+<section class="about_us_page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="order-container">
+                    <div class="reserv-info">
+                        <p class="form-title headline">مشخصات رزرواسیون</p>
+                        <p class="inform">
+                            کاربر گرامی، {{Order.Name}} {{ Order.Family}} عزیز
+                            رزرو شما با شماره تماس {{Order.Mobile}} و کد پیگیری {{Order.OrderCode}} ثبت گردید.
+                        </p>
+                        <a href="/" class="home-link">بازگشت به صفحه اصلی</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'ui/mobile/base/footer.html' %}
+</body>
+{% include 'ui/base/plugins.html' %}
+</html>

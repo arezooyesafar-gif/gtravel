@@ -1,0 +1,47 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+<div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست سفارشات پرداخت شده
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="" class="link">بازگشت به داشبورد </a>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row m-20">
+                        <div class="col-lg-3">
+                            <input id="trs_code" type="text" name="trs_code" class="text-input search-input" placeholder="شماره سفارش">
+                        </div>
+                        <div class="col-lg-3">
+                            {{ forms.submit_date }}
+                        </div>
+                        <div class="col-lg-3">
+                            {{ forms.paid_date }}
+                        </div>
+                        <div class="col-lg-2">
+                            <button id="searchBtn" type="submit" onclick="convertDateadminorder()"
+                                        class="btn btn-lg btn-info btn-block">
+                                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                        id="save-button-title">جستجو سفارش </span>
+                                </button>
+                            {{ forms.media }}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+    <div class="inner_section">
+        <div id="paid_orders">
+
+        </div>
+    </div>
+    </div>
+{% endblock %}

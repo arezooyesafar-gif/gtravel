@@ -1,0 +1,44 @@
+<table class="table BranchTable">
+    <thead>
+    <tr>
+        <th class="TbHead">ردیف</th>
+        <th class="TbHead">نام فرودگاه فارسی</th>
+        <th class="TbHead"> نام فرودگاه انگلیسی</th>
+        <th class="TbHead">اقدامات</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for i in airpots %}
+            <td class="TbCells serial">{{ forloop.counter0|add:airpots.start_index }}</td>
+            <td class="TbCells">{{ i.AirportFa }}</td>
+            <td class="TbCells">{{ i.AirportEn }}</td>
+            <td class="TbCells">
+                <div class="dropdown">
+                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                            class="icon ni ni-more-h"></em></a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                        <ul class="link-list-plain">
+                            <li><a href="{% url 'update-airport' i.id %}">ویرایش</a></li>
+                            <li><a href="{% url 'delete-airport' i.id %}">حذف</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div>
+    <ul class="pagination">
+        {% for n in airpots.paginator.page_range %}
+            {% if airpots.number == n %}
+                <li data-page='{{ n }}' class="page-item {% if airpots.number == n %}active{% endif %}"><a
+                        class="page-link">{{ n }}</a></li>
+            {% elif n > airpots.number|add:'-10' and n < airpots.number|add:'10' %}
+                <li data-page='{{ n }}' class="page-item {% if airpots.number == n %}active{% endif %}"><a
+                        class="page-link">{{ n }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

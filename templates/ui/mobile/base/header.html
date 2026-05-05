@@ -1,0 +1,117 @@
+{% include 'ui/mobile/base/cakculator.html' %}
+<header class="mobile_main_header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 logo">
+                <a href="/" class="logo-link mobile_view_"><img src="/static/Homepage/logo.png"></a>
+            </div>
+            <div class="col-lg-6 menu_sec">
+                <button id="menu_action">
+                    <i  class="fa fa-bars menu" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div id="mobile_menu" class="menu_dropdown">
+                <ul id="nav" class="navbar-link">
+                <li class="item-link call_satrap">
+                        <a href="tel:02122221422">
+                            تماس با کارشناسان ساتراپ
+                        </a>
+                    </li>
+                    <li class="item-link">
+                        <a href="/">
+                            صفحه اصلی
+                        </a>
+                    </li>
+                    <li class="item-link">
+                        <a href="/all-tour">
+                            تور
+                        </a>
+                        <span id="plus_tour" class="plus_icon">
+                                <i class="fa fa-plus-square" aria-hidden="true"></i>
+                            </span>
+                        <div id="sub_tour" class="sub_menu">
+                            <ul class="submenu_items">
+                                {% for tours_cities,tours_cities_slug, tours_cities_id in tours_cities_list %}
+                                    <a  href="{% url 'city-tours' tours_cities_slug tours_cities_id %}">
+                                        <li class="submenu_link">
+                                            <span class="city_title_menu">{{ tours_cities }}</span>
+                                        </li>
+                                    </a>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="item-link">
+                        <a href="/tabriz/69/origin-tours">
+                            تور از مبداء تبریز
+                        </a>
+                        <span id="plus_tour_origin" class="plus_icon">
+                                <i class="fa fa-plus-square" aria-hidden="true"></i>
+                            </span>
+                        <div id="sub_tour_origin" class="sub_menu">
+                            <ul class="submenu_items">
+                                {% for tours_cities,tours_cities_slug, tours_cities_id in orgin_menu_cities %}
+                                    <a  href="{% url 'CityTourListOrigin' tours_cities_slug tours_cities_id %}">
+                                        <li class="submenu_link">
+                                            <span class="city_title_menu">{{ tours_cities }}</span>
+                                        </li>
+                                    </a>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="item-link">
+                        <a href="{% url 'norooz_tours' %}">
+                            تورهای نوروزی
+                        </a>
+                    </li>
+                    <li class="item-link">
+                        <a href="{% url 'installment_tours' %}">
+                            تور اقساطی
+                        </a>
+                    </li>
+                    {% if set.internal_ticket or set.external_ticket  %}
+                <li class="item-link">
+                    <a href="">
+                        بلیط هواپیما
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if set.hotel_reserve %}
+                <li class="item-link">
+                    <a href="/all-hotel">
+                        هتل
+                    </a>
+                </li>
+                {% endif %}
+                    <li class="item-link">
+                        <a href="/blog">
+                            وبلاگ
+                        </a>
+                    </li>
+                    <li class="item-link">
+                        <a href="/about-us">
+                            درباره ما
+                        </a>
+                    </li>
+                    <li class="item-link">
+                        <a href="/contact-us">
+                            تماس با ما
+                        </a>
+                    </li>
+                    <li class="item-link">
+                        <a href="">
+                            نمایندگی ها
+
+                        </a>
+                        <span id="plus_partner" class="plus_icon">
+                                <i class="fa fa-plus-square" aria-hidden="true"></i>
+                            </span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</header>

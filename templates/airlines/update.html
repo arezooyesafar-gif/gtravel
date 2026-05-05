@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% block Data %}
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-body hs">
+                    <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
+                        بروزرسانی اطلاعات ایرلاین
+                    </h4>
+                </div>
+                <div class="form-body">
+                    <div class="alert-light">
+                        {% for message in messages %}
+                            <p class="error-body ap">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                    <form class="input-forms" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">لوگوی ایرلاین <span class="required">*</span></p>
+                            <label for="id_AirlineLogo" class="custom-file-upload text-input">
+                                <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری لوگوی ایـــرلاین</span>
+                            </label>
+                            {{ form.AirlineLogo }}
+                            <script>
+                                $(document).ready(function () {
+                                    $('input[type="file"]').change(function (e) {
+                                        var fileName = e.target.files[0].name;
+                                        document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                        {#alert('The file "' + fileName + '" has been selected.');#}
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">نام ایرلاین <span class="required">*</span></p>
+                            {{ form.AirLineTitle }}
+                        </div>
+                        <div class="hd-basic-info personal">
+                            <button type="submit" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                    id="save-button-title">ذخیره اطلاعات ایرلاین</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row m-t-40">
+            <div class="col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">
+                                    افزودن برنامه زمانی به
+                                    <span class="change down">{{ Tour.Title }}</span>
+                                </h6>
+                            </div>
+                            <div class="card-tools">
+                                {% if Data %}
+                                    <a href="{% url 'create-hotel' %}" class="link">ایجاد تور</a>
+                                {% endif %}
+                                <a href="{% url 'update-tour' Tour.id %}" class="link m-r-20"> ویرایش تور </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-40">
+            <div class="col-lg-4">
+                <div class="inner_section">
+                    <div class="col-lg-12 country_data_faq">
+                        <img src="{{ Tour.Tcountry.Flagimg.url }}">
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="tour_info"> {{ Tour.Tcountry }} - {{ Tour.Tcity }}</p>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="tour_info" style="color: orangered"> {{ Tour.StartDate|to_jalali:'%Y/%m/%d' }}
+                            - {{ Tour.EndDate|to_jalali:'%Y/%m/%d' }}</p>
+                    </div>
+                </div>
+                <a class="add-package" href="/dashboard/tour-city-list/{{ Tour.id }}">ذخیره و افزودن شهر</a>
+            </div>
+            <div class="col-lg-8">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p class="label-text">تاریخ رفت<span class="required">*</span></p>
+                            {{ Form.start_date }}
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text">تاریخ برگشت<span class="required">*</span></p>
+                            {{ Form.end_date }}
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text">اختلاف قیمت<span class="required">*</span></p>
+                            {{ Form.price }}
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="hd-basic-info personal">
+                                <p class="label-text">نوع اختلاف<span class="required">*</span></p>
+                                {{ Form.price_type }}
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                                    id="save-button-title">افزودن تاریخ </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ Form.media }}
+        </form>
+            <div class="col-lg-12">
+                <h4 class="card-title hs">
+                    لیست تاریخ ها
+                </h4>
+            </div>
+            <div class="col-sm-12 col-lg-12">
+                <div class="card hotel_list_heading">
+                    <div class="row">
+                        <div class="col-lg-2 city_list">
+                            <p class="row_head">ردیف</p>
+                        </div>
+                        <div class="col-lg-2 city_list">
+                            <p class="row_head"> تاریخ رفت</p>
+                        </div>
+                        <div class="col-lg-2 city_list">
+                            <p class="row_head">تاریخ برگشت</p>
+                        </div>
+                        <div class="col-lg-2 city_list">
+                            <p class="row_head">اختلاف قیمت </p>
+                        </div>
+                        <div class="col-lg-2 city_list">
+                            <p class="row_head">نوع اختلاف </p>
+                        </div>
+                        <div class="col-lg-2 city_list">
+                            <p class="row_head">اقدامات</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% for i in Dates %}
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="card dates_data_row">
+                            <div class="row">
+                                <div class="col-lg-2 tour_list">
+                                    <p class="tour_data_">{{ forloop.counter }}</p>
+                                </div>
+                                <div class="col-lg-2 tour_list" style="padding: 0;">
+                                    <p class="tour_data_">{{ i.start_date |to_jalali:'%Y/%m/%d' }}</p>
+                                </div>
+                                <div class="col-lg-2 tour_list">
+                                    <p class="tour_data_">{{ i.end_date |to_jalali:'%Y/%m/%d' }}</p>
+                                </div>
+                                <div class="col-lg-2 tour_list">
+                                    <p class="tour_data_ ">{{ i.price | intcomma }} تومان </p>
+                                </div>
+                                <div class="col-lg-2 tour_list">
+                                    <p class="tour_data_ ">
+                                    {% if i.price_type == 'افزایش' %}
+                                        <span style="color: red">{{ i.price_type }}</span>
+                                    {% endif %}
+                                    {% if i.price_type == 'کاهش' %}
+                                        <span style="color: green">{{ i.price_type }}</span>
+                                    {% endif %}
+                                    {% if i.price_type == 'طبق پکیج اصلی' %}
+                                        <span >{{ i.price_type }}</span>
+                                    {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-lg-2 dates_list">
+                                    <div class="dropdown" style="margin-top: 12px;">
+                                        <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                           data-bs-toggle="dropdown"><em
+                                                class="icon ni ni-more-h"></em></a>
+                                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                            <ul class="link-list-plain">
+                                                <li><a href="/dashboard/tour_date_plan_update/{{ i.id }}">ویرایش</a>
+                                                </li>
+                                                <li><a style="color: red"
+                                                       href="/dashboard/tour_date_plan_delete/{{ i.id }}">حذف</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+{% endblock %}

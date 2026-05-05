@@ -1,0 +1,175 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel=“canonical” href=“https://arezoosafar.com/all-hotel”/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content=" رزرو بهترین هتل های خارجی و داخلی با کمترین نرخ در آرزوی سفر پارسیان">
+    <meta name="keywords"
+          content="لیست هتل های داخلی,لیست هتل های خارجی,هتل های روسیه,هتل های ترکیه,هتل های دبی,هتل های ارزان قیمت,رزور هتل,آرزوی سفر">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'ui/base/head.html' %}
+    <title>لیست هتل ها</title>
+</head>
+<body>
+<div class="warp">
+    <div class="top-container">
+        {% include 'ui/base/header.html' %}
+    </div>
+    <section class="country_list hotel_list_">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12" style="margin-top: 90px;position: relative;margin-bottom: 15px;">
+                    <img loading="lazy" class="city-full-img" src="/media/hotels.jpg">
+                    <div class="hotel-filter">
+                        <form method="get" action="/hotel_search">
+                            {% csrf_token %}
+                            <div class="row filter">
+                                <div class="col-lg-3">
+                                    <input type="text" class="form-control" placeholder="نام هتل" name="hotelname">
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="text" class="form-control" placeholder="نام انگلیسی هتل"
+                                           name="hotelnameen">
+                                </div>
+                                <div class="col-lg-3">
+                                    <select class="form-select" name="rating", style="padding-right: 35px;">
+                                        <option value="">انتخاب ستاره هتل</option>
+                                        <option value="3">3 ستاره</option>
+                                        <option value="4">4 ستاره</option>
+                                        <option value="5">5 ستاره</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="submit" class="btn-primary-search">جستجو هتل</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container col-sm-12 col-lg-12">
+        <div class="hotel_list_title_ search_page">
+            <h5 class="blog_sec_title">نتایج جستجوی هتل</h5>
+            <p class="spacial_tour_subtitle_">نتایج جستجوی خودت در هتل ها رو اینجا میبینی</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="hotels-list" class="row">
+                    {% for hotel in hotels %}
+                        <div class="col-lg-3">
+                            <a href="{% url 'hotel-detail' hotel.id hotel.Slug %}">
+                                <div class="hotel-cat">
+                                    <div class="cat-img">
+                                        {% if hotel.HotelImage %}
+                                            <img loading="lazy" alt="{{ hotel.HotelName }}" src="{{ hotel.HotelImage.url }}">
+                                        {% else %}
+                                            <img loading="lazy" alt="{{ hotel.HotelName }}" src="/media/no-hotel-img.jpg">
+                                        {% endif %}
+                                        {% if hotel.top_rate %}
+                                            <p class="top_rate_">TOP</p>
+                                        {% endif %}
+                                        {% if hotel.satrap_gte %}
+                                            <p class="gte_hotel">گارانتی</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cat-title">
+                                        <p class="title-cat hotel_list">{{ hotel.HotelName }}</p>
+                                        <p data-bs-toggle="tooltip" data-bs-placement="top" title="{{ hotel.HotelNameEnglish }}" class="title-cat hotel_list en-title">{{ hotel.HotelNameEnglish|truncatechars:33 }}</p>
+                                        <p class="hotel_list hotel_data_">{{ hotel.Hcity }} |
+                                            {{ hotel.HotelRating }} ستاره
+                                            |
+                                            {% if hotel.HotelOR %}
+                                                OR
+                                            {% elif hotel.HotelBB %}
+                                                BB
+                                            {% elif hotel.HotelHB %}
+                                                HB
+                                            {% elif hotel.HotelFB %}
+                                                FB
+                                            {% elif hotel.HotelAll %}
+                                                ALL
+                                            {% elif hotel.HotelUall %}
+                                                UALL
+                                            {% elif hotel.HotelMaxAll %}
+                                                MaxALL
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                    <ul class="pagination">
+                        {% for n in hotels.paginator.page_range %}
+                            {% if hotels.number == n %}
+                                <li data-page='{{ n }}' class="page-item {% if hotels.number == n %}active{% endif %}">
+                                    <a href="/hotel_search?countryname={{ request.GET.countryname }}&cityname={{ request.GET.cityname }}&hotelname={{ request.GET.hotelname }}&page={{ n }}&hotelnameen={{ request.GET.hotelnameen }}&rating={{ request.GET.rating }}"
+                                       class="page-link">{{ n }}</a></li>
+                            {% elif n > hotels.number|add:'-10' and n < hotels.number|add:'10' %}
+                                <li data-page='{{ n }}' class="page-item {% if hotels.number == n %}active{% endif %}">
+                                    <a href="/hotel_search?countryname={{ request.GET.countryname }}&cityname={{ request.GET.cityname }}&hotelname={{ request.GET.hotelname }}&page={{ n }}&hotelnameen={{ request.GET.hotelnameen }}&rating={{ request.GET.rating }}"
+                                       class="page-link">{{ n }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="container">
+            <div class="insta" style="margin-top: 80px;">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="insta-box">
+                            <div class="insta-motion">
+                                <img loading="lazy" src="/media/insta.gif">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-7">
+                        <h4 class="about_title">
+                            معرفی تورهای جذاب و شگفت انگیـــز
+                        </h4>
+                        <p>با ما در اینستاگرام همراه شو تا از پیشنهادات لحظه آخری و تورهای جذاب مطلع بشی!</p>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="input-section">
+                            <div class="row">
+                                <div class="col-lg-12 t-center">
+                                    <a href="https://www.instagram.com/arezooyesafarparsian/"
+                                       class="btn-insta-subscribe">
+                                        <span class="logo-insta">
+                                            <img loading="lazy" alt="اینستاگرام" src="/static/asset/css/images/insta-logo.webp">
+                                        </span>
+                                        ایــنستاگـــرام</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    {#{% include 'ui/base/feature.html' %}#}
+</div>
+<script>
+    var country = {% if contry %}'{{ contry.slug }}'{% else %}'{{ city.CountryName.slug }}'{% endif %}
+    var country_id = '{{ contry.id }}'
+    var city = '{{ city.slug }}'
+    var city_id = '{{ city.id }}'
+    var tour_menu = '{{ Menu.slug }}'
+</script>
+{% include 'ui/base/footer.html' %}
+{% include 'ui/base/plugins.html' %}
+</body>
+</html>

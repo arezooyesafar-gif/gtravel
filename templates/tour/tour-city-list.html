@@ -1,0 +1,246 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <form method="post">
+    {% csrf_token %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                افزودن برنامه سفر به
+                                <span class="change down">{{ Tour.Title }}</span>
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            {% if Data %}
+                                <a href="{% url 'create-hotel' %}" class="link">ایجاد تور</a>
+                            {% endif %}
+                            <a href="{% url 'update-tour' Tour.id %}" class="link m-r-20"> ویرایش تور </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-40">
+        <div class="col-lg-4">
+            <div class="inner_section">
+                <div class="col-lg-12 country_data_faq">
+                    <img src="{{ Tour.Tcountry.Flagimg.url }}">
+                </div>
+                <div class="col-lg-12">
+                    <p class="tour_info"> {{ Tour.Tcountry }} - {{ Tour.Tcity }}</p>
+                </div>
+                <div class="col-lg-12">
+                    <p class="tour_info" style="color: orangered"> {{ Tour.StartDate|to_jalali:'%Y/%m/%d' }}
+                        - {{ Tour.EndDate|to_jalali:'%Y/%m/%d' }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="inner_section">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p class="label-text">کشور<span class="required">*</span></p>
+                        {{ Form.CyName }}
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="label-text">شهر<span class="required">*</span></p>
+                        {{ Form.CtName }}
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="label-text">ایرلاین<span class="required">*</span></p>
+                        {{ Form.Airline }}
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="hd-basic-info personal">
+                            <p class="label-text">کلاس پرواز<span class="required">*</span></p>
+                            {{ Form.FlightClass }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="inner_section">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <p class="label-text">از فرودگاه<span class="required">*</span></p>
+                        {{ Form.FromAirport }}
+                    </div>
+                    <div class="col-lg-3">
+                        <p class="label-text">به فرودگاه<span class="required">*</span></p>
+                        {{ Form.ToAirport }}
+                    </div>
+                    <div class="col-lg-3">
+                        <p class="label-text">ساعت پرواز<span class="required">*</span></p>
+                        {{ Form.FlightTime }}
+                    </div>
+                    <div class="col-lg-3">
+                        <p class="label-text">مدت پرواز <span class="required">*</span></p>
+                        {{ Form.FlightDuration }}
+                    </div>
+                    <div class="col-lg-4">
+                        <p class="label-text">مدت اقامت <span class="required">*</span></p>
+                        {{ Form.NightCount }}
+                    </div>
+                    <div class="col-lg-4">
+                        <p class="label-text">مدت انتظار <span class="required">*</span></p>
+                        {{ Form.Waiting }}
+                    </div>
+                    <div class="col-lg-4">
+                        <p class="label-text">مقصد زمینی <span class="required">*</span></p>
+                        {{ Form.GDest }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="inner_section">
+                <p class="">
+                    در صورتی که پرواز بازگشت به مبداء می باشد تیک روبرو را فعال کنید.
+                    <span class="">{{ Form.flight_return }}</span>
+                </p>
+                <p class="">
+                    در صورتی که پرواز داخلی می باشد تیک روبرو را فعال کنید.
+                    <span class="">{{ Form.flight_inbound }}</span>
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="inner_section">
+                <p class="">
+                    در صورت زمینی بودن نوع ترانسفر زمینی - با اتوبوس
+                    <span class="chck_box">{{ Form.GTransfer }}</span>
+                    - با قطار
+                    <span class="chck_box">{{ Form.QTransfer }}</span>
+                </p>
+                <p class="">
+                    در صورت دریایی بودن ترانسفر  - با کشتی
+                    <span class="chck_box">{{ Form.STransfer }}</span>
+
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <button type="submit" class="btn btn-lg btn-info btn-block">
+                <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
+                    id="save-button-title">افزودن شهر </span>
+            </button>
+        </div>
+    </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <h4 class="card-title hs m-t-20">
+                لیست شهرها
+            </h4>
+        </div>
+        <div class="col-sm-12 col-lg-12">
+            <div class="card hotel_list_heading">
+                <div class="row">
+                    <div class="col-lg-1 city_list">
+                        <p class="row_head city_head"> نام کشور</p>
+                    </div>
+                    <div class="col-lg-1 city_list">
+                        <p class="row_head city_head">نام شهر</p>
+                    </div>
+                    <div class="col-lg-1 city_list">
+                        <p class="row_head city_head">ایرلاین </p>
+                    </div>
+                    <div class="col-lg-2 city_list">
+                        <p class="row_head city_head">فرودگاه مبداء</p>
+                    </div>
+                    <div class="col-lg-2 city_list">
+                        <p class="row_head city_head">فرودگاه مقصد</p>
+                    </div>
+                    <div class="col-lg-1 city_list">
+                        <p class="row_head city_head">ساعت پرواز</p>
+                    </div>
+                    <div class="col-lg-1 city_list">
+                        <p class="row_head city_head">مدت پرواز</p>
+                    </div>
+                    <div class="col-lg-1 city_list">
+                        <p class="row_head city_head">مدت اقامت</p>
+                    </div>
+                    <div class="col-lg-1 city_list">
+                        <p class="row_head city_head">مدت انتظار</p>
+                    </div>
+                    <div class="col-lg-1 city_list">
+                        <p class="row_head city_head">اقدامات</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for i in Cities %}
+            <div class="col-sm-12 col-lg-12">
+                <div class="card dates_data_row">
+                    <div class="row">
+                        <div class="col-lg-1 tour_list">
+                            <p class="tour_data_">{{ i.CyName }}</p>
+                        </div>
+                        <div class="col-lg-1 tour_list" style="padding: 0;">
+                            <p class="tour_data_">{{ i.CtName }}</p>
+                        </div>
+                        <div class="col-lg-1 tour_list">
+                            <p class="tour_data_">{{ i.Airline }}</p>
+                        </div>
+                        <div class="col-lg-2 tour_list">
+                            <p class="tour_data_ ">{{ i.FromAirport }} </p>
+                        </div>
+                        <div class="col-lg-2 tour_list">
+                            <p class="tour_data_ ">{{ i.ToAirport }} </p>
+                        </div>
+                        <div class="col-lg-1 tour_list">
+                            <p class="tour_data_ ">{{ i.FlightTime }} </p>
+                        </div>
+                        <div class="col-lg-1 tour_list">
+                            <p class="tour_data_ ">{{ i.FlightDuration }} </p>
+                        </div>
+                        <div class="col-lg-1 tour_list">
+                            <p class="tour_data_ ">
+                                {% if i.NightCount %}
+                                    {{ i.NightCount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-lg-1 tour_list">
+                            <p class="tour_data_ ">
+                                {% if i.Waiting %}
+                                    {{ i.Waiting }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-lg-1 dates_list">
+                            <div class="dropdown" style="margin-top: 12px;">
+                                <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                   data-bs-toggle="dropdown"><em
+                                        class="icon ni ni-more-h"></em></a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                    <ul class="link-list-plain">
+                                        <li><a href="{% url 'tour-city-update' i.id %}">ویرایش</a>
+                                        </li>
+                                        <li><a style="color: red"
+                                               href="{% url 'tour-city-delete' i.id %}">حذف</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="col-lg-12">
+            <a class="add-package" href="{% url 'add-to-package' Tour.id %}">ذخیره و افزودن پکیج</a>
+        </div>
+    </div>
+
+{% endblock %}

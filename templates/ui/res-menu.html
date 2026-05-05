@@ -1,0 +1,91 @@
+<div id="resp" class="res-menu">
+    <i class="fa fa-bars" onclick="resmenu()"></i>
+</div>
+<div id="resp-close" class="res-menu-close">
+    <i class="fa fa-close" onclick="resmenuclose()"></i>
+</div>
+<div id="nav-ctn-res" class="res-nav-container">
+    <ul id="nav" class="navbar-link">
+        <li class="item-link responsive">
+            <a href="/">
+                صفحه اصلی
+            </a>
+        </li>
+        <li class="item-link responsive">
+            <a onclick="expandmenu()">
+                <i class="fa fa-plus"></i>
+                تور
+            </a>
+        </li>
+        <li class="item-link responsive">
+            <a onclick="expandmenu2()">
+                <i class="fa fa-plus"></i>
+                هتل
+            </a>
+            <ul class="mega-dropdown-res">
+                <div id="sub-close" class="sub-menu-close">
+                    <i class="fa fa-close sub-menu" onclick="submenuclose2()"></i>
+                </div>
+            </ul>
+        </li>
+        <li class="item-link responsive">
+            <a href="/blog">
+                مجله گردشگری
+            </a>
+        </li>
+        <li class="item-link responsive">
+            <a href="/memories">
+                سفرنامه
+            </a>
+        </li>
+    <li class="item-link responsive">
+            <a href="/about-us">
+                درباره ما
+            </a>
+        </li>
+    <li class="item-link responsive">
+            <a href="/contact-us">
+                تماس با ما
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="call-to-us">
+    <a href="tel:+982145128">
+        <i class="fa fa-phone blink"></i>
+     </a>
+</div>
+<script>
+    function resmenu(){
+        x = document.getElementById('nav-ctn-res')
+        x.className = 'res-nav-container show-nav'
+        y = document.getElementById('resp')
+        y.classList.add("hide");
+        z = document.getElementById('resp-close')
+        z.classList.add("show");
+    }
+    function resmenuclose(){
+        x = document.getElementById('nav-ctn-res')
+        x.className = 'res-nav-container'
+        y = document.getElementById('resp-close')
+        y.classList.remove("show");
+        z = document.getElementById('resp')
+        z.classList.remove("hide");
+    }
+    function expandmenu(){
+        x = document.getElementsByClassName('mega-dropdown-res')
+        x[0].style.display = 'block'
+    }
+    function expandmenu2(){
+        x = document.getElementsByClassName('mega-dropdown-res')
+        x[1].style.display = 'block'
+    }
+    function submenuclose(){
+        x = document.getElementsByClassName('mega-dropdown-res')
+        x[0].style.display = 'none'
+    }
+    function submenuclose2(){
+        x = document.getElementsByClassName('mega-dropdown-res')
+        x[1].style.display = 'none'
+    }
+</script>
