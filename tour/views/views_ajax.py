@@ -80,6 +80,27 @@ def ajax_city_list(request):
     }
     return render(request, 'ajax/city_list.html', context)
 
+def ajax_city_media_list(request):
+    country_id = request.GET.get('country_id')
+    media_list = get_all_city_media(country_id)
+    paginator = Paginator(media_list, 5)
+    page = request.GET.get('page')
+    media_list = paginator.get_page(page)
+    context = {
+        'media_list': media_list
+    }
+    return render(request, 'ajax/city_media.html', context)
+
+def ajax_country_media_list(request):
+    country_id = request.GET.get('country_id')
+    media_list = get_all_country_media(country_id)
+    paginator = Paginator(media_list, 5)
+    page = request.GET.get('page')
+    media_list = paginator.get_page(page)
+    context = {
+        'media_list': media_list
+    }
+    return render(request, 'ajax/country_media.html', context)
 
 def ajax_country_faq_list(request):
     country_id = request.GET.get('country_id')
