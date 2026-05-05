@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from tour.forms import CreateCountryForm, faqCreateForm, CreateCityForm, cityfaqCreateForm, relatedCityForm, \
     faqhotelcountryCreateForm, cityfaqhotelCreateForm, CityCountryMediaForm
-from tour.models import City, Country, FAQ, cityFAQ, Tour, related_tour_city, hotel_faq_Country, hotel_faq_city
+from tour.models import City, Country, FAQ, cityFAQ, Tour, related_tour_city, hotel_faq_Country,\
+    hotel_faq_city, CityCountryMedia
 from django.core.paginator import Paginator
 from tour.pms_manager import *
 from django.contrib import messages
@@ -328,6 +329,52 @@ def create_media_country(request, id):
         'country': country,
     }
     return render(request, 'tour/create-media-country.html', context)
+
+@superuser_required(login_url='login')
+def update_media_city(request, id):
+    city_media = CityCountryMedia.objects.get(city_id=id)
+    form = CityCountryMediaForm(instance=city_media)
+    
+    if request.method == 'POST':
+        forms = CityCountryMediaForm(request.POST, instance=city_media)
+        if forms.is_valid():
+            forms.save()
+            return redirect('create-media-city', city_media.city.id)
+    
+    context = {
+        'FormSet': form,
+        'city': city_media,
+    }
+    return render(request, 'tour/create-media-city.html', context)
+
+@superuser_required(login_url='login')
+def update_media_country(request, id):
+    country_media = CityCountryMedia.objects.get(id=id)
+    form = CityCountryMediaForm(instance=country_media)
+    
+    if request.method == 'POST':
+        forms = CityCountryMediaForm(request.POST, instance=country_media)
+        if forms.is_valid():
+            forms.save()
+            return redirect('create-media-country', country_media.country.id)
+    
+    context = {
+        'FormSet': form,
+        'country': country_media,
+    }
+    return render(request, 'tour/create-media-country.html', context)
+
+@superuser_required(login_url='login')
+def delete_media_city(request, id):
+    media = CityCountryMedia.objects.get(id=id)
+    media.delete()
+    return redirect('city_list')
+
+@superuser_required(login_url='login')
+def delete_media_country(request, id):
+    media = CityCountryMedia.objects.get(id=id)
+    media.delete()
+    return redirect('country_list')
 
 @superuser_required(login_url='login')
 def city_list(request):
