@@ -33,6 +33,12 @@ def get_all_pub_tours_admin():
 def get_all_unpub_tours():
     return get_all_tours().filter(PubTour=False).order_by('-id')
 
+def get_all_city_media(city_id):
+    return CityCountryMedia.objects.filter(city_id=city_id)
+
+def get_all_country_media(country_id):
+    return CityCountryMedia.objects.filter(country_id=country_id)
+
 def get_all_country_faq(contry_id):
     return FAQ.objects.filter(Countryfaq=contry_id)
 
