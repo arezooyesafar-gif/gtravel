@@ -126,5 +126,34 @@
             </div>
             {{ Form.media }}
         </div>
+
+        <div id="media_list">
+        </div>
+        <script>
+            $(document).ready(function () {
+                function updatemedia(url, target, page) {
+                    $.ajax({
+                        url: url,
+                        data: {
+                            'page': page,
+                        },
+                        success: function (data) {
+                            $(target).html(data);
+                            if (callback) {
+                                callback();
+                            }
+                        }
+                    });
+                }
+
+                updatemedia('/dashboard/ajax_country_media_list/?country_id=' + {{ country.id }}, '#media_list');
+                // PAGINATION WITHOUT SEARCH TERM
+                $(document).on('click', '.page-item', function () {
+                    const elem = $(this);
+                    const page = elem.data('page');
+                    updatemedia('/dashboard/ajax_country_media_list/?country_id=' + {{ country.id }}, '#media_list', page);
+                });
+            })
+        </script>
     </form>
 {% endblock %}
