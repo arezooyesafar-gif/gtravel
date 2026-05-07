@@ -367,14 +367,16 @@ def update_media_country(request, id):
 @superuser_required(login_url='login')
 def delete_media_city(request, id):
     media = CityCountryMedia.objects.get(id=id)
+    city_id = media.city_id
     media.delete()
-    return redirect('city_list')
+    return redirect('create-media-city', city_id)
 
 @superuser_required(login_url='login')
 def delete_media_country(request, id):
     media = CityCountryMedia.objects.get(id=id)
+    country_id = media.country_id
     media.delete()
-    return redirect('country_list')
+    return redirect('create-media-country', country_id)
 
 @superuser_required(login_url='login')
 def city_list(request):
