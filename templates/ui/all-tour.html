@@ -610,33 +610,29 @@
                             <div id="sidebar" class="sticky_menu">
                                 <!-- Media -->
                                 {% if media_list %}
-                                    <div class="media-wrapper">
-                                        <div class="main-player">
-                                            <script>
-                                                document.addEventListener("DOMContentLoaded", function () {
-                                                    const first = document.querySelector('.media-item');
-                                                    if (first) {
-                                                        first.click();
-                                                    }
-                                                });
-                                            </script>
-                                        </div>
-                                    
-                                        <div class="media-list">
-                                            {% for media in media_list %}
-                                                <div class="media-item"
-                                                    data-src="{{ media.file.url }}"
-                                                    data-type="{{ media.media_type }}"
-                                                    data-title="{{ media.title }}"
-                                                    data-poster="{% if media.thumbnail %}{{ media.thumbnail.url }}{% endif %}">
-                                                    
-                                                    <span>{{ media.title }}</span>
+                                    {% for media in media_list %}
+                                        <div class="media-item" data-src="{{ media.file.url }}" data-type="{{ media.media_type }}" data-title="{{ media.title }}"></div>
+                                        <div class="sidebar-audio-container">
+                                            <div class="accordion">
+                                                <p class="audio-accordion-header">{{ media.title }}</p>
+                                                <div class="audio-content-wrapper">
+                                                    {% if city and city.cityImg %}
+                                                        <img class="audio-city-image" src="{{ city.cityImg.url }}" alt="تور {{ city.Name }}" loading="lazy">
+                                                    {% elif country and country.country_iamge %}
+                                                        <img class="audio-city-image" src="{{ country.country_iamge.url }}" alt="تور {{ country.Name }}" loading="lazy">
+                                                    {% endif %}
+                                                    <div class="audio-wave-box">
+                                                        <img class="audio-wave-img" src="/media/media/tour_media/voicewave.svg" alt="voice wave" loading="lazy">
+                                                        <button class="audio-play-btn" data-audio-url="{{ media.file.url }}" data-audio-title="{{ media.title }}">
+                                                            <i class="fa fa-play"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            {% endfor %}
+                                            </div>
                                         </div>
-                                    
-                                    </div>
+                                    {% endfor %}
                                 {% endif %}
+
                                 <div class="contact-banner">
                                     <p class="reseve-title">
                                         دریافت مشاوره و رزرو تور
