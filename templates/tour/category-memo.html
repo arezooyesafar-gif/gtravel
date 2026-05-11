@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="{{ category.meta_desc }}">
     <meta name="keywords" content="{{ category.meta_keyword }}">
+    <meta name="robots" content="{{ meta_robots|default:'INDEX,FOLLOW' }}">
     {% if category.page_title %}
         <title>{{ category.page_title }}</title>
     {% else %}
