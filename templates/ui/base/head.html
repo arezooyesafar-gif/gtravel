@@ -3,6 +3,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-site-verification" content="DMOf0FICZxaIM--a9dT5nd_lHapYs0Wxr_M8fAYjZL0"/>
+{% if meta_robots %}
+<meta name="robots" content="{{ meta_robots }}">
+{% else %}
+<meta name="robots" content="INDEX,FOLLOW">
+{% endif %}
 <link href="{% static '/asset/css/layout.css' %}" rel="stylesheet">
 <link href="{% static '/asset/css/all.min.css' %}" rel="stylesheet">
 <script src="/static/slider/vendors/jquery.min.js"></script>
