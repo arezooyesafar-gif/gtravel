@@ -899,7 +899,8 @@ def ContactUsUi(request):
         'Menus': menulist,
         'hmenu': hotelcities,
         'tour_countries': tours_country_list,
-        'spacialDest': items
+        'spacialDest': items,
+        'meta_robots': 'INDEX,FOLLOW'
     }
     return render(request, 'ui/contact-us.html', context)
 
@@ -1056,7 +1057,8 @@ def singleMemoView(request, id):
         'Sub': forms2,
         'pubTours': spacialTours,
         'tour_countries': tours_country_list,
-        'spacialDest': items
+        'spacialDest': items,
+        'meta_robots': memo.meta_robots
     }
     return render(request, 'ui/single-memo.html', context)
 
@@ -1101,6 +1103,13 @@ def CategoryMemo(request, slug):
             formsub.save()
             return redirect('/')
 
+    if not all_memos:
+        meta_robots = 'NOINDEX,FOLLOW'
+    elif pageNumber and int(pageNumber) > 1:
+        meta_robots = 'NOINDEX,FOLLOW'
+    else:
+        meta_robots = 'INDEX,FOLLOW'
+        
     context = {
         'PMemories': listMemo,
         'Footer': footer,
@@ -1112,7 +1121,8 @@ def CategoryMemo(request, slug):
         'data':data,
         'tour_countries': tours_country_list,
         'spacialDest': items,
-        'category': category
+        'category': category,
+        'meta_robots': meta_robots
     }
     return render(request, 'tour/category-memo.html', context)
 
@@ -1154,12 +1164,14 @@ def visa_request(request):
         else:
             context = {
                 'prof': prof,
-                'forms': forms
+                'forms': forms,
+                'meta_robots':'NOINDEX,FOLLOW'
             }
             return render(request, 'layout/form-2.html', context)
     context = {
         'prof': prof,
-        'forms': forms
+        'forms': forms,
+        'meta_robots':'NOINDEX,FOLLOW'
     }
     return render(request, 'layout/form-2.html', context)
 
