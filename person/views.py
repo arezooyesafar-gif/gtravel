@@ -238,6 +238,7 @@ def update_visa_request(request, id):
         context = {
             'forms': forms,
             'item': item,
+            'meta_robots':'NOINDEX,FOLLOW'
         }
         return render(request, 'layout/form-2.html', context)
     if request.user.is_superuser:
@@ -274,6 +275,7 @@ def update_visa_request(request, id):
         context = {
             'forms': forms,
             'item': item,
+            'meta_robots':'NOINDEX,FOLLOW'
         }
         return render(request, 'layout/form-2.html', context)
     return redirect('thai_visa_list')
