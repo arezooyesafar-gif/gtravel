@@ -185,6 +185,11 @@ def PMemoriesCreate(request):
     for i in categories:
         ch_cat_number.append(MemoryCategory.objects.filter(parentCat=i).count())
     parent_categories = zip(categories, ch_cat_number)
+    
+    if PageNumber and int(PageNumber) > 1:
+        meta_robots = 'NOINDEX,FOLLOW'
+    else:
+        meta_robots = 'INDEX,FOLLOW'
 
     context = {
         'Form': forms,
@@ -194,7 +199,8 @@ def PMemoriesCreate(request):
         'tour_countries': tours_country_list,
         'spacialDest': items,
         'ch_categories': ch_categories,
-        'categories': parent_categories
+        'categories': parent_categories,
+        'meta_robots': meta_robots
     }
     return render(request, 'ui/memories.html', context)
 
