@@ -48,7 +48,10 @@ def read_search(request):
 
 
 def payment(request):
-    return render(request, 'payment.html')
+    context = {
+        'meta_robots': 'NOINDEX,NOFOLLOW',
+    }
+    return render(request, 'payment.html', context)
 
 
 @csrf_exempt
@@ -91,7 +94,10 @@ def get_token_for_payment(request):
         )
         return render(request, 'confirm_payment.html', context=context)
     except TypeError:
-        return render(request, 'payment.html')
+        context = {
+            'meta_robots': 'NOINDEX,NOFOLLOW',
+        }
+        return render(request, 'payment.html', context)
 
 
 
