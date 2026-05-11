@@ -52,6 +52,10 @@
                             <p class="label-text">فعال سازی نمایش<span class="required">*</span></p>
                             {{ Form.publish }}
                         </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">ایندکس صفحه</p>
+                            {{ Form.meta_robots }}
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-lg btn-info btn-block">
                         <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
@@ -83,72 +87,3 @@
         </form>
     </div>
 {% endblock %}
-<div class="row">
-    <div class="col-sm-12 col-lg-12">
-        <div class="card">
-            <div class="card-body hs">
-                <h4 class="card-title hs"><i class="fa fa-pencil-alt font-20 edit-btn"></i>
-                    ویرایش سفرنامه
-                </h4>
-            </div>
-            <div class="form-body">
-                <div class="alert-light">
-                    {% for message in messages %}
-                        <p class="error-body ap">{{ message }}</p>
-                    {% endfor %}
-                </div>
-                <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
-                    {% csrf_token %}
-
-                    <div class="hd-basic-info personal">
-                        <p class="label-text">نام<span class="required">*</span></p>
-                        {{ Form.Name }}
-                    </div>
-                    <div class="hd-basic-info personal">
-                        <p class="label-text">نام خانوادگی<span class="required">*</span></p>
-                        {{ Form.Family }}
-                    </div>
-                    <div class="hd-basic-info personal">
-                        <p class="label-text">موبایل<span class="required">*</span></p>
-                        {{ Form.Mobile }}
-                    </div>
-                    <div class="hd-basic-info personal">
-                        <p class="label-text">ایمیل<span class="required">*</span></p>
-                        {{ Form.Email }}
-                    </div>
-                    <div class="hd-basic-info personal">
-                        <p class="label-text">فعال سازی نمایش<span class="required">*</span></p>
-                        {{ Form.publish }}
-                    </div>
-                    <div class="hd-basic-info" style="display: block;width: 98%;">
-                        <p class="label-text">متن سفرنامه<span class="required">*</span></p>
-                        {{ Form.Message }}
-                    </div>
-                    <hr>
-                    {% if data.img1 %}
-                        <div class="hd-basic-info" style="display: block;width: 98%;">
-                            <img src="{{ data.img1.url }}">
-                        </div>
-                    {% endif %}
-                    {% if data.img1 %}
-                        <div class="hd-basic-info" style="display: block;width: 98%;">
-                            <img src="{{ data.img2.url }}">
-                        </div>
-                    {% endif %}
-                    <div class="col-lg-12">
-                        <p class="label-text">دسته بندی مطلب <span class="required">*</span></p>
-                        {{ Form.category }}
-                    </div>
-                    <div class="hd-basic-info personal">
-                        <button type="submit" class="btn btn-lg btn-info btn-block">
-                            <i class="fa fa-check btn-icon font-20 edit-btn"></i><span
-                                id="save-button-title">بروزرسانی سفرنامه </span>
-                        </button>
-                    </div>
-                    {{ Form.media }}
-                </form>
-            </div>
-        </div>
-
-    </div>
-</div>
