@@ -86,6 +86,12 @@ MEDIATYPE = [
     ("document", "Document"),
 ]
 
+ROBOTS_CHOICES = [
+    ('INDEX,FOLLOW', 'Index, Follow - (پیش‌فرض) نمایش در نتایج و دنبال کردن لینک‌ها'),
+    ('INDEX,NOFOLLOW', 'Index, No Follow - نمایش در نتایج، دنبال نکردن لینک‌ها'),
+    ('NOINDEX,FOLLOW', 'No Index, Follow - عدم نمایش در نتایج، دنبال کردن لینک‌ها'),
+    ('NOINDEX,NOFOLLOW', 'No Index, No Follow - عدم نمایش در نتایج و دنبال نکردن لینک‌ها'),
+]
 
 class viewCounter(models.Model):
     indexView = models.IntegerField(default=0)
@@ -430,6 +436,13 @@ class PMemories(models.Model):
     slug = models.SlugField(blank=True)
     metaKeyword = models.TextField(max_length=300, null=True, blank=True)
     metaDescription = models.TextField(max_length=150, null=True, blank=True)
+    meta_robots = models.CharField(
+        max_length=50,
+        choices=ROBOTS_CHOICES,
+        default='INDEX,FOLLOW',
+        verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
+        help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
+    )
 
 class Subscribe(models.Model):
     Mobile = models.CharField(max_length=15)
