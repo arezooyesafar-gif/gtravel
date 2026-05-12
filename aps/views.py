@@ -99,6 +99,8 @@ def CategoryTourList(request, slug, id):
     dest_cities = City.objects.filter(CountryName=menu)
     country_media = CityCountryMedia.objects.filter(country_id=id, is_active=True).order_by('sort_order', '-created_at')
     items = spacial_destinations.objects.filter(show_homepage=True)
+    meta_robots = 'INDEX,FOLLOW'
+
     context = {
         'reseller_menu': reseller_menu,
         'Search': forms,
@@ -113,7 +115,8 @@ def CategoryTourList(request, slug, id):
         'dest_cities': dest_cities,
         'airlines': airlines,
         'spacialDest': items,
-        'media_list': country_media
+        'media_list': country_media,
+        'meta_robots': meta_robots
     }
     return render(request, 'ui/all-tour.html', context)
 
@@ -170,6 +173,8 @@ def CityTourList(request,slug, id):
         raise Http404
     faqs = cityFAQ.objects.filter(Cityfaq=menu)
     forms = SearchForm()
+    meta_robots = 'INDEX,FOLLOW'
+
     context = {
         'Search': forms,
         'city': menu,
@@ -180,7 +185,8 @@ def CityTourList(request,slug, id):
         'footer_3': footer_3,
         'tour_countries': tours_country_list,
         'spacialDest': items,
-        'airlines': airlines
+        'airlines': airlines,
+        'meta_robots': meta_robots
     }
     return render(request, 'ui/all-tour.html', context)
 
@@ -200,6 +206,8 @@ def AllTourList(request):
     forms = SearchForm()
     all_faqs = faq_home.objects.all()
     theme_setting = index_page.objects.get(id=1)
+    meta_robots = 'INDEX,FOLLOW'
+
     context = {
         'reseller_menu': reseller_menu,
         'Search': forms,
@@ -212,7 +220,8 @@ def AllTourList(request):
         'dest_cities': dest_cities,
         'airlines': airlines,
         'spacialDest': items,
-        'spacialDest_tour': items_tour
+        'spacialDest_tour': items_tour,
+        'meta_robots': meta_robots
     }
     return render(request, 'ui/all-tour.html', context)
 
@@ -448,7 +457,8 @@ def TourDetail(request,id, Slug):
         'gallery': gallery,
         'tour_countries': tours_country_list,
         'tipe_plan': tipe_plan,
-        'spacialDest': items
+        'spacialDest': items,
+        'meta_robots': tour.meta_robots
     }
     return render(request, 'ui/detail-tour.html', context)
 
@@ -469,6 +479,8 @@ def AllHotelList(request):
         if formsub.is_valid():
             formsub.save()
             return redirect('/')
+    meta_robots = 'INDEX,FOLLOW'
+
     context = {
         'Sub': formsub,
         'HotelMenu': allcities,
@@ -477,7 +489,8 @@ def AllHotelList(request):
         'set': theme_setting,
         'tour_countries': tours_country_list,
         'spacialDest': items,
-        'countries_hotel': countries_hotel
+        'countries_hotel': countries_hotel,
+        'meta_robots': meta_robots
     }
     return render(request, 'ui/all-hotel.html', context)
 
@@ -505,6 +518,13 @@ def AllCountryHotel(request,id, slug):
         if formsub.is_valid():
             formsub.save()
             return redirect('/')
+
+
+    if PageNumber and int(PageNumber) > 1:
+        meta_robots = 'NOINDEX,FOLLOW'
+    else:
+        meta_robots = 'INDEX,FOLLOW'
+
     context = {
         'reseller_menu': reseller_menu,
         'tours_cities_list': cities_menu,
@@ -517,7 +537,8 @@ def AllCountryHotel(request,id, slug):
         'footer_3': footer_3,
         'tour_countries': tours_country_list,
         'spacialDest': items,
-        "type": "country"
+        "type": "country",
+        'meta_robots': meta_robots
     }
     return render(request, 'ui/all-hotel-list.html', context)
 
@@ -531,7 +552,9 @@ def AllHotelCity(request, id, slug):
         hotelmenu = City.objects.get(slug=slug)
     except City.DoesNotExist:
         raise Http404
-    all_faqs = hotel_faq_city.objects.filter(Cityfaq=hotelmenu)
+    all_faqs = hotel_faq_city.objects.filter(Cityfaq=hotelmenu)    
+    meta_robots = 'INDEX,FOLLOW'
+
     context = {
         'city': hotelmenu,
         'all_faqs': all_faqs,
@@ -540,7 +563,8 @@ def AllHotelCity(request, id, slug):
         'footer_3': footer_3,
         'tour_countries': tours_country_list,
         'spacialDest': items,
-        'type': 'city'
+        'type': 'city',
+        'meta_robots': meta_robots
     }
     return render(request, 'ui/all-hotel-list.html', context)
 
@@ -654,6 +678,7 @@ def HotelDetail(request,id,  Slug):
         'all_comments': all_comments,
         'Lcordinate':cordinate[0],
         'Acordinate':cordinate[1],
+        'meta_robots': hotel.meta_robots
     }
     return render(request, 'ui/hotel-detail.html', context)
 
@@ -726,6 +751,12 @@ def BlogPage(request):
     paginator = Paginator(all_posts, 10)
     pagenumber = request.GET.get('page')
     data = paginator.get_page(pagenumber)
+    
+    if pagenumber and int(pagenumber) > 1:
+        meta_robots = 'NOINDEX,FOLLOW'
+    else:
+        meta_robots = 'INDEX,FOLLOW'
+
     context = {
         'AllCat': categories,
         'Posts': posts,
@@ -736,7 +767,8 @@ def BlogPage(request):
         'ch_categories': ch_categories,
         'tour_countries': tours_country_list,
         'spacialDest': items,
-        'visa_post': visa_post
+        'visa_post': visa_post,
+        'meta_robots': meta_robots
     }
     return render(request, 'ui/blog.html', context)
 
@@ -777,6 +809,12 @@ def CategoryPost(request, id, slug):
         if formsub.is_valid():
             formsub.save()
             return redirect('/')
+        
+    if pageNumber and int(pageNumber) > 1:
+        meta_robots = 'NOINDEX,FOLLOW'
+    else:
+        meta_robots = 'INDEX,FOLLOW'
+
     context = {
         'Posts': listPost,
         'Footer': footer,
@@ -788,7 +826,8 @@ def CategoryPost(request, id, slug):
         'data':data,
         'tour_countries': tours_country_list,
         'category': category,
-        'spacialDest': items
+        'spacialDest': items,
+        'meta_robots': meta_robots
     }
     return render(request, 'post/cartegory-post.html', context)
 
@@ -830,7 +869,8 @@ def PostDetail(request, id, slug):
         'categories': parent_categories,
         'ch_categories': ch_categories,
         'tour_countries': tours_country_list,
-        'spacialDest': items
+        'spacialDest': items,
+        'meta_robots': post.meta_robots
     }
     return render(request, 'ui/post-detail.html', context)
 
