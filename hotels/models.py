@@ -57,6 +57,13 @@ INTERTAINMENT = [
     ('دوچرخه سواری', 'دوچرخه سواری'), ('گلف', 'گلف'), ('کارائوکه', 'کارائوکه'), ('صندلی ساحلی', 'صندلی ساحلی'),('کلوپ شبانه','کلوپ شبانه')
     ]
 
+ROBOTS_CHOICES = [
+    ('INDEX,FOLLOW', 'Index, Follow - (پیش‌فرض) نمایش در نتایج و دنبال کردن لینک‌ها'),
+    ('INDEX,NOFOLLOW', 'Index, No Follow - نمایش در نتایج، دنبال نکردن لینک‌ها'),
+    ('NOINDEX,FOLLOW', 'No Index, Follow - عدم نمایش در نتایج، دنبال کردن لینک‌ها'),
+    ('NOINDEX,NOFOLLOW', 'No Index, No Follow - عدم نمایش در نتایج و دنبال نکردن لینک‌ها'),
+]
+
 class Hotel_Menu(models.Model):
     MenuTitle = models.CharField(max_length=150)
     MenuDesc = RichTextUploadingField(max_length=3000, null=True, blank=True)
@@ -109,7 +116,13 @@ class Hotel_Data(models.Model):
     top_rate = models.BooleanField(default=False)
     hotel_price = models.CharField(max_length=40, null=True, blank=True)
     reseve_link = models.CharField(max_length=100, null=True, blank=True)
-
+    meta_robots = models.CharField(
+        max_length=50,
+        choices=ROBOTS_CHOICES,
+        default='INDEX,FOLLOW',
+        verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
+        help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
+    )
 
     def __str__(self):
         DisplayName = str(self.HotelName) + ' - ' + str(self.Hcity)
