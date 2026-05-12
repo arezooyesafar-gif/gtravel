@@ -407,6 +407,9 @@ class CreateTourForm(forms.ModelForm):
         self.fields['Slug'].widget.attrs.update({
             'class': 'text-input'
         })
+        self.fields['meta_robots'].widget.attrs.update({
+            'class': 'text-input'
+        })
         self.fields['TourMenu'].widget.attrs.update({
             'class': 'text-input'
         })
