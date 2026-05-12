@@ -140,6 +140,9 @@ class CreateHotelForm(forms.ModelForm):
         self.fields['Slug'].widget.attrs.update({
             'class': 'text-input',
         })
+        self.fields['meta_robots'].widget.attrs.update({
+            'class': 'text-input',
+        })
 
     class Meta:
         model = Hotel_Data
