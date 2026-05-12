@@ -236,6 +236,13 @@ class Tour(models.Model):
     tour_main = models.ImageField(upload_to='media/tour_img', null=True, blank=True)
     origin_city = models.ForeignKey(City, null=True, blank=True, related_name='origin_city', on_delete=models.CASCADE)
     spacial_lable = models.CharField(max_length=50, null=True, blank=True)
+    meta_robots = models.CharField(
+        max_length=50,
+        choices=ROBOTS_CHOICES,
+        default='INDEX,FOLLOW',
+        verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
+        help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
+    )
 
 
 
