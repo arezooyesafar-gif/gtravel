@@ -25,6 +25,9 @@ class CreatePostForm(forms.ModelForm):
         self.fields['Category'].widget.attrs.update({
             'class': 'text-input'
         })
+        self.fields['meta_robots'].widget.attrs.update({
+            'class': 'text-input'
+        })
         self.fields['metaKeyword'].widget.attrs.update({
             'class': 'text-input',
             'cols': '50',
