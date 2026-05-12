@@ -5,6 +5,13 @@ from django_resized import ResizedImageField
 from django.urls import reverse
 
 
+ROBOTS_CHOICES = [
+    ('INDEX,FOLLOW', 'Index, Follow - (پیش‌فرض) نمایش در نتایج و دنبال کردن لینک‌ها'),
+    ('INDEX,NOFOLLOW', 'Index, No Follow - نمایش در نتایج، دنبال نکردن لینک‌ها'),
+    ('NOINDEX,FOLLOW', 'No Index, Follow - عدم نمایش در نتایج، دنبال کردن لینک‌ها'),
+    ('NOINDEX,NOFOLLOW', 'No Index, No Follow - عدم نمایش در نتایج و دنبال نکردن لینک‌ها'),
+]
+
 class PostCategory(models.Model):
     CatName = models.CharField(max_length=500)
     parentCat = models.ForeignKey('self', related_name='Children', on_delete=models.CASCADE, null=True, blank=True)
@@ -36,6 +43,13 @@ class blogPosts(models.Model):
     metaDescription = models.TextField(max_length=150, null=True, blank=True)
     viewCount = models.IntegerField(default=0, null=True, blank=True)
     ptitle = models.CharField(max_length=500, null=True, blank=True)
+    meta_robots = models.CharField(
+        max_length=50,
+        choices=ROBOTS_CHOICES,
+        default='INDEX,FOLLOW',
+        verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
+        help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
+    )
 
     def __str__(self):
         return self.Title
