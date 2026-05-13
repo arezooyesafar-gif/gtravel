@@ -1,6 +1,7 @@
 ﻿{% load humanize %}
 {% load static %}
 {% load jalali_tags %}
+{% load icon_mapping %}
 <!DOCTYPE html>
 <html lang="fa-IR" dir="rtl">
 <head>
@@ -201,10 +202,6 @@
             </div>
             <div class="col-lg-12 scrol-tab sticky-tabs">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" href="#home-tab-pane" data-scroll="smooth">درباره هتل</a>
-                        </button>
-                    </li>
                     {% if HotelData.HotelService %}
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" href="#hotel-service-info" data-scroll="smooth">امکانات هتل</a>
@@ -225,6 +222,10 @@
                             <a class="nav-link" href="#intertainment-info" data-scroll="smooth">تفریحات هتل</a>
                         </li>
                     {% endif %}
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" href="#home-tab-pane" data-scroll="smooth">درباره هتل</a>
+                        </button>
+                    </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" href="#related-tour" data-scroll="smooth">نظرات کاربران</a>
                     </li>
@@ -296,247 +297,200 @@
                 });
             </script>
             <div class="col-lg-12">
-                <div class="tab-content" id="myTabContent">
-                    <div class="hotel-section" id="home-tab-pane" role="tabpanel"
-                         aria-labelledby="profile-tab"
-                         tabindex="0">
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <button type="button" class="btn btn-primary map-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    مشاهده هتل روی نقشه
-                                  </button>
-                                <div id="hotel-map" class="map-container mobile-d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <div class="hotel-map">
-                                    </div>
-                                </div>
-                                <div class="hotel-sidebar hotel-detail-sidebar">
-                                    <div class="contact-banner desktop-d-none" style="margin-bottom:10px; ">
-                                        <p class="reseve-title">
-                                            دریافت مشاوره و رزرو تور
-                                        </p>
-                                        <p class="reseve-phone">
-                                            021-45128
-                                        </p>
-                                        <p class="reseve-desc">
-                                            کارشناسان ما پاسخگوی شما خواهند بود
-                                        </p>
-                                    </div>
-                                    {% if HotelData.HotelShotDesc %}
-                                    <div class="anchor-links mobile-d-none">
-                                        <p class="head-text">
-                                            فهرست مطالب
-                                        </p>
-                                        <div class="hotel-anchor">
-                                            {{ HotelData.HotelShotDesc | safe }}
-                                        </div>
-                                    </div>
-                                    {% endif %}
-                                </div>
+                <div class="row mt-4">
+                    <div class="col-lg-9">
+                        {% if HotelData.HotelService %}
+                        <div class="hotel-section" id="hotel-service-info">
+                            <div class="section-title-wrapper">
+                                <h2 class="hotel-section-title">امکانات هتل</h2>
+                                <div class="title-divider"></div>
                             </div>
-                            <div class="col-lg-9">
-                                {% if HotelData.HotelDesc %}
-                                <div id="hotel-data" class="hotel_desc">
-                                    {{ HotelData.HotelDesc | safe }}
-                                </div>
-                                {% endif %}
-                                <div class="contact-banner mobile-d-block" style="margin-bottom:10px; ">
-                                    <p class="reseve-title">
-                                        دریافت مشاوره و رزرو تور
-                                    </p>
-                                    <p class="reseve-phone">
-                                        021-45128
-                                    </p>
-                                    <p class="reseve-desc">
-                                        کارشناسان ما پاسخگوی شما خواهند بود
-                                    </p>
-                                </div>
+                            <div class="hotel_desc">
+                                {% for service in HotelData.HotelService %}
+                                <span class="hotel_servive">
+                                    <i class="material-icons">
+                                        {{ service|get_icon_name }}
+                                    </i>
+                                    {{ service }}
+                                </span>
+                                {% endfor %}
                             </div>
                         </div>
-
-                    </div>
-                    <div class="hotel-section" id="hotel-service-info" role="tabpanel"
-                         aria-labelledby="home-tab" tabindex="0">
-                         <div class="section-title-wrapper">
-                            <h2 class="hotel-section-title">امکانات هتل</h2>
-                            <div class="title-divider"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="hotel_desc">
-                                    {% for servive in HotelData.HotelService %}
-                                        <span class="hotel_servive">{{ servive }}</span>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% if HotelData.RoomService %}
-                        <div class="hotel-section" id="room-service-info" role="tabpanel"
-                             aria-labelledby="home-tab" tabindex="0">
-                             <div class="section-title-wrapper">
+                        {% endif %}
+                        {% if HotelData.RoomService %}
+                        <div class="hotel-section" id="room-service-info">
+                            <div class="section-title-wrapper">
                                 <h2 class="hotel-section-title">امکانات اتاق</h2>
                                 <div class="title-divider"></div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="hotel_desc">
-                                        {% for servive in HotelData.RoomService %}
-                                            <span class="hotel_servive">{{ servive }}</span>
-                                        {% endfor %}
-                                    </div>
-                                </div>
+                            <div class="hotel_desc">
+                                {% for service in HotelData.RoomService %}
+                                <span class="hotel_servive">
+                                    <i class="material-icons">
+                                        {{ service|get_icon_name }}
+                                    </i>
+                                    {{ service }}
+                                </span>
+                                {% endfor %}
                             </div>
                         </div>
-                        </div>
-                    {% endif %}
-                    {% if HotelData.Service %}
-                        <div class="hotel-section" id="all-service-info" role="tabpanel"
-                            aria-labelledby="home-tab" tabindex="0">
+                        {% endif %}
+                
+                        {% if HotelData.Service %}
+                        <div class="hotel-section" id="all-service-info">
                             <div class="section-title-wrapper">
                                 <h2 class="hotel-section-title">خدمات هتل</h2>
                                 <div class="title-divider"></div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="hotel_desc">
-                                        {% for servive in HotelData.Service %}
-                                            <span class="hotel_servive">{{ servive }}</span>
-                                        {% endfor %}
-                                    </div>
-                                </div>
+                            <div class="hotel_desc">
+                                {% for service in HotelData.Service %}
+                                <span class="hotel_servive">
+                                    <i class="material-icons">
+                                        {{ service|get_icon_name }}
+                                    </i>
+                                    {{ service }}
+                                </span>
+                                {% endfor %}
                             </div>
                         </div>
-                    {% endif %}
-                    {% if HotelData.intertainment %}
-                        <div class="hotel-section" id="intertainment-info" role="tabpanel"
-                            aria-labelledby="home-tab" tabindex="0">
+                        {% endif %}
+                
+                        {% if HotelData.intertainment %}
+                        <div class="hotel-section" id="intertainment-info">
                             <div class="section-title-wrapper">
                                 <h2 class="hotel-section-title">تفریحات هتل</h2>
                                 <div class="title-divider"></div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="hotel_desc">
-                                        {% for servive in HotelData.intertainment %}
-                                            <span class="hotel_servive">{{ servive }}</span>
-                                        {% endfor %}
+                            <div class="hotel_desc">
+                                {% for service in HotelData.intertainment %}
+                                <span class="hotel_servive">
+                                    <i class="material-icons">
+                                        {{ service|get_icon_name }}
+                                    </i>
+                                    {{ service }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                
+                        <div class="hotel-section" id="home-tab-pane">
+                            <div class="section-title-wrapper">
+                                <h2 class="hotel-section-title">درباره هتل {{ HotelData.HotelName }}</h2>
+                                <div class="title-divider"></div>
+                            </div>
+                            <div class="hotel_desc">
+                                {{ HotelData.HotelDesc|safe }}
+                            </div>
+                        </div>
+                
+                        <div class="hotel-section" id="related-tour">
+                            <div class="section-title-wrapper">
+                                <h2 class="hotel-section-title">نظرات کاربران</h2>
+                                <div class="title-divider"></div>
+                            </div>
+                            <div class="comment-box" style="margin-top: 20px;">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <h2 class="comments_headline">ثبت دیدگاه برای این هتل</h2>
+                                        <p id="success-cm" class="success-send"></p>
+                                        <p id="invalid-cm" class="invalid-data-cm"></p>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <input type="text" name="full_name" maxlength="300" class="form-control"
+                                                       placeholder=" نام و نام خانوادگی را وارد کنید" required=""
+                                                       id="id_full_name">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="email" name="email" maxlength="254"
+                                                       placeholder="ایمیل را وارد کنید" class="form-control" required=""
+                                                       id="id_email">
+                                            </div>
+                                            <div class="d-lg-none d-sm-block col-lg-12">
+                                                <select name="ct-rate-select" class="form-select">
+                                                    <option value="5">امتیاز 5 به هتل</option>
+                                                    <option value="4">امتیاز 4 به هتل</option>
+                                                    <option value="3">امتیاز 3 به هتل</option>
+                                                    <option value="2">امتیاز 2 به هتل</option>
+                                                    <option value="1">امتیاز 1 به هتل</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <textarea name="desc" cols="40" rows="3" maxlength="5000"
+                                                          placeholder="توضیحات را وارد کنید" class="form-control"
+                                                          required="" id="id_desc"></textarea>
+                                            </div>
+                                            <div class="col-lg-8 m-t-10">
+                                                <button onclick="sendHotelCm({{ HotelData.id }})" name="submit_comment"
+                                                        class="installment-calculation">ارسال دیدگاه
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-sm-none d-lg-block col-lg-2">
+                                        <div class="rating-box">
+                                            <p class="cmt_rating_title">امتیازتان به هتل</p>
+                                            <div class="rate_field">
+                                                <input class="cmt_rate_filed" name="cmt_rate" type="radio"
+                                                       value="5"><img loading="lazy"
+                                                    style="rotate: 180deg;transform: scaleY(-1);" alt="rating-1"
+                                                    src="/media/rating/rating-5.png" width="100">
+                                            </div>
+                                            <div class="rate_field">
+                                                <input class="cmt_rate_filed" name="cmt_rate" type="radio"
+                                                       value="4"><img loading="lazy"
+                                                    style="rotate: 180deg;transform: scaleY(-1);" alt="rating-1"
+                                                    src="/media/rating/rating-4.png" width="100">
+                                            </div>
+                                            <div class="rate_field">
+                                                <input class="cmt_rate_filed" name="cmt_rate" type="radio"
+                                                       value="3"><img loading="lazy"
+                                                    style="rotate: 180deg;transform: scaleY(-1);" alt="rating-1"
+                                                    src="/media/rating/rating-3.png" width="100">
+                                            </div>
+                                            <div class="rate_field">
+                                                <input class="cmt_rate_filed" name="cmt_rate" type="radio"
+                                                       value="2"><img loading="lazy"
+                                                    style="rotate: 180deg;transform: scaleY(-1);" alt="rating-1"
+                                                    src="/media/rating/rating-2.png" width="100">
+                                            </div>
+                                            <div class="rate_field">
+                                                <input class="cmt_rate_filed" name="cmt_rate" type="radio"
+                                                       value="1"><img loading="lazy"
+                                                    style="rotate: 180deg;transform: scaleY(-1);" alt="rating-1"
+                                                    src="/media/rating/rating-1.png" width="100">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="hotel-section" id="related-tour" role="tabpanel"
-                         aria-labelledby="home-tab" tabindex="0">
-                         <div class="section-title-wrapper">
-                            <h2 class="hotel-section-title">نظرات کاربران</h2>
-                            <div class="title-divider"></div>
-                        </div>
-                    <div class="row">
-
-                        <div class="comment-box" style="margin-top: 20px;">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="col-lg-10">
-                                    <h2 class="comments_headline">ثبت دیدگاه برای این هتل</h2>
-                                    <p id="success-cm" class="success-send"></p>
-                                    <p id="invalid-cm" class="invalid-data-cm"></p>
+                            {% for cm in all_comments %}
+                                <div class="user-comments">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <input type="text" name="full_name" maxlength="300" class="form-control"
-                                                   placeholder=" نام و نام خانوادگی را وارد کنید" required=""
-                                                   id="id_full_name">
+                                            <p class="cm-user">
+                                                <i class="fa fa-user-circle cm-item-user"></i>
+                                                {{ cm.full_name }}
+                                            </p>
+                                            <p class="cm-date">
+                                                <i class="fa fa-calendar cm-item-date"></i>
+                                                نوشته شده در تاریخ :
+                                                {{ cm.create_date|to_jalali:'%Y/%m/%d' }}
+                                            </p>
                                         </div>
                                         <div class="col-lg-6">
-                                            <input type="email" name="email" maxlength="254"
-                                                   placeholder="ایمیل را وارد کنید" class="form-control" required=""
-                                                   id="id_email">
-                                        </div>
-                                        <div class="d-lg-none d-sm-block col-lg-12">
-                                            <select name="ct-rate-select" class="form-select">
-                                                <option value="5">امتیاز 5 به هتل</option>
-                                                <option value="4">امتیاز 4 به هتل</option>
-                                                <option value="3">امتیاز 3 به هتل</option>
-                                                <option value="2">امتیاز 2 به هتل</option>
-                                                <option value="1">امتیاز 1 به هتل</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <textarea name="desc" cols="40" rows="3" maxlength="5000"
-                                                      placeholder="توضیحات را وارد کنید" class="form-control"
-                                                      required="" id="id_desc"></textarea>
-                                        </div>
-                                        <div class="col-lg-8 m-t-10">
-                                            <button onclick="sendHotelCm({{ HotelData.id }})" name="submit_comment"
-                                                    class="installment-calculation">ارسال دیدگاه
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="d-sm-none d-lg-block col-lg-2">
-                                    <div class="rating-box">
-                                        <p class="cmt_rating_title">امتیازتان به هتل</p>
-                                        <div class="rate_field">
-                                            <input class="cmt_rate_filed" name="cmt_rate" type="radio"
-                                                   value="5"><img loading="lazy"
-                                                style="rotate: 180deg;transform: scaleY(-1);" alt="rating-1"
-                                                src="/media/rating/rating-5.png" width="100">
-                                        </div>
-                                        <div class="rate_field">
-                                            <input class="cmt_rate_filed" name="cmt_rate" type="radio"
-                                                   value="4"><img loading="lazy"
-                                                style="rotate: 180deg;transform: scaleY(-1);" alt="rating-1"
-                                                src="/media/rating/rating-4.png" width="100">
-                                        </div>
-                                        <div class="rate_field">
-                                            <input class="cmt_rate_filed" name="cmt_rate" type="radio"
-                                                   value="3"><img loading="lazy"
-                                                style="rotate: 180deg;transform: scaleY(-1);" alt="rating-1"
-                                                src="/media/rating/rating-3.png" width="100">
-                                        </div>
-                                        <div class="rate_field">
-                                            <input class="cmt_rate_filed" name="cmt_rate" type="radio"
-                                                   value="2"><img loading="lazy"
-                                                style="rotate: 180deg;transform: scaleY(-1);" alt="rating-1"
-                                                src="/media/rating/rating-2.png" width="100">
-                                        </div>
-                                        <div class="rate_field">
-                                            <input class="cmt_rate_filed" name="cmt_rate" type="radio"
-                                                   value="1"><img loading="lazy"
-                                                style="rotate: 180deg;transform: scaleY(-1);" alt="rating-1"
-                                                src="/media/rating/rating-1.png" width="100">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% for cm in all_comments %}
-                            <div class="user-comments">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <p class="cm-user">
-                                            <i class="fa fa-user-circle cm-item-user"></i>
-                                            {{ cm.full_name }}
-                                        </p>
-                                        <p class="cm-date">
-                                            <i class="fa fa-calendar cm-item-date"></i>
-                                            نوشته شده در تاریخ :
-                                            {{ cm.create_date|to_jalali:'%Y/%m/%d' }}
-                                        </p>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <p class="user-rate-headline">
-                                            امتیاز داده شده توسط کاربر
-                                        </p>
-                                        <p class="user-rate">
-                                            امتیاز (
-                                            {{ cm.hotel_rate }} از 5
-                                            )
-                                            <span class="rating-image">
-                                            {% if cm.hotel_rate == '5' %}
-                                                <img loading="lazy" src="/media/rating/rating-5.png" width="100">
-                                            {% endif %}
+                                            <p class="user-rate-headline">
+                                                امتیاز داده شده توسط کاربر
+                                            </p>
+                                            <p class="user-rate">
+                                                امتیاز (
+                                                {{ cm.hotel_rate }} از 5
+                                                )
+                                                <span class="rating-image">
+                                                {% if cm.hotel_rate == '5' %}
+                                                    <img loading="lazy" src="/media/rating/rating-5.png" width="100">
+                                                {% endif %}
                                                 {% if cm.hotel_rate == '4' %}
                                                     <img loading="lazy" src="/media/rating/rating-4.png" width="100">
                                                 {% endif %}
@@ -549,19 +503,45 @@
                                                 {% if cm.hotel_rate == '1' %}
                                                     <img loading="lazy" src="/media/rating/rating-1.png" width="100">
                                                 {% endif %}
-                                        </span>
-                                        </p>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <p class="message-body">
-                                            {{ cm.desc }}
-                                        </p>
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <p class="message-body">
+                                                {{ cm.desc }}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
-                
+                    <div class="col-lg-3">
+                        <button type="button" class="btn btn-primary map-button w-100 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            مشاهده هتل روی نقشه
+                        </button>
+                        <div id="hotel-map" class="map-container mobile-d-none mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div class="hotel-map"></div>
+                        </div>
+                        <div class="hotel-sidebar hotel-detail-sidebar">
+                            <div class="contact-banner desktop-d-none" style="margin-bottom:10px;">
+                                <p class="reseve-title">دریافت مشاوره و رزرو تور</p>
+                                <p class="reseve-phone">021-45128</p>
+                                <p class="reseve-desc">کارشناسان ما پاسخگوی شما خواهند بود</p>
+                            </div>
+                            {% if HotelData.HotelShotDesc %}
+                            <div class="anchor-links mobile-d-none">
+                                <p class="head-text">فهرست مطالب</p>
+                                <div class="hotel-anchor">{{ HotelData.HotelShotDesc|safe }}</div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="contact-banner mobile-d-block mt-3" style="margin-bottom:10px;">
+                            <p class="reseve-title">دریافت مشاوره و رزرو تور</p>
+                            <p class="reseve-phone">021-45128</p>
+                            <p class="reseve-desc">کارشناسان ما پاسخگوی شما خواهند بود</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -595,9 +575,7 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
