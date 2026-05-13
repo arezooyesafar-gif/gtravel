@@ -143,6 +143,21 @@ class Country(models.Model):
     slug = models.SlugField(max_length=255, unique=True, null=False)
     menu_position = models.CharField(max_length=2, choices=MENU_POSITION, default='1')
     menu_order = models.IntegerField(default=1)
+    tour_meta_robots = models.CharField(
+        max_length=50,
+        choices=ROBOTS_CHOICES,
+        default='INDEX,FOLLOW',
+        verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
+        help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
+    )
+    hotel_meta_robots = models.CharField(
+        max_length=50,
+        choices=ROBOTS_CHOICES,
+        default='INDEX,FOLLOW',
+        verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
+        help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
+    )
+
 
     class Meta:
         ordering = ['-id']
@@ -167,7 +182,22 @@ class City(models.Model):
     hotelmd = models.CharField(max_length=150, null=True, blank=True)
     tltitle = models.CharField(max_length=150, null=True, blank=True)
     hltitle = models.CharField(max_length=150, null=True, blank=True)
+    tour_meta_robots = models.CharField(
+        max_length=50,
+        choices=ROBOTS_CHOICES,
+        default='INDEX,FOLLOW',
+        verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
+        help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
+    )
+    hotel_meta_robots = models.CharField(
+        max_length=50,
+        choices=ROBOTS_CHOICES,
+        default='INDEX,FOLLOW',
+        verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
+        help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
+    )
 
+    
     def __str__(self):
         return self.Name
 

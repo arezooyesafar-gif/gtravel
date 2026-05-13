@@ -134,6 +134,15 @@ class CreateCountryForm(forms.ModelForm):
         self.fields['menu_order'].widget.attrs.update({
             'class': 'text-input',
         })
+        self.fields['hotel_meta_robots'].widget.attrs.update({
+            'placeholder': '',
+            'class': 'text-input',
+        })
+        self.fields['tour_meta_robots'].widget.attrs.update({
+            'placeholder': '',
+            'class': 'text-input',
+        })
+
     class Meta:
         model = Country
         fields = '__all__'
@@ -185,6 +194,14 @@ class CreateCityForm(forms.ModelForm):
                 'class': 'text-input',
             })
         self.fields['slug'].widget.attrs.update({
+                'placeholder': '',
+                'class': 'text-input',
+            })
+        self.fields['hotel_meta_robots'].widget.attrs.update({
+                'placeholder': '',
+                'class': 'text-input',
+            })
+        self.fields['tour_meta_robots'].widget.attrs.update({
                 'placeholder': '',
                 'class': 'text-input',
             })

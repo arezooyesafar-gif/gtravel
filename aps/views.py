@@ -99,7 +99,7 @@ def CategoryTourList(request, slug, id):
     dest_cities = City.objects.filter(CountryName=menu)
     country_media = CityCountryMedia.objects.filter(country_id=id, is_active=True).order_by('sort_order', '-created_at')
     items = spacial_destinations.objects.filter(show_homepage=True)
-    meta_robots = 'INDEX,FOLLOW'
+    meta_robots = menu.tour_meta_robots
 
     context = {
         'reseller_menu': reseller_menu,
@@ -173,7 +173,7 @@ def CityTourList(request,slug, id):
         raise Http404
     faqs = cityFAQ.objects.filter(Cityfaq=menu)
     forms = SearchForm()
-    meta_robots = 'INDEX,FOLLOW'
+    meta_robots = menu.tour_meta_robots
 
     context = {
         'Search': forms,
@@ -519,11 +519,10 @@ def AllCountryHotel(request,id, slug):
             formsub.save()
             return redirect('/')
 
-
     if PageNumber and int(PageNumber) > 1:
         meta_robots = 'NOINDEX,FOLLOW'
     else:
-        meta_robots = 'INDEX,FOLLOW'
+        meta_robots = hotelmenu.hotel_meta_robots
 
     context = {
         'reseller_menu': reseller_menu,
@@ -553,7 +552,7 @@ def AllHotelCity(request, id, slug):
     except City.DoesNotExist:
         raise Http404
     all_faqs = hotel_faq_city.objects.filter(Cityfaq=hotelmenu)    
-    meta_robots = 'INDEX,FOLLOW'
+    meta_robots = hotelmenu.hotel_meta_robots
 
     context = {
         'city': hotelmenu,
