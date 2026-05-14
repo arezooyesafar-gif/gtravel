@@ -301,85 +301,93 @@
                     <div class="col-lg-9">
                         {% if HotelData.HotelService %}
                         <div class="hotel-section" id="hotel-service-info">
-                            <div class="section-title-wrapper">
-                                <h2 class="hotel-section-title">امکانات هتل</h2>
-                                <div class="title-divider"></div>
-                            </div>
                             <div class="hotel_desc">
-                                {% for service in HotelData.HotelService %}
-                                <span class="hotel_servive">
-                                    <i class="material-icons">
-                                        {{ service|get_icon_name }}
-                                    </i>
-                                    {{ service }}
-                                </span>
-                                {% endfor %}
+                                <div class="section-title-wrapper">
+                                    <h2 class="hotel-section-title">امکانات هتل</h2>
+                                    <div class="title-divider"></div>
+                                </div>
+                                <div class="hotel_services_container">
+                                    {% for service in HotelData.HotelService %}
+                                    <span class="hotel_servive">
+                                        <i class="material-icons">
+                                            {{ service|get_icon_name }}
+                                        </i>
+                                        {{ service }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                         {% endif %}
                         {% if HotelData.RoomService %}
                         <div class="hotel-section" id="room-service-info">
-                            <div class="section-title-wrapper">
-                                <h2 class="hotel-section-title">امکانات اتاق</h2>
-                                <div class="title-divider"></div>
-                            </div>
                             <div class="hotel_desc">
-                                {% for service in HotelData.RoomService %}
-                                <span class="hotel_servive">
-                                    <i class="material-icons">
-                                        {{ service|get_icon_name }}
-                                    </i>
-                                    {{ service }}
-                                </span>
-                                {% endfor %}
+                                <div class="section-title-wrapper">
+                                    <h2 class="hotel-section-title">امکانات اتاق</h2>
+                                    <div class="title-divider"></div>
+                                </div>
+                                <div class="hotel_services_container">
+                                    {% for service in HotelData.RoomService %}
+                                    <span class="hotel_servive">
+                                        <i class="material-icons">
+                                            {{ service|get_icon_name }}
+                                        </i>
+                                        {{ service }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                         {% endif %}
                 
                         {% if HotelData.Service %}
                         <div class="hotel-section" id="all-service-info">
-                            <div class="section-title-wrapper">
-                                <h2 class="hotel-section-title">خدمات هتل</h2>
-                                <div class="title-divider"></div>
-                            </div>
                             <div class="hotel_desc">
-                                {% for service in HotelData.Service %}
-                                <span class="hotel_servive">
-                                    <i class="material-icons">
-                                        {{ service|get_icon_name }}
-                                    </i>
-                                    {{ service }}
-                                </span>
-                                {% endfor %}
+                                <div class="section-title-wrapper">
+                                    <h2 class="hotel-section-title">خدمات هتل</h2>
+                                    <div class="title-divider"></div>
+                                </div>
+                                <div class="hotel_services_container">
+                                    {% for service in HotelData.Service %}
+                                    <span class="hotel_servive">
+                                        <i class="material-icons">
+                                            {{ service|get_icon_name }}
+                                        </i>
+                                        {{ service }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                         {% endif %}
                 
                         {% if HotelData.intertainment %}
                         <div class="hotel-section" id="intertainment-info">
-                            <div class="section-title-wrapper">
-                                <h2 class="hotel-section-title">تفریحات هتل</h2>
-                                <div class="title-divider"></div>
-                            </div>
                             <div class="hotel_desc">
-                                {% for service in HotelData.intertainment %}
-                                <span class="hotel_servive">
-                                    <i class="material-icons">
-                                        {{ service|get_icon_name }}
-                                    </i>
-                                    {{ service }}
-                                </span>
-                                {% endfor %}
+                                <div class="section-title-wrapper">
+                                    <h2 class="hotel-section-title">تفریحات هتل</h2>
+                                    <div class="title-divider"></div>
+                                </div>
+                                <div class="hotel_services_container">
+                                    {% for service in HotelData.intertainment %}
+                                    <span class="hotel_servive">
+                                        <i class="material-icons">
+                                            {{ service|get_icon_name }}
+                                        </i>
+                                        {{ service }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                         {% endif %}
                 
                         <div class="hotel-section" id="home-tab-pane">
-                            <div class="section-title-wrapper">
-                                <h2 class="hotel-section-title">درباره هتل {{ HotelData.HotelName }}</h2>
-                                <div class="title-divider"></div>
-                            </div>
                             <div class="hotel_desc">
+                                <div class="section-title-wrapper">
+                                    <h2 class="hotel-section-title">درباره  {{ HotelData.HotelName }}</h2>
+                                    <div class="title-divider"></div>
+                                </div>
                                 {{ HotelData.HotelDesc|safe }}
                             </div>
                         </div>
