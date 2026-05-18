@@ -273,7 +273,12 @@ class Tour(models.Model):
         verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
         help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
     )
-
+    custom_categories = models.ManyToManyField(
+        'CustomTourCategory',
+        blank=True,
+        related_name='tours',
+        verbose_name='دسته‌بندی‌های سفارشی'
+    )
 
 
     def __str__(self):
@@ -312,6 +317,45 @@ class TourCity(models.Model):
     
 ##    def __str__(self):
 ##        return self.Airline.AirLineTitle
+
+class CustomTourCategory(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
+    description = RichTextUploadingField(max_length=3000, null=True, blank=True)
+
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name='children',
+    )
+    countries = models.ManyToManyField(
+        Country,
+        blank=True,
+        related_name='tour_categories',
+    )
+    cities = models.ManyToManyField(
+        City,
+        blank=True,
+        related_name='tour_categories',
+    )
+    image = models.ImageField(upload_to='tour/category-images/%Y/%m/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        if self.parent:
+            return f"{self.parent.name} → {self.name}"
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name, allow_unicode=True)
+        super().save(*args, **kwargs)
 
 class CityCountryMedia(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name="city_media", null=True, blank=True )
