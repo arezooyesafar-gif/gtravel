@@ -19,7 +19,7 @@ from tour.forms import SearchForm, ContactUsForm, SubscribeForm, reservsionCreat
 from pages.dataset import *
 from visa.forms import visa_request_form, thaiVisaForm
 from blog.models import *
-
+from django.shortcuts import get_object_or_404, render
 
 def IndexPage(request):
     date = datetime.now()
@@ -255,6 +255,28 @@ def MenuTourList(request, slug):
         'spacialDest_tour': items_2,
     }
     return render(request, 'ui/all-tour-list-city.html', context)
+
+def tour_category_detail(request, slug):
+
+    category = get_object_or_404(
+        CustomTourCategory,
+        slug=slug
+    )
+    context = {
+        'category': category,
+        'category_title': category.name,
+        'category_desc': category.description,
+        'countries': get_tours_country(),
+        'dest_cities': get_tours_cities(),
+        'airlines': get_pub_tour_airlines(),
+        'spacialDest': spacial_destinations.objects.filter(show_homepage=True),
+        'spacialDest_tour': spacial_destinations.objects.filter(show_tourpage=True),
+    }
+    return render(
+        request,
+        'ui/all-tour.html',
+        context
+    )
 
 def AllTourList_norooz(request):
     reseller_menu = get_top_pages()
