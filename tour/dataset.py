@@ -326,6 +326,10 @@ def get_all_memos_categories():
     categories = MemoryCategory.objects.all().order_by('-id')
     return categories
 
+def get_all_tour_categories():
+    categories = CustomTourCategory.objects.all().order_by('-id')
+    return categories
+
 def get_pub_tour_airlines():
     cities = []
     airlines = []
