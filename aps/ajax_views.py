@@ -257,6 +257,79 @@ def city_tours_ajax(request):
             'Developer': 'Soroush Khani',
             'Mobile Number': '0912 512 4784'
         })
+        
+def custom_category_tours_ajax(request):
+    if request.method == 'POST':
+
+        data = json.loads(request.body)
+
+        slug = data.get('slug')
+
+        category = CustomTourCategory.objects.get(slug=slug)
+
+        tourlist = Tour.objects.filter(
+            custom_categories=category,
+            PubTour=True
+        ).order_by('-id')
+
+        packages = []
+        cities = []
+        dates = []
+
+        for tour in tourlist:
+
+            packages.append(
+                Package.objects.filter(
+                    TourName=tour
+                ).order_by('DoubleBedPrice')
+            )
+
+            cities.append(
+                TourCity.objects.filter(
+                    TourName=tour
+                )
+            )
+
+            dates.append(
+                date_plan.objects.filter(
+                    tour=tour
+                ).count()
+            )
+
+        paginator = Paginator(tourlist, 9)
+
+        page = data.get('page')
+
+        tourlist = paginator.get_page(page)
+
+        paginator2 = Paginator(packages, 9)
+        packages = paginator2.get_page(page)
+
+        paginator3 = Paginator(cities, 9)
+        cities = paginator3.get_page(page)
+
+        paginator4 = Paginator(dates, 9)
+        dates = paginator4.get_page(page)
+
+        pubTours = zip(
+            tourlist,
+            packages,
+            cities,
+            dates
+        )
+
+        context = {
+            'pubTours': pubTours,
+            'tours_list': tourlist
+        }
+
+        return render(
+            request,
+            'ajax/layout/tour-list.html',
+            context
+        )
+
+    return JsonResponse({'error': 'invalid request'})
 
 def hotel_cities_ajax(request):
     if request.method == 'POST':
