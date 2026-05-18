@@ -294,6 +294,18 @@ def ajax_memo_categories(request):
     return render(request, 'ajax/ajax_memo_categories_list.html', context)
 
 
+def ajax_tour_categories(request):
+    categories = get_all_tour_categories()
+    paginator = Paginator(categories, 10)
+    page_number = request.GET.get('page')
+    categories = paginator.get_page(page_number)
+    
+    context = {
+        'categories': categories
+    }
+    return render(request, 'ajax/ajax_list_tour_categories.html', context)
+
+
 def ajax_main_packages_list(request):
     main_packages = MainPackage.objects.all().order_by('-id')
     paginator = Paginator(main_packages, 10)
