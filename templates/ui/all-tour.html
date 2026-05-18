@@ -443,95 +443,97 @@
     {% if cities or countries %}
         <section class="destinaton_selector">
             <div class="container">
-                <div class="row country_box">
-                    <div class="col-sm-12 col-lg-4">
-                        {% if country %}
-                            {% if country.country_iamge %}
-                                <img class="country_main_image" src="{{ country.country_iamge.url }}" alt="تورهای {{ country.TitleC }}" fetchpriority="high" loading="eager" decoding="async" width="387" height="192">
+                {% if not category %}
+                    <div class="row country_box">
+                        <div class="col-sm-12 col-lg-4">
+                            {% if country %}
+                                {% if country.country_iamge %}
+                                    <img class="country_main_image" src="{{ country.country_iamge.url }}" alt="تورهای {{ country.TitleC }}" fetchpriority="high" loading="eager" decoding="async" width="387" height="192">
+                                {% endif %}
+                            {% else %}
+                                <img loading="lazy" class="country_main_image d-sm-none d-lg-block" src="/static/asset/css/images/world-map.png">
                             {% endif %}
-                        {% else %}
-                            <img loading="lazy" class="country_main_image d-sm-none d-lg-block" src="/static/asset/css/images/world-map.png">
-                        {% endif %}
-                    </div>
-                    <div class="col-sm-12 col-lg-8">
-                        {% if not cities %}
-                            <h1 class="blog_sec_title">تور اقساطی</h1>
-                        {% else %}
-                            <h1 class="blog_sec_title"> تور
-                                {{ country.TitleC }}
-                                </h1>
-                        {% endif %}
-                        {% if not cities %}
-                            <p class="spacial_tour_subtitle_">
-                                کشور و شهر مورد نظرت رو انتخاب کن و تورهاش رو ببین
-                            </p>
-                        {% else %}
-                            <p class="spacial_tour_subtitle_">
-                                کدوم شهر از
-                                {{ country.TitleC }}
-                                میخوای بری ؟
-                            </p>
-                        {% endif %}
-                        <div class="row">
-                            {% if cities %}
-                                <div class="owl-dest-city owl-carousel owl-theme">
-                                {% for country_cities, country_cities_tours in cities %}
-                                    {% if country_cities.CountryName == country %}
-                                    <div class=" text-center">
-                                        <a href="{% url 'city-tours' country_cities.slug country_cities.id %}">
-                                            <div class="pdest_image">
-                                                {% if country_cities.cityIcon %}
-                                                  <img src="{{ country_cities.cityIcon.url }}" alt="تور {{ country_cities.Name }}" width="84" height="84" loading="lazy" style="width:84px !important;height:84px !important;max-width:84px !important;display:block;margin-left:auto;margin-right:auto;">
-                                                {% endif %}
-                                            </div>
-                                            <div class="pdest_name">
-                                                <p>تور
-                                                    {{ country_cities.Name }}
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    {% endif %}
-                                {% endfor %}
-                                </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-8">
+                            {% if not cities %}
+                                <h1 class="blog_sec_title">تور اقساطی</h1>
+                            {% else %}
+                                <h1 class="blog_sec_title"> تور
+                                    {{ country.TitleC }}
+                                    </h1>
                             {% endif %}
                             {% if not cities %}
-                                {% if not city %}
-                                    <div class="owl-dest owl-carousel owl-theme">
-                                    {% for i in spacialDest_tour %}
-                                        <div class="text-center spacial-distenation">
-                                            {% if i.country %}
-                                                <a href="{% url 'all-tour-country' i.country.slug i.country.id %}">
-                                            {% else %}
-                                                <a href="{% url 'city-tours' i.city.slug i.city.id %}">{% endif %}
-                                            <div class="pdest_image">
-                                                <img loading="lazy" src="{{ i.tourpage_icon.url }}">
-                                            </div>
-                                            <div class="pdest_name">
-                                                <p>تور
-                                                    {% if i.country %}
-                                                        {{ i.country }}
-                                                    {% else %}
-                                                        {{ i.city }}
+                                <p class="spacial_tour_subtitle_">
+                                    کشور و شهر مورد نظرت رو انتخاب کن و تورهاش رو ببین
+                                </p>
+                            {% else %}
+                                <p class="spacial_tour_subtitle_">
+                                    کدوم شهر از
+                                    {{ country.TitleC }}
+                                    میخوای بری ؟
+                                </p>
+                            {% endif %}
+                            <div class="row">
+                                {% if cities %}
+                                    <div class="owl-dest-city owl-carousel owl-theme">
+                                    {% for country_cities, country_cities_tours in cities %}
+                                        {% if country_cities.CountryName == country %}
+                                        <div class=" text-center">
+                                            <a href="{% url 'city-tours' country_cities.slug country_cities.id %}">
+                                                <div class="pdest_image">
+                                                    {% if country_cities.cityIcon %}
+                                                    <img src="{{ country_cities.cityIcon.url }}" alt="تور {{ country_cities.Name }}" width="84" height="84" loading="lazy" style="width:84px !important;height:84px !important;max-width:84px !important;display:block;margin-left:auto;margin-right:auto;">
                                                     {% endif %}
-                                                </p>
-                                            </div>
+                                                </div>
+                                                <div class="pdest_name">
+                                                    <p>تور
+                                                        {{ country_cities.Name }}
+                                                    </p>
+                                                </div>
                                             </a>
                                         </div>
+                                        {% endif %}
                                     {% endfor %}
                                     </div>
                                 {% endif %}
-                            {% endif %}
+                                {% if not cities %}
+                                    {% if not city %}
+                                        <div class="owl-dest owl-carousel owl-theme">
+                                        {% for i in spacialDest_tour %}
+                                            <div class="text-center spacial-distenation">
+                                                {% if i.country %}
+                                                    <a href="{% url 'all-tour-country' i.country.slug i.country.id %}">
+                                                {% else %}
+                                                    <a href="{% url 'city-tours' i.city.slug i.city.id %}">{% endif %}
+                                                <div class="pdest_image">
+                                                    <img loading="lazy" src="{{ i.tourpage_icon.url }}">
+                                                </div>
+                                                <div class="pdest_name">
+                                                    <p>تور
+                                                        {% if i.country %}
+                                                            {{ i.country }}
+                                                        {% else %}
+                                                            {{ i.city }}
+                                                        {% endif %}
+                                                    </p>
+                                                </div>
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
         </section>
     {% endif %}
     <section>
         <div class="container">
             <div class="row">
-                {% if not country and not city %}
+                {% if not country and not city and not category %}
                     <h2 class="blog_sec_title">مـزایای خـرید تور قسطـی از آرزوی سفـر</h2>
                     <div class="col-lg-12 installment-section">
                         <div class="row">
@@ -601,6 +603,9 @@
                     {% elif country %}
                         <h2 class="blog_sec_title" style="margin-bottom: 30px;padding-right: 0;">لیست آخرین
                             تورهای {{ country.TitleC }}</h2>
+                    {% elif category %}
+                        <h2 class="blog_sec_title" style="margin-bottom: 30px;padding-right: 0;">لیست آخرین
+                            تورهای {{ category_title }}</h2>
                     {% else %}
                         <h3 class="blog_sec_title" style="margin-bottom: 30px;padding-right: 0;">لیست آخرین تورهای
                             اقساطی</h3>
@@ -937,6 +942,7 @@
         var tour_id = '{{ Tour.id }}'
         var tour_slug = '{{ Tour.Slug }}'
         var tour_menu = '{{ Menu.slug }}'
+        var category_slug = '{{ category.slug }}'
     </script>
     <script>
         function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
