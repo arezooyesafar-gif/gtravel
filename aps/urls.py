@@ -170,7 +170,8 @@ urlpatterns = [
     path('<str:slug>/<int:id>/all-tour', (CategoryTourList), name='all-tour-country'),
     path('tour/<int:id>/<str:Slug>', TourDetail, name='tour-detail'),
     path('tour/<str:slug>', MenuTourList, name='MenuTourList'),
-
+    path('tour-category/<slug:slug>/', tour_category_detail, name='tour-category-detail'),
+    
     #hotels urls
     path('all-hotel', (AllHotelList), name='all-hotel'),
     path('all-hotel/<int:id>/<str:slug>', (AllHotelCity), name='all-hotel-city-list'),
