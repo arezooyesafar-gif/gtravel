@@ -228,6 +228,7 @@ urlpatterns = [
     path('tourslistm', list_tours_ajax_menu_horzental, name='list_tours_ajax_menu_horzental'),
     path('country_tours_ajax', country_tours_ajax, name='country_tours_ajax'),
     path('city_tours_ajax', city_tours_ajax, name='city_tours_ajax'),
+    path('custom-category-tours-ajax/', custom_category_tours_ajax, name='custom-category-tours-ajax'),
     path('postdata', index_posts_ajax, name='index_posts_ajax'),
     path('hotel_cities_ajax', (hotel_cities_ajax), name='hotel_cities_ajax'),
     path('country_hotels_ajax', country_hotels_ajax, name='country_hotels_ajax'),
