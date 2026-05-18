@@ -16,18 +16,26 @@
                 {% endif %}
                 <div id="article"
                      class="{% if country.Description_anchor %}col-lg-9{% else %}col-lg-12{% endif %} country-desc">
-                    <div class="row">
-                        {% for country_cities, country_cities_tours in cities_post %}
+                     <div class="row">
+                        {% for category in country.tour_categories.all %}
                             <div class="col-sm-12 col-lg-4 ">
-                                <a href="{% url 'city-tours' country_cities.slug country_cities.id %}">
+                                <a href="{% url 'tour-category-detail' category.slug %}">
                                     <div class="row intext-list">
                                         <div class="col-sm-3 col-lg-3 no-padding">
-                                            {% if country_cities.cityImg %}
-                                                <img class="city-img-text" src="{{ country_cities.cityImg.url }}" alt="تورهای {{ country_cities.Name }}" width="91" height="91" loading="lazy">
+                                            {% if category.image %}
+                                                <img class="city-img-text"
+                                                     src="{{ category.image.url }}"
+                                                     alt="{{ category.name }}"
+                                                     width="91"
+                                                     height="91"
+                                                     loading="lazy">
                                             {% endif %}
                                         </div>
+                    
                                         <div class="col-sm-9 col-lg-9 no-padding">
-                                            <span class="ctry_name_arc">تور {{ country_cities.Name }}</span>
+                                            <span class="ctry_name_arc">
+                                                {{ category.name }}
+                                            </span>
                                         </div>
                                     </div>
                                 </a>
@@ -46,10 +54,11 @@
         </section>
     </div>
 {% endif %}
-{% if city.Description %}
+{% if city.Description or city.tour_categories.exists %}
     <div class="container">
         <section class="slagon {% if city %}country-info-box{% endif %}">
             <div class="row">
+
                 {% if city.Description_anchor %}
                     <div class="col-lg-3">
                         <div class="anchor-links">
@@ -62,15 +71,52 @@
                         </div>
                     </div>
                 {% endif %}
+
                 <div id="article"
                      class="{% if city.Description_anchor %}col-lg-9{% else %}col-lg-12{% endif %} country-desc">
-                    <p class="head-desc">
-                        اطلاعات کاربردی خرید تور
-                        {{ city }}
-                    </p>
-                    <div class="article-body">
-                        {{ city.Description |safe }}
-                    </div>
+
+                    {% if city.Description %}
+                        <p class="head-desc">
+                            اطلاعات کاربردی خرید تور
+                            {{ city }}
+                        </p>
+
+                        <div class="article-body">
+                            {{ city.Description|safe }}
+                        </div>
+                    {% endif %}
+
+                    {% if city.tour_categories.all %}
+                        <div class="row">
+                            {% for category in city.tour_categories.all %}
+                                <div class="col-sm-12 col-lg-4">
+                                    <a href="{% url 'tour-category-detail' category.slug %}">
+                                        <div class="row intext-list">
+
+                                            <div class="col-sm-3 col-lg-3 no-padding">
+                                                {% if category.image %}
+                                                    <img class="city-img-text"
+                                                         src="{{ category.image.url }}"
+                                                         alt="{{ category.name }}"
+                                                         width="91"
+                                                         height="91"
+                                                         loading="lazy">
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="col-sm-9 col-lg-9 no-padding">
+                                                <span class="ctry_name_arc">
+                                                    {{ category.name }}
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
                 </div>
             </div>
         </section>
@@ -94,7 +140,7 @@
         </section>
     </div>
 {% endif %}
-{% if not country and not city and not Menu %}
+{% if not country and not city and not Menu and not category %}
     <div class="container">
         <section class="slagon container">
             <div class="row">
