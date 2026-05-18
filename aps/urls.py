@@ -170,7 +170,8 @@ urlpatterns = [
     path('<str:slug>/<int:id>/all-tour', (CategoryTourList), name='all-tour-country'),
     path('tour/<int:id>/<str:Slug>', TourDetail, name='tour-detail'),
     path('tour/<str:slug>', MenuTourList, name='MenuTourList'),
-
+    path('tour-category/<slug:slug>/', tour_category_detail, name='tour-category-detail'),
+    
     #hotels urls
     path('all-hotel', (AllHotelList), name='all-hotel'),
     path('all-hotel/<int:id>/<str:slug>', (AllHotelCity), name='all-hotel-city-list'),
@@ -227,6 +228,7 @@ urlpatterns = [
     path('tourslistm', list_tours_ajax_menu_horzental, name='list_tours_ajax_menu_horzental'),
     path('country_tours_ajax', country_tours_ajax, name='country_tours_ajax'),
     path('city_tours_ajax', city_tours_ajax, name='city_tours_ajax'),
+    path('custom-category-tours-ajax/', custom_category_tours_ajax, name='custom-category-tours-ajax'),
     path('postdata', index_posts_ajax, name='index_posts_ajax'),
     path('hotel_cities_ajax', (hotel_cities_ajax), name='hotel_cities_ajax'),
     path('country_hotels_ajax', country_hotels_ajax, name='country_hotels_ajax'),

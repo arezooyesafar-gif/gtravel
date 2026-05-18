@@ -367,6 +367,44 @@ def TourMenuList(request):
     }
     return render(request, 'tour/menu-list.html', context)
 
+## Custom Tour Category CRUD Functions
+@superuser_required(login_url='login')
+def CreateTourCategory(request):
+    forms = CreateTourCategoryForm()
+    if request.method == 'POST':
+        forms = CreateTourCategoryForm(request.POST, request.FILES)
+        if forms.is_valid():
+            forms.save()
+            return redirect('list-tour-category')
+    context = {
+        'form': forms
+    }
+    return render(request, 'tour/create-tour-category.html', context)
+
+@superuser_required(login_url='login')
+def UpdateTourCategory(request, id):
+    category = CustomTourCategory.objects.get(id=id)
+    forms = CreateTourCategoryForm(instance=category)
+    if request.method == 'POST':
+        forms = CreateTourCategoryForm(request.POST, request.FILES, instance=category)
+
+        if forms.is_valid():
+            forms.save()
+            return redirect('list-tour-category')
+    context = {
+        'form': forms
+    }
+    return render(request, 'tour/create-tour-category.html', context)
+
+@superuser_required(login_url='login')
+def DeleteTourCategory(request, id):
+    category = CustomTourCategory.objects.get(id=id)
+    category.delete()
+    return redirect('list-tour-category')
+
+@superuser_required(login_url='login')
+def ListTourCategory(request):
+    return render(request, 'tour/list-tour-category.html')
 
 @superuser_required(login_url='login')
 def AboutUsCreate(request):

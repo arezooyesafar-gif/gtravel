@@ -1,0 +1,77 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                ایجاد/بروزرسانی دسته بندی تور ها
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'list-tour-category' %}" class="link">لیست دسته بندی ها </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-40">
+        <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="inner_section">
+                        <div class= "row">
+                            <div class="col-lg-4">
+                                <p class="label-text">نام دسته بندی <span class="required">*</span></p>
+                                {{ form.name }}
+                            </div>
+                            <div class="col-lg-4">
+                                <p class="label-text">دسته بندی والد <span class="required">*</span></p>
+                                {{ form.parent }}
+                            </div>
+                            <div class="col-lg-4">
+                                <p class="label-text">لینک سئو <span class="required">*</span></p>
+                                {{ form.slug }}
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="label-text tour_create">عکس</p>
+                                <label for="id_image" class="custom-file-upload text-input">
+                                    <i class="fa fa-cloud-upload-alt"></i><span id="filename2"> بارگذاری فایل</span>
+                                </label>
+                                {{ form.image }}
+                                <script>
+                                    $(document).ready(function () {
+                                        $('input[type="file"]').change(function (e) {
+                                            var fileName2 = e.target.files[0].name;
+                                            document.getElementById('filename2').innerHTML = '  فایل انتخابی: ' + fileName2
+                                        });
+                                    });
+                                </script>
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="spacial_feat bg-gray-dim">فعال بودن </p>
+                                {{ form.is_active }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <p class=""> توضیحات</p>
+                                {{ form.description }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <button style="margin-top: 22px" type="submit" class="btn btn-lg btn-info btn-block">
+                        <i class="fa fa-check btn-icon font-20 edit-btn"></i>
+                        <span id="save-button-title">ایجاد/بروزرسانی دسته بندی</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

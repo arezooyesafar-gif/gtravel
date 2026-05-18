@@ -3,7 +3,9 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from tour.forms import CreateTourForm, tour_search_form
 from django.contrib import messages
-from tour.models import Tour, Package, TourCity, date_plan, tour_images, spacial_destinations, related_tour_city
+from tour.models import Tour, Package, TourCity,\
+    tour_images, related_tour_city, date_plan
+
 from tour.forms import TourCityForm, tour_date_form
 
 
@@ -14,47 +16,66 @@ def superuser_required(login_url=None):
 @superuser_required(login_url='login')
 def create_tour(request):
     date = datetime.now()
-    forms = CreateTourForm()
+    form = CreateTourForm()
     user = request.user
+
     if request.method == 'POST':
-        forms = CreateTourForm(request.POST, request.FILES)
-        if forms.is_valid():
-            tour = forms.save(commit=False)
+        form = CreateTourForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            tour = form.save(commit=False)
             tour.Creator = user
             tour.updateDate = date
             tour.save()
-            related_tour_city.objects.create(country=tour.Tcountry, city=tour.Tcity, tour=tour )
+
+            form.save_m2m()
+
+            for cat in tour.custom_categories.all():
+                if tour.Tcity:
+                    cat.cities.add(tour.Tcity)
+                if tour.Tcountry:
+                    cat.countries.add(tour.Tcountry)
+
+            related_tour_city.objects.create(
+                country=tour.Tcountry,
+                city=tour.Tcity,
+                tour=tour
+            )
+
             files = request.FILES.getlist('files')
             for file in files:
-                tour_file_instance = tour_images(tour=tour, image=file)
-                tour_file_instance.save()
-            return redirect('tour_date_plan', pk=tour.id)
-        else:
-            message = messages.error(request, 'به منظور ذخیره اطلاعات تــور لطفا تمام فیلدها را تکمیل نمایید')
-            context = {
-                'form': forms,
-                'message': message
-            }
-            return render(request, 'tour/create-tour.html', context)
-    context = {
-        'form': forms
-    }
-    return render(request, 'tour/create-tour.html', context)
+                tour_images.objects.create(tour=tour, image=file)
 
+            return redirect('tour_date_plan', pk=tour.id)
+
+        messages.error(request, 'لطفا تمام فیلدها را تکمیل نمایید')
+
+    return render(request, 'tour/create-tour.html', {'form': form})
 
 @superuser_required(login_url='login')
 def update_tour(request, id):
     date = datetime.now()
     tour = Tour.objects.get(id=id)
     galley = tour_images.objects.filter(tour=tour)
-    forms = CreateTourForm(instance=tour)
-    if request.method == 'POST':
-        forms = CreateTourForm(request.POST, request.FILES, instance=tour)
 
-        if forms.is_valid():
-            t = forms.save(commit=False)
+    form = CreateTourForm(instance=tour)
+
+    if request.method == 'POST':
+        form = CreateTourForm(request.POST, request.FILES, instance=tour)
+
+        if form.is_valid():
+            t = form.save(commit=False)
             t.updateDate = date
             t.save()
+
+            form.save_m2m()
+
+            for cat in t.custom_categories.all():
+                if t.Tcity:
+                    cat.cities.add(t.Tcity)
+                if t.Tcountry:
+                    cat.countries.add(t.Tcountry)
+
             packages = Package.objects.filter(TourName=t.id)
             for i in packages:
                 i.SingleBedPrice += t.add_peice_single
@@ -63,24 +84,25 @@ def update_tour(request, id):
                 i.BabyWithoutBedPrice += t.add_peice_without_bed
                 i.InfontPrice += t.add_peice_infont
                 i.save()
-            tour.add_peice_dubel = 0
-            tour.add_peice_single = 0
-            tour.add_peice_with_bed = 0
-            tour.add_peice_without_bed = 0
-            tour.add_peice_infont = 0
-            tour.save()
+
+            t.add_peice_dubel = 0
+            t.add_peice_single = 0
+            t.add_peice_with_bed = 0
+            t.add_peice_without_bed = 0
+            t.add_peice_infont = 0
+            t.save()
+
             files = request.FILES.getlist('files')
             for file in files:
-                tour_file_instance = tour_images(tour=tour, image=file)
-                tour_file_instance.save()
-            return redirect('tour_date_plan', pk=tour.id)
-    context = {
-        'form': forms,
+                tour_images.objects.create(tour=t, image=file)
+
+            return redirect('tour_date_plan', pk=t.id)
+
+    return render(request, 'tour/create-tour.html', {
+        'form': form,
         'Data': tour,
         'galley': galley
-    }
-    return render(request, 'tour/create-tour.html', context)
-
+    })
 
 @superuser_required(login_url='login')
 def delete_tour(request, id):

@@ -1,0 +1,30 @@
+﻿{% extends 'admin-dashboard/base/base.html' %}
+{% load static%}
+{% block Main %}
+<script src="{% static 'assets/js/ajax_functions.js' %}"></script>
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                لیست دسته بندی تور ها
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'create-tour-category' %}" class="link">ایجاد دسته بندی جدید </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-sm-12 col-lg-12">
+            <div id="list_tour_category" class="">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
