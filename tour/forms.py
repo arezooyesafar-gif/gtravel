@@ -1,9 +1,8 @@
 from .models import *
 from django import forms
-from captcha.fields import CaptchaField
-from jalali_date.fields import JalaliDateField, SplitJalaliDateTimeField
-from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime,GregorianToJalali
-
+from jalali_date.fields import JalaliDateField
+from jalali_date.widgets import AdminJalaliDateWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 class tour_date_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -436,6 +435,12 @@ class CreateTourForm(forms.ModelForm):
         self.fields['Tcity'].widget.attrs.update({
             'class': 'text-input'
         })
+        self.fields['custom_categories'].widget = forms.CheckboxSelectMultiple()
+        self.fields['custom_categories'].queryset = CustomTourCategory.objects.filter(is_active=True)
+
+        self.fields['custom_categories'].widget.attrs.update({
+            'class': 'category-checkbox-wrapper'
+        })
         self.fields['origin_city'].widget.attrs.update({
             'class': 'text-input'
         })
@@ -484,7 +489,8 @@ class CreateTourForm(forms.ModelForm):
         self.fields['add_peice_infont'].widget.attrs.update({
             'class': 'text-input',
         })
-        self.fields['TourPdf'].widget = forms.FileInput(attrs={'class': 'input-text hide-field'})
+        if self.instance and self.instance.pk:
+            self.fields['custom_categories'].initial = self.instance.custom_categories.all()
 
     class Meta:
         model = Tour
@@ -776,6 +782,35 @@ class CreateMemoryCategoryForm(forms.ModelForm):
 
     class Meta:
         model = MemoryCategory
+        fields = '__all__'
+
+
+class CreateTourCategoryForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({
+            'class': 'text-input',
+            'placeholder': ' نام دسته بندی را وارد کنید',
+        })
+        self.fields['parent'].widget.attrs.update({
+            'class': 'text-input',
+            'placeholder': ' نام دسته بندی را وارد کنید',
+        })
+        self.fields['slug'].widget.attrs.update({
+            'class': 'text-input',
+        })
+        self.fields['description'].widget.attrs.update({
+            'class': 'text-input',
+        })
+        self.fields['is_active'].widget.attrs.update({
+            'class': 'checkbox-input',
+        })
+        self.fields['image'].widget.attrs.update({
+            'class': 'image-input',
+        })
+        
+    class Meta:
+        model = CustomTourCategory
         fields = '__all__'
 
 
