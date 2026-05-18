@@ -27,6 +27,7 @@ urlpatterns = [
     path('ajax_airpots_list/', ajax_airpots_list, name='ajax_airpots_list'),
     path('ajax_post_categories/', ajax_post_categories, name='ajax_post_categories'),
     path('ajax_memo_categories/', ajax_memo_categories, name='ajax_memo_categories'),
+    path('ajax_tour_categories/', ajax_tour_categories, name='ajax_tour_categories'),
     path('ajax_mainPAckages_list/', ajax_main_packages_list, name='ajax_mainPAckages_list'),
     path('ajax_trip_plans/', ajax_trip_plans, name='ajax_trip_plans'),
     path('related_city_ajax/', related_city_ajax, name='related_city_ajax'),
