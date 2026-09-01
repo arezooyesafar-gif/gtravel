@@ -1,3 +1,30 @@
+<style>
+/* !important روی خط‌های زیر عمدیه: بعد از این‌که اسکریپت گوگل (publisher.js)
+   واقعاً دکمه رو فعال می‌کنه، به نظر می‌رسه یک ری‌ست سراسری با خودش می‌آره که
+   می‌تونه استایل p های اطراف رو بشکنه (کلمه به کلمه سطر بشه). این قوانین
+   استایل خودمون رو در برابر همچین بازنویسی‌ای محافظت می‌کنه. */
+.preferred-source-wrap{width:100%!important;max-width:1259px!important;margin:26px auto!important;padding:0 12px!important;box-sizing:border-box!important;display:block!important;}
+.preferred-source-box{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:18px!important;width:100%!important;box-sizing:border-box!important;padding:18px 26px!important;background:#fff!important;border:1px solid #e5e9f0!important;border-radius:14px!important;box-shadow:0 2px 10px rgba(20,30,60,.05)!important;text-align:right!important;}
+.preferred-source-box .ps-text{display:flex!important;flex-direction:column!important;gap:4px!important;flex:1 1 auto!important;min-width:0!important;width:auto!important;max-width:none!important;}
+.preferred-source-box .ps-title{display:block!important;margin:0!important;font-size:15px!important;font-weight:700!important;color:#1a1d24!important;white-space:normal!important;width:auto!important;max-width:none!important;}
+.preferred-source-box .ps-sub{display:block!important;margin:0!important;font-size:12.5px!important;color:#8b93a1!important;white-space:normal!important;width:auto!important;max-width:none!important;}
+.preferred-source-box .ps-btn-holder{flex:0 0 auto!important;}
+@media (max-width:576px){
+    .preferred-source-wrap{margin:18px auto!important;}
+    .preferred-source-box{flex-direction:column!important;text-align:center!important;padding:16px!important;}
+}
+</style>
+<div class="preferred-source-wrap">
+    <section class="preferred-source-box">
+        <div class="ps-text">
+            <p class="ps-title">آرزوی سفر را به منابع مورد علاقه خود اضافه کنید</p>
+            <p class="ps-sub">با یک کلیک، تورهای محبوب آرزوی سفر را در گوگل دنبال کنید</p>
+        </div>
+        <div class="ps-btn-holder">
+            <div google-add-preferred-source-btn></div>
+        </div>
+    </section>
+</div>
 <section class="footer_links">
     <div id="calc_btn">
         <button type="button" class="calculator-btn-main" data-bs-toggle="modal" data-bs-target="#calcModal">
