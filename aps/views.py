@@ -1847,9 +1847,9 @@ def thai_visa_request(request):
             owner = request.POST.get('owner1')
             employee = request.POST.get('owner2')
             if owner:
-                data.marial_stat = True
+                data.job_owner = True
             if employee:
-                data.marial_stat = False
+                data.job_owner = False
             tripthai_yes = request.POST.get('tripthai1')
             tripthai_no = request.POST.get('tripthai12')
             if tripthai_yes:
