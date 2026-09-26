@@ -1,0 +1,4221 @@
+@font-face{
+    font-family:'PeydaBlack';
+    font-style:normal;
+    font-weight:900;
+    font-display:swap;
+    src:url('/static/asset/css/fonts/woff/PeydaWebFaNum-Black.woff') format('woff');
+}
+@font-face{
+    font-family:'PeydaBold';
+    font-style:normal;
+    font-weight:700;
+    font-display:swap;
+    src:url('/static/asset/css/fonts/woff/PeydaWeb-Bold.woff') format('woff');
+}
+@font-face{
+    font-family:'PeydaExtra';
+    font-style:normal;
+    font-weight:800;
+    font-display:swap;
+    src:url('/static/asset/css/fonts/woff/PeydaWeb-ExtraBold.woff') format('woff');
+}
+@font-face{
+    font-family:'PeydaExtral';
+    font-style:normal;
+    font-weight:200;
+    font-display:swap;
+    src:url('/static/asset/css/fonts/woff/PeydaWeb-ExtraLight.woff') format('woff');
+}
+@font-face{
+    font-family:'PeydaLight';
+    font-style:normal;
+    font-weight:300;
+    font-display:swap;
+    src:url('/static/asset/css/fonts/woff/PeydaWeb-Light.woff') format('woff');
+}
+@font-face{
+    font-family:'PeydaMedium';
+    font-style:normal;
+    font-weight:500;
+    font-display:swap;
+    src:url('/static/asset/css/fonts/woff/PeydaWeb-Medium.woff') format('woff');
+}
+@font-face{
+    font-family:'PeydaRegular';
+    font-style:normal;
+    font-weight:400;
+    font-display:swap;
+    src:url('/static/asset/css/fonts/woff/PeydaWebFaNum-Regular.woff') format('woff');
+}
+@font-face{
+    font-family:'PeydaSemiB';
+    font-style:normal;
+    font-weight:600;
+    font-display:swap;
+    src:url('/static/asset/css/fonts/woff/PeydaWebFaNum-Bold.woff') format('woff');
+}
+@page {
+    size: A4;
+    margin: 0mm;
+
+    @top-left {
+        content: element(header);
+    }
+
+    @bottom-left {
+        content: element(footer);
+    }
+}
+@media print {
+    header{
+        position: running(header);
+    }
+}
+header {
+    position: relative;
+    right: 0;
+    top: -5mm;
+    height: 55mm;
+    text-align: right;
+    font-size: 10px;
+    background: url(/static/asset/css/images/header.png);
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center
+}
+
+footer {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    height: 50mm;
+    text-align: right;
+    font-size: 10px;
+    margin-bottom: 0;
+    background: url(/static/asset/css/images/footer.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    width: 100%
+}
+.pdf-warp{
+    background: #fff !important;
+}
+.package-table {
+    width: 203mm;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:-11mm
+}
+.country-description {
+    display: block;
+    margin-bottom: 10px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+table.table-inner {
+    width: 100%;
+    line-height: 30px;
+    text-align: center;
+    font-family: Iransans;
+}
+tr.table-head {
+    background: #61b3e5;
+    line-height: 25px;
+    font-size: 13px;
+}
+tr.data-row {
+    font-size: 11px;
+    line-height: 13px;
+    vertical-align: middle;
+    border-bottom: 1px solid #ccc;
+}
+tr.data-row-limit {
+    font-size: 11px;
+    line-height: 18px;
+    vertical-align: middle;
+    border-bottom: 1px solid #ccc;
+}
+
+td.data-cell {
+    border-left: 1px solid #ccc;
+}
+.data-row.even {
+    background: #efefef;
+}
+.data-row-limit.even {
+    background: #efefef;
+}
+p.flight-time-pdf{
+    position: fixed;
+    top: 34.5mm;
+    font-family: Iransans;
+    font-size:12px;
+    margin-right: 7mm;
+}
+p.flight-time-re-pdf{
+    position: fixed;
+    top: 34.5mm;
+    font-family: Iransans;
+    font-size:12px;
+    margin-right: 35mm;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 12px;
+    line-height: 40px;
+}
+li.subcat-link.blog-pg {
+    border: none;
+    display: block;
+    padding: 5px;
+    line-height: 30px;
+    width: 100%;
+}
+ul.item-dropdown {
+    display: none;
+    position: absolute;
+    top: 12px;
+    right: 131px;
+    list-style: none;
+    padding: 0px 30px;
+    width: 240px;
+    z-index: 1;
+    padding: 5px 30px;
+    /*! box-shadow: 0 9px 8px #d7d0d09c; */
+    height: 500px;
+}
+
+.mega-item-link:hover .item-dropdown {
+    display: block;
+}
+li.subcat-link {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px;
+    width: 19%;
+    background: #0197f6;
+    line-height: 20px;
+    display: inline-block;
+    width: 100%;
+    color: white;
+    font-size: 14px;
+}
+.mobile-banner
+{
+    display: none;
+}
+.order-container {
+    min-height: 125px;
+}
+.hotel-images.tour-dp {
+    /* height: 130px; */
+    width: 39%;
+}
+.spacial-tour:hover {
+    box-shadow: 0 0 8px #759fdf75;
+    transition-duration: 0.3s;
+}
+.list-hotels:hover {
+    box-shadow: 0 0 8px #e6ae114f;
+    transition-duration: 0.3s;
+}
+.call-to {
+    display: none;
+}
+.hotel-images img {
+    /* height: 160px; */
+}
+a.more-tours-list {
+    font-family: IranSans;
+    color: #fff !important;
+    line-height: 35px;
+}
+
+.more-tours {
+    width: 35%;
+    text-align: center;
+    background: #61b3e5;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    border-radius: 8px;
+    transition-duration: 0.3s;
+}
+
+.more-tours:hover {
+    box-shadow: 0px 0px 8px #ccc;
+    transition-duration: 0.3s;
+}
+.tour-desc {
+    display: block;
+    width: 90%;
+    height: 30mm;
+    overflow:hidden;
+    padding: 5px;
+    border: 3px dashed #61b3e5;
+    margin-left:5mm ;
+    bottom: 43mm;
+    margin-bottom: 3mm;
+    margin-right: 10mm;
+    font-family: 'PeydaRegular';
+    text-align: justify;
+    font-size: 12px;
+    position: fixed;
+}
+p.tour-desc{
+    line-height: 20px;
+    font-family: 'PeydaRegular';
+}
+.left-desc {
+    float: right;
+}
+p.tour-title-pdf {
+    margin-top: 0mm;
+    margin-right: 8mm;
+    font-family: 'PeydaSemiB';
+    text-align: right;
+    position: fixed;
+    fon-size:35px;
+    top: 10mm;
+    border-radius: 5px;
+    padding: 5px;
+}
+p.tour-airline-pdf {
+    margin-top: 0mm;
+    margin-right: 13mm;
+    font-family: 'PeydaRegular';
+    text-align: right;
+    position: fixed;
+    top: 34.5mm;
+}
+.call-to-us {
+    display: none;
+}
+
+body {
+    margin: 0;
+}
+
+.main-warper {
+    background: #fff;
+    width: 100%;
+}
+
+.top-container {
+    background-position: top center !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    box-shadow: 0px 1px 5px #cccccc47;
+    background: #fff;
+    background-image: url("/static/asset/images/container_bg.png");
+    height: 360px;
+}
+input#id_img1 {
+    padding-right: 0;
+    width: 100%;
+}
+
+input#id_img2 {
+    padding-right: 0;
+    width: 100%;
+}
+.form-input.user-input {
+    display: inline-block;
+    width: 45.5%;
+}
+.top-bar {
+    height: 60px;
+    width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+    /* border-bottom: 1px solid #cb97066e; */
+}
+a.internal-link {
+    background: #e6ae11;
+    font-size: 16px;
+    padding: 8px 35px;
+}
+
+span.inline-link{
+    color:#f39c12 !important;
+    font-size:14px !important;
+}
+
+.logo-hozental {
+    display: inline-block;
+    float: right;
+    height: 50px;
+    width: 15%;
+    padding: 5px 15px;
+}
+
+.filter-section {
+    width: 86%;
+    margin: 10px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    position: relative;
+    top: 227px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.featur-logo {
+display: block;
+    margin: 10px;
+    width: 950px;
+    height: 112px;
+    overflow: hidden;
+    position: relative;
+    margin-top: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    background-position: top center !important;
+    background-repeat: no-repeat !important;
+    background: url(/static/asset/css/images/banner.gif);
+}
+
+.secd-row {
+    width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    display: block;
+}
+
+.right-side {
+    display: inline-block;
+    width: 75%;
+    margin: 15px 0;
+    /* float: right; */
+    position: relative;
+}
+
+.content-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    width: 1300px !important;
+}
+
+.left-side {
+    margin: 15px;
+    position: relative;
+    width: 25%;
+}
+
+.footer-container {
+    background: #343434;
+    width: 100%;
+    /* height: 350px; */
+    padding-bottom: 25px;
+}
+.tour-desc p {
+  font-family: PeydaRegular !important;
+}
+strong {
+  font-family: PeydaRegular;
+}
+.featur-logo img {
+    height: 400px;
+    /* margin-left: auto; */
+    margin-right: auto;
+    display: block;
+    width: 100%;
+}
+
+.airline-heading {
+    height: 35px;
+    padding: 5px 0px;
+    text-align: center;
+    margin-bottom: 10px;
+    /* background: #fff; */
+}
+
+.airline-heading p {
+    line-height: 25px;
+    font-family: IranSans;
+    color: #6c757d;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 10px;
+    border-right: 5px solid #e6ae11;
+}
+
+.air-line-logo {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    margin: 5px;
+    overflow: hidden;
+    padding-left: 5px;
+    border-left: 1px solid #ebebeb73;
+}
+
+.air-line-title {
+    display: inline-block;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.air-line-title p {
+    font-size: 12.5px;
+    font-family: IranSans;
+    line-height: 22px;
+}
+
+.airline-detail {
+    /* display: flex; */
+    border: 1px solid #cccccc6e;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 0 10px #efefef;
+}
+
+ul.navbar-link {}
+
+li.item-link {
+    display: inline-block;
+    padding: 5px 10px;
+    line-height: 34px;
+    font-family: IranSans;
+    color: #fff;
+}
+
+.navbar {
+    width: 70%;
+    text-align: right;
+    line-height: 51px;
+}
+
+p.filter-title {
+    font-size: 18px;
+    font-family: IranSans;
+    font-weight: bold;
+    padding: 0px 15px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+input.text-input {
+    line-height: 35px;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: IranSans;
+    padding-right: 20px;
+    font-size: 11px;
+    text-align: center;
+}
+
+label.form-label {
+    font-family: IranSans;
+    font-weight: bold;
+    padding: 0px 13px;
+    width: 130px;
+    display: inline-block;
+    text-align: center;
+    font-size: 14px;
+}
+
+.form-input {
+    display: block;
+    margin: 15px;
+}
+
+button.submit-search {
+    padding: 0px 40px;
+    background: #0197f6;
+    border: 1px solid #7899cd;
+    color: #fff;
+    font-size: 18px;
+    line-height: 38px;
+    font-family: IranSans;
+    border-radius: 5px;
+    position: relative;
+    top: 1px;
+}
+
+.form-input.submit {
+    text-align: center;
+    /* width: 80%; */
+}
+
+form.filter-form {
+    margin-top: 0px;
+}
+
+.spacial-offer {
+    width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 30px;
+    display: block;
+    top: 30px;
+    position: relative;
+    height: 500px;
+}
+
+span.time-detail {
+    position: absolute;
+    font-size: 14px;
+    font-family: IranSans;
+    background: #ffffff;
+    width: 55px;
+    height: 25px;
+    text-align: center;
+    left: 0;
+    color: #e6ae11;
+    font-weight: bold;
+    border-radius: 0 0 15px 0;
+}
+
+.spacial-tour {
+    width: 290px;
+    text-align: center;
+    position: relative;
+    border: 0px solid #e3e0e0;
+    display: inline-block;
+    margin: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.spacial-tour-img {
+    position: relative;
+    overflow: hidden;
+}
+
+.spacial-tour-detail {
+    display: block;
+    position: relative;
+    border-bottom: 1px solid #efefef;
+    background: #f7f7f7;
+}
+
+.spacial-tour-title p {
+    margin: 0;
+    padding: 10px 0;
+    font-family: IranSans;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.spacial-tour-title {
+    text-align: center;
+    background: #f7f7f7;
+    border: 1px solid #e9ecef;
+}
+
+.spacial-tour-airline {
+    background: #fff;
+}
+
+.spacial-tour-airline p {
+    margin: 0;
+    font-size: 14px;
+    font-family: 'IranSans';
+    padding: 5px 0;
+}
+
+.price-text {
+    font-size: 12px;
+    font-family: IranSans;
+    display: inline-block;
+    width: 40%;
+    text-align: center;
+}
+
+.price-value {
+    width: 55%;
+    display: inline-block;
+    font-family: IranSans;
+    color: #759fdf;
+    line-height: 50px;
+    font-size: 15px;
+}
+
+.spacial-tour-price {
+    background: #fff;
+    height: 50px;
+}
+
+p.spacial-offer-heading {
+    font-size: 22px;
+    font-family: IranSans;
+    font-weight: bold;
+    border-right: 5px solid #008cba;
+    padding-right: 10px;
+    line-height: 30px;
+}
+
+.tour-container:hover {
+    box-shadow: 0px 0px 18px #cccccc9e;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.blog-container {
+    /* background: #fff; */
+    /* border-top: 1px solid #efefef; */
+}
+
+.blog-row {
+    display: block;
+    width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px 0;
+}
+
+.blog-post {
+    width: 30%;
+    margin: 5px 5px;
+    border: 1px solid #ccc;
+    position: relative;
+    box-shadow: 0 0 10px #efefef;
+    display: inline-block;
+    background: #fff;
+    padding: 5px;
+}
+
+.post-img {
+    display: inline-block;
+    width: 37%;
+    overflow: hidden;
+    float: right;
+}
+
+.post-content {
+    display: inline-block;
+    width: 57%;
+    padding-right: 10px;
+    float: left;
+}
+
+.post-title p {
+    font-size: 15px;
+    font-family: IranSans;
+    font-weight: bold;
+    margin: 0;
+    position: relative;
+    margin-top: 10px;
+    text-align: right;
+    margin-bottom: 10px;
+    height: 65px;
+}
+
+.post-date p {
+    font-family: IranSans;
+    font-size: 12px;
+    margin: 0;
+    text-align: right;
+}
+
+.post-short-desc p {
+    font-family: IranSans;
+    font-size: 12px;
+    position: relative;
+}
+
+a.more-blog-post {
+    font-size: 12px;
+    color: #f93939;
+    text-decoration: none;
+    margin-right: 15px;
+    border: 1px solid #f93939;
+    padding: 3px 10px;
+}
+
+.post-short-desc p {
+    margin: 0;
+    text-align: right;
+}
+
+p.blog-heading-title {
+    text-align: right;
+    font-size: 25px;
+    font-family: IranSans;
+    font-weight: bold;
+    margin-top: 0;
+    width: 93%;
+}
+
+a:hover {
+    color: #000;
+}
+
+a:visited {
+    /* color: #000; */
+}
+
+a {
+    color: #6e6e6e;
+    text-decoration: none;
+}
+
+.secd-row.detail {
+    width: 100%;
+    background: #e6ae11;
+    margin: 0;
+}
+
+.tour-detail-title {
+    width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tour-detail-title p {
+    line-height: 65px;
+    color: #ffffff;
+    font-family: IranSans;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.tour-card {
+    background: #ffffff;
+    padding: 25px;
+    /* width: 100%; */
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #efefef85;
+}
+
+.tour-origin {
+    width: 100%;
+    margin-bottom: 10px;
+    height: 70px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    /* background: #efefef; */
+    /* box-shadow: 3px 3px 3px #848282; */
+}
+
+.tour-dest {
+    width: 100%;
+    height: 70px;
+    border: 1px solid #ccc;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fafafc;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+p.orgin-city-name {
+    font-family: IranSans;
+    font-size: 16px;
+    color: #211f20;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+p.dest-city-name {
+    font-family: IranSans;
+    font-size: 16px;
+    color: #211f20;
+    font-weight: bold;
+}
+
+span.start-text {
+    font-size: 14px;
+    color: #e6ae11;
+}
+
+span.tour-start-date {
+    font-size: 12px;
+    padding-right: 15px;
+    color: #211f20;
+}
+
+.tour-origin-airport,
+.tour-dest-airport {
+    display: inline-block;
+    width: 145px;
+    height: 70px;
+    float: right;
+    text-align: center;
+}
+
+.airpoet-title {
+    display: block;
+    height: 35px;
+    margin-bottom: 4px;
+}
+
+.airpoet-title span {
+    font-family: 'arial';
+    font-size: 14px;
+    line-height: 40px;
+    text-transform: uppercase;
+}
+
+.airpoet-title-fa {
+    display: block;
+    height: 35px;
+}
+
+.airpoet-title-fa span {
+    font-family: IranSans;
+    font-size: 10px;
+}
+
+.tour-detail-airline {
+    display: inline-block;
+    width: 10%;
+    height: 67px;
+    text-align: center;
+    /* background: #efefef; */
+    float: right;
+    border-left: 1px dashed #ccc;
+}
+
+.detail-airline-logo {
+    height: 32px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.detail-airline-text {
+    height: 25px;
+    width: 100%;
+    text-align: center;
+}
+
+.detail-airline-text span {
+    font-size: 13px;
+    font-family: 'IranSans';
+    line-height: 25px;
+}
+
+.tour-dest-airport {
+    border-left: 1px dashed #ccc;
+}
+
+.flight-class {
+    display: inline-block;
+    width: 18%;
+    height: 70px;
+    float: right;
+    text-align: center;
+    border-left: 1px dashed #ccc;
+}
+
+.flight-class-title {
+    display: block;
+    height: 39px;
+}
+
+.flight-class-title span {
+    font-family: tahoma;
+    font-size: 14px;
+    line-height: 35px;
+}
+
+.flight-legal-cargo {
+    display: block;
+    height: 35px;
+}
+
+.flight-legal-cargo span {
+    font-family: IranSans;
+    font-size: 12px;
+    height: 40px;
+}
+
+.tour-type {
+    display: inline-block;
+    width: 60px;
+    padding-right: 15px;
+    text-align: center;
+    height: 70px;
+    float: right;
+}
+
+.type-icon {
+    display: block;
+    height: 35px;
+    padding: 15px 0;
+}
+
+.flight-time-detail {
+    display: inline-block;
+    width: 145px;
+    height: 70px;
+    float: right;
+    text-align: center;
+    border-left: 1px dashed #ccc;
+}
+
+.flight-time {
+    display: block;
+    height: 35px;
+}
+
+.flight-time span {
+    font-family: IranSans;
+    font-size: 12px
+}
+
+.flight-time-title span {
+    font-family: 'IranSans';
+    font-size: 14px;
+    line-height: 40px;
+}
+
+.flight-time-title {
+    display: block;
+    height: 39px;
+}
+
+.type-icon img {
+    transform: rotate(18deg);
+}
+
+.hotel-card {
+    display: block;
+    background: #fff;
+    padding: 5px;
+    margin-top: 30px;
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    min-height: 130px;
+}
+
+.hotel-detail {
+    width: 100%;
+    border-bottom: 1px dashed #efefef;
+    padding-bottom: 37px;
+    height: 160px;
+    display: block;
+}
+
+.hotel-price {
+    width: 100%;
+}
+
+.hotel-info-section {
+    width: 65%;
+    display: inline-block;
+    border-left: 1px solid #efefef;
+    float: right;
+}
+
+.hotel-main-service-section {
+    display: inline-block;
+    width: 14%;
+    border-left: 1px solid #efefef;
+    float: right;
+    padding-bottom: 5px;
+}
+
+.hotel-rating-detail-section {
+    display: inline-block;
+    width: 12%;
+    float: right;
+    text-align: center;
+}
+
+.hotel-price-section {
+    width: 24%;
+    display: inline-block;
+}
+
+.hotel-images {
+    display: inline-block;
+    width: 35%;
+    /* height: 160px; */
+    overflow: hidden;
+}
+
+.hotel-data {
+    display: inline-block;
+    padding-right: 10px;
+    position: relative;
+    float: left;
+    width: 61%;
+    text-align: right;
+}
+
+.hotel-title {
+    display: block;
+}
+
+.hotel-title p {
+    margin: 0;
+    line-height: 30px;
+    font-family: tahoma;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.hotel-title-fa {
+    display: block;
+}
+
+.hotel-title-fa p {
+    margin: 0;
+    font-family: IranSans;
+    line-height: 30px;
+    font-size: 13px;
+}
+
+.hotel-rating {
+    display: block;
+}
+
+.hotel-rating p {
+    margin: 0;
+}
+
+.hotel-city {
+    display: block;
+}
+
+.hotel-city p {
+    font-family: IranSans;
+    margin: 0;
+    font-size: 12px;
+}
+
+.tour-services {
+    display: block;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.tour-stay-time {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.tour-stay-time p {
+    font-family: IranSans;
+    margin-top: 0px;
+    line-height: 35px;
+    border-bottom: 1px dashed #efefef;
+    padding-bottom: 10px;
+    font-size: 12px;
+}
+
+.tour-services p {
+    font-family: tahoma;
+    font-size: 14px;
+}
+
+.rating-title p {
+    font-family: IranSans;
+    line-height: 35px;
+    font-size: 12px;
+}
+
+.rating-title {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 35px;
+}
+
+.rating-number p {
+    font-family: IranSans;
+    font-size: 14px;
+    line-height: 35px;
+    margin-bottom: 12px;
+}
+
+.main-price p {
+    font-size: 18px;
+    font-family: IranSans;
+    line-height: 43px;
+    /* border: 1px solid #61b3e5; */
+    color: #61b3e5;
+}
+
+.main-price {
+    text-align: center;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;
+}
+
+.hotel-rating img {
+    padding: 15px 0;
+}
+
+.hotel-bed-price {
+    display: inline-block;
+    width: 19%;
+    text-align: center;
+    margin-top: 20px;
+    border-left: 1px solid #efefef;
+}
+
+.last {
+    border-left: none;
+}
+
+.bed-type {
+    width: 70%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bed-type p {
+    font-family: IranSans;
+    background: #efefef;
+    border-radius: 8px;
+    color: #759fdf;
+    font-size: 13px;
+    padding: 5px 0px;
+}
+
+.bed-price p {
+    font-family: IranSans;
+    font-size: 15px;
+    color: #211f20;
+    line-height: 34px;
+    margin-bottom: 5px;
+}
+
+span.courency {
+    font-size: 16px;
+}
+
+.hotel-detail-img {
+    width: 30%;
+    display: inline-block;
+    float: right;
+    margin-left: 30px;
+    overflow: hidden;
+}
+
+.hotel-detail-info {
+    width: 65%;
+    display: inline-block;
+    float: right;
+}
+
+.hotel-detail-page {
+    width: 100%;
+    height: 215px;
+    overflow: hidden;
+    border-bottom: 1px solid #efefef;
+}
+
+.hotel-detail-info p {
+    font-family: 'IranSans';
+    font-size: 20px;
+}
+
+.short-desc p {
+    font-size: 12px;
+    line-height: 40px;
+    text-align: justify;
+}
+
+.hotel-detail-data {
+    background: #efefef30;
+}
+
+.stars p {
+    font-family: IranSans;
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+.star-rating {
+    height: 35px;
+    display: block;
+}
+
+.stars {
+    height: 30px;
+    display: block;
+}
+
+.hotel-location {
+    height: 35px;
+}
+
+.location {
+    height: 30px;
+    display: block;
+}
+
+.location p {
+    font-family: IranSans;
+}
+
+.related-tour {
+    background: #ffffff;
+    text-align: center;
+    margin-bottom: 15px;
+    border: 1px solid #e1e0e0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #efefef;
+}
+
+.related-tour p {
+    font-family: 'IranSans';
+    font-size: 18px;
+    margin: 0;
+    line-height: 50px;
+}
+
+.hotel-additional-info {
+    display: block;
+    padding-top: 25px;
+    padding-bottom: 10px;
+    margin-top: 30px;
+    background: #fff;
+    border: 1px solid #efefef;
+}
+
+.hotel-additional-info p {
+    text-align: center;
+    font-family: IranSans;
+    font-weight: bold;
+}
+
+p.hotel-rooms {
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+p.hotel-rooms-count {
+    font-weight: normal;
+    width: 90%;
+    font-size: 12px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #efefef;
+}
+
+p.hotel-address {
+    font-family: tahoma;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 27px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 1px solid #efefef;
+    padding-bottom: 10px;
+}
+
+p.hotel-phone {
+    font-weight: normal;
+    color: #759fdf;
+    border: 1px solid #61b3e5;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    font-size: 18px;
+}
+
+a.website {
+    display: block;
+    font-family: IranSans;
+    font-size: 13px;
+    color: #e6ae11;
+    width: 64%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    border: 1px solid;
+    padding: 6px 10px;
+}
+
+p.hotel-services {
+    display: inline-block;
+    font-size: 12px;
+    padding: 5px 0;
+    font-family: IranSans;
+    line-height: 10px;
+    width: 225px;
+    border-left: 1px solid #efefef;
+}
+
+.hotel-service-card {
+    display: block;
+    background: #fff;
+    padding: 14px;
+    margin-top: 30px;
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+span.squer {
+    width: 10px;
+    height: 10px;
+    background: #61b3e5;
+    vertical-align: middle;
+    margin-left: 5px;
+    display: inline-block;
+}
+
+.hotel-data-i {
+    display: inline-block;
+    width: 18%;
+    text-align: center;
+    margin-top: 20px;
+    border-left: 1px solid #efefef;
+}
+
+.data-icon {
+    display: block;
+    height: 50px;
+}
+
+.data-t {
+    font-family: IranSans;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+}
+
+.data-m {
+    font-size: 12px;
+    font-family: IranSans;
+    line-height: 33px;
+    height: 33px;
+}
+
+.data-m img {
+    margin-top: 5px;
+}
+
+.hotel-data-i.map {
+    width: 40%;
+    background-size: 300px 100px !important;
+    background-repeat: no-repeat !important;
+    background-position: top center !important;
+    margin-right: 25px;
+    border-left: none;
+    background: url("/static/asset/images/spot-map-button-bg.png");
+    float: left;
+    margin-top: 13px;
+}
+
+.map-link {
+    line-height: 40px;
+    font-family: IranSans;
+    background: #efefef;
+    width: 120px;
+    margin-left: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: auto;
+}
+
+.hotel-list-heading {}
+
+.hotels-list {
+    text-align: center;
+    font-family: IranSans;
+    color: #6c6969;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.hotel-image {
+    width: 100%;
+    text-align: right;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hotel-titles {
+    width: 100%;
+    background: #fafafc;
+}
+
+.list-hotels {
+    text-align: right;
+    margin-bottom: 10px;
+    background: #fff;
+    padding: 5px;
+    border: 1px solid #efefef;
+    box-shadow: 0 0 10px #efefefef;
+}
+
+p.hotel-list-title {
+    padding: 0px 10px;
+    font-family: IranSans;
+    font-size: 16px;
+    text-align: right;
+    border-right: 5px solid #61b3e5;
+}
+
+.hotel-titles p {
+    font-size: 12px;
+    margin: 0;
+    padding: 0 5px;
+    display: inline-block;
+    width: 44%;
+    line-height: 45px;
+}
+
+p.hotel-eng-name {
+    font-family: arial;
+    font-size: 11px;
+    text-align: left;
+    width: 50%;
+    direction: ltr;
+    text-transform: capitalize;
+}
+
+.detail-airline-logo img {
+    height: auto;
+    width: 37%;
+}
+
+.hotel-image img {
+    width: 100%;
+}
+
+.hotel-rating-star p {
+    font-size: 13px;
+    font-weight: normal;
+    width: 45%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0 5px;
+    border-left: 1px solid #ccc;
+    display: inline-block;
+}
+
+p.star-rating-i {
+    width: 44%;
+    display: inline-block;
+    border: navajowhite;
+    text-align: center;
+}
+
+h1.hotel-services {
+    font-size: 18px;
+    font-family: IranSans;
+    background: #efefef33;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #efefee;
+}
+
+
+
+.post-img img {
+    width: 160px;
+}
+
+span.hotel-name-en {
+    font-family: arial;
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 15px;
+}
+
+li.item-link a {
+    color: #fff;
+}
+
+li.item-link a:hover {
+    color: #151616;
+    transition-duration: .5s;
+}
+
+
+a.active {
+    color: #759fdf !important;
+    background: none !important;
+}
+
+.company-desc {
+    text-align: justify;
+    width: 50%;
+    color: #efefef;
+    font-family: 'IranSans';
+}
+
+.heading-title h3 {
+    font-size: 16px;
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+.inner-container {
+    width: 1300px;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.heading-title {
+    margin-top: 40px;
+}
+
+.description-txt p {
+    font-size: 11px;
+    line-height: 30px;
+}
+
+.contact-info {
+    height: 70px;
+    background: #3e3d3d;
+    border-bottom: 1px solid #2e2e2e;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.address-info {
+    margin-top: 20px;
+    margin-left: 17px;
+}
+
+ion-icon.md.hydrated {
+    color: #efefef;
+    font-size: 20px;
+    vertical-align: middle;
+}
+
+.address-info span {
+    font-family: 'IranSans';
+    color: #efefef;
+    font-size: 12px;
+}
+
+i.fa.fa-phone-square {
+    font-size: 18px;
+    color: #efefef;
+    vertical-align: middle;
+    margin-left: -4px;
+}
+
+.phone-info span {
+    font-family: 'IranSans';
+    color: #efefef;
+    letter-spacing: 5px;
+    font-size: 12px;
+}
+
+.phone-info {
+    margin-top: 25px;
+    margin-left: 15px;
+}
+
+.mail-info {
+    margin-top: 23px;
+}
+
+i.fa.fa-envelope-open {
+    font-size: 15px;
+    color: #efefef;
+    margin-left: 2px;
+    vertical-align: middle;
+}
+
+.mail-info span {
+    font-family: tahoma;
+    color: #efefef;
+    letter-spacing: 2px;
+    font-size: 12px;
+    position: relative;
+    top: 2px;
+}
+
+.footer-links {
+    width: 45%;
+    margin-right: 50px;
+}
+
+.links-heading {
+    margin-top: 40px;
+}
+
+.links-heading h3 {
+    color: #efefef;
+    font-family: 'IranSans';
+    margin-bottom: 30px;
+}
+
+.links-detail ul li {
+    font-family: 'IranSans';
+    color: #efefef;
+    line-height: 35px;
+    vertical-align: middle;
+}
+
+.links-detail ul li a {
+    color: #efef;
+    font-size: 13px;
+}
+
+.links-detail ul {
+    list-style: none;
+}
+
+.copyright {
+    background: #3e3d3d;
+    border-top: 1px solid #2c2c2c;
+}
+
+.copyright p {
+    margin: 0;
+    font-size: 11px;
+    font-family: IranSans;
+    color: #c5c5c5;
+    display: block;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 53px;
+    text-align: center;
+}
+
+a {
+    text-decoration: none !important;
+    color: #545353 !important;
+}
+
+.offer-list {
+    /* display: flex; */
+    width: 100%;
+}
+
+.offer-detail {
+    display: block;
+    border: 1px solid #cccccc6e;
+    padding-bottom: 5px;
+    text-align: center;
+    padding-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 0 10px #efefef;
+    /* height: 40px; */
+}
+
+.tour-title.offer {
+    height: 40px;
+    width: 40%;
+    display: inline-block;
+    padding-left: 0px;
+    margin-left: 0px;
+    float: right;
+    text-align: right;
+    padding-right: 9px;
+    border-left: 1px dashed #efefef;
+}
+
+.installment.offer {
+    margin-left: 0px;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    padding-left: 0px;
+    /* border: 1px dashed #efefef; */
+    position: relative;
+    border-radius: 50%;
+}
+
+.offer-percent span {
+    font-size: 10px;
+    font-family: IranSans;
+    line-height: 40px;
+    color: #f52828;
+    border: 1px solid;
+    padding: 3px;
+}
+
+.offer-percent {
+    width: 40%;
+    display: inline-block;
+    text-align: center;
+    height: 40px;
+    float: left;
+    border-right: 1px dashed #efefef;
+}
+
+.air-line-logo-offer {
+    height: 40px;
+}
+
+.hotel-short-desc p {
+    font-family: IranSans;
+    font-size: 11px;
+    text-align: justify;
+    padding: 10px 18px;
+}
+
+.hotel-detail.list {
+    padding: 0;
+    border: 0;
+}
+
+.air-line-logo-offer img {
+    position: relative;
+    top: 5px;
+}
+
+.post-card {
+    background: #ffffff78;
+    border: 1px solid #efefef;
+}
+
+.post-detail-title {
+    padding: 5px 30px;
+    font-family: IranSans;
+    font-size: 20px;
+    border-bottom: 1px solid #e7e3e366;
+    box-shadow: 0px 1px 6px #e5e2e247;
+}
+
+.post-detail-sdesc {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background: #efefef;
+    font-family: IranSans;
+    line-height: 35px;
+    padding: 15px;
+    font-weight: normal;
+    margin-top: 20px;
+    font-size: 13px;
+    border: 1px dashed #d1cbcb;
+    border-radius: 35px 0px;
+}
+
+.post-detail-descrition {
+    font-size: 12px;
+    font-family: IranSans;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 30px;
+    line-height: 40px;
+}
+
+span.pubdate {
+    float: left;
+    font-size: 16px;
+    color: #3880ff;
+}
+
+.hotels-list.post-page {
+    background: #fff;
+    padding: 0;
+}
+
+.list-hotels.post-design {
+    box-shadow: none;
+    border-bottom: 1px solid #efefef !important;
+    border: none;
+    padding: 10px;
+}
+
+p.hotel-list-title.post-page-side {
+    margin: 0;
+    background: #f9f9f9;
+    border: none;
+    line-height: 50px;
+    border: 1px solid #efefef;
+}
+
+ion-icon#ui-layout {
+    color: #759fdf;
+    font-size: 25px;
+    padding-left: 5px;
+}
+
+.spacial-offer.post-spacial {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #efefef;
+    margin-bottom: 25px;
+}
+
+.spacial-tour.post {
+    margin: 0;
+    box-shadow: none !important;
+    padding: 10px;
+    border: none;
+    border-radius: inherit;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 285px;
+}
+
+img.item-image {
+    width: 100%;
+}
+
+.post-spacial p {
+    font-size: 16px;
+    color: #6c6969;
+}
+
+p.spacial-offer-heading.post-page-head {
+    background: #f9f9f9;
+    border-bottom: 1px solid #efefef;
+    margin: 0;
+    line-height: 50px;
+    padding: 0 10px;
+}
+
+ion-icon#tour-icon {
+    font-size: 25px;
+    color: #e6ae11;
+    rotate: 215deg;
+}
+
+.social-media {
+    margin-top: 20px;
+    margin-right: 30px;
+}
+
+ion-icon#social-icons {
+    font-size: 30px;
+    padding-left: 15px;
+}
+
+.post-list-card {
+    display: block;
+    background: #fff;
+    padding: 25px;
+    margin-top: 30px;
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.post-list-images {
+    display: inline-block;
+    width: 22%;
+    height: 140px;
+    overflow: hidden;
+}
+
+.post-list-data {
+    display: inline-block;
+    padding-right: 10px;
+    position: relative;
+    width: 75%;
+    float: left;
+}
+
+.post-list-title {
+    display: block;
+}
+
+.post-list-title h1 {
+    font-family: IranSans;
+    margin: 10px 0px !important;
+}
+
+.post-list-desc p {
+    font-family: IranSans;
+    font-size: 11px;
+    line-height: 20px;
+}
+
+span.meta-cat {
+    font-size: 11px;
+    float: left;
+    color: #759fdf;
+    padding: 0 5px;
+    border: 1px solid;
+}
+
+span.meta-date {
+    font-size: 11px;
+    float: left;
+    padding: 0px 5px;
+    color: #e6ae11;
+    border: 1px solid;
+    margin-left: 10px;
+}
+
+.post-category {
+    background: #fff;
+    border: 1px solid #efefef;
+    margin-bottom: 15px;
+}
+
+.post-category p {
+    font-size: 14px;
+    padding: 15px 15px;
+    font-family: 'IranSans';
+    background: #f9f9f9;
+    margin: 0;
+    border-bottom: 1px solid #efefef;
+}
+
+li.cat-list-item {
+    list-style: none;
+    font-size: 14px;
+    font-family: IranSans;
+    line-height: 35px;
+}
+
+ion-icon#cat-icon {
+    color: #759fdf;
+    padding-left: 6px;
+}
+
+ion-icon#list-item {
+    color: #c7c1c1;
+    padding-left: 5px;
+}
+
+li.cat-list-item a:hover {
+    color: #ffcf2d !important;
+}
+
+.cert {
+    display: inline-block;
+    width: 135px;
+    height: 175px;
+    background: #efefef;
+    margin-top: 25px;
+    margin-left: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.cerificate {
+    text-align: center;
+}
+
+ul.mega-dropdown {
+    display: none;
+    z-index: 1;
+    position: absolute;
+    list-style: none;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    font-size: 12px;
+    border-radius: 5px;
+    height: auto;
+    width: auto;
+}
+
+.item-link:hover .mega-dropdown {
+    display: block
+}
+
+ion-icon#menu-icon {
+    color: #61b3e5;
+    font-size: 10px;
+    vertical-align: middle;
+    padding-left: 4px;
+}
+
+input#id_StartDate::placeholder {
+    font-family: 'IranSans';
+    font-size: 11px;
+    padding-right: 15px;
+}
+
+input#id_StartDate::placeholder {
+    font-family: 'IranSans';
+    font-size: 11px;
+    padding-right: 15px;
+}
+
+select.ui-datepicker-month {
+    font-family: 'IranSans' !important;
+    font-size: 12px !important;
+    text-align: center;
+}
+
+select.ui-datepicker-year {
+    font-family: 'IranSans' !important;
+    font-size: 11px !important;
+    text-align: center;
+}
+
+span {
+    font-family: 'IranSans';
+    font-size: 14px;
+    padding: 5px;
+}
+
+p.hotel-title-info {
+    padding-top: 15px;
+    padding-bottom: 10px;
+    background: #f9f9f9;
+    border-bottom: 1px solid #efefef;
+}
+
+.hotel-detail-img img {
+    width: 100%;
+}
+
+li.item-link:hover {
+    background: #ffffff66;
+    border-radius: 5px;
+    transition-duration: 0.5s;
+}
+
+.text-box {
+    background: #fff;
+    min-height: 200px;
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    padding: 25px;
+}
+
+.text-box p {
+    font-family: 'IranSans';
+    font-size: 14px;
+    text-align: justify;
+    line-height: 35px;
+    color: #444;
+}
+
+.hotel-card.all-hotel {
+    display: flex;
+}
+
+.contact-box {
+    background: #fff;
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+p.contact-text {
+    font-family: 'IranSans';
+    font-weight: normal;
+    font-size: 13px;
+    color: #5a5a5a;
+    line-height: 40px;
+    padding: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
+    text-align: center;
+}
+
+#id_Message {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 80%;
+    padding: 10px 20px;
+    font-family: IranSans;
+    font-size: 12px;
+}
+
+p.doller-price {
+    border: none !important;
+    line-height: 12px;
+    font-size: 15px;
+    font-family: 'IranSans';
+    color: #61b3e5;
+    margin-bottom: 5px;
+    margin-top: 0px;
+    width: 180px;
+    text-align: center;
+}
+
+.short-desc {
+    background: #fff;
+    margin: 5px;
+    border: 1px solid #efefef;
+    padding: 25px;
+    text-align: justify;
+    font-family: 'IranSans';
+}
+
+.pagination {
+    display: block !important;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    line-height: 45px;
+    margin-top: 25px;
+}
+
+img.g-transfer {
+    transform: rotate(0deg);
+    position: relative;
+    top: 15px;
+}
+
+span.gtrans {
+    font-family: 'IranSans';
+}
+
+.offer-value {
+    display: inline-block;
+    font-family: IranSans;
+    font-size: 12px;
+    width: 40%;
+    color: red;
+    line-height: 40px;
+    border-right: 1px dashed #cdcaca;
+}
+
+.without-border {
+    border: none;
+}
+
+.post-list-desc {
+    text-align: justify;
+    display: block;
+    height: 120px;
+}
+
+.post-list-desc p {
+    line-height: 30px;
+}
+
+input.subscribe {
+    border: 1px solid #ccc;
+    line-height: 20px;
+    border-radius: 0px 15px 15px 0px;
+    font-family: 'IranSans';
+    font-size: 11px;
+    width: 200px !important;
+    padding: 5px;
+    z-index: 70;
+}
+
+button.submit-btn {
+    background: #61b3e5;
+    line-height: 22px;
+    padding: 5px;
+    font-size: 11px;
+    font-family: 'IranSans';
+    border-radius: 28px;
+    width: 93px;
+    margin-right: -22px;
+    z-index: 80 !important;
+    border: none;
+}
+
+input:focus-visible {
+    outline: none !important;
+}
+
+textarea#memori-message {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'IranSans';
+    font-size: 12px;
+}
+
+i.fa.fa-check.btn-icon.font-20.edit-btn {
+    font-size: 10px;
+}
+
+p.memo-form-heading {
+    display: block;
+    position: relative;
+    top: -45px;
+    background: #61b3e5;
+    padding: 0 40px;
+    font-family: 'IranSans';
+    font-size: 16px;
+    border: 1px solid #0d6efd;
+    line-height: 35px;
+    border-radius: 8px 0px;
+    color: #fff;
+    width: 50%;
+}
+
+.memo-list-card {
+    display: block;
+    background: #fff;
+    padding: 0px 25px 25px 0px;
+    margin-top: 30px;
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    min-height: 130px;
+    font-family: IranSans;
+}
+
+.memo-sender-info {
+    font-size: 14px;
+    position: relative;
+    top: -13px;
+    background: #e6ae11;
+    color: #fff;
+    line-height: 30px;
+    width: 180px;
+    text-align: center;
+}
+
+.memo-message {
+    font-size: 12px;
+    color: #958b8b;
+    line-height: 30px;
+    text-align: justify;
+    padding-left: 35px;
+}
+
+.menu-desc {
+    background: #fff;
+    border: 1px solid #efefef;
+    margin-bottom: 10px;
+    padding: 15px;
+}
+
+p.description {
+    text-align: justify;
+    line-height: 30px;
+    font-size: 12px;
+    font-family: 'IranSans';
+    color: #706d6d;
+}
+
+a.page-btn {
+    background: #fff;
+    padding: 2px 6px;
+    border: 1px solid #ccc;
+}
+
+span.current {
+    background: #fff;
+    padding: 2px 6px;
+    border: 1px solid #ccc;
+}
+
+.tour-price.irr-only {
+    line-height: 55px;
+}
+
+.clac-warper {
+    width: 461px;
+    display: block;
+    left: -465px;
+    background: #212950;
+    padding: 25px;
+    border-radius: 0px 20px 20px 0;
+    position: fixed;
+    transition-duration: .5s;
+    z-index: 1000000;
+    top: 180px;
+}
+
+.calc-btn {
+    line-height: 50px;
+    width: 55px;
+    border-radius: 50%;
+    margin: 2px;
+    border: 1px solid #156c87;
+    background: #ffffff;
+    font-size: 21px;
+    color: #212950;
+    font-family: IranSans;
+    padding: 0;
+}
+
+.tour-price-calc {
+    background: #fff;
+    height: 40px;
+    border-radius: 33px;
+    margin-bottom: 10px;
+}
+
+.btn-1row {}
+
+input#tour-price-input {
+    line-height: 37px;
+    color: #000;
+    width: 100%;
+    border: none;
+    text-align: center;
+    font-size: 22px;
+    border-radius: 50%;
+    font-family: 'IranSans';
+}
+
+input:focus-visible {
+    outline: none;
+}
+
+.ins-title {
+    color: #fff;
+    font-family: 'IranSans';
+    background: #61B3E5;
+    padding: 0px 10px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50px;
+}
+
+.calc-right {
+    display: inline-block;
+    width: 46%;
+}
+
+.calc-left-side {
+    display: inline-block;
+    float: left;
+    color: #fff;
+    width: 50%;
+    text-align: center;
+}
+
+.pre-paid span {
+    display: inline-block;
+    color: #ffd255;
+}
+
+.pre-paid p {
+    margin: 10px;
+    margin-bottom: 0;
+    background: #E6AE11;
+    line-height: 32px;
+    border-radius: 15px;
+    font-family: 'IranSans';
+}
+
+p#pre-paid-value {
+    display: inline-block;
+    padding-left: 1px;
+    color: #ffd255;
+    background: no-repeat;
+}
+
+.installments p {
+    margin: 10px;
+    margin-bottom: 0;
+    background: #61b3e5;
+    line-height: 32px;
+    border-radius: 15px;
+    font-family: 'IranSans';
+}
+
+p#installment-fee {
+    background: none;
+    display: inline-block;
+    color: #efefef;
+}
+
+p#total-fee {
+    background: none;
+    display: inline-block;
+    color: #efefef;
+}
+
+.installments.monthly {
+    margin-top: 12px;
+}
+
+.installments.monthly p {
+    background: #e6ae11;
+    font-family: 'IranSans';
+}
+
+.pre-paid {
+    margin-top: 20px;
+}
+
+button.calc-btn:focus {
+    background: #e6ae11;
+    color: #fff;
+    border: 1px solid #bf8f0b;
+}
+
+button#move-calc {width: 300px;border: 1px solid #000000;transform: rotate(90deg);position: fixed;left: -120px;top: 315px;background: #e5ad10;border-radius: 20px 20px 0px 0px;color: #000;transition-duration: .5s;z-index: 10000;font-family: 'IranSans';line-height: 55px;font-size: 25px;}
+
+.clac-warper.show {
+    left: -20px;
+    transition-duration: 0.5s;
+}
+
+.move-on {
+    left: 320px !important;
+    transition-duration: .5s;
+}
+
+.btn-1row.last-row {
+    width: 125px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input#tour-price-input::placeholder {
+    font-size: 15px;
+    font-family: 'IranSans';
+    color: #ccc;
+}
+
+button.btn.btn-primary {
+    width: 200px;
+    margin-right: auto;
+    display: block;
+    position: relative;
+    line-height: 17px;
+    font-family: 'IranSans';
+    box-shadow: none;
+    margin-bottom: -25px;
+}
+
+button.btn-close {
+    margin-left: 10px !important;
+    font-size: 10px;
+}
+
+h4.modal-title {
+    font-size: 18px;
+    font-family: 'IranSans';
+}
+
+input.reserve {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+
+button.rsv-btn {
+    width: 80% !important;
+    line-height: 25px !important;
+}
+
+button.btn.btn-danger {
+    font-size: 15px;
+    font-family: IranSans;
+}
+
+input#tour-price-input::placeholder {
+    font-size: 13px;
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+}
+
+button.btn.btn-primary.rsv-btn.form-btn {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-left: auto;
+}
+
+input#id_OfferShow {
+    width: 30px;
+    vertical-align: middle;
+}
+
+a.pdf-download {
+    position: absolute;
+    left: 231px;
+    margin-right: auto;
+    width: 135px;
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    font-family: IranSans;
+    background: #ffc107;
+    line-height: 31px;
+    border-radius: 8px;
+    color: #fff !important;
+    cursor: pointer;
+}
+
+input#id_Mobile {
+    width: 100%;
+}
+
+.hotel-info-more {
+    display: block;
+    width: 80%;
+    background: #61b3e5;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-family: 'IranSans';
+    line-height: 30px;
+    border-radius: 8px;
+    position: relative;
+    top: 71px;
+    right: 20px;
+}
+
+a.read-more-hotel {
+    color: #fff !important;
+}
+
+.form-input.search {
+    display: inline-block;
+    width: 200px;
+    margin: 0;
+}
+
+input.search-input {
+    width: 100%;
+    padding-right: 0;
+}
+
+.form-input.submit.search-sub {
+    display: inline-block;
+    margin: 0;
+}
+
+div#accordionFlushExample {
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+}
+
+.active,
+.accordion:hover {
+    /* background-color: #ebe9e973; */
+    /*! padding: 10px 10px; */
+    /* border-radius: 5px; */
+    /* background: #f0f0f0 !important; */
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+}
+
+button.accordion {
+    text-align: right;
+    font-family: 'IranSans';
+    background: linear-gradient(359deg, #efefef57, transparent);
+    border-top: 1px solid #ccc;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+.accordion-section {
+    border: 1px solid #ccc;
+    border-top: 0;
+}
+
+button.accordion {
+    font-family: IranSans !important;
+}
+
+.panel p {
+    font-family: 'IranSans';
+    font-size: 12px;
+    padding-top: 15px;
+    line-height: 20px;
+    text-align: justify;
+}
+
+.tour-heading-title.h-tlt {
+    width: 295px;
+}
+
+.tour-heading-title.airline {
+    width: 175px;
+}
+
+select.text-input {
+    height: 35px;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: IranSans;
+    padding-right: 20px;
+    font-size: 12px;
+    text-align: center;
+}
+
+select.reserve {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+
+select.text-input:focus-visible {
+    outline: none;
+}
+
+input.hide-input {
+    display: none;
+}
+
+img.item-image {
+    width: 290px;
+    height: 200px;
+}
+
+table.order-detail {
+    width: 100%;
+}
+
+tr.order-table-header {
+    font-family: IranSans;
+    background: #dfdcdc;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: center;
+}
+
+td.tb-header {
+    padding: 0px 15px;
+}
+
+tr.order-detail- {
+    font-family: IranSans;
+    font-size: 13px;
+    line-height: 35px;
+    text-align: center;
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+.post-img img {
+    width: 143px;
+    height: 110px;
+}
+
+p.orders-heading {
+    font-family: 'IranSans';
+    font-size: 18px;
+    font-weight: bold;
+    border-right: 6px solid #e6ae11;
+    padding-right: 10px;
+}
+
+.right-side.order-track {
+    width: 1300px;
+}
+
+.tour-price p {
+    /* border: 1px solid; */
+    line-height: 25px;
+    font-size: 15px;
+    font-family: 'IranSans';
+    font-weight: bold;
+    color: #0d6efd;
+    margin-bottom: 5px;
+    margin-top: 0px;
+    width: 180px;
+    text-align: center;
+    width: 130px;
+}
+
+
+p.char-validate {
+    font-size: 11px;
+    font-family: 'IranSans';
+    color: #f14747;
+    margin-right: 20px;
+}
+
+button#save-button-hd {
+    margin-right: 20px;
+    width: 150px;
+}
+
+p.singel-price {
+    position: relative;
+    top: 15px;
+}
+
+li.mega-item-link {
+    display: block;
+    width: 157px;
+    border: 1px solid #d1d0d082;
+    border-radius: 5px;
+    background: #f4f4f9;
+    margin: 2px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+img.flag {
+    border: 1px solid #ccc;
+    margin-left: 2px;
+}
+
+li.mega-item-link:hover {
+    background: #efefef;
+    transition-duration: 0.3s;
+}
+
+.right-side.full-page {
+    width: 1300px;
+}
+
+.contact-form {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+input#id_FirstName {
+    width: 100%;
+}
+
+input#id_LastName {
+    width: 100%;
+}
+
+input#id_Mobile {
+    /* width: 100%; */
+}
+
+textarea#id_Message {
+    width: 100%;
+}
+
+p.spacial-side {
+    font-size: 14px;
+}
+
+.price-value.side {
+    border-bottom: 1px dashed #ccc;
+    width: 100%;
+    font-size: 15px;
+    line-height: 48px;
+}
+
+.hotel-cat {
+    display: inline-block;
+    width: 300px;
+    background: #fff;
+    margin: 5px;
+    border: 1px solid #efefef;
+    border-radius: 8px;
+    font-family: 'IranSans';
+    font-size: 14px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.cat-img {
+    width: 298px;
+    overflow: hidden;
+    height: 200px;
+}
+
+.cat-img img {
+    width: 300px;
+    height: 200px;
+}
+
+p.title-cat {
+    margin: 0;
+    line-height: 40px;
+}
+
+.hotel-cat:hover {
+    box-shadow: 0px 0px 6px #ccc;
+    transition-duration: .5s;
+}
+
+.no-resualt {
+    text-align: center;
+    font-size: 14px;
+    font-family: IranSans;
+    background: #fff;
+    margin-top: 20px;
+    line-height: 50px;
+    border: 1px solid #e7e5e5;
+    border-radius: 8px;
+}
+
+.no-resualt p {
+    margin: 0;
+}
+
+.reserve-msg {
+    background: #b6edac;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-family: 'IranSans';
+    font-size: 14px;
+    text-shadow: 0px 0px 2px #fff;
+}
+
+.tour-box {
+    text-align: center;
+}
+
+.hotel-detail-info.full-dsc {
+    width: 100%;
+}
+
+.user-mobile,
+.user-trs {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    line-height: 25px;
+    padding: 5px;
+    width: 100%;
+}
+
+.mobile-input-field,
+.tra-code-input-field {
+    width: 50%;
+    display: block;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-mobile::placeholder {
+    font-size: 11px;
+    font-family: IranSans;
+    color: #5b5b5b;
+}
+
+.user-trs::placeholder {
+    font-size: 11px;
+    font-family: IranSans;
+    color: #5b5b5b;
+}
+
+.form-title {
+    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: IranSans;
+}
+
+.order-track-submit {
+    width: 100%;
+    font-size: 14px;
+    font-family: IranSans;
+    line-height: 30px;
+    border: 1px solid #76a25d;
+    background: #71ca51;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.no-reserve {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: IranSans;
+    background: #f7adad;
+    line-height: 40px;
+    padding: 5px;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px dashed #ccc;
+    font-size: 14px;
+}
+
+.order-trace {
+    width: 100%;
+    background: #7ea1f4;
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    font-family: IranSans;
+    line-height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition-duration: 0.5s;
+    margin-bottom: 10px;
+}
+
+.order-trace:hover {
+    background: #e6ae11;
+    transition-duration: 0.5s;
+    color: #fff !important;
+}
+
+a .mega-item-link,
+.active {
+    color: #212529 !important;
+}
+
+.reserv-info {
+    width: 55%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background: #a4f4ad;
+    padding: 30px;
+    font-family: IranSans;
+    line-height: 30px;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 80px;
+}
+
+.reserve-detail-link {
+    color: #f70b0b !important;
+}
+
+.home-link {
+    color: #4b31a8 !important;
+    background: #efefef;
+    padding: 5px 30px;
+    border: 1px solid;
+}
+
+.form-title.headline {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+span.submited {
+    font-size: 13px;
+    background: #f4df69;
+    padding: 0px 10px;
+    border-radius: 3px;
+}
+
+span.doc-send {
+    font-size: 13px;
+    padding: 0px 10px;
+    background: #99a6ec;
+    border-radius: 5px;
+}
+
+span.doc-waiting {
+    font-size: 13px;
+    padding: 0 10px;
+    background: #ffc280;
+    border-radius: 5px;
+}
+
+span.confirm {
+    font-size: 13px;
+    padding: 0 10px;
+    background: #3eee62;
+    border-radius: 5px;
+}
+
+.doc-upload {
+    font-size: 12px;
+    font-family: IranSans;
+    padding: 0 15px;
+    line-height: 21px;
+    background: #f7db8a;
+    border: 1px solid #ffdab3;
+    border-radius: 5px;
+}
+
+.image-input {
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.upload-doc-form {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fff;
+    padding: 30px;
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+    display: none;
+}
+
+.upload-doc {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fff;
+    padding: 30px;
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+}
+
+.doc-input {
+    display: inline-block;
+    width: 24%;
+    margin-bottom: 15px;
+}
+
+.doc-input.recive-doc {
+    display: inline-block;
+    width: 170px;
+    /*! height: 300px; */
+    overflow: hidden;
+    text-align: center;
+}
+
+.upload-doc-form p {
+    font-family: IranSans;
+    font-size: 18px;
+    border-right: 4px solid #499cce;
+    padding-right: 10px;
+}
+
+.upload-doc p {
+    font-family: IranSans;
+    font-size: 18px;
+    border-right: 4px solid #499cce;
+    padding-right: 10px;
+}
+
+.submit-upload {
+    width: 160px;
+    background: #b2ddf2;
+    border: 1px solid #5d88ae;
+    line-height: 35px;
+    border-radius: 5px;
+    font-family: IranSans;
+    font-size: 12px;
+    display: block;
+}
+
+.show {
+    display: block !important;
+    transition-duration: 0.5s;
+}
+
+.submit-success {
+    background: #56d983;
+    font-size: 15px;
+    font-family: IranSans;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 8px;
+}
+
+.text-input.memo {}
+
+#id_Name {
+    width: 100%;
+}
+
+#id_Family {
+    width: 100%;
+}
+
+#id_Email {
+    width: 100%;
+}
+
+.post-list-card form {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.message-submit {
+    background: #c5e9c8;
+    font-family: 'IranSans';
+    font-size: 14px;
+    line-height: 35px;
+    padding: 15px 20px;
+    border-radius: 8px;
+}
+
+p.submit-txt {
+    margin: 0;
+}
+
+.read-more-memo {
+    width: 200px;
+    text-align: center;
+    margin-right: auto;
+    background: #759fdf;
+    position: relative;
+    left: 10px;
+    border-radius: 5px;
+}
+
+a.read-more-m {
+    color: #FFF !important;
+    font-size: 12px;
+    line-height: 29px;
+}
+
+span.gtranfer-logo {
+    position: relative;
+    top: 25px;
+}
+.blog-post:hover {
+    /* background: #cccccc4f; */
+    transition-duration: 0.5s;
+    box-shadow: 0px 0px 14px #b3b3b3;
+}
+.blog-read-more {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 10px
+}
+
+.post-list-desc p {
+    margin: 0;
+}
+p.blog-read-more-txt {
+    background: #e6ae11;
+    padding: 0px 35px;
+    border-radius: 5px;
+    transition-duration: 0.5s;
+}
+
+p.blog-read-more-txt:hover {
+    background: #759fdf;
+    transition-duration: 0.5s;
+    color: #fff;
+}
+h1 {
+    font-size: 22px !important;
+    margin: 0 !important;
+}
+h2 {
+    font-size:20px !important;
+    margin: 0 !important;
+}
+h3 {
+    font-size:18px !important;
+margin: 0 !important;
+}
+h4 {
+    font-size:16px !important;
+margin: 0 !important;
+}
+h5 {
+    font-size:15px !important;
+margin: 0 !important;
+}
+.hotel-info-section.tour-detail {
+    width: 50%;
+}
+.res-menu {
+    display: none;
+}
+.res-nav-container {
+    display: none;
+}
+.res-menu-close {
+    display: none;
+}
+.tour-detail-title h1 {
+    line-height: 65px;
+    color: #ffffff;
+    font-family: IranSans;
+    font-size: 22px;
+    font-weight: bold;
+  }
+@media screen and (max-width: 992px) {
+    .doc-input {
+        display: block;
+        width: 100%;
+      }
+      .image-input {
+        width: 100%;
+      }
+      .logo-hozental{width: 50%;}
+.spacial-tour{
+	display:block;
+}
+.calc-btn {
+    line-height: 35px;
+    width: 37px;
+    border-radius: 50%;
+    margin: 2px;
+    border: 1px solid #156c87;
+    background: #ffffff;
+    font-size: 21px;
+    color: #212950;
+    font-family: IranSans;
+    padding: 0;
+}
+.clac-warper.res {
+    margin-top: 25px;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    width: 95%;
+    height: 345px;
+}
+ul.item-dropdown {
+    display: none;
+    position: relative;
+    top: 12px;
+    right: 0px;
+    list-style: none;
+    width: 100%;
+    z-index: 1;
+    padding: 5px 30px;
+    height: auto;
+}
+.reserv-info {
+    width: 75%;
+  }
+.form-input.search {
+	display:block;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5px;
+}
+.form-input.submit.search-sub{
+	display:block;
+	width: 100%;
+}
+.right-side {
+	display: block;
+	width: 100% !important;
+}
+.blog-post {
+	display:block;
+	height: 120px;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.detail-airline-logo img {
+    height: auto;
+    width: 21%;
+}
+.inner-container {
+	display:block;
+	width: 100%;
+}
+.navbar {
+	display:none !important;
+}
+.featur-logo {
+display: block;
+margin: 10px;
+width: 950px;
+height: 112px;
+overflow: hidden;
+position: relative;
+margin-left: auto;
+margin-right: auto;
+background-repeat: no-repeat !important;
+background: url(/static/asset/css/images/banner.gif);
+}
+.secd-row {
+    width: 100%;
+}
+
+.top-bar {
+    width: 100%;
+}
+
+.spacial-offer {
+    width: 100%;
+}
+
+.content-container.col-sm-12.col-lg-11 {
+    display: block;
+    width: 100% !important;
+}
+    .left-side {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cert {
+    display: inline-block;
+    width: 33%;
+}
+
+.footer-links {
+    margin-right: 0;
+    width: 100%;
+}
+a.order-trace {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.blog-row {
+    width: 100%;
+}
+    button.submit-search {
+    width: 90%;
+}
+.spacial-tour {
+    width: 83%;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+p.spacial-offer-heading {
+    text-align: center;
+}
+button.submit-search {
+    width: 90%;
+}
+.list-hotels {
+    margin-left: auto;
+    width: 95%;
+    margin-right: auto;
+}
+
+.address-info {
+    text-align: center;
+    padding-top: 20px;
+}
+
+.contact-info {
+    height: 265px;
+}
+
+.phone-info {
+    text-align: center;
+    margin-left: 0;
+}
+
+.mail-info {
+    text-align: center;
+}
+
+.social-media {
+    margin-right: 0;
+    text-align: center;
+}
+button#move-calc {
+    display: block !important;
+    width: 300px;
+    border: 1px solid #000000;
+    position: fixed;
+    left: -75px !important;
+    background: #e5ad10;
+    border-radius: 20px 20px 0px 0px;
+    color: #000;
+    transition-duration: .5s;
+    z-index: 10000;
+    font-family: 'IranSans';
+    line-height: 12px;
+    font-size: 20px;
+    width: 195px;
+    transform: rotate(90deg);
+    top: 450px;
+}
+.company-desc {
+    width: 90%;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.heading-title {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 19px;
+}
+input.user-mobile {text-align: center;line-height: 30px;}
+
+.mobile-input-field {
+    width: 90%;
+}
+
+.tra-code-input-field {
+    width: 90%;
+}
+
+input.user-trs {
+    text-align: center;
+    line-height: 30px;
+}
+
+p.form-title {
+    text-align: center;
+}
+
+.tour-detail-title {
+    width: 100%;
+    text-align: center;
+}
+.tour-heading {
+    display: none;
+}
+    .tour-container {
+    display: block;
+    width: 90%;
+    height: 245px;
+}
+
+.tour-title {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    border-bottom: 1px solid #f1eaea;
+    padding-bottom: 15px;
+    display: block;
+}
+
+.tlt {
+    height: 60%;
+    padding-top: 10px;
+}
+
+.tlt span {
+    font-size: 15px;
+}
+
+.tour-time {
+    display: inline-block;
+    width: 30%;
+}
+
+.tour-airline {
+    padding: 0;
+    width: 41%;
+    border: 1px dashed #cbc7c7;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-bottom: 0;
+    border-top: 0;
+}
+
+.airline-text {
+    float: none;
+    border-left: 1px dashed #ccc;
+}
+
+.tour-date {
+    padding: 0;
+    width: 10%;
+    border: none;
+}
+
+.tour-detail {
+    display: block;
+    width: 100%;
+}
+
+.airline-text {
+    display: none;
+}
+
+.airline-logo {
+    width: 130px;
+    position: relative;
+    top: 7px;
+}
+.spacial-offer {
+    padding: 0;
+    overflow: hidden;
+}
+
+img.item-image {
+    width: 100%;
+    height: 30%;
+}
+    .spacial-tour.post {
+    width: 100%;
+}
+
+.post-detail-title p {
+    display: block;
+    text-align: center;
+}
+
+span.pubdate {
+    display: block;
+    float: none;
+    padding-top: 16px;
+}
+
+.tour-detail-title p {
+    line-height: 35px;
+    padding-top: 15px;
+    font-size: 20px;
+    padding-bottom: 15px;
+}
+    .post-card {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+    .post-detail-descrition p {
+    text-align: justify;
+}
+.post-list-card {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 620px;
+}
+
+.post-detail-info {
+    display: block;
+}
+
+.post-list-images {
+    width: 75%;
+    height: 250px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: visible;
+}
+
+.post-list-data {
+    width: 100%;
+}
+
+.post-list-title {
+    width: 100%;
+}
+
+span.meta-cat {
+    display: block;
+    margin-top: 15px;
+    position: absolute;
+    right: 115px;
+}
+
+span.meta-date {
+    display: block;
+    margin-top: 15px;
+    position: absolute;
+}
+
+.post-list-desc {
+    display: block;
+    position: relative;
+    top: 40px;
+    height: 250px;
+}
+.django-ckeditor-widget {
+    width: 99%;
+    overflow: hidden;
+}
+
+.memo-list-card {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+img.item-image {
+    width: 100% !important;
+}
+.hotel-cat {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.hotel-card.all-hotel {
+    display: block;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 303px;
+}
+
+.hotel-info-section {
+    width: 100% !important;
+    border: none;
+    border-bottom: 1px solid #efefef;
+    height: 140px;
+    padding-right: 0;
+}
+
+.hotel-main-service-section {
+    width: 50%;
+}
+
+.hotel-rating-detail-section {
+    width: 50%;
+    border: none;
+}
+
+.hotel-price-section {
+    display: block;
+    width: 100%;
+}
+
+.hotel-short-desc {
+    display: none;
+}
+.hotel-images img {
+    width: 100%;
+    height: 130px;
+}
+.text-box {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+p.contact-text {
+    width: 100%;
+}
+
+.contact-form {
+    width: 100%;
+}
+    .top-container {
+    width: 100%;
+    overflow: hidden;
+}
+.tour-dest-airport {
+    width: 115px;
+    border: none;
+}
+
+.tour-type {
+    width: 60px;
+    padding-right: 0;
+}
+
+.tour-detail-airline {
+    width: 50%;
+    background: #fff;
+    height: 70px;
+    border-top: 1px solid #efefef;
+}
+
+.flight-class {
+    width: 50%;
+    border: none;
+    background: #fff;
+    border-top: 1px solid #efefef;
+}
+
+.flight-time-detail {
+    /* margin-right: 25px; */
+    border-top: 1px solid #ccc;
+    width: 50%;
+}
+
+.tour-origin {
+    height: 215px;
+}
+    .tour-card {
+    border-radius: 0;
+}
+
+.hotel-bed-price {
+    display: block;
+    width: 100%;
+    border: none;
+}
+
+.hotel-info-more {
+    display: none;
+}
+
+.hotel-detail {
+    height: 300px;
+}
+
+.hotel-images {position: relative;right: -10px;}
+button.btn.btn-primary {
+    width: 125px;
+    font-size: 14px;
+}
+    .rating-title {
+    width: 95%;
+}
+
+.hotel-title {
+    height: 32px;
+    overflow: hidden;
+}
+    .tour-origin-airport {
+    width: 130px;
+}
+.hotel-detail-info {
+    display: block;
+    width: 100%;
+    float: none;
+}
+
+.hotel-detail-img {
+    display: block;
+    width: 100%;
+    height: 165px;
+    float: none;
+}
+
+.hotel-detail-data {
+    display: block;
+}
+
+.short-desc {
+    display: block;
+}
+
+.hotel-detail-page {
+    height: 350px;
+}
+
+.hotel-data-i {
+    width: 32%;
+}
+
+.hotel-data-i.map {
+    display: block;
+    width: 86%;
+    float: none;
+    height: 110px;
+}
+
+.hotel-card {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.hotel-detail-info p {
+    text-align: center;
+    margin-top: 10px;
+}
+.call-to {
+    text-align: center;
+    background: #85dbb5;
+    height: 35px;
+    display: block;
+}
+
+.call-to a {
+    color: #fff !important;
+    font-size: 12px;
+    font-family: 'IranSans';
+    line-height: 30px;
+}
+.res-menu {
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 30px;
+}
+
+i.fa.fa-bars {
+    font-size: 27px;
+    color: #fff;
+}
+.res-nav-container {
+    display: block;
+    overflow: hidden;
+    width: 00%;
+    background: #fff;
+    /* height: 205px; */
+    position: absolute;
+    left: 0;
+    z-index: 1000;
+    transition-duration: 0.3s;
+}
+    li.item-link.responsive {
+    display: block;
+    text-align: center;
+    border-bottom: 1px solid #efefef;
+}
+li.mega-item-link {
+    width: 100%;
+    /* margin: 10px; */
+    border: none;
+    padding: 0px 0px;
+    display: inline-block;
+}
+
+ul.mega-dropdown-res {
+    padding-right: 0;
+    background: #fbfbfb;
+    display: none;
+    text-align: right;
+    padding: 5px 15px;
+}
+
+i.fa.fa-plus {
+    font-size: 14px;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+    .navbar-link {
+    padding: 0;
+    margin-bottom: 0;
+}
+.show-nav {
+    width: 100%;
+    transition-duration: 0.5s;
+}
+    .res-menu.hide {
+    display: none;
+}
+i.fa.fa-close {
+    font-size: 30px;
+    color: #fff;
+}
+.res-menu-close {position: absolute;top: 15px;left: 33px;display: none;}
+.res-menu-close.show {
+    display: block;
+}
+.sub-menu-close {
+    position: absolute;
+    left: 30px;
+    margin-top: 10px;
+}
+
+i.fa.fa-close.sub-menu {
+    color: #ccc;
+    font-size: 18px;
+}
+.blink {
+        animation: blink-animation 1s steps(5, start) infinite;
+        -webkit-animation: blink-animation 1s steps(5, start) infinite;
+      }
+      @keyframes blink-animation {
+        to {
+          visibility: hidden;
+        }
+      }
+      @-webkit-keyframes blink-animation {
+        to {
+          visibility: hidden;
+        }
+      }
+      .call-to-us {
+        position: absolute;
+        top: 20px;
+        left: 74px;
+        display: block;
+    }
+
+    i.fa.fa-phone.blink {
+        font-size: 19px;
+        transform: rotate(260deg);
+        color: #fff;
+    }
+.form-input.user-input {
+    width: 87%;
+}
+.featur-logo {
+	display: block;
+	text-align: center;
+	background-position: top center;
+	background-size: contain !important;
+	background-repeat: no-repeat;
+	width: 94%;
+	height:130px;
+	background: url(/static/asset/css/images/bg-airplane.webp);
+}
+.top-container {
+    background-image: url(/static/asset/css/images/bg-main-me.webp);
+    background-position: top center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.more-tours {
+    width: 90%;
+}
+.post-detail-descrition img {
+    width: 100% !important;
+}
+td.tb-header {
+    display: block;
+    width: 100%;
+}
+
+.order-container {
+    /* width: 1366px; */
+}
+
+td.tb-detail {
+    display: block;
+    /* padding: 0 15px; */
+    /* font-size: 14px; */
+}
+
+tr.order-table-header {
+    display: inline-block;
+    width: 30%;
+}
+
+tr.order-detail- {
+    display: inline-block;
+    width: 68%;
+    position: relative;
+    top: 0px;
+    border: none;
+}
+.recive-doc {
+    width: 300px;
+    height: 300px;
+    margin-right: auto;
+    margin-left: auto;
+    overflow: hidden;
+}
+td.tb-detail {
+    line-height: 38px;
+    height: 40px;
+}
+
+table.order-detail {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.mobile-banner
+{
+    display: block;
+    width: 95%;
+    background: url(/static/asset/css/images/banner-mobile.gif);
+    height: 245px;
+    margin-left: auto;
+    margin-right: auto;
+    background-position: top center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.hotel-card.res-detail {
+    /*! height: 635px; */
+}
+.hotel-images.res-list {
+    height: 130px;
+}
+
+.map-link {
+    position: relative;
+    top: 30px;
+  }
+.left-side.blog {
+    width: 98%;
+}
+a.pdf-download {
+    position: relative;
+    left: 0;
+    margin-bottom: 10px;
+    width: 125px;
+}
+p.hotel-services {
+    width: auto;
+    margin-left: 10px;
+    padding-left: 10px;
+    border: none;
+}
+}
+li.mega-item-link.hotel-menu {
+    display: inline-block !important;
+}
+.doc-input.recive-doc a {
+    background: #99a6ec;
+    padding: 15px;
+    line-height: 10px;
+    font-family: 'IranSans';
+    border-radius: 10px;
+    overflow: hidden;
+    display: block;
+}
+.room_type {
+    text-align: center;
+    font-family: 'IranSans';
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background: #ffc107;
+    right: 20px;
+    position: relative;
+    line-height: 34px;
+    border-radius: 10px;
+}
+.date_plan {
+    padding: 10px;
+    border: 1px solid #efefef;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+tr.date_plan_heading {
+    background: #efefef;
+    line-height: 40px;
+}
+
+table.date_plan_table {
+    width: 100%;
+    text-align: center;
+    font-family: 'IranSans';
+}
+a.related_tour {
+    font-family: 'IranSans';
+    font-size: 13px;
+    text-align: center;
+    color: #0d6efd !important;
+}
+.hotel_form_search {
+}
+
+input.hotel_search {
+    width: 100%;
+    font-size: 12px;
+    font-family: 'IranSans';
+    border: 1px solid #efefefef;
+    line-height: 30px;
+    margin-bottom: 5px;
+    padding-right: 10px;
+    border-radius: 5px;
+}
+
+button.submit-search.hotel {
+    font-size: 12px;
+    line-height: 25px;
+    width: 100%;
+}
+textarea#id_desc {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    padding: 10px 20px;
+    font-family: IranSans;
+    font-size: 12px;
+}
+p.success {
+    text-align: center;
+    background: #198754;
+    color: #fff;
+    font-family: 'IranSans';
+    margin-top: 10px;
+}
+.comments {
+    border-top: 1px solid #efefef;
+    margin-top: 15px;
+}
+
+.comments_body {
+    margin-top: 15px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 15px;
+    font-family: 'IranSans';
+}
+
+p.comment_athour {
+    font-size: 14px;
+    border-bottom: 1px dashed #eee;
+}
+
+.cooments_message {
+    font-size: 13px;
+}
+span.cooment_date {
+    font-size: 12px;
+    color: #a7a7a7;
+}
+.tour-more span {
+    border: 1px solid #61b3e5;
+    border-radius: 25px;
+    padding: 5px 15px;
+}
+p.blog-heading-title span {
+    float: left;
+    padding-top: 20px;
+}
+.top_banner {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 35px;
+}
+.col-lg-12.top_bar_menu {
+    background: #fff;
+    border-bottom: 1px solid #efefef;
+    box-shadow: 0 0 3px #efefef;
+}
+li.nav-item {
+    font-family: 'IranSans';
+}
+.row.sec-container {
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 30px;
+}
+.r-side {
+    background: #ffc107;
+    padding: 20px 35px;
+    margin-bottom: 25px;
+    border-radius: 45px;
+    text-align: justify;
+    font-family: 'IranSans';
+    color: #000;
+}
+.l-side {
+    background: #fdd353;
+    padding: 20px 35px;
+    margin-bottom: 25px;
+    border-radius: 45px;
+    text-align: justify;
+    font-family: 'IranSans';
+    color: #000;
+}
+h5.r-side-title {
+    font-family: 'IranSans';
+    padding-bottom: 10px;
+    font-size: 20px !important;
+}
+.col-lg-9.r-s {
+    padding: 0;
+}
+
+.col-lg-3.l-s {
+    padding: 0;
+}
+figure.top-post-image {
+    border-radius: 40px;
+    overflow: hidden;
+}
+.sec-blog {
+    display: block;
+}

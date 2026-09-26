@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static '/asset/css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static '/asset/css/uistyle.css' %}" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/media/favicon-32x32.png">
+    <link rel="icon" type="image/x-icon" href="/media/favicon-60x60.png">
     <title>آرزوی سفر پارسیان | {{ Tour.Title }}</title>
     <style>
         @font-face {
@@ -172,11 +172,11 @@
     <p class="tour-title-pdf">{{ Tour.Title }}</p>
     <p class="tour-airline-pdf">نام ایرلاین : {{ tourcity.Airline.AirLineTitle }} </p>
     <p class="flight-time-pdf">
-        تاریخ پرواز رفت : {{ Tour.StartDate | to_jalali:'%Y/%m/%d' }}
-        - ساعت: {{ tourcity.FlightTime }}</p>
+        تاریخ پرواز رفت : {% if selected_dp %}{{ selected_dp.start_date | to_jalali:'%Y/%m/%d' }}{% else %}{{ Tour.StartDate | to_jalali:'%Y/%m/%d' }}{% endif %}
+    </p>
     <p class="flight-time-re-pdf">
         تاریخ پرواز برگشت :
-        {{ Tour.EndDate | to_jalali:'%Y/%m/%d' }}
+        {% if selected_dp %}{{ selected_dp.end_date | to_jalali:'%Y/%m/%d' }}{% else %}{{ Tour.EndDate | to_jalali:'%Y/%m/%d' }}{% endif %}
         - ساعت: {{ lc.FlightTime }}</p>
     <div class="package-table">
         <img src="http://localhost:8000/{{ tourcity.Airline.AirlineLogo.url }}">
@@ -333,7 +333,7 @@
                         {% endif %}
                     </td>
                     <td class="data-cell">
-                        {{ i.DoubleBedPrice | intcomma:False }} تومان
+                        {{ i.DoubleBedPrice|add:price_adjustment | floatformat:0 | intcomma }} تومان
                         {%if i.DoubleBedPrice_doller %}
                         <br>
                         <span style='color:#3885ca; font-size:12px;'>
@@ -342,7 +342,7 @@
                         {% endif %}
                     </td>
                     <td class="data-cell">
-                        {{ i.SingleBedPrice | intcomma:False }} تومان
+                        {{ i.SingleBedPrice|add:price_adjustment | floatformat:0 | intcomma }} تومان
                         {%if i.SingleBedPrice_doller %}
                         <br>
                         <span style='color:#3885ca; font-size:12px;'>
@@ -351,7 +351,7 @@
                         {% endif %}
                     </td>
                     <td class="data-cell">
-                        {{ i.BabyWithBedPrice | intcomma:False }} تومان
+                        {{ i.BabyWithBedPrice|add:price_adjustment | floatformat:0 | intcomma }} تومان
                         {%if i.BabyWithBedPrice_doller %}
                         <br>
                         <span style='color:#3885ca; font-size:12px;'>
@@ -360,7 +360,7 @@
                         {% endif %}
                     </td>
                     <td class="data-cell">
-                        {{ i.BabyWithoutBedPrice | intcomma:False }} تومان
+                        {{ i.BabyWithoutBedPrice|add:price_adjustment | floatformat:0 | intcomma }} تومان
                         {%if i.BabyWithoutBedPrice_doller %}
                         <br>
                         <span style='color:#3885ca; font-size:12px;'>
@@ -375,7 +375,7 @@
         </table>
     </div>
     <div class="box-1">
-        قیمت نوزاد: {{ infont| intcomma:False}}
+        قیمت نوزاد: {{ infont| intcomma:False}} تومان{% if infont_dollar %} + {{ infont_dollar }} دلار{% endif %}
     </div>
 {% if packages.0.DollerPrice %}
     <div class="box-2">

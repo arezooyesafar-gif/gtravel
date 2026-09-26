@@ -1,3 +1,4 @@
+{% load tour_filters %}
 {% if trip_plans %}
     <div class="col-lg-12">
         <div class="col-lg-12">
@@ -13,7 +14,9 @@
                     <div class="row">
                         <div class="col-lg-11 faq_heading"><a href="#" class="accordion-head collapsed" data-bs-toggle="collapse"
                                                   data-bs-target="#accordion-item-{{ forloop.counter }}">
-                            <h6 class="title">{{ plan.title }}</h6>
+                            {% with day=trip_plans.start_index|add:forloop.counter0 sub=plan.title|strip_day_prefix %}
+                                <h6 class="title">روز {{ day|persian_ordinal }}{% if sub %} — {{ sub }}{% endif %}</h6>
+                            {% endwith %}                                              
                             <span class="accordion-icon"></span>
                         </a></div>
                         <div class="col-lg-1 faq_action" {% if forloop.last %}style="border-bottom: none;"{% endif %}>

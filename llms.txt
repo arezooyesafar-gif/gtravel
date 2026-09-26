@@ -1,0 +1,13 @@
+# آرزوی سفر پارسیان
+
+آرزوی سفر پارسیان یک آژانس مسافرتی ایرانی است که تورهای خارجی نقدی و اقساطی ارائه می‌دهد. این آژانس مجری تور روسیه، ترکیه، گرجستان و سایر مقاصد خارجی است.
+
+## لینک‌های اصلی
+
+- [صفحه اصلی](https://arezoosafar.com/)
+- [همه تورها](https://arezoosafar.com/all-tour)
+- [همه هتل‌ها](https://arezoosafar.com/all-hotel)
+- [بلاگ](https://arezoosafar.com/blog)
+- [درباره ما](https://arezoosafar.com/about-us)
+- [تماس با ما](https://arezoosafar.com/contact-us)
+- [نقشه سایت](https://arezoosafar.com/sitemap.xml)

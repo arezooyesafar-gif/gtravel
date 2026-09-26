@@ -28,25 +28,50 @@
     <div class="row m-t-40">
         <form method="post" novalidate="novalidate" enctype="multipart/form-data">
             {% csrf_token %}
+            {% if forms.errors %}
+                <div class="col-lg-12">
+                    <div style="background:#fdecec;border:1px solid #f5c2c2;color:#b02a2a;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:14px">
+                        <b>اطلاعات ذخیره نشد:</b>
+                        <ul style="margin:8px 0 0;padding-right:18px">
+                            {% for field in forms %}
+                                {% for error in field.errors %}
+                                    <li>{{ field.label }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in forms.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
             <div class="row">
                 <div class="col-lg-8">
                     <div class="inner_section">
                         <div class="row">
                             <div class="col-lg-12">
-                                <p class="label-text">عنوان<span class="required">*</span></p>
+                                <p class="label-text">عنوان
+                                    <span style="font-size:12px;color:#888;font-weight:normal">(اختیاری — شماره روز به صورت خودکار نوشته می‌شود؛ لازم نیست «روز اول» را تایپ کنید)</span>
+                                </p>
                                 {{ forms.title }}
                             </div>
                             <div class="col-lg-4">
-                                <p class="label-text">موقعیت<span class="required">*</span></p>
+                                <p class="label-text">محل اقامت
+                                    <span style="font-size:12px;color:#888;font-weight:normal">(اختیاری)</span>
+                                </p>
                                 {{ forms.location }}
 
                             </div>
                             <div class="col-lg-4">
-                                <p class="label-text">بازدید<span class="required">*</span></p>
+                                <p class="label-text">برنامه بازدید
+                                    <span style="font-size:12px;color:#888;font-weight:normal">(اختیاری)</span>
+                                </p>
                                 {{ forms.views }}
                             </div>
                             <div class="col-lg-4">
-                                <p class="label-text">وعده ها<span class="required">*</span></p>
+                                <p class="label-text">وعده ها
+                                    <span style="font-size:12px;color:#888;font-weight:normal">(اختیاری)</span>
+                                </p>
                                 {{ forms.services }}
                             </div>
 
@@ -56,8 +81,20 @@
                 <div class="col-lg-4">
                     <div class="inner_section" style="padding-top:10px">
                         <div class="col-lg-12">
-                            <p class="" style="margin-bottom: 5px">تصویر<span class="required">*</span></p>
+                            <p class="" style="margin-bottom: 5px">تصویر
+                                <span style="font-size:12px;color:#888;font-weight:normal">(اختیاری)</span>
+                            </p>
                             {{ forms.plan_image }}
+                            {% if plan.plan_image %}
+                                <div style="margin-top:10px">
+                                    <img src="{{ plan.plan_image.url }}" alt=""
+                                         style="width:100%;max-height:130px;object-fit:cover;border-radius:8px;border:1px solid #e5e5e5">
+                                    <label style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:13px;color:#b02a2a;cursor:pointer">
+                                        {{ forms.remove_image }}
+                                        حذف تصویر فعلی
+                                    </label>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

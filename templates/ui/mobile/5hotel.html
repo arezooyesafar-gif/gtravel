@@ -302,23 +302,23 @@
 <div class="row peice_section">
     <div class="col-lg-4 price_">
         <p class="bed_price_tlt_">دو تخته</p>
-        <p class="bed_price_">{{ i.DoubleBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+        <p class="bed_price_">{{ i.DoubleBedPrice | floatformat:0 | intcomma }} {{ i.Pcry }}</p>
     </div>
     <div class="col-lg-4 price_">
         <p class="bed_price_tlt_">یک تخته</p>
-        <p class="bed_price_">{{ i.SingleBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+        <p class="bed_price_">{{ i.SingleBedPrice | floatformat:0 | intcomma }} {{ i.Pcry }}</p>
     </div>
     <div class="col-lg-4 price_">
         <p class="bed_price_tlt_">کودک با تخت</p>
-        <p class="bed_price_">{{ i.BabyWithBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+        <p class="bed_price_">{{ i.BabyWithBedPrice | floatformat:0 | intcomma }} {{ i.Pcry }}</p>
     </div>
     <div class="col-lg-4 price_">
         <p class="bed_price_tlt_">کودک</p>
-        <p class="bed_price_">{{ i.BabyWithoutBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+        <p class="bed_price_">{{ i.BabyWithoutBedPrice | floatformat:0 | intcomma }} {{ i.Pcry }}</p>
     </div>
     <div class="col-lg-4 price_">
         <p class="bed_price_tlt_">نوزاد</p>
-        <p class="bed_price_">{{ i.InfontPrice | intcomma:False }} {{ i.Pcry }}</p>
+        <p class="bed_price_">{{ i.InfontPrice | floatformat:0 | intcomma }} {{ i.Pcry }}</p>
     </div>
     <div class="col-lg-4 price_">
 {#        <a href="tel:02122221422" class="add_to_cart">مشاوره رایگان</a>#}

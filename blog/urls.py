@@ -20,4 +20,5 @@ urlpatterns = [
     path('publish_reply/<int:id>', publish_reply, name='publish_reply'),
     path('remove_reply/<int:id>', remove_reply, name='remove_reply'),
     path('toggle_reply_publish/<int:id>', toggle_reply_publish, name='toggle_reply_publish'),
+    path('preview-post', preview_post, name='preview-post'),
 ]

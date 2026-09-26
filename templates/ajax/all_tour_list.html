@@ -1,4 +1,5 @@
 {% load jalali_tags %}
+{% load staff_tags %}
 <div class="row" style="margin-bottom: 5px">
     <div class="col-sm-12 col-lg-12">
         <div class="card hotel_list_heading">
@@ -44,6 +45,11 @@
                     </div>
                     <div class="col-lg-3 tour_list" style="padding: 0;">
                         <p class="tour_data_ t_title">{{ tour_list.Title|truncatechars:45 }}</p>
+                        {% last_change tour_list as stamp %}
+                        <p class="tour-stamp">
+                            <span>ایجاد: {{ tour_list.Creator|person_name|default:'-' }}</span>
+                            {% if stamp %}<span>آخرین تغییر: {{ stamp.updated_name }} ({{ stamp.updated_at|to_jalali:'%Y/%m/%d' }})</span>{% endif %}
+                        </p>
                     </div>
                     <div class="col-lg-2 tour_list">
                         <p class="tour_data_">
@@ -85,13 +91,16 @@
                                     class="icon ni ni-more-h"></em></a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
                                 <ul class="link-list-plain">
-                                    <li><a target="_blank" href="{% url 'update-tour' tour_list.id %}">ویرایش</a></li>
+                                    <li><a target="_blank" href="{% url 'update-tour' tour_list.id %}">{% if can.tours.edit %}ویرایش{% else %}مشاهده{% endif %}</a></li>
+                                    {% if can.tours.add %}
                                     <li><a target="_blank" href="{% url 'copy_tour_data' tour_list.id %}">کپی</a></li>
+                                    {% endif %}
                                     <li><a target="_blank" href="{% url 'tour_date_plan' tour_list.id %}">افزودن تاریخ</a></li>
                                     <li><a target="_blank" href="{% url 'tour-city-list' tour_list.id %}">افزودن شهر</a></li>
                                     <li><a target="_blank" href="{% url 'add-to-package' tour_list.id %}">افزودن پکیج</a></li>
                                     <li><a target="_blank" href="{% url 'add_trip_plan' tour_list.id %}"> برنامه سفر</a></li>
                                     <li><a target="_blank" href="{% url 'add_related_tour' tour_list.id %}">مقصد مرتبط</a></li>
+                                    {% if can.tours.delete %}
                                     <li><a style="color: red"
                                          data-bs-toggle="modal"
                                          data-bs-target="#exampleModal"
@@ -99,6 +108,7 @@
                                          onclick="setDeleteId(this)">
                                          حذف
                                     </a></li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>
@@ -108,6 +118,9 @@
         </div>
     </div>
 {% endfor %}
+<style>
+    .tour-stamp{margin:-6px 0 6px;font-size:11px;line-height:1.7;color:#8091a7;display:flex;flex-direction:column;align-items:center}
+</style>
 <ul class="pagination">
     {% for n in tour_list.paginator.page_range %}
         {% if tour_list.number == n %}

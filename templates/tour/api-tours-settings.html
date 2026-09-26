@@ -1,0 +1,106 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% load jalali_tags %}
+    <div class="row m-t-40">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">تنظیمات API — دریافت قیمت از آژانس‌ها</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-inner">
+                    <p class="text-soft" style="margin-bottom:16px;">
+                        این صفحه فقط برای پیدا کردن سریع یک تور و رفتن به بخش «دریافت قیمت از آژانس‌های همکار» همون توره؛
+                        هیچ ارتباطی با «لیست تورها»ی اصلی نداره و چیزی از تنظیمات سایت رو تغییر نمی‌ده.
+                        برای ویرایش کامل یک تور، همچنان از منوی «مدیریت تورها ← لیست تورها» استفاده کنید.
+                    </p>
+                    <form method="GET" class="row g-2" style="margin-bottom:6px;">
+                        <div class="col-auto">
+                            <input type="text" name="q" value="{{ Query }}" class="form-control form-control-sm"
+                                   placeholder="جستجو بر اساس نام تور" style="min-width:260px;">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-sm btn-primary">جستجو</button>
+                            {% if Query %}
+                                <a href="{% url 'api-tours-settings' %}" class="btn btn-sm btn-outline-secondary">پاک کردن</a>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row m-t-20">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-inner p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th>نام تور</th>
+                                <th>ایرلاین</th>
+                                <th>رفت</th>
+                                <th>برگشت</th>
+                                <th>اقامت</th>
+                                <th>وضعیت</th>
+                                <th>بازدید</th>
+                                <th>اقدامات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in Rows %}
+                                <tr>
+                                    <td>{{ row.row_number }}</td>
+                                    <td>{{ row.tour.Title }}</td>
+                                    <td>{{ row.airlines }}</td>
+                                    <td>{% if row.tour.StartDate %}{{ row.tour.StartDate|to_jalali:'%Y/%m/%d' }}{% else %}-{% endif %}</td>
+                                    <td>{% if row.tour.EndDate %}{{ row.tour.EndDate|to_jalali:'%Y/%m/%d' }}{% else %}-{% endif %}</td>
+                                    <td>{{ row.tour.NightCount }} شب</td>
+                                    <td>
+                                        {% if row.tour.PubTour %}
+                                            <span class="badge badge-dim bg-success">فعال</span>
+                                        {% else %}
+                                            <span class="badge badge-dim bg-danger">غیرفعال</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ row.tour.viewCount|default:0 }}</td>
+                                    <td class="text-nowrap">
+                                        <a class="btn btn-sm btn-primary" href="{% url 'tour-external-sources' row.tour.id %}">
+                                            دریافت از آژانس
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="9" class="text-center text-soft" style="padding:20px;">توری پیدا نشد.</td></tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% if PageObj.paginator.num_pages > 1 %}
+                    <div class="card-inner">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="text-soft">
+                                صفحه {{ PageObj.number }} از {{ PageObj.paginator.num_pages }} — مجموعاً {{ PageObj.paginator.count }} تور
+                            </span>
+                            <div>
+                                {% if PageObj.has_previous %}
+                                    <a class="btn btn-sm btn-outline-secondary" href="?page={{ PageObj.previous_page_number }}{% if Query %}&q={{ Query }}{% endif %}">قبلی</a>
+                                {% endif %}
+                                {% if PageObj.has_next %}
+                                    <a class="btn btn-sm btn-outline-secondary" href="?page={{ PageObj.next_page_number }}{% if Query %}&q={{ Query }}{% endif %}">بعدی</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($c = Get-Content \"c:\\\\Users\\\\arezooyesafar12\\\\Desktop\\\\gtravel-source\\\\static\\\\slider\\\\owlcarousel\\\\assets\\\\owl.carousel.min.css\" -Raw; $idx = $c.IndexOf\\(\".owl-carousel\"\\); $c.Substring\\($idx, 200\\))",
+      "PowerShell($c = Get-Content \"c:\\\\Users\\\\arezooyesafar12\\\\Desktop\\\\gtravel-source\\\\static\\\\asset\\\\css\\\\layout.css\" -Raw; $idx = $c.IndexOf\\(\".owl-dest{\"\\); if\\($idx -ge 0\\){ $c.Substring\\($idx, 300\\) } else { \"not found\" })",
+      "PowerShell($c = Get-Content \"c:\\\\Users\\\\arezooyesafar12\\\\Desktop\\\\gtravel-source\\\\static\\\\asset\\\\css\\\\layout.css\" -Raw; $idx = $c.IndexOf\\(\".owl-dest\"\\); if\\($idx -ge 0\\){ $c.Substring\\($idx, 400\\) } else { \"not found\" })",
+      "PowerShell($c = Get-Content \"c:\\\\Users\\\\arezooyesafar12\\\\Desktop\\\\gtravel-source\\\\static\\\\asset\\\\css\\\\layout.css\" -Raw; $idx = $c.IndexOf\\(\"spacial-distenation\"\\); if\\($idx -ge 0\\){ $c.Substring\\([Math]::Max\\(0,$idx-50\\), 300\\) } else { \"not found\" })",
+      "PowerShell(python -c \"from django.contrib.humanize.templatetags.humanize import intcomma; print\\(repr\\(intcomma\\(125, False\\)\\)\\); print\\(repr\\(intcomma\\(665, False\\)\\)\\); print\\(repr\\(intcomma\\(129000000, False\\)\\)\\); print\\(repr\\(intcomma\\(590, False\\)\\)\\)\" 2>&1)",
+      "PowerShell(Get-Command python3 -ErrorAction SilentlyContinue)",
+      "PowerShell(python3 -c \"import sys; sys.path.insert\\(0, 'c:/Users/arezooyesafar12/Desktop/gtravel-source'\\); import django; django.setup\\(\\)\" 2>&1)",
+      "PowerShell(& \"C:\\\\Users\\\\arezooyesafar12\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe\" -c \"from django.contrib.humanize.templatetags.humanize import intcomma; print\\(repr\\(intcomma\\(125, False\\)\\)\\); print\\(repr\\(intcomma\\(665, False\\)\\)\\); print\\(repr\\(intcomma\\(129000000, False\\)\\)\\); print\\(repr\\(intcomma\\(590, False\\)\\)\\)\" 2>&1)",
+      "Bash(xargs grep -l \"DoubleBedPrice\")",
+      "Bash(xargs grep -l \"Package\\\\|DoubleBed\\\\|DollerPrice\")",
+      "Bash(find / -path \"*/jalali_date/templatetags*\" -name \"*.py\" 2>/dev/null | head -5)",
+      "Read(//c//**)",
+      "Bash(xargs grep -l \"class Package\")",
+      "Bash(python -c ' *)",
+      "Bash(pip show *)",
+      "Bash(.venv/Scripts/pip show *)",
+      "Bash(.venv/Scripts/pip install *)",
+      "Bash(python -m pip install anthropic)",
+      "Bash(venv/Scripts/python manage.py check)",
+      "Bash(venv/Scripts/python -c \"import requests; r = requests.get\\('https://generativelanguage.googleapis.com/v1beta/models?key=AQ.Ab8RN6Li7meNwDAGE-5LkYdoqPolbD6iUdWwjrUXeuUr2KcNcQ'\\); print\\(r.text[:3000]\\)\")",
+      "Bash(venv/Scripts/python -c ' *)",
+      "Bash(venv/Scripts/python manage.py shell -c ' *)"
+    ]
+  }
+}

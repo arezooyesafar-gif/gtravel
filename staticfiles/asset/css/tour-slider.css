@@ -1,0 +1,27 @@
+/* تورهای ویژه: اسلایدر با CSS scroll-snap به‌جای owl-carousel/jQuery؛ بدون JS هم به‌صورت اسکرول افقی کار می‌کند */
+.tour-slider-viewport{position:relative}
+.tour-slider{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:10px 0}
+.tour-slider::-webkit-scrollbar{display:none}
+.tour-slider-item{flex:0 0 100%;scroll-snap-align:start;display:block}
+/* owl-carousel قبلاً با قانون خودش (.owl-carousel .owl-item img{width:100%})
+   عکس‌ها رو پر می‌کرد؛ چون دیگه اون کلاس رو نداریم باید خودمون ست کنیم.
+   object-fit:cover هم اضافه شده تا عکس کراپ بشه نه کش بیاد (بهتر از قبل) */
+.tour-slider-item .item-image{display:block;width:100%;height:200px;object-fit:cover}
+@media(min-width:600px){.tour-slider-item{flex:0 0 calc(50% - 5px)}}
+@media(min-width:1000px){.tour-slider-item{flex:0 0 calc(25% - 7.5px)}}
+.tour-slider-prev,.tour-slider-next{
+    position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+    width:40px;height:40px;border:0;border-radius:50%;
+    background:#61b3e5;color:#fff;font-size:20px;line-height:1;
+    display:none;align-items:center;justify-content:center;
+    cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
+.tour-slider-prev{right:-56px}
+.tour-slider-next{left:-56px}
+/* روی صفحه‌های باریک‌تر فاصله‌ی بیرون از کارت‌ها کافی نیست؛ همان‌جا
+   swipe/اسکرول لمسی (که خودِ CSS scroll-snap فراهم می‌کند) و
+   پخش خودکار جایگزین دکمه‌ها می‌شود */
+@media(min-width:1440px){
+    .tour-slider-prev,.tour-slider-next{display:flex}
+}
+.tour-slider-prev span,.tour-slider-next span{margin-top:-2px}

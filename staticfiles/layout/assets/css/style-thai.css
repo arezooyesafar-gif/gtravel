@@ -1,0 +1,753 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800;900&display=swap");
+
+html {
+  scroll-behavior: smooth;
+}
+.hide {
+  display: none;
+}
+:root {
+  --primary:#1a7ad4;
+}
+@font-face {
+  font-family: "yekan";
+  src: url("../fonts/Yekan_Bakh_Regular.woff") format("woff");
+}
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  background: transparent;
+}
+body {
+  line-height: 1;
+}
+.table {
+  text-align: center;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+nav ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+* {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+}
+a {
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+  background: transparent;
+}
+p {
+  line-height: 27px;
+}
+a {
+  text-decoration: none;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+}
+/* change colours to suit your needs */
+
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+/* change colours to suit your needs */
+
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+del {
+  text-decoration: line-through;
+}
+abbr[title],
+dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* change border colour to suit your needs */
+
+hr {
+  max-width: 100%;
+  border-color: #c0c0c0;
+  border-width: 1px;
+  margin: 30px auto;
+  display: block;
+}
+input,
+select {
+  vertical-align: middle;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b,
+strong {
+  font-family: "Mulish";
+  font-weight: 700;
+}
+:focus {
+  outline: 0;
+}
+a {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+body {
+  direction: ltr;
+  font-family: "Mulish";
+}
+header {
+  nav {
+    .top-header {
+      background-color: #1a7ad4;
+      padding: 25px 0;
+      img {
+        width: 90px;
+      }
+      ul {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0 16px;
+        margin-top: 8px;
+        a {
+          color: #fff;
+          &:hover {
+            color: #f8f8f8;
+          }
+        }
+      }
+    }
+    .bottom-header {
+      background: #435eb6;
+      padding: 15px 0;
+      span {
+        color: #fff;
+        font-weight: 500;
+        font-size: 16px;
+      }
+    }
+  }
+}
+section {
+  .box-main {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 25px 0;
+    p {
+      font-family: "yekan";
+      direction: rtl;
+      font-size: 15px;
+      margin-top: 4px;
+      color: #1a7ad4;;
+      text-align: right;
+      font-weight: bold;
+    }
+    h5 {
+      color: #1a7ad4;;
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+    ul {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 10px;
+      @media screen and (max-width: 992px) {
+        gap: 10px 0;
+      }
+      li {
+        grid-column: span 3 / span 12;
+        list-style: none;
+        @media screen and (max-width: 992px) {
+          grid-column: span 12 / span 12;
+        }
+        &.grid-col-full {
+          grid-column: span 12 / span 12;
+        }
+      }
+    }
+    .upload-holder {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 20px;
+      @media screen and (max-width: 992px) {
+        gap: 20px 0;
+      }
+      .child {
+        padding:12px;
+      }
+      span {
+        position: relative;
+        top: 2px;
+        font-family: "yekan";
+        font-size: 13px;
+        margin-left: 4px;
+        vertical-align: middle;
+      }
+      .child-upload {
+        &:nth-child(1) {
+          grid-column: span 4 / span 12;
+          @media screen and (max-width: 992px) {
+            grid-column: span 12 / span 12;
+          }
+        }
+        &:nth-child(2) {
+          grid-column: span 4 / span 12;
+          @media screen and (max-width: 992px) {
+            grid-column: span 12 / span 12;
+          }
+        }
+        &:nth-child(3) {
+          grid-column: span 4 / span 12;
+          @media screen and (max-width: 992px) {
+            grid-column: span 12 / span 12;
+          }
+        }
+        &:nth-child(4) {
+          grid-column: span 4 / span 12;
+          @media screen and (max-width: 992px) {
+            grid-column: span 12 / span 12;
+          }
+        }
+        &:nth-child(5) {
+          grid-column: span 4 / span 12;
+          @media screen and (max-width: 992px) {
+            grid-column: span 12 / span 12;
+          }
+        }
+        &:nth-child(5) {
+          grid-column: span 4 / span 12;
+          @media screen and (max-width: 992px) {
+            grid-column: span 12 / span 12;
+          }
+        }
+        &:nth-child(6) {
+          grid-column: span 4 / span 12;
+          @media screen and (max-width: 992px) {
+            grid-column: span 12 / span 12;
+          }
+        }
+
+      }
+      label {
+        position: relative;
+        inset: 0 !important;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--primary);
+        padding: 50px;
+        min-height: 200px;
+        border-radius: 12px;
+        color: #fff;
+        text-align: center;
+        font-weight: 700;
+        font-size: 20px;
+        cursor: pointer;
+        overflow: hidden;
+        @media screen and (max-width: 992px) {
+          flex-flow: column;
+          gap: 15px 0;
+        }
+        svg {
+          width: 30px;
+          height: auto;
+          margin-right: 8px;
+        }
+        p {
+          direction: ltr;
+          position: absolute;
+          bottom: 10px;
+          left: 0;
+          right: 0;
+          display: block;
+          width: 300px !important;
+          color: #fff !important;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: center;
+          margin: 0 auto !important;
+        }
+      }
+    }
+    .btn-theme {
+      width: 100%;
+      background-color: var(--primary);
+      color: #fff;
+      padding: 10px;
+      margin-top: 30px;
+      transition: filter 0.2s ease-in-out;
+      &:hover {
+        filter: brightness(140%);
+        color: #fff;
+      }
+    }
+    label {
+      position: relative;
+      top: 10px;
+      left: 10px;
+      display: inline-block;
+      padding: 5px;
+      background: #fff;
+      font-size: 13px;
+      color: #464646;
+      z-index: 1;
+    }
+    input {
+      padding: 10px;
+      box-shadow: none !important;
+      &:disabled {
+        background-color: #fff;
+        font-weight: 700;
+        color: var(--primary);
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+    }
+    .form-check {
+      display: inline-block;
+      margin-top: 10px;
+      label {
+        position: relative;
+        top: 3px;
+        left: auto;
+        font-size: 14px;
+      }
+      input {
+        cursor: pointer;
+      }
+    }
+    & > .child {
+      &:first-child {
+        width: 25%;
+        padding: 12px 15px;
+        @media screen and (max-width: 992px) {
+          width: 100%;
+          padding: 10px 0;
+        }
+      }
+      &:last-child {
+        width: 70%;
+        padding: 0 15px;
+        border-left: 3px dotted var(--primary);
+        @media screen and (max-width: 992px) {
+          width: 100%;
+          padding: 10px 0;
+          border-left: none;
+        }
+      }
+      & > div {
+        border-bottom: 3px dotted var(--primary);
+        padding: 15px 0 25px;
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+  .auth-section {
+    .box {
+      width: 800px;
+      max-width: 100%;
+      margin: 20px auto;
+    }
+    span {
+      font-family: "yekan";
+      text-align: 14px;
+      margin-left: 4px;
+    }
+    label {
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      display: inline-block;
+      padding: 5px;
+      background: #fff;
+      font-size: 13px;
+      color: #464646;
+      z-index: 1;
+    }
+    input {
+      padding: 10px;
+      box-shadow: none !important;
+      &:disabled {
+        background-color: #fff;
+        font-weight: 700;
+        color: var(--primary);
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+    }
+    div {
+      position: relative;
+    }
+    .btn-theme {
+      background-color: var(--primary);
+      color: #fff;
+      padding: 8px 15px;
+      transition: filter 0.2s ease-in-out;
+      &:hover {
+        filter: brightness(140%);
+        color: #fff;
+      }
+      @media screen and (max-width: 992px) {
+        width: 100%;
+      }
+    }
+    .flex {
+      & > div {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        & > div,
+        & > p {
+          width: 50%;
+          @media screen and (max-width: 992px) {
+            width: 100%;
+          }
+          p {
+            font-family: "yekan";
+            direction: rtl;
+            font-size: 14px;
+            margin-top: 4px;
+            color: #1a7ad4;
+            text-align: right;
+          }
+        }
+        & > p {
+          font-size: 14px;
+          padding-left: 10px;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+  .profile-section {
+    .box {
+      width: 800px;
+      max-width: 100%;
+      margin: 20px auto;
+    }
+    span {
+      font-family: "yekan";
+      text-align: 14px;
+      margin-left: 4px;
+    }
+    label {
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      display: inline-block;
+      padding: 5px;
+      background: #fff;
+      font-size: 13px;
+      color: #464646;
+      z-index: 1;
+    }
+    input {
+      padding: 10px;
+      box-shadow: none !important;
+      &:disabled {
+        background-color: #fff;
+        font-weight: 700;
+        color: var(--primary);
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+    }
+    div {
+      position: relative;
+    }
+    .btn-theme {
+      background-color: var(--primary);
+      color: #fff;
+      padding: 8px 15px;
+      transition: filter 0.2s ease-in-out;
+      &:hover {
+        filter: brightness(140%);
+        color: #fff;
+      }
+      @media screen and (max-width: 992px) {
+        width: 100%;
+      }
+    }
+    .flex {
+      & > div {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        & > div,
+        & > p {
+          width: 50%;
+          @media screen and (max-width: 992px) {
+            width: 100%;
+          }
+          p {
+            font-family: "yekan";
+            direction: rtl;
+            font-size: 14px;
+            margin-top: 4px;
+            color: rgba(0, 15, 128, 0.965);
+            text-align: right;
+          }
+        }
+        & > p {
+          font-size: 14px;
+          padding-left: 10px;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+  .panel-section {
+    hr {
+      width: 800px;
+      max-width: 100%;
+    }
+    ul {
+      width: 800px;
+      max-width: 100%;
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      list-style: none;
+      gap: 15px 0;
+      margin: 20px auto;
+      li {
+        a {
+          display: block;
+          background-color: var(--primary);
+          color: #fff;
+          padding: 15px;
+          border-radius: 8px;
+          transition: filter 0.2s ease-in-out;
+          text-align: center;
+          span {
+            font-family: "yekan";
+            font-size: 14px;
+            margin-left: 4px;
+          }
+          &:hover {
+            filter: brightness(140%);
+          }
+        }
+      }
+    }
+  }
+  .your-applications-section {
+    margin-top: 30px;
+    .pagination {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 30px;
+      li {
+        a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          height: 30px;
+          min-width: 30px;
+          color: var(--primary);
+          border: 1px solid var(--primary);
+          border-radius: 4px;
+          &:hover {
+            background-color: var(--primary);
+            color: #fff;
+          }
+        }
+        &.active {
+          a {
+            background-color: var(--primary);
+            color: #fff;
+          }
+        }
+      }
+    }
+    .table-responsive {
+      width: 1100px;
+      max-width: 100%;
+      margin: 0 auto;
+      border: 1px solid #d9d9d9;
+      border-radius: 10px;
+      table {
+        @media screen and (max-width: 992px) {
+          width: 950px;
+        }
+      }
+      thead {
+        background-color: var(--primary);
+        color: #fff;
+        text-align: center;
+        th {
+          padding: 15px 0;
+        }
+        span {
+          display: block;
+          font-family: "yekan";
+          margin-top: 10px;
+          font-size: 13px;
+          opacity: 0.8;
+        }
+      }
+      .btn-theme {
+        background-color: var(--primary);
+        color: #fff;
+        padding: 8px 15px;
+        height: 42px;
+        transition: filter 0.2s ease-in-out;
+        span {
+          position: relative;
+          top: -1px;
+          font-family: "yekan";
+          font-size: 14px;
+          margin-left: 4px;
+        }
+        &:hover {
+          filter: brightness(140%);
+          color: #fff;
+        }
+      }
+      tr {
+        border: 1px solid #d9d9d9;
+        td {
+          & > span {
+            display: inline-flex;
+            min-height: 42px !important;
+            align-items: center;
+            span {
+              position: relative;
+              top: 3px;
+              font-family: "yekan";
+              font-size: 14px;
+              margin-left: 4px;
+            }
+          }
+        }
+        &:last-child {
+          border: none;
+        }
+      }
+    }
+  }
+}

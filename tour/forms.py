@@ -4,32 +4,110 @@ from jalali_date.fields import JalaliDateField
 from jalali_date.widgets import AdminJalaliDateWidget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
+_FA_AR_DIGITS = str.maketrans('۰۱۲۳۴۵۶۷۸۹٠١٢٣٤٥٦٧٨٩', '01234567890123456789')
+
+
+def _parse_amount(value):
+    """عدد وارد شده (فارسی/انگلیسی/با کاما) را به int تبدیل می‌کند؛ خالی = 0."""
+    if value is None:
+        return 0
+    s = str(value).translate(_FA_AR_DIGITS)
+    s = s.replace(',', '').replace('،', '').replace(' ', '').strip()
+    if s in ('', '-'):
+        return 0
+    try:
+        return int(s)
+    except ValueError:
+        raise forms.ValidationError('لطفاً فقط عدد وارد کنید')
+
+
 class tour_date_form(forms.ModelForm):
+    _amount_fields = [
+        ('price', ' اختلاف قیمت ارز اول را وارد کنید'),
+        ('price_dollar', ' اختلاف قیمت ارز دوم را وارد کنید'),
+        ('infant_price', 'افزایش قیمت نوزاد (ارز اول)'),
+        ('infant_price_dollar', 'افزایش قیمت نوزاد (ارز دوم)'),
+    ]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['start_date'] = JalaliDateField(widget=AdminJalaliDateWidget)
         self.fields['start_date'].widget.attrs.update({
             'placeholder': ' تاریخ رفت تــور را وارد کنید',
-            # 'type':'date'
+           
         })
         self.fields['end_date'] = JalaliDateField(widget=AdminJalaliDateWidget)
         self.fields['end_date'].widget.attrs.update({
             'placeholder': ' تاریخ برگشت تــور را وارد کنید',
-            # 'type':'date'
+           
         })
-        self.fields['price'].widget.attrs.update({
-            'placeholder': ' میزان اختلاف قیمت را وارد کنید',
-            'class': 'text-input',
-        })
+        self.fields['price_type'].required = False
         self.fields['price_type'].widget.attrs.update({
             'class': 'text-input',
         })
+        self.fields['price_dollar_type'].required = False
+        self.fields['price_dollar_type'].widget.attrs.update({
+            'class': 'text-input',
+        })
+        is_edit = bool(self.instance and self.instance.pk)
+        for name, placeholder in self._amount_fields:
+            current = self.initial.get(name) if is_edit else None
+            self.fields[name] = forms.CharField(
+                required=False,
+                initial='' if current in (None, 0) else current,
+            )
+            self.fields[name].widget.attrs.update({
+                'placeholder': placeholder,
+                'class': 'text-input',
+                'inputmode': 'numeric',
+            })
+
+    def clean_price(self):
+        return _parse_amount(self.cleaned_data.get('price'))
+
+    def clean_price_dollar(self):
+        return _parse_amount(self.cleaned_data.get('price_dollar'))
+
+    def clean_infant_price(self):
+        return _parse_amount(self.cleaned_data.get('infant_price'))
+
+    def clean_infant_price_dollar(self):
+        return _parse_amount(self.cleaned_data.get('infant_price_dollar'))
+
+    def clean_price_type(self):
+        return self.cleaned_data.get('price_type') or 'طبق پکیج اصلی'
+
+    def clean_price_dollar_type(self):
+        return self.cleaned_data.get('price_dollar_type') or 'طبق پکیج اصلی'
 
     class Meta:
         model = date_plan
-        exclude = ['tour']
+        exclude = ['tour', 'price_currency']
+
+class ApiPartnerForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'نام آژانس / همکار را وارد کنید',
+        })
+        self.fields['note'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'توضیحات (اختیاری)',
+        })
+        self.fields['is_active'].widget.attrs.update({
+            'id': 'id_partner_is_active',
+            'style': 'width:18px;height:18px;vertical-align:middle;cursor:pointer;',
+        })
+
+    class Meta:
+        model = ApiPartner
+        fields = ['name', 'note', 'is_active']
+
 
 class TripPlan_form(forms.ModelForm):
+    remove_image = forms.BooleanField(required=False, label='حذف تصویر فعلی')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['plan_image'].widget = forms.FileInput(attrs={'class': 'form-control'})
@@ -52,6 +130,14 @@ class TripPlan_form(forms.ModelForm):
     class Meta:
         model = TripPlan
         exclude = ['tour']
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if self.cleaned_data.get('remove_image') and not self.files.get('plan_image'):
+            instance.plan_image = None
+        if commit:
+            instance.save()
+        return instance
 
 class spacial_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -435,12 +521,20 @@ class CreateTourForm(forms.ModelForm):
         self.fields['Tcity'].widget.attrs.update({
             'class': 'text-input'
         })
-        self.fields['custom_categories'].widget = forms.CheckboxSelectMultiple()
-        self.fields['custom_categories'].queryset = CustomTourCategory.objects.filter(is_active=True)
+        # self.fields['custom_categories'].widget = forms.CheckboxSelectMultiple()
+        # self.fields['custom_categories'].queryset = CustomTourCategory.objects.filter(is_active=True)
 
-        self.fields['custom_categories'].widget.attrs.update({
-            'class': 'category-checkbox-wrapper'
+        # self.fields['custom_categories'].widget.attrs.update({
+        #     'class': 'category-checkbox-wrapper'
+        # })
+        
+        self.fields['custom_categories'].widget = forms.SelectMultiple(attrs={
+            'id': 'id_custom_categories',
+            'class': 'text-input tour-category-select',
+            'style': 'width:100%; min-height:140px;',
         })
+        self.fields['custom_categories'].queryset = CustomTourCategory.objects.filter(is_active=True)
+        self.fields['custom_categories'].required = False
         self.fields['origin_city'].widget.attrs.update({
             'class': 'text-input'
         })
@@ -559,6 +653,10 @@ class AddToPackageForm(forms.ModelForm):
         self.fields['view'].widget.attrs.update({
             'class': 'text-input select-view'
         })
+        for transfer_field in ['transfer_mhotel', 'transfer_m1hotel', 'transfer_m2hotel', 'transfer_m3hotel']:
+            self.fields[transfer_field].widget.attrs.update({
+                'class': 'text-input select-view'
+            })
         self.fields['view_hotel'].widget.attrs.update({
             'class': 'text-input select-view'
         })
@@ -595,11 +693,17 @@ class AddToPackageForm(forms.ModelForm):
         self.fields['service_m4hotel'].widget.attrs.update({
             'class': 'text-input select-view'
         })
+        self.fields['hotel_sold_out'].required = False
+        self.fields['hotel_sold_out'].widget.attrs.update({
+            'class': 'soldout-checkbox'
+        })
 
     class Meta:
         model = Package
         exclude = ['Creator', 'Slug', 'TourName',
-        'HotelName', 'Mhotel', 'M1hotel', 'M2hotel', 'M3hotel']
+        'HotelName', 'Mhotel', 'M1hotel', 'M2hotel', 'M3hotel',
+        'mhotel_sold_out', 'm1hotel_sold_out', 'm2hotel_sold_out', 'm3hotel_sold_out',
+        'exclusive_date_plan']
 
 
 
@@ -808,10 +912,38 @@ class CreateTourCategoryForm(forms.ModelForm):
         self.fields['image'].widget.attrs.update({
             'class': 'image-input',
         })
-        
+        self.fields['meta_title'].widget.attrs.update({
+            'class': 'text-input',
+        })
+        self.fields['meta_keyword'].widget.attrs.update({
+            'class': 'text-input',
+        })
+        self.fields['meta_description'].widget.attrs.update({
+            'class': 'text-input',
+        })
+        self.fields['meta_robots'].widget.attrs.update({
+            'class': 'text-input',
+        })
+
     class Meta:
         model = CustomTourCategory
         fields = '__all__'
+        exclude = ['cities', 'countries']
+
+class CreateTourCategoryFaqForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['question'].widget.attrs.update({
+            'class': 'text-input reserve',
+            'placeholder': 'متن سوال'
+        })
+        self.fields['answer'].widget.attrs.update({
+            'placeholder': 'متن پاسخ'
+        })
+        
+    class Meta:
+        model = TourCategoryFAQ
+        exclude = ['category']
 
 
 class SubscribeForm(forms.ModelForm):
@@ -1169,3 +1301,30 @@ class create_faq__home_form(forms.ModelForm):
     class Meta:
         model = faq_home
         fields = "__all__"
+
+
+class TourReviewForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # .text-input تم داشبورد line-height:45px دارد که برای input درست است
+        # ولی textarea را غول‌پیکر می‌کند، پس textarea استایل خودش را می‌گیرد.
+        for name in ('author', 'rating', 'review_date', 'country',
+                     'source', 'source_url', 'sort_order'):
+            self.fields[name].widget.attrs.update({'class': 'text-input'})
+        self.fields['text'].widget.attrs.update({
+            'class': 'text-input review-textarea',
+            'rows': 6,
+            'placeholder': 'متن نظر را از گوگل مپ کپی کنید',
+        })
+        self.fields['author'].widget.attrs['placeholder'] = 'نامی که در گوگل ثبت شده'
+        self.fields['source_url'].widget.attrs['placeholder'] = 'https://...'
+        self.fields['review_date'].widget.attrs['placeholder'] = '2026-09-07'
+        self.fields['country'].empty_label = '— کشور را انتخاب کنید —'
+        # theme.css قاعده‌ی #id_publish دارد که height:50px را به هر عنصری با این
+        # آیدی تحمیل می‌کند (برای سلکت فرم بلاگ نوشته شده)؛ چک‌باکس را کشیده می‌کرد.
+        self.fields['publish'].widget.attrs['id'] = 'id_review_publish'
+
+    class Meta:
+        model = TourReview
+        fields = ['author', 'rating', 'text', 'review_date', 'country',
+                  'source', 'source_url', 'publish', 'sort_order']

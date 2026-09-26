@@ -306,6 +306,18 @@ def ajax_tour_categories(request):
     return render(request, 'ajax/ajax_list_tour_categories.html', context)
 
 
+def ajax_tour_category_faq_list(request):
+    category_id = request.GET.get('category_id')
+    faq_list = get_all_tour_cat_faq(category_id)
+    paginator = Paginator(faq_list, 5)
+    page = request.GET.get('page')
+    faq_list = paginator.get_page(page)
+    context = {
+        'faq_list': faq_list
+    }
+    return render(request, 'ajax/tour_category_faq.html', context)
+
+
 def ajax_main_packages_list(request):
     main_packages = MainPackage.objects.all().order_by('-id')
     paginator = Paginator(main_packages, 10)

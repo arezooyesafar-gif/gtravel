@@ -1,0 +1,26 @@
+<div class="col-lg-4">
+    <div class="card card-bordered card-full">
+        <div class="card-inner">
+            <div class="card-title-group align-start mb-3">
+                <div class="card-title">
+                    <h6 class="subtitle">نرخ دلار به تومان</h6>
+                </div>
+                <div class="card-tools">
+                    <em class="card-hint icon ni ni-coins"></em>
+                </div>
+            </div>
+            <form method="POST" action="{% url 'update-dollar-rate' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="number" name="dollar_rate" value="{{ dollar_rate }}"
+                           class="form-control form-control-lg"
+                           placeholder="مثال: 90000" style="direction:ltr; text-align:center; font-size:18px; font-weight:bold;">
+                    <small class="text-muted mt-1 d-block" style="text-align:center;">هر دلار برابر چند تومان است؟</small>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-2">
+                    <em class="icon ni ni-check"></em> ذخیره نرخ دلار
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -57,6 +57,17 @@ INTERTAINMENT = [
     ('دوچرخه سواری', 'دوچرخه سواری'), ('گلف', 'گلف'), ('کارائوکه', 'کارائوکه'), ('صندلی ساحلی', 'صندلی ساحلی'),('کلوپ شبانه','کلوپ شبانه')
     ]
 
+PAID_SUFFIX = ' (با هزینه)'
+
+
+def with_paid_choices(choices):
+    result = []
+    for value, label in choices:
+        result.append((value, label))
+        result.append((value + PAID_SUFFIX, label + PAID_SUFFIX))
+    return result
+
+
 ROBOTS_CHOICES = [
     ('INDEX,FOLLOW', 'Index, Follow - (پیش‌فرض) نمایش در نتایج و دنبال کردن لینک‌ها'),
     ('INDEX,NOFOLLOW', 'Index, No Follow - نمایش در نتایج، دنبال نکردن لینک‌ها'),
@@ -102,10 +113,10 @@ class Hotel_Data(models.Model):
     HotelAll = models.BooleanField(default=False)
     HotelUall = models.BooleanField(default=False)
     HotelMaxAll = models.BooleanField(default=False)
-    HotelService = MultiSelectField(choices=HOTEL_SERVICES, max_length=5000, max_choices=50, null=True, blank=True)
-    RoomService = MultiSelectField(choices=ROOM_SERVICES, max_length=800, max_choices=50, null=True, blank=True)
-    Service = MultiSelectField(choices=SERVICES, max_length=800, max_choices=50, null=True, blank=True)
-    intertainment = MultiSelectField(choices=INTERTAINMENT, max_length=800, max_choices=50, null=True, blank=True)
+    HotelService = MultiSelectField(choices=with_paid_choices(HOTEL_SERVICES), max_length=5000, max_choices=50, null=True, blank=True)
+    RoomService = MultiSelectField(choices=with_paid_choices(ROOM_SERVICES), max_length=800, max_choices=50, null=True, blank=True)
+    Service = MultiSelectField(choices=with_paid_choices(SERVICES), max_length=800, max_choices=50, null=True, blank=True)
+    intertainment = MultiSelectField(choices=with_paid_choices(INTERTAINMENT), max_length=800, max_choices=50, null=True, blank=True)
     HotelImage = ResizedImageField(force_format='WEBP', quality=75, upload_to='hotel-image', null=True, blank=True)
     HotelMenu = models.ForeignKey(Hotel_Menu, on_delete=models.CASCADE, null=True, blank=True)
     metaKeyword = models.TextField(max_length=150, null=True, blank=True)

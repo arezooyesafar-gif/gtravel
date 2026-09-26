@@ -1,0 +1,262 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% load static %}
+{% block Main %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <link rel="stylesheet" href="{% static 'assets/css/tour-external-sources.css' %}">
+    <div id="ext-sources-page">
+        {% if messages %}
+            <div class="row m-t-20">
+                <div class="col-lg-12">
+                    {% for message in messages %}
+                        <p class="alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row m-t-40">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">
+                                    دریافت قیمت از آژانس‌های همکار برای «{{ Tour.Title }}»
+                                </h6>
+                            </div>
+                            <div class="card-tools">
+                                <a href="{% url 'update-tour' Tour.id %}" class="link m-r-20">ویرایش تور</a>
+                                <a href="{% url 'tour_date_plan' Tour.id %}" class="link">برنامه زمانی تور</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-inner">
+                        <p class="text-soft" style="margin:0 0 6px;">
+                            این صفحه برای وقتیه که می‌خواید قیمت یه آژانس دیگه رو خودکار بگیرید — چه اون آژانس API داشته باشه،
+                            چه فقط یه صفحه‌ی وب معمولی برای اون تور (سیستم خودش تشخیص می‌ده و از هر دو حالت قیمت رو می‌خونه).
+                            سه قدم ساده‌ست:
+                        </p>
+                        <ol class="text-soft" style="margin:0; padding-right:20px; line-height:2;">
+                            <li><b>قدم ۱ — پایین همین کادر:</b> اسم آژانس، آدرسی که بهتون دادن، و کلیدی که بهتون دادن رو وارد و ثبت کنید.</li>
+                            <li><b>قدم ۲ — تو جدول «منابع آژانس‌ها»:</b> روی دکمه «دریافت از آژانس» بزنید تا سیستم بره از اون آدرس قیمت رو بگیره.</li>
+                            <li><b>قدم ۳ — تو جدول «پیشنهادهای دریافتی»:</b> قیمتی که آورده رو ببینید و فقط اگه درست بود، «اعمال به قیمت تور» رو بزنید تا رو سایت خودتون ثبت بشه. تا این دکمه رو نزنید، هیچ قیمتی رو سایت شما تغییر نمی‌کنه.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row m-t-20">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-inner border-bottom">
+                            <h6 class="title">قدم ۱ — افزودن منبع آژانس جدید</h6>
+                        </div>
+                        <div class="card-inner">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">نام آژانس<span class="text-danger">*</span></label>
+                                    {{ Form.agency_name }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">آدرس API یا صفحه‌ی تور آژانس<span class="text-danger">*</span></label>
+                                    {{ Form.api_url }}
+                                    <div class="form-text">اگه آژانس API نداره، مشکلی نیست — همون آدرس صفحه‌ی همین تور رو سایتشون رو بذارید، خودمون از رو صفحه قیمت رو حدس می‌زنیم.</div>
+                                </div>
+                            </div>
+                            <div class="row g-3" style="margin-top:2px;">
+                                <div class="col-md-6">
+                                    <label class="form-label">کلید API آژانس</label>
+                                    {{ Form.api_key }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">نام هدر ارسال کلید</label>
+                                    {{ Form.header_name }}
+                                    <div class="form-text">اگه آژانس چیزی نگفته، همین مقدار پیش‌فرض را دست نزنید.</div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:14px;">
+                                <div class="col-md-6">
+                                    <label class="form-label d-block">وضعیت این منبع</label>
+                                    <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;" for="{{ Form.is_active.id_for_label }}">
+                                        {{ Form.is_active }}
+                                        <span>فعال</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <details style="margin-top:16px;">
+                                <summary style="cursor:pointer;">تنظیمات پیشرفته (اختیاری) — فقط اگه بعد از «دریافت از آژانس» قیمت پیدا نشد</summary>
+                                <p class="text-soft" style="margin:10px 0;">
+                                    سیستم اول خودش سعی می‌کند قیمت را در پاسخ آژانس پیدا کند. اگر پیدا نکرد، پاسخ خام را در جدول
+                                    «پیشنهادهای دریافتی» ببینید و مسیر دقیق فیلد قیمت را اینجا بنویسید. مثال:
+                                    <br>پاسخ آژانس: <code>{"data": {"price": {"amount": 1260}}}</code>
+                                    <br>مسیر: <code>data.price.amount</code>
+                                </p>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">مسیر فیلد قیمت (ارز اول)</label>
+                                        {{ Form.price_amount_path }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">مسیر فیلد واحد ارز اول</label>
+                                        {{ Form.price_currency_path }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">مسیر فیلد قیمت (ارز دوم)</label>
+                                        {{ Form.price_amount_foreign_path }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">مسیر فیلد واحد ارز دوم</label>
+                                        {{ Form.price_currency_foreign_path }}
+                                    </div>
+                                </div>
+                            </details>
+
+                            <button type="submit" class="btn btn-primary" style="margin-top:16px;">افزودن منبع آژانس</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="row m-t-20">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <h6 class="title">قدم ۲ — منابع آژانس‌ها برای این تور</h6>
+                    </div>
+                    <div class="card-inner p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                <tr>
+                                    <th>آژانس</th>
+                                    <th>آدرس API</th>
+                                    <th>فعال</th>
+                                    <th>اقدامات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for s in Sources %}
+                                    <tr>
+                                        <td>{{ s.agency_name }}</td>
+                                        <td style="word-break: break-all; font-size:12px;">{{ s.api_url }}</td>
+                                        <td>
+                                            {% if s.is_active %}
+                                                <span class="badge badge-dim bg-success">فعال</span>
+                                            {% else %}
+                                                <span class="badge badge-dim bg-danger">غیرفعال</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-nowrap">
+                                            <a class="btn btn-sm btn-primary" href="{% url 'fetch-external-offer' s.id %}">دریافت از آژانس</a>
+                                            <a class="btn btn-sm btn-outline-danger" href="{% url 'delete-external-source' s.id %}">حذف</a>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr><td colspan="4" class="text-center text-soft" style="padding:20px;">هنوز منبعی برای این تور ثبت نشده است. اول قدم ۱ را انجام دهید.</td></tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row m-t-20">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <h6 class="title">قدم ۳ — پیشنهادهای دریافتی از آژانس‌ها</h6>
+                        <p class="text-soft" style="margin:6px 0 0;">
+                            اینجا فقط سابقه‌ی دریافت‌هاست. تا خودتان روی «اعمال به قیمت تور» نزنید، هیچ‌کدام روی سایت شما تاثیری ندارند.
+                        </p>
+                    </div>
+                    <div class="card-inner p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                <tr>
+                                    <th>آژانس</th>
+                                    <th>زمان دریافت</th>
+                                    <th>وضعیت</th>
+                                    <th>هتل تشخیص‌داده‌شده</th>
+                                    <th>قیمت دو تخته</th>
+                                    <th>پاسخ خام</th>
+                                    <th>اقدامات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for o in Offers %}
+                                    <tr{% if o.status == 'not_found' %} style="background:#fff8ee;"{% endif %}>
+                                        <td>{{ o.source.agency_name }}</td>
+                                        <td>{{ o.fetched_at|date:"Y-m-d H:i" }}</td>
+                                        <td>
+                                            {% if o.status == 'success' %}
+                                                <span class="badge badge-dim bg-success">موفق</span>
+                                            {% elif o.status == 'not_found' %}
+                                                <span class="badge badge-dim bg-warning">پیدا نشد در آژانس</span>
+                                            {% else %}
+                                                <span class="badge badge-dim bg-danger">خطا</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if o.matched_package %}
+                                                <span class="text-soft" style="font-size:12px;">{{ o.matched_hotel_name }}</span><br>
+                                                <span class="badge badge-dim {% if o.status == 'not_found' %}bg-warning{% else %}bg-info{% endif %}">{{ o.matched_package }}</span>
+                                            {% else %}
+                                                <span class="text-soft">-</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if o.status == 'error' %}
+                                                <span class="text-danger">{{ o.error_message|truncatechars:60 }}</span>
+                                            {% elif o.status == 'not_found' %}
+                                                <span class="text-soft">این هتل تو صفحه‌ی این آژانس پیدا نشد.</span>
+                                            {% elif o.price_amount %}
+                                                {{ o.price_amount|intcomma }} {{ o.price_currency }}
+                                                {% if o.price_amount_foreign %}<br>+ {{ o.price_amount_foreign|intcomma }} {{ o.price_currency_foreign }}{% endif %}
+                                            {% else %}
+                                                <span class="text-soft">قابل تشخیص نبود، پاسخ خام را ببینید</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if o.raw_response %}
+                                                <details>
+                                                    <summary style="cursor:pointer;">مشاهده</summary>
+                                                    <pre style="max-height:200px;overflow:auto;white-space:pre-wrap;font-size:11px;">{{ o.raw_response }}</pre>
+                                                </details>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-nowrap">
+                                            {% if o.status == 'success' %}
+                                                {% if o.applied %}
+                                                    <span class="badge badge-dim bg-success">اعمال‌شده در {{ o.applied_at|date:"Y-m-d H:i" }}</span>
+                                                {% else %}
+                                                    <a class="btn btn-sm btn-primary" href="{% url 'apply-external-offer' o.id %}">اعمال به قیمت تور</a>
+                                                {% endif %}
+                                            {% elif o.status == 'not_found' %}
+                                                <a class="btn btn-sm btn-outline-danger" href="{% url 'delete-unmatched-package' o.id %}"
+                                                   onclick="return confirm('پکیج «{{ o.matched_package }}» کامل از تور حذف بشه؟ این کار برگشت‌پذیر نیست.');">
+                                                    حذف این پکیج از تور
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr><td colspan="7" class="text-center text-soft" style="padding:20px;">هنوز هیچ درخواستی از آژانس‌ها انجام نشده است.</td></tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

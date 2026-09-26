@@ -1,21 +1,85 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
-<script src="{% static 'admin/js/django_jalali.js' %}"></script>
-<script src="{% static 'asset/css/bootstrap/bootstrap.bundle.min.js' %}"></script>
-<script src="/static/asset/js/convertDate.js"></script>
-<script src="/static/slider/vendors/highlight.js"></script>
-<script src="/static/slider/js/app.js"></script>
-<script src="/static/asset/js/validate-js.js"></script>
-{#<link#}
-{#  rel="stylesheet"#}
-{#  href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"#}
-{#  integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="#}
-{#  crossorigin="anonymous"#}
-{#  referrerpolicy="no-referrer"#}
-{#/>#}
-{#<script#}
-{#  src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"#}
-{#  integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="#}
-{#  crossorigin="anonymous"#}
-{#  referrerpolicy="no-referrer"#}
-{#></script>#}
+{% if not skip_jalali_datepicker %}
+<link rel="preload" as="style" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}" rel="stylesheet"></noscript>
+<script src="{% static 'admin/js/django_jalali.js' %}" defer></script>
+<script src="/static/asset/js/convertDate.js" defer></script>
+{% endif %}
+{% if not late_scripts %}<script src="{% static 'asset/css/bootstrap/bootstrap.bundle.min.js' %}" defer></script>{% endif %}
+{% comment %}
+    highlight.js و slider/js/app.js متعلق به صفحهٔ دموی خودِ اسلایدر هستند
+    (سراغ #docs و #toggle-nav و کلاس‌های hljs می‌روند). هیچ قالبی در این
+    پروژه از آن‌ها استفاده نمی‌کند، ولی روی هر صفحهٔ عمومی ۱۵ کیلوبایت
+    جاوااسکریپت دانلود و پارس می‌شد. حالا فقط با ست کردن این متغیر لود می‌شوند.
+{% endcomment %}
+{% if show_slider_docs_demo %}
+<script src="/static/slider/vendors/highlight.js" defer></script>
+<script src="/static/slider/js/app.js" defer></script>
+{% endif %}
+{% if late_scripts %}
+<script>
+(function () {
+    var hook = URL.createObjectURL(new Blob(["(window.__afterJquery || []).forEach(function (f) { try { f(); } catch (e) { setTimeout(function () { throw e; }); } });"], {type: 'text/javascript'}));
+    var list = [
+        '/static/slider/vendors/jquery.min.js',
+        hook,
+        '/static/asset/js/menu.js',
+        '/static/slider/owlcarousel/owl.carousel.js',
+        '/static/asset/js/theme_funcs.js?v=9',
+        "{% static 'asset/css/bootstrap/bootstrap.bundle.min.js' %}",
+        '/static/asset/js/validate-js.js'
+    ];
+    var triggers = ['pointerdown', 'touchstart', 'keydown'];
+    var started = false;
+    var pending = null;
+    function finish() {
+        window.__lateReady = true;
+        window.removeEventListener('click', hold, true);
+        var queue = window.__lateQueue || [];
+        window.__lateQueue = [];
+        queue.forEach(function (fn) {
+            try { fn(); } catch (err) { setTimeout(function () { throw err; }); }
+        });
+        if (pending) {
+            var el = pending;
+            pending = null;
+            el.click();
+        }
+    }
+    function start() {
+        if (started) return;
+        started = true;
+        triggers.forEach(function (t) { window.removeEventListener(t, start, true); });
+        var left = list.length;
+        list.forEach(function (src) {
+            var s = document.createElement('script');
+            s.src = src;
+            s.async = false;
+            s.onload = s.onerror = function () { if (--left === 0) finish(); };
+            document.body.appendChild(s);
+        });
+    }
+    function hold(e) {
+        if (window.__lateReady || !e.target.closest) return;
+        var el = e.target.closest('[data-bs-toggle],[data-bs-dismiss],[onclick]');
+        if (!el) return;
+        e.preventDefault();
+        e.stopPropagation();
+        pending = el;
+        start();
+    }
+    window.addEventListener('click', hold, true);
+    triggers.forEach(function (t) { window.addEventListener(t, start, {capture: true, passive: true}); });
+    function afterPaint() {
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                if ('requestIdleCallback' in window) { requestIdleCallback(start, {timeout: 1500}); } else { setTimeout(start, 50); }
+            });
+        });
+    }
+    if (document.readyState === 'complete') { afterPaint(); } else { window.addEventListener('load', afterPaint); }
+})();
+</script>
+{% else %}
+<script src="/static/asset/js/validate-js.js" defer></script>
+{% endif %}

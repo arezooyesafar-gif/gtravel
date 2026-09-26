@@ -15,17 +15,6 @@
         <meta name="keywords" content="تورهای قسطی، تور قسطی ،تورهای اقساطی ، تور اقساطی">
     {% endif %}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-35DTMEQBTC');
-    </script>
     {% include 'ui/base/head.html' %}
     {% if Menu.page_title %}
         <title> {{ Menu.page_title }} </title>
@@ -91,15 +80,7 @@
                         <div class="order-sm-last col-lg-3 order-lg-first">
                             <div id="sidebar" class="sticky_menu">
                                 <div class="contact-banner">
-                                    <p class="reseve-title">
-                                        دریافت مشاوره و رزرو تور
-                                    </p>
-                                    <p class="reseve-phone">
-                                        021-45128
-                                    </p>
-                                    <p class="reseve-desc">
-                                        کارشناسان ما پاسخگوی شما خواهند بود
-                                    </p>
+    {% include 'ui/base/contact-banner.html' %}
                                 </div>
                                 <div class="sidebar-container">
                                     <div class="accordion" id="accordionExample">
@@ -114,7 +95,7 @@
                                             <div id="collapseOne" class="accordion-collapse collapse show"
                                                  aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                                 <div class="accordion-body filter-side">
-                                                    <div class="range-input">
+                                                    <div class="range-input" >
                                                         <div class="range_container">
                                                             <div class="sliders_control">
                                                                 <input id="toSlider" onchange="SidebarFilter()"
@@ -324,6 +305,12 @@
                             </div>
                         </div>
                         <div class="col-lg-9 no-padding">
+                            <div class="sort-bar">
+                                <button class="sort-btn" data-sort="price" onclick="setSort(this)">قیمت<i class="material-icons sort-icon sort-dir-icon">arrow_downward</i><i class="material-icons sort-icon">sort</i></button>
+                                <button class="sort-btn" data-sort="duration" onclick="setSort(this)">مدت سفر<i class="material-icons sort-icon sort-dir-icon">arrow_downward</i><i class="material-icons sort-icon">sort</i></button>
+                                <button class="sort-btn" data-sort="date" onclick="setSort(this)">تاریخ پرواز<i class="material-icons sort-icon sort-dir-icon">arrow_downward</i><i class="material-icons sort-icon">sort</i></button>
+                                <span class="sort-label">مرتب‌سازی بر اساس:</span>
+                            </div>
                             <div id="all-tours" class="row">
 
                             </div>
@@ -393,6 +380,7 @@
         var tour_id = '{{ Tour.id }}'
         var tour_slug = '{{ Tour.Slug }}'
         var tour_menu = '{{ Menu.slug }}'
+        var category_slug = '{{ category.slug|default:"" }}'
     </script>
     <script>
         function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
@@ -488,6 +476,13 @@
         toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
         fromInput.oninput = () => controlFromInput(fromSlider, fromInput, toInput, toSlider);
         toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
+
+        updatePriceSliderMax();
+        var _allToursEl = document.getElementById('all-tours');
+        if (_allToursEl) {
+            new MutationObserver(function() { updatePriceSliderMax(); })
+                .observe(_allToursEl, { childList: true });
+        }
     </script>
 </div>
 </body>

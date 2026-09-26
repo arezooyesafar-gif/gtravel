@@ -1,68 +1,99 @@
 {% extends 'admin-dashboard/base/base.html' %}
 {% block Main %}
-    <div class="row m-t-40">
-        <div class="col-sm-12 col-lg-12">
-            <div class="card">
-                <div class="card-inner border-bottom">
-                    <div class="card-title-group">
-                        <div class="card-title">
-                            <h6 class="title">
-                                ایجاد/بروزرسانی دسته بندی تور ها
-                            </h6>
-                        </div>
-                        <div class="card-tools">
-                            <a href="{% url 'list-tour-category' %}" class="link">لیست دسته بندی ها </a>
+    <form class="input-forms" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+        <div class="row m-t-40">
+            <div class="col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">
+                                    ایجاد/بروزرسانی دسته بندی تور ها
+                                </h6>
+                            </div>
+                            <div class="card-tools">
+                                <a href="{% url 'list-tour-category' %}" class="link">لیست دسته بندی ها </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row m-t-40">
-        <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+        <div class="row m-t-40">
             {% csrf_token %}
-            <div class="row">
+                <div class="alert-light">
+                    {% for message in messages %}
+                        <p class="error-body ap">{{ message }}</p>
+                    {% endfor %}
+                </div>
                 <div class="col-lg-12">
                     <div class="inner_section">
-                        <div class= "row">
-                            <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-3">
                                 <p class="label-text">نام دسته بندی <span class="required">*</span></p>
                                 {{ form.name }}
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <p class="label-text">دسته بندی والد <span class="required">*</span></p>
                                 {{ form.parent }}
                             </div>
-                            <div class="col-lg-4">
-                                <p class="label-text">لینک سئو <span class="required">*</span></p>
+                            <div class="col-lg-3">
+                                <p class="label-text">لینک سئو<span class="required">*</span></p>
                                 {{ form.slug }}
                             </div>
+                            <div class="col-lg-3">
+                                <p class="spacial_feat bg-gray-dim">فعال </p>
+                                {{ form.is_active }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="inner_section">
+                        <div class="row">
                             <div class="col-lg-6">
-                                <p class="label-text tour_create">عکس</p>
+                                <p class="label-text tour_create">تصویر دسته بندی <span class="required">*</span></p>
                                 <label for="id_image" class="custom-file-upload text-input">
-                                    <i class="fa fa-cloud-upload-alt"></i><span id="filename2"> بارگذاری فایل</span>
+                                    <i class="fa fa-cloud-upload-alt"></i><span id="filename"> بارگذاری تصویر دسته بندی</span>
                                 </label>
                                 {{ form.image }}
                                 <script>
                                     $(document).ready(function () {
                                         $('input[type="file"]').change(function (e) {
-                                            var fileName2 = e.target.files[0].name;
-                                            document.getElementById('filename2').innerHTML = '  فایل انتخابی: ' + fileName2
+                                            var fileName = e.target.files[0].name;
+                                            document.getElementById('filename').innerHTML = '  فایل انتخابی: ' + fileName
+                                            {#alert('The file "' + fileName + '" has been selected.');#}
                                         });
                                     });
                                 </script>
                             </div>
                             <div class="col-lg-6">
-                                <p class="spacial_feat bg-gray-dim">فعال بودن </p>
-                                {{ form.is_active }}
+                                <div class="inner_section">
+                                    <div class="col-lg-12">
+                                        <p class="label-text category_form seo">عنوان لیست دسته بندی<span class="required">*</span></p>
+                                        {{ form.meta_title }}
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <p class="label-text category_form seo">توضیحات متا دسته بندی<span class="required">*</span></p>
+                                        {{ form.meta_description }}
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <p class="label-text category_form seo">کلمات کلیدی دسته بندی<span class="required">*</span></p>
+                                        {{ form.meta_keyword }}
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <p class="label-text category_form seo">ایندکس صفحه دسته بندیها</p>
+                                        {{ form.meta_robots }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <p class=""> توضیحات</p>
-                                {{ form.description }}
-                            </div>
-                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12" style="margin-top: 10px">
+                    <div class="inner_section">
+                        <p class=""> توضیحات <span class="required">*</span></p>
+                        {{ form.description }}
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -71,7 +102,7 @@
                         <span id="save-button-title">ایجاد/بروزرسانی دسته بندی</span>
                     </button>
                 </div>
-            </div>
-        </form>
-    </div>
+            {{ form.media }}
+        </div>
+    </form>
 {% endblock %}

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from tour.forms import CreateCountryForm, faqCreateForm, CreateCityForm, cityfaqCreateForm, relatedCityForm, \
-    faqhotelcountryCreateForm, cityfaqhotelCreateForm, CityCountryMediaForm
+    faqhotelcountryCreateForm, cityfaqhotelCreateForm, CityCountryMediaForm, CreateTourCategoryFaqForm
 from tour.models import City, Country, FAQ, cityFAQ, Tour, related_tour_city, hotel_faq_Country,\
-    hotel_faq_city, CityCountryMedia
+    hotel_faq_city, CityCountryMedia, CustomTourCategory, TourCategoryFAQ
 from django.core.paginator import Paginator
 from tour.pms_manager import *
 from django.contrib import messages
@@ -223,6 +223,46 @@ def create_city_faq(request, id):
     return render(request, 'tour/create-city-faq.html', context)
 
 @superuser_required(login_url='login')
+def create_tour_category_faq(request, id):
+    category = CustomTourCategory.objects.get(id=id)
+    form = CreateTourCategoryFaqForm()
+    if request.method == 'POST':
+        forms = CreateTourCategoryFaqForm(request.POST)
+        if forms.is_valid():
+            faq = forms.save(commit=False)
+            faq.category = category
+            faq.save()
+            return redirect('create-tour-category-faq', category.id)
+    context = {
+        'FormSet': form,
+        'category': category,
+    }
+    return render(request, 'tour/create-tour-category-faq.html', context)
+
+@superuser_required(login_url='login')
+def update_tour_category_faq(request, id):
+    faq = TourCategoryFAQ.objects.get(id=id)
+    category = CustomTourCategory.objects.get(id=faq.category.id)
+    form = CreateTourCategoryFaqForm(instance=faq)
+    if request.method == 'POST':
+        forms = CreateTourCategoryFaqForm(request.POST, instance=faq)
+        if forms.is_valid():
+            forms.save()
+            return redirect('create-tour-category-faq', faq.category.id)
+    context = {
+        'FormSet': form,
+        'category': category,
+    }
+    return render(request, 'tour/create-tour-category-faq.html', context)
+
+@superuser_required(login_url='login')
+def delete_tour_category_faq(request, id):
+    faq = TourCategoryFAQ.objects.get(id=id)
+    category = faq.category.id
+    faq.delete()
+    return redirect('create-tour-category-faq', category)
+
+@superuser_required(login_url='login')
 def create_city_hotel_faq(request, id):
     tourmenu = City.objects.get(id=id)
     form = cityfaqhotelCreateForm()
@@ -332,11 +372,12 @@ def create_media_country(request, id):
 
 @superuser_required(login_url='login')
 def update_media_city(request, id):
-    city_media = CityCountryMedia.objects.get(city_id=id)
+    # city_media = CityCountryMedia.objects.get(city_id=id)
+    city_media = CityCountryMedia.objects.get(id=id)
     form = CityCountryMediaForm(instance=city_media)
     
     if request.method == 'POST':
-        forms = CityCountryMediaForm(request.POST, instance=city_media)
+        forms = CityCountryMediaForm(request.POST, request.FILES, instance=city_media)
         if forms.is_valid():
             forms.save()
             return redirect('create-media-city', city_media.city.id)
@@ -353,7 +394,8 @@ def update_media_country(request, id):
     form = CityCountryMediaForm(instance=country_media)
     
     if request.method == 'POST':
-        forms = CityCountryMediaForm(request.POST, instance=country_media)
+        # forms = CityCountryMediaForm(request.POST, instance=country_media)
+        forms = CityCountryMediaForm(request.POST, request.FILES, instance=country_media)
         if forms.is_valid():
             forms.save()
             return redirect('create-media-country', country_media.country.id)
@@ -368,8 +410,13 @@ def update_media_country(request, id):
 def delete_media_city(request, id):
     media = CityCountryMedia.objects.get(id=id)
     city_id = media.city_id
+    country_id = media.country_id
     media.delete()
-    return redirect('create-media-city', city_id)
+    if city_id:
+        return redirect('create-media-city', city_id)
+    if country_id:
+        return redirect('create-media-country', country_id)
+    return redirect('city_list')
 
 @superuser_required(login_url='login')
 def delete_media_country(request, id):

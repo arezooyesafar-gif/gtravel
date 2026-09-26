@@ -3,9 +3,53 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=>, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'asset/css/style.css' %}">
     <link href="/static/asset/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @media (max-width: 767.98px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            .container.login_page {
+                width: auto !important;
+                max-width: 100%;
+                margin: 40px 16px;
+                padding: 24px 18px;
+                border-radius: 14px;
+                box-shadow: 0 6px 24px rgba(0, 0, 0, .08);
+            }
+
+            .login_image_ {
+                text-align: center;
+                margin-bottom: 18px;
+            }
+
+            .login_image_ img {
+                position: static !important;
+                max-width: 170px;
+                height: auto;
+            }
+
+            .login_form_ {
+                margin: 0 !important;
+            }
+
+            .login_form_ input {
+                width: 100% !important;
+                box-sizing: border-box;
+                height: 44px;
+                font-size: 15px;
+            }
+
+            .login_form_ .login-btn {
+                width: 100% !important;
+                height: 46px;
+                font-size: 16px;
+            }
+        }
+    </style>
     <title>ورود به مدیریت</title>
 </head>
 <body style="background: #F3F5FA;">

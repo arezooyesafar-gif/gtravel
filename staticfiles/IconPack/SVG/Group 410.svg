@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="83.448" height="65.028" viewBox="0 0 83.448 65.028">
+  <g id="Group_410" data-name="Group 410" transform="translate(-853.982 -875.77)">
+    <g id="Group_400" data-name="Group 400">
+      <rect id="Rectangle_209" data-name="Rectangle 209" width="11.128" height="3.35" transform="translate(855.613 929.071)" fill="#282d33"/>
+    </g>
+    <g id="Group_401" data-name="Group 401">
+      <rect id="Rectangle_210" data-name="Rectangle 210" width="46.166" height="3.35" transform="translate(888.5 929.074)" fill="#282d33"/>
+    </g>
+    <g id="Group_402" data-name="Group 402">
+      <rect id="Rectangle_211" data-name="Rectangle 211" width="46.166" height="3.35" transform="translate(861.702 937.449)" fill="#282d33"/>
+    </g>
+    <g id="Group_408" data-name="Group 408">
+      <path id="Path_209" data-name="Path 209" d="M907.749,911.59a14.84,14.84,0,1,0,14.84-14.84A14.84,14.84,0,0,0,907.749,911.59Z" fill="#54c1f9"/>
+      <path id="Path_210" data-name="Path 210" d="M860.129,911.59a14.84,14.84,0,1,0,14.84-14.84A14.839,14.839,0,0,0,860.129,911.59Z" fill="#54c1f9"/>
+      <g id="Group_403" data-name="Group 403">
+        <path id="Path_211" data-name="Path 211" d="M857.331,911.591h-3.349a20.987,20.987,0,0,1,34.9-15.718l-2.221,2.508a17.638,17.638,0,0,0-29.326,13.21Z" fill="#282d33"/>
+      </g>
+      <g id="Group_404" data-name="Group 404">
+        <path id="Path_212" data-name="Path 212" d="M934.181,898.381a17.641,17.641,0,0,0-22.656-.606l-2.084-2.621a20.987,20.987,0,0,1,26.961.719Z" fill="#282d33"/>
+      </g>
+      <g id="Group_405" data-name="Group 405">
+        <path id="Path_213" data-name="Path 213" d="M898.754,913.75H875.369l-1.508-2.4,12.589-26.086,1.509-.947h23.385v3.35H890.686l9.62,23.783Zm-20.717-3.35H896.27l-8.314-20.552Z" fill="#282d33"/>
+      </g>
+      <g id="Group_406" data-name="Group 406">
+        <path id="Path_214" data-name="Path 214" d="M922.414,912.768l-15.3-33.648H901.9v-3.35h7.377l16.188,35.612Z" fill="#282d33"/>
+      </g>
+      <g id="Group_407" data-name="Group 407">
+        <rect id="Rectangle_212" data-name="Rectangle 212" width="7.647" height="3.35" transform="translate(884.475 879.718)" fill="#282d33"/>
+      </g>
+    </g>
+    <g id="Group_409" data-name="Group 409">
+      <rect id="Rectangle_213" data-name="Rectangle 213" width="27.872" height="3.35" transform="translate(897.256 910.096) rotate(-63.135)" fill="#282d33"/>
+    </g>
+  </g>
+</svg>

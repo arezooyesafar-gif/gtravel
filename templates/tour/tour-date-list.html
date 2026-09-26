@@ -53,15 +53,29 @@
                             <p class="label-text">تاریخ برگشت<span class="required">*</span></p>
                             {{ Form.end_date }}
                         </div>
-                        <div class="col-lg-6">
-                            <p class="label-text">اختلاف قیمت<span class="required">*</span></p>
+                        <div class="col-lg-3">
+                            <p class="label-text">اختلاف قیمت ({{ main_currency }})</p>
                             {{ Form.price }}
                         </div>
+                        <div class="col-lg-3">
+                            <p class="label-text">نوع اختلاف ({{ main_currency }})</p>
+                            {{ Form.price_type }}
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="label-text">اختلاف قیمت ({{ foreign_currency }})</p>
+                            {{ Form.price_dollar }}
+                        </div>
+                        <div class="col-lg-3">
+                            <p class="label-text">نوع اختلاف ({{ foreign_currency }})</p>
+                            {{ Form.price_dollar_type }}
+                        </div>
                         <div class="col-lg-6">
-                            <div class="hd-basic-info personal">
-                                <p class="label-text">نوع اختلاف<span class="required">*</span></p>
-                                {{ Form.price_type }}
-                            </div>
+                            <p class="label-text">اختلاف قیمت نوزاد ({{ main_currency }})</p>
+                            {{ Form.infant_price }}
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="label-text">اختلاف قیمت نوزاد ({{ foreign_currency }})</p>
+                            {{ Form.infant_price_dollar }}
                         </div>
                         <div class="col-lg-12">
                             <button type="submit" class="btn btn-lg btn-info btn-block">
@@ -88,13 +102,16 @@
                         <div class="col-lg-2 city_list">
                             <p class="row_head"> تاریخ رفت</p>
                         </div>
-                        <div class="col-lg-2 city_list">
+                        <div class="col-lg-1 city_list">
                             <p class="row_head">تاریخ برگشت</p>
                         </div>
                         <div class="col-lg-2 city_list">
                             <p class="row_head">اختلاف قیمت </p>
                         </div>
                         <div class="col-lg-2 city_list">
+                            <p class="row_head">افزایش نوزاد</p>
+                        </div>
+                        <div class="col-lg-1 city_list">
                             <p class="row_head">نوع اختلاف </p>
                         </div>
                         <div class="col-lg-2 city_list">
@@ -113,13 +130,26 @@
                                 <div class="col-lg-2 tour_list" style="padding: 0;">
                                     <p class="tour_data_">{{ i.start_date |to_jalali:'%Y/%m/%d' }}</p>
                                 </div>
-                                <div class="col-lg-2 tour_list">
+                                <div class="col-lg-1 tour_list">
                                     <p class="tour_data_">{{ i.end_date |to_jalali:'%Y/%m/%d' }}</p>
                                 </div>
                                 <div class="col-lg-2 tour_list">
-                                    <p class="tour_data_ ">{{ i.price | intcomma }} تومان </p>
+                                    <p class="tour_data_">
+                                        {% if i.price %}{{ i.price|intcomma }} {{ main_currency }}{% endif %}
+                                        {% if i.price and i.price_dollar %}<br>{% endif %}
+                                        {% if i.price_dollar %}{{ i.price_dollar|intcomma }} {{ foreign_currency }}{% endif %}
+                                        {% if not i.price and not i.price_dollar %}-{% endif %}
+                                    </p>
                                 </div>
                                 <div class="col-lg-2 tour_list">
+                                    <p class="tour_data_">
+                                        {% if i.infant_price %}{{ i.infant_price|intcomma }} {{ main_currency }}{% endif %}
+                                        {% if i.infant_price and i.infant_price_dollar %}<br>{% endif %}
+                                        {% if i.infant_price_dollar %}{{ i.infant_price_dollar|intcomma }} {{ foreign_currency }}{% endif %}
+                                        {% if not i.infant_price and not i.infant_price_dollar %}-{% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-lg-1 tour_list">
                                     <p class="tour_data_ ">
                                     {% if i.price_type == 'افزایش' %}
                                         <span style="color: red">{{ i.price_type }}</span>
@@ -140,6 +170,8 @@
                                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
                                             <ul class="link-list-plain">
                                                 <li><a href="/dashboard/tour_date_plan_update/{{ i.id }}">ویرایش</a>
+                                                </li>
+                                                <li><a href="{% url 'tour_date_plan_hotel_prices' i.id %}">تغییر قیمت</a>
                                                 </li>
                                                 <li><a style="color: red"
                                                        href="/dashboard/tour_date_plan_delete/{{ i.id }}">حذف</a></li>

@@ -118,10 +118,21 @@
                     <div class="col-lg-12">
                         <div class="category-box">
                             <p class="label-text">دسته‌بندی‌های تور</p>
-                            <div class="category-scroll">
+                            {% comment %} <div class="category-scroll">
                                 <ul>
                                     {{ form.custom_categories }}
                                 </ul>
+                            </div> {% endcomment %}
+                            <div class="category-select-box">
+                                {{ form.custom_categories }}
+                            
+                                <button type="button" id="clear-tour-categories" class="clear-category-btn">
+                                    پاک کردن دسته‌بندی‌ها
+                                </button>
+                            
+                                <small class="category-help-text">
+                                    برای انتخاب چند دسته‌بندی، کلید Ctrl را نگه دارید. برای خالی کردن کامل، روی دکمه پاک کردن بزنید.
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -255,6 +266,11 @@
                             تور ویژه {{ form.Feature }}
                         </p>
                     </div>
+                    <div class="col-lg-12">
+                        <p class="spacial_feat bg-gray-dim">
+                            نمایش تور تاریخ گذشته {{ form.force_pub }}
+                        </p>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -281,18 +297,35 @@
                 <div class="inner_section">
                     <p class=""> مدارک لازم تور <span class="required">*</span></p>
                     {{ form.documents }}
+                    <input type="hidden" id="id_documents_touched" name="documents_touched" value="0">
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="inner_section">
                     <p class=""> خدمات تور <span class="required">*</span></p>
                     {{ form.ShortDsc }}
+                    <input type="hidden" id="id_ShortDsc_touched" name="ShortDsc_touched" value="0">
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="inner_section">
                     <p class=""> توضیحات تکمیلی <span class="required">*</span></p>
                     {{ form.Description }}
+                    <input type="hidden" id="id_Description_touched" name="Description_touched" value="0">
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <p class=""> قوانین کنسلی </p>
+                    {{ form.cancel_policy }}
+                    <input type="hidden" id="id_cancel_policy_touched" name="cancel_policy_touched" value="0">
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="inner_section">
+                    <p class=""> درباره تور </p>
+                    {{ form.about_tour }}
+                    <input type="hidden" id="id_about_tour_touched" name="about_tour_touched" value="0">
                 </div>
             </div>
             <div class="col-lg-4">
@@ -322,4 +355,57 @@
         </div>
         {{ form.media }}
     </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tourForm = document.querySelector('form');
+            if (tourForm) {
+                tourForm.addEventListener('submit', function () {
+                    if (typeof CKEDITOR !== 'undefined') {
+                        for (var key in CKEDITOR.instances) {
+                            var instance = CKEDITOR.instances[key];
+                            instance.updateElement();
+                            var touchedInput = document.getElementById(key + '_touched');
+                            if (touchedInput) {
+                                touchedInput.value = instance.checkDirty() ? '1' : '0';
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        (function () {
+            function clearTourCategories() {
+                var select = document.getElementById('id_custom_categories');
+        
+                if (!select) {
+                    alert('فیلد دسته‌بندی پیدا نشد. id_custom_categories در صفحه وجود ندارد.');
+                    return;
+                }
+        
+                for (var i = 0; i < select.options.length; i++) {
+                    select.options[i].selected = false;
+                    select.options[i].removeAttribute('selected');
+                }
+        
+                select.selectedIndex = -1;
+                select.value = '';
+        
+                var event = new Event('change', { bubbles: true });
+                select.dispatchEvent(event);
+        
+                if (window.jQuery) {
+                    jQuery(select).val([]).trigger('change');
+                }
+            }
+        
+            document.addEventListener('click', function (e) {
+                if (e.target && e.target.id === 'clear-tour-categories') {
+                    e.preventDefault();
+                    clearTourCategories();
+                }
+            });
+        })();
+    </script>
 {% endblock %}

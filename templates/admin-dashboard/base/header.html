@@ -27,6 +27,7 @@
                     </div>
                 </div>
                 <ul class="nk-menu nk-menu-main ui-s2">
+                    {% if can.flights.any %}
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">مدیریت پروازها</span>
@@ -64,7 +65,9 @@
                         </ul>
                         <!-- .nk-menu-sub -->
                     </li>
+                    {% endif %}
                     <!-- .nk-menu-item -->
+                    {% if can.destinations.any %}
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">مدیریت مقاصد</span>
@@ -113,7 +116,9 @@
                         </ul>
                         <!-- .nk-menu-sub -->
                     </li>
+                    {% endif %}
                     <!-- .nk-menu-item -->
+                    {% if can.hotels.any %}
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">مدیریت هتل ها</span>
@@ -138,12 +143,15 @@
                         </ul>
                         <!-- .nk-menu-sub -->
                     </li>
+                    {% endif %}
                     <!-- .nk-menu-item -->
+                    {% if can.tours.any or can.packages.any %}
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">مدیریت تورها</span>
                         </a>
                         <ul class="nk-menu-sub">
+                            {% if can.packages.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="#" class="nk-menu-link nk-menu-toggle">
                                     <span class="nk-menu-text">مدیریت پکیج</span>
@@ -156,37 +164,58 @@
                                 </ul>
                                 <!-- .nk-menu-sub -->
                             </li>
+                            {% endif %}
                             <!-- .nk-menu-item -->
+                            {% if can.tours.add %}
                             <li class="nk-menu-item has-sub">
                                 <a href="{% url 'create-tour' %}" class="nk-menu-link ">
                                     <span class="nk-menu-text">ایجاد تور</span>
                                 </a>
                             </li>
+                            {% endif %}
                             <!-- .nk-menu-item -->
+                            {% if can.tours.any %}
                             <li class="nk-menu-item">
                                 <a href="{% url 'tour-list' %}" class="nk-menu-link">
                                     <span class="nk-menu-text">لیست تورها</span></a>
                             </li>
+                            {% endif %}
+                            {% if can.tours.add %}
                             <li class="nk-menu-item">
                                 <a href="{% url 'create-tour-menu' %}" class="nk-menu-link">
                                     <span class="nk-menu-text">منوی تور</span></a>
                             </li>
+                            {% endif %}
+                            {% if can.tours.any %}
                             <li class="nk-menu-item">
                                 <a href="{% url 'tour-menu-list' %}" class="nk-menu-link">
                                     <span class="nk-menu-text">لیست منوی تور</span></a>
                             </li>
+                            {% endif %}
+                            {% if can.tours.any %}
                             <li class="nk-menu-item">
                                 <a href="{% url 'list-tour-category' %}" class="nk-menu-link">
                                     <span class="nk-menu-text">لیست دسته بندی ها</span></a>
                             </li>
+                            {% endif %}
+                            {% if can.tours.add %}
                             <li class="nk-menu-item">
                                 <a href="{% url 'create-tour-category' %}" class="nk-menu-link">
                                     <span class="nk-menu-text">ایجاد دسته بندی جدید</span></a>
                             </li>
+                            {% endif %}
+                            {% if can.settings.any %}
+                            <li class="nk-menu-item">
+                                <a href="{% url 'api-partner-list' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">کلیدهای API آژانس‌ها</span></a>
+                            </li>                            
+                            {% endif %}
                         </ul>
                         <!-- .nk-menu-sub -->
                     </li>
+                    {% endif %}
                     <!-- .nk-menu-item -->
+                    {% if can.blog.any %}
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">مجله گردشگری</span>
@@ -226,12 +255,15 @@
                         </ul>
                         <!-- .nk-menu-sub -->
                     </li>
+                    {% endif %}
                     <!-- .nk-menu-item -->
+                    {% if can.pages.any or can.orders.any or can.reviews.any or can.memories.any or can.messages.any or can.visas.any or can.users.any or can.settings.any %}
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">کامپوننت ها</span>
                         </a>
                         <ul class="nk-menu-sub">
+                            {% if can.pages.any %}
                             <li class="nk-menu-item has-sub">
                                 <a class="nk-menu-link nk-menu-toggle">
                                     <span class="nk-menu-text">مدیریت صفحات</span>
@@ -248,7 +280,9 @@
                                 </ul>
                                 <!-- .nk-menu-sub -->
                             </li>
+                            {% endif %}
                             <!-- .nk-menu-item -->
+                            {% if can.pages.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="#" class="nk-menu-link nk-menu-toggle">
                                     <span class="nk-menu-text">مدیریت فایل ها</span></a>
@@ -272,6 +306,8 @@
                                 </ul>
                                 <!-- .nk-menu-sub -->
                             </li>
+                            {% endif %}
+                            {% if can.orders.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="#" class="nk-menu-link nk-menu-toggle">
                                     <span class="nk-menu-text">رزرواسیون</span>
@@ -284,6 +320,8 @@
                                 </ul>
                                 <!-- .nk-menu-sub -->
                             </li>
+                            {% endif %}
+                            {% if can.orders.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="#" class="nk-menu-link nk-menu-toggle">
                                     <span class="nk-menu-text">سفارشات</span>
@@ -296,7 +334,24 @@
                                 </ul>
                                 <!-- .nk-menu-sub -->
                             </li>
+                            {% endif %}
+                            {% if can.tours.any %}
+                            <li class="nk-menu-item">
+                                <a href="{% url 'tour-interest-list' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">درخواست اطلاع‌رسانی تور</span>
+                                </a>
+                            </li>
+                            {% endif %}
                             <!-- .nk-menu-item -->
+                            {% if can.reviews.any %}
+                            <li class="nk-menu-item">
+                                <a href="{% url 'tour-review-list' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">نظرات مشتریان</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            <!-- .nk-menu-item -->
+                            {% if can.settings.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="#" class="nk-menu-link nk-menu-toggle">
                                     <span class="nk-menu-text">واحد پولی</span>
@@ -310,7 +365,9 @@
                                 </ul>
                                 <!-- .nk-menu-sub -->
                             </li>
+                            {% endif %}
                             <!-- .nk-menu-item -->
+                            {% if can.memories.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="#" class="nk-menu-link nk-menu-toggle">
                                     <span class="nk-menu-text">بخش سفرنامه</span>
@@ -337,40 +394,52 @@
                                 </ul>
                                 <!-- .nk-menu-sub -->
                             </li>
+                            {% endif %}
                             <!-- .nk-menu-item -->
+                            {% if can.messages.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="{% url 'messages' %}" class="nk-menu-link">
                                     <span class="nk-menu-text">صندوق پیام های ورودی</span>
                                 </a>
                             </li>
+                            {% endif %}
+                            {% if can.messages.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="{% url 'subscribe' %}" class="nk-menu-link">
                                     <span class="nk-menu-text">لیست مخاطبین</span>
                                 </a>
                             </li>
+                            {% endif %}
+                            {% if can.settings.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="{% url 'main_page_settings' 1 %}" class="nk-menu-link">
                                     <span class="nk-menu-text">متن صفحه تمام تورها</span>
                                 </a>
                             </li>
+                            {% endif %}
+                            {% if can.settings.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="{% url 'create_home_faq' %}" class="nk-menu-link">
                                     <span class="nk-menu-text">پرسش و پاسخ صفحه اصلی</span>
                                 </a>
                             </li>
+                            {% endif %}
+                            {% if can.visas.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="/user/applications" class="nk-menu-link">
                                     <span class="nk-menu-text">لیست درخواست های ویزا</span>
                                 </a>
                             </li>
+                            {% endif %}
                             <!-- .nk-menu-item -->
+                            {% if can.users.any %}
                             <li class="nk-menu-item has-sub">
                                 <a href="#" class="nk-menu-link nk-menu-toggle">
                                     <span class="nk-menu-text">مدیریت کاربران</span>
                                 </a>
                                 <ul class="nk-menu-sub">
                                     <li class="nk-menu-item">
-                                        <a class="nk-menu-link"><span
+                                        <a href="{% url 'staff-create' %}" class="nk-menu-link"><span
                                                 class="nk-menu-text">ایجاد کاربر</span></a>
                                     </li>
                                     <!-- .nk-menu-item -->
@@ -378,10 +447,21 @@
                                         <a href="{% url 'user_list' %}" class="nk-menu-link"><span
                                                 class="nk-menu-text">لیست کاربران</span></a>
                                     </li>
+                                    {% if can.staff.any %}
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'staff-list' %}" class="nk-menu-link"><span
+                                                class="nk-menu-text">کاربران پشتیبانی</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'staff-change-log' %}" class="nk-menu-link"><span
+                                                class="nk-menu-text">تاریخچه تغییرات</span></a>
+                                    </li>
+                                    {% endif %}
                                     <!-- .nk-menu-item -->
                                 </ul>
                                 <!-- .nk-menu-sub -->
                             </li>
+                            {% endif %}
                             <!-- .nk-menu-item -->
 {#                            <li class="nk-menu-item has-sub">#}
 {#                                <a href="#" class="nk-menu-link nk-menu-toggle">#}
@@ -400,6 +480,7 @@
                         </ul>
                         <!-- .nk-menu-sub -->
                     </li>
+                    {% endif %}
                     <!-- .nk-menu-item -->
                 </ul>
                 <!-- .nk-menu -->
@@ -407,6 +488,74 @@
             <!-- .nk-header-menu -->
             <div class="nk-header-tools">
                 <ul class="nk-quick-nav">
+                    
+                    {% if request.user.is_superuser %}
+                    <li class="dropdown notification-dropdown me-n1" id="notif-dropdown">
+                        <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-bs-toggle="dropdown" onclick="document.getElementById('notif-badge').style.display='none'">
+                            <div class="icon-status icon-status-info" style="position:relative;display:inline-block;">
+                                <em class="icon ni ni-bell"></em>
+                                {% if notif_total > 0 %}
+                                <span id="notif-badge" style="position:absolute;top:-6px;right:-6px;background:#e11d48;color:#fff;border-radius:50%;font-size:10px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-weight:bold;">{{ notif_total }}</span>
+                                {% endif %}
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-xl dropdown-menu-end dropdown-menu-s1" style="min-width:260px;direction:rtl;">
+                            <div class="dropdown-head" style="padding:12px 16px;border-bottom:1px solid #e5e7eb;">
+                                <span style="font-weight:bold;font-size:14px;">اطلاع‌رسانی‌های امروز</span>
+                            </div>
+                            <div class="dropdown-body">
+                                {% if notif_total == 0 %}
+                                <div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px;">
+                                    هیچ مورد جدیدی ثبت نشده
+                                </div>
+                                {% else %}
+                                <ul class="list-group list-group-flush" style="font-size:13px;">
+                                    {% if notif_interest > 0 %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-2">
+                                        <a href="{% url 'tour-interest-list' %}" style="color:inherit;text-decoration:none;">
+                                            📋 درخواست اطلاع‌رسانی
+                                        </a>
+                                        <span class="badge bg-danger rounded-pill">{{ notif_interest }}</span>
+                                    </li>
+                                    {% endif %}
+                                    {% if notif_order > 0 %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-2">
+                                        <a href="{% url 'order-list' %}" style="color:inherit;text-decoration:none;">
+                                            🏨 رزرو جدید
+                                        </a>
+                                        <span class="badge bg-danger rounded-pill">{{ notif_order }}</span>
+                                    </li>
+                                    {% endif %}
+                                    {% if notif_contact > 0 %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-2">
+                                        <a href="{% url 'messages' %}" style="color:inherit;text-decoration:none;">
+                                            📧 پیام تماس با ما
+                                        </a>
+                                        <span class="badge bg-danger rounded-pill">{{ notif_contact }}</span>
+                                    </li>
+                                    {% endif %}
+                                    {% if notif_hotel_comment > 0 %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-2">
+                                        <a href="{% url 'comment_list' %}" style="color:inherit;text-decoration:none;">
+                                            🏨 کامنت جدید هتل
+                                        </a>
+                                        <span class="badge bg-danger rounded-pill">{{ notif_hotel_comment }}</span>
+                                    </li>
+                                    {% endif %}
+                                    {% if notif_blog_comment > 0 %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-2">
+                                        <a href="{% url 'comments_list' %}" style="color:inherit;text-decoration:none;">
+                                            📝 کامنت جدید مجله
+                                        </a>
+                                        <span class="badge bg-danger rounded-pill">{{ notif_blog_comment }}</span>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}                    
                     <!-- .dropdown -->
                     <li class="dropdown user-dropdown order-sm-first">
                         <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

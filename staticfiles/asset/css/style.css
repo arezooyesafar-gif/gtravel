@@ -1,0 +1,451 @@
+@font-face {
+    font-family: 'Yekan';
+    src: url('fonts/WebYekan.eot');
+    src: url('fonts/WebYekan.eot?#iefix') format('embedded-opentype'),
+    url('fonts/WebYekan.woff') format('woff'),
+    url('fonts/WebYekan.ttf') format('truetype'),
+    url('fonts/WebYekan.svg#WebYekan') format('svg');
+}
+
+body {
+    background: #F3F5FA;
+    direction: rtl;
+    background-position: center center;
+    background-blend-mode: overlay;
+    background-size: cover;
+}
+
+.container {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-box {
+    width: 600px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ccc;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    position: relative;
+    top: 100px;
+    animation-name: fadein;
+    animation-duration: 3s;
+    padding-bottom: 10px;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.login-logo {
+    background-image: url(/static/asset/images/logo-horzental.png);
+    background-position: center;
+    background-size: contain;
+    height: 130px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: 20px;
+    width: 245px;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+p.login-heading-txt {
+    text-align: center;
+    padding: 0;
+    font-family: Yekan;
+    color: #6a6767;
+    font-weight: 600;
+    margin-top: 0;
+    display: block;
+}
+
+input.username-in {
+    width: 250px;
+    height: 35px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    background: #efefef;
+}
+
+input.password-in {
+    width: 250px;
+    height: 35px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    background: #efefef;
+}
+
+.username-in::placeholder {
+    font-size: 12px;
+    text-align: center;
+    font-family: Yekan;
+}
+
+.password-in::placeholder {
+    font-size: 12px;
+    text-align: center;
+    font-family: Yekan;
+}
+
+.user-in {
+    margin-bottom: 10px;
+}
+
+.pass-in {
+    margin-bottom: 10px;
+}
+
+button.login-btn {
+    background: #f0bb40;
+    border: 1px solid #efefef;
+    font-family: Yekan;
+    padding: 10px;
+    line-height: 17px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+a.login-btn {
+    text-decoration: none;
+    /*! background: #4caf50; */
+    border-bottom: 1px solid #060606;
+    font-family: Yekan;
+    padding: 10px;
+    line-height: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 91%;
+    margin-bottom: 15px;
+    cursor: pointer;
+    color: #040404;
+}
+
+.btn-block {
+    display: inline-block;
+    width: 81px;
+    position: relative;
+    right: 25px;
+}
+
+button.login-btn:hover {
+    background: #00bcd4;
+    transition-duration: 0.7s;
+    border: 1px solid #3e9f9d;
+}
+
+@media screen and (max-width: 1000px) {
+    body {
+        background-size: contain;
+    }
+
+    .container {
+        width: 90%;
+    }
+
+    .login-box {
+        width: 95%;
+    }
+
+    input.username-in {
+        width: 80%;
+    }
+
+    input.password-in {
+        width: 80%;
+    }
+
+    .btn-block {
+        width: 80%;
+    }
+}
+
+.employee {
+    display: inline-block;
+    width: 49%;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.helpseeker {
+    display: inline-block;
+    width: 49%;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.employee a {
+    font-family: yekan;
+    text-decoration: none;
+    color: #fff;
+    background: #19b0ae;
+    border-radius: 5px;
+    cursor: pointer;
+    line-height: 40px;
+    width: 97%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.helpseeker a {
+    font-family: yekan;
+    text-decoration: none;
+    color: #fff;
+    background: #8bc34a;
+    border-radius: 5px;
+    cursor: pointer;
+    line-height: 40px;
+    width: 97%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login {
+    display: block;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.login a {
+    background: #46cbc9;
+    line-height: 45px;
+    font-family: 'Yekan';
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.main-register-section0 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 98%;
+}
+.row-1, .row-2 {
+    margin: 15px;
+}
+
+p.name-label {
+    margin: 0;
+    margin-bottom: 10px;
+    font-family: 'Yekan';
+    padding-right: 5px;
+    font-size: 13px;
+}
+.inline-part {
+    display: inline-block !important;
+    width: 49% !important;
+}
+
+.name-input {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+span.required {
+    color: #f44336;
+    font-family: fantasy;
+    vertical-align: bottom;
+    padding-right: 2px;
+}
+.name-field {
+    line-height: 15px;
+    font-family: yekan;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+.selector {
+    padding: 7px;
+}
+select#id_BranchName {
+    padding: 5.5px;
+    font-size: 13px;
+    appearance: none;
+    background-image: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E);
+    background-repeat: no-repeat, repeat;
+    background-position: left 1em top 50%, 0 0;
+    background-size: 0.65em auto, 100%;
+    padding: 10px;
+    color: #8b8585;
+}
+.login-box.register {
+    top: 50px;
+}
+p.confirm-registration {
+    font-family: 'Yekan';
+    text-align: justify;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 30px;
+    background: #d8efbc;
+    padding: 15px;
+    border-radius: 5px;
+}
+a.login-link {
+    display: block;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-family: 'Yekan', serif;
+    text-decoration: none;
+    cursor: pointer;
+    background: #00bcd4;
+    padding: 5px 20px;
+    border-radius: 5px;
+    color: #fff;
+}
+.text-input-field {font-size: 14px;font-family: 'Yekan';padding: 5px;width: 90%;text-align: center;border: 1px solid #ccc;border-radius: 5px;}
+form {text-align: center;}
+label {
+    font-family: 'Yekan';
+    font-size: 12px;
+}
+
+input#id_BranchManager {
+    vertical-align: middle;
+}
+
+.name-input.set-manager {
+    display: inline-block;
+    width: 35%;
+}
+.name-input.select-branch {
+    display: inline-block;
+    width: 60%;
+}
+select#id_BranchName {
+    width: 100%;
+    font-family: 'Yekan';
+}
+.text-input-field::placeholder {
+    font-size: 12px;
+}
+p.warning {
+    text-align: center;
+    background: orange;
+    width: 57%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Yekan';
+    color: #fff;
+    line-height: 35px;
+    border-radius: 5px;
+}
+.container.login_page {
+  width: 600px;
+  background: #fff;
+  margin-top: 200px;
+}
+.login_image_ img {
+  position: absolute;
+  /*top: 92px;*/
+}
+
+.login_form_ {
+  margin-top: 50px;
+  margin-right: 75px;
+  text-align: right;
+}
+input.username-in.register {
+  width: 91.5%;
+  margin-left: 0;
+  margin-top: 20px;
+}
+input.username-in.reg {
+  margin-top: 5px;
+  width: 90%;
+  position: relative;
+  right: 30px;
+}
+input.username-in.reg_left {
+  margin-top: 5px;
+  width: 100%;
+}
+.container.login_page.register_form {
+  width: 760px;
+  border-radius: 15px;
+}
+.login-btn.register_confirm {
+  position: relative;
+  right: 7px;
+  margin-top: 5px;
+  line-height: 12px;
+  padding: 8px;
+  width: 70%;
+}
+.login_image_.register_page img {
+  top: 143px;
+}
+
+input.username-in.otp_varify {
+  margin-top: 95px;
+  margin-right: 110px;
+}
+.login-btn.otp_varify {
+  position: relative;
+  right: 55px;
+  width: 80px;
+  line-height: 12px;
+  margin-top: 5px;
+}
+.login_image_.otp_varify img {
+  top: 82px;
+}
+.username-in.register.addrs {
+  margin-top: 5px;
+}
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: #efefef;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  top: 25px;
+}
+.user_avatar {
+  text-align: center;
+  margin-top: 50px;
+  border-left: 1px solid #efefef;
+  height: 200px;
+}
+.user_full_name {
+  margin-top: 35px;
+}
+.success {
+  color: green;
+  font-size: 11px;
+}

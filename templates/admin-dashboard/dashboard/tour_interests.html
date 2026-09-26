@@ -1,0 +1,37 @@
+{% if tour_interests %}
+<div class="col-lg-12 mt-4">
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <div class="card-title-group align-start mb-3">
+                <div class="card-title">
+                    <h6 class="subtitle">درخواست اطلاع‌رسانی تور ({{ tour_interests|length }} نفر)</h6>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>نام</th>
+                            <th>نام خانوادگی</th>
+                            <th>موبایل</th>
+                            <th>صفحه تور</th>
+                            <th>تاریخ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in tour_interests %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.family }}</td>
+                            <td style="direction:ltr; text-align:right;">{{ item.phone }}</td>
+                            <td>{{ item.page_slug }} ({{ item.page_type }})</td>
+                            <td>{{ item.created_at|date:"Y/m/d H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

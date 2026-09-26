@@ -1,6 +1,7 @@
 ﻿{% load humanize %}
 {% load static %}
 {% load jalali_tags %}
+{% load responsive_img %}
 <!DOCTYPE html>
 <html lang="fa-IR" dir="rtl">
 <head>
@@ -10,7 +11,7 @@
     {% elif city %}
         <link rel="canonical" href="https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}">
     {% else %}
-        <link rel="canonical" href="https://arezoosafar.com/all-hotel/>
+        <link rel="canonical" href="https://arezoosafar.com/all-hotel/">
     {% endif %}
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,7 +27,52 @@
               content="لیست هتل های داخلی,لیست هتل های خارجی,هتل های روسیه,هتل های ترکیه,هتل های دبی,هتل های ارزان قیمت,رزور هتل,آرزوی سفر">
     {% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% include 'ui/base/head.html' %}
+    {% if country.country_iamge %}
+    {% srcset_budget country.country_iamge '480,768' as banner_srcset %}
+    <link rel="preload" as="image" href="{{ country.country_iamge.url }}" imagesrcset="{{ banner_srcset }}" imagesizes="(max-width: 991px) calc(100vw - 32px), 1230px" fetchpriority="high">
+    {% elif city.cityImg %}
+    {% srcset_budget city.cityImg '480,768' as banner_srcset %}
+    <link rel="preload" as="image" href="{{ city.cityImg.url }}" imagesrcset="{{ banner_srcset }}" imagesizes="(max-width: 991px) calc(100vw - 32px), 1230px" fetchpriority="high">
+    {% endif %}
+    {% include 'ui/base/head.html' with skip_base_meta=1 skip_material_icons=1 skip_fontawesome=1 delay_third_party=1 late_scripts=1 skip_popup_css=1 %}
+    <style>
+        @font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:900;font-display:block;src:url("/static/asset/css/webfonts/fa-hotel-solid.woff") format("woff")}
+        @font-face{font-family:"Font Awesome 6 Brands";font-style:normal;font-weight:400;font-display:block;src:url("/static/asset/css/webfonts/fa-blog-brands.woff") format("woff")}
+        @font-face{font-family:FontAwesome;font-display:block;src:url("/static/asset/css/webfonts/fa-hotel-solid.woff") format("woff")}
+        .fa{font-family:var(--fa-style-family,"Font Awesome 6 Free");font-weight:var(--fa-style,900)}
+        .fa,.fa-brands,.fa-solid,.fab,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:var(--fa-display,inline-block);font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
+        .fa-solid,.fas{font-family:"Font Awesome 6 Free";font-weight:900}
+        .fa-brands,.fab{font-family:"Font Awesome 6 Brands";font-weight:400}
+        .fa-bars:before{content:"\f0c9"}
+        .fa-user-circle:before{content:"\f2bd"}
+        .fa-calendar:before{content:"\f133"}
+        .fa-money-check-dollar:before{content:"\f53d"}
+        .fa-money-bill:before{content:"\f0d6"}
+        .fa-calendar-week:before{content:"\f784"}
+        .fa-map-marker:before{content:"\f041"}
+        .fa-phone-volume:before{content:"\f2a0"}
+        .fa-whatsapp:before{content:"\f232"}
+        .fa-instagram:before{content:"\f16d"}
+        .fa-telegram:before{content:"\f2c6"}
+        img.city-full-img, .country_image img, .cat-img img{object-fit:cover}
+        .cat-img img{height:auto}
+        .warp h5.blog_sec_title{color:#306f95}
+        #hotels-list p.title-cat.hotel_list.en-title{color:#757575}
+        #hotels-list .hotel_list.hotel_data_{color:#747474}
+        p.head-desc{color:#007da6}
+        .country-desc [style*="color:#f39c12"], .country-desc [style*="color: #f39c12"], .country-desc [style*="color:#F39C12"], .country-desc [style*="color: rgb(243, 156, 18)"]{color:#9a6108!important}
+        .country-desc [style*="color:#e67e22"], .country-desc [style*="color: #e67e22"], .country-desc [style*="color:#E67E22"], .country-desc [style*="color: rgb(230, 126, 34)"]{color:#a85913!important}
+        p.footer_menu_header{color:#0088b5}
+        .owl-one:not(.owl-loaded){display:block;overflow:hidden;white-space:nowrap}
+        .owl-one:not(.owl-loaded) > .item{display:inline-block;vertical-align:top;white-space:normal;position:relative;min-height:1px;width:calc((100% - 30px) / 4);margin-left:10px}
+        .owl-one:not(.owl-loaded) > .item:last-child{margin-left:0}
+        .owl-one:not(.owl-loaded) > .item img{display:block;width:100%;border-radius:15px 15px 0 0}
+        .owl-one.pre-dots-lg:not(.owl-loaded){padding-bottom:36px}
+        @media (max-width:999.98px){
+        .owl-one:not(.owl-loaded) > .item{width:calc((100% - 5px) / 1.5)}
+        .owl-one.pre-dots-sm:not(.owl-loaded){padding-bottom:36px}
+        }
+    </style>
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -54,20 +100,13 @@
                     "breadcrumb": {
                         "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#breadcrumb"
                     },
-                    {% if type == "country" %}
+                    {% if all_faqs %}
                     "mainEntity": [
-                    {% for q in all_faqs %}
+                        {% for q in all_faqs %}
                         {
-                            "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#faq-question-{{forloop.counter}}"
+                            "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#faq-question-{{ forloop.counter }}"
                         }{% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                    ],
-                    {% else %}
-                    "mainEntity": [
-
-                        {
-                            "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#faq-question"
-                        }
+                        {% endfor %}
                     ],
                     {% endif %}
                     "inLanguage": "fa-IR",
@@ -128,48 +167,24 @@
                     "publisher": {
                         "@id": "https://arezoosafar.com/#organization"
                     }
-                },
-                {% comment %} {% if all_faqs|length > 0 %} {% endcomment %}
-                {% if type == "country" %}
+                }{% if all_faqs %},{% endif %}
+                {% if all_faqs %}
                 {% for q in all_faqs %}
                 {
                     "@type": "Question",
-                    "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{forloop.counter}}",
-                    "position": {{forloop.counter}},
-                    "url": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{forloop.counter}}",
-                    {% if q.question %}
-                    "name": "{{ q.question }}",                   
-                    {% else %}
-                    "name": "{{ q.Question }}",                    
-                    {% endif %}
-                    "answerCount": {{forloop.counter}},
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        {% if q.answer %}
-                        "text": "{{ q.answer|safe }}",                
-                        {% else %}
-                        "text": "{{ q.Answer|safe }}",               
-                        {% endif %}
-                        "inLanguage": "fa-IR"
-                    },
-                    "inLanguage": "fa-IR"
-                },
-                {% endfor %}
-                {% else %}
-                {
-                    "@type": "Question",
-                    "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#faq-question",
-                    "position": 1,
-                    "url": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#faq-question",
-                    "name": "test",
+                    "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#faq-question-{{ forloop.counter }}",
+                    "position": {{ forloop.counter }},
+                    "url": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#faq-question-{{ forloop.counter }}",
+                    "name": "{% if q.question %}{{ q.question|escapejs }}{% else %}{{ q.Question|escapejs }}{% endif %}",
                     "answerCount": 1,
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "تست",                
+                        "text": "{% if q.answer %}{{ q.answer|escapejs }}{% else %}{{ q.Answer|escapejs }}{% endif %}",
                         "inLanguage": "fa-IR"
                     },
                     "inLanguage": "fa-IR"
-                }
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
                 {% endif %}
             ]
         {% elif country %}
@@ -196,19 +211,13 @@
             "breadcrumb": {
                 "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#breadcrumb"
             },
-            {% if type == "country" %}
+            {% if all_faqs %}
             "mainEntity": [
-            {% for q in all_faqs %}
+                {% for q in all_faqs %}
                 {
-                    "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{forloop.counter}}"
+                    "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{ forloop.counter }}"
                 }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-            ],
-            {% else %}
-            "mainEntity": [
-                {
-                    "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question"
-                }
+                {% endfor %}
             ],
             {% endif %}
             "inLanguage": "fa-IR",
@@ -264,48 +273,24 @@
             "publisher": {
                 "@id": "https://arezoosafar.com/#organization"
             }
-        },
-        {% if all_faqs|length > 0 %}
+        }{% if all_faqs %},{% endif %}
+        {% if all_faqs %}
         {% for q in all_faqs %}
         {
             "@type": "Question",
-            "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{forloop.counter}}",
-            "position": {{forloop.counter}},
-            "url": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{forloop.counter}}",
-            {% if q.question %}
-            "name": "{{ q.question }}",                   
-            {% else %}
-            "name": "{{ q.Question }}",                    
-            {% endif %}
-            "answerCount": {{forloop.counter}},
-            "acceptedAnswer": {
-                "@type": "Answer",
-                {% if q.answer %}
-                "text": "{{ q.answer|safe }}",                
-                {% else %}
-                "text": "{{ q.Answer|safe }}",               
-                {% endif %}
-                "inLanguage": "fa-IR",
-            }
-            "inLanguage": "fa-IR"
-        {% endfor %}
-        {% else %}
-        {
-            "@type": "Question",
-            "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question",
-            "position": 1,
-            "url": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question",
-            "name": "test",
+            "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{ forloop.counter }}",
+            "position": {{ forloop.counter }},
+            "url": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#faq-question-{{ forloop.counter }}",
+            "name": "{% if q.question %}{{ q.question|escapejs }}{% else %}{{ q.Question|escapejs }}{% endif %}",
             "answerCount": 1,
             "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "تست",                
+                "text": "{% if q.answer %}{{ q.answer|escapejs }}{% else %}{{ q.Answer|escapejs }}{% endif %}",
                 "inLanguage": "fa-IR"
-             },
+            },
             "inLanguage": "fa-IR"
-        }
-        ]
-      }
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
         {% endif %}
         ]
         {% else %}
@@ -332,13 +317,13 @@
             "breadcrumb": {
                 "@id": "https://arezoosafar.com/all-hotel#breadcrumb"
             },
-            {% if all_faqs|length > 0 %}
+            {% if all_faqs %}
             "mainEntity": [
-            {% for q in all_faqs %}
+                {% for q in all_faqs %}
                 {
-                    "@id": "https://arezoosafar.com/all-hotel#faq-question-{{forloop.counter}}"
+                    "@id": "https://arezoosafar.com/all-hotel#faq-question-{{ forloop.counter }}"
                 }{% if not forloop.last %},{% endif %}
-            {% endfor %}
+                {% endfor %}
             ],
             {% endif %}
             "inLanguage": "fa-IR",
@@ -388,30 +373,24 @@
                 "@id": "https://arezoosafar.com/#organization"
             }
         }{% if all_faqs|length > 0 %},{% endif %}
+        {% if all_faqs %}
         {% for q in all_faqs %}
         {
             "@type": "Question",
-            "@id": "https://arezoosafar.com/all-hotel#faq-question-{{forloop.counter}}",
-            "position": {{forloop.counter}},
-            "url": "https://arezoosafar.com/all-hotel#faq-question-{{forloop.counter}}",
-            {% if q.question %}
-            "name": "{{ q.question }}",                   
-            {% else %}
-            "name": "{{ q.Question }}",                    
-            {% endif %}
-            "answerCount": {{forloop.counter}},
+            "@id": "https://arezoosafar.com/all-hotel#faq-question-{{ forloop.counter }}",
+            "position": {{ forloop.counter }},
+            "url": "https://arezoosafar.com/all-hotel#faq-question-{{ forloop.counter }}",
+            "name": "{% if q.question %}{{ q.question|escapejs }}{% else %}{{ q.Question|escapejs }}{% endif %}",
+            "answerCount": 1,
             "acceptedAnswer": {
                 "@type": "Answer",
-                {% if q.answer %}
-                "text": "{{ q.answer|safe }}",                
-                {% else %}
-                "text": "{{ q.Answer|safe }}",               
-                {% endif %}
-                "inLanguage": "fa-IR",
+                "text": "{% if q.answer %}{{ q.answer|escapejs }}{% else %}{{ q.Answer|escapejs }}{% endif %}",
+                "inLanguage": "fa-IR"
             },
-            "inLanguage": "fa-IR",
+            "inLanguage": "fa-IR"
         }{% if not forloop.last %},{% endif %}
         {% endfor %}
+        {% endif %}
         ]
         {% endif %}
         }
@@ -429,31 +408,37 @@
 <div class="warp">
    {# {% include 'ui/base/preloader.html' %} #}
     {% csrf_token %}
+    <main>
     {% if countries or cities or city %}
         <section class="country_list hotel_list_">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 hotel-list-filter" style="margin-top: 90px;">
                         {% if country.country_iamge %}
-                            <img loading="lazy" loading="lazy" class="city-full-img" src="{{ country.country_iamge.url }}">
+                            <img class="city-full-img" src="{{ country.country_iamge.url }}" alt="هتل های {{ country }}" {% img_dimensions country.country_iamge %}{% if banner_srcset %} srcset="{{ banner_srcset }}" sizes="(max-width: 991px) calc(100vw - 32px), 1230px"{% endif %} fetchpriority="high" decoding="async">
                         {% elif city %}
-                            <img loading="lazy" loading="lazy" class="city-full-img" src="{{ city.cityImg.url }}">
+                            <img class="city-full-img" src="{{ city.cityImg.url }}" alt="هتل های {{ city }}" {% img_dimensions city.cityImg %}{% if banner_srcset %} srcset="{{ banner_srcset }}" sizes="(max-width: 991px) calc(100vw - 32px), 1230px"{% endif %} fetchpriority="high" decoding="async">
                         {% else %}
-                            <img loading="lazy" loading="lazy" class="city-full-img" src="/media/hotels.jpg">
+                            <img class="city-full-img" src="/media/hotels.jpg" alt="هتل ها" fetchpriority="high" decoding="async">
                         {% endif %}
                     </div>
                     <div class="hotel-filter hotel-list">
                         <form method="get" action="/hotel_search">
+                            {% if country %}
+                                <input type="hidden" name="countryname" value="{{ country.id }}">
+                            {% elif city %}
+                                <input type="hidden" name="cityname" value="{{ city.id }}">
+                            {% endif %}
                             <div class="row filter">
                                 <div class="col-lg-3">
-                                    <input type="text" class="form-control" placeholder="نام هتل" name="hotelname">
+        }{% if all_faqs %},{% endif %}
                                 </div>
                                 <div class="col-lg-3">
                                     <input type="text" class="form-control" placeholder="نام انگلیسی هتل"
-                                           name="hotelnameen">
+                                           name="hotelnameen" aria-label="نام انگلیسی هتل">
                                 </div>
                                 <div class="col-lg-3">
-                                    <select class="form-select" name="rating", style="padding-right: 35px;">
+                                    <select class="form-select" name="rating" style="padding-right: 35px;" aria-label="انتخاب ستاره هتل">
                                         <option value="">انتخاب ستاره هتل</option>
                                         <option value="3">3 ستاره</option>
                                         <option value="4">4 ستاره</option>
@@ -482,7 +467,7 @@
                         میتونی هتل هاش رو ببینی.
                     </p>
                 {% endif %}
-                <div class="owl-one owl-carousel owl-theme">
+                <div class="owl-one owl-carousel owl-theme{% if cities|length > 4 %} pre-dots-lg{% endif %}{% if cities|length > 1 %} pre-dots-sm{% endif %}">{% spaceless %}
                     {% if countries %}
                         {% for countries,hotel_ctry in countries %}
                             <div class="item">
@@ -512,8 +497,8 @@
                                 <div class="country_list_">
                                     <div class="country_image">
                                         <a href="{% url 'all-hotel-city-list' ctys.id ctys.slug %}">
-                                            <img loading="lazy" alt="{{ ctys.Name }}" class=""
-                                                 src="{{ ctys.cityImg.url }}">
+                                            <img loading="lazy" decoding="async" alt="{{ ctys.Name }}" class=""
+                                                 src="{{ ctys.cityImg.url }}" {% img_dimensions ctys.cityImg %} srcset="{% srcset_budget ctys.cityImg '480,768' %}" sizes="(max-width: 999px) 70vw, 310px">
                                         </a>
                                     </div>
                                     <div class="country_name_">
@@ -535,26 +520,36 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                </div>
+                {% endspaceless %}</div>
             </div>
         </section>
     {% endif %}
     <div class="container col-sm-12 col-lg-12">
         <div class="hotel_list_title_">
             {% if country %}
-                <h1 class="blog_sec_title">هتل های {{ country }}</h1>
-                <p class="spacial_tour_subtitle_">
-                    لیست تمام هتل های کشور
-                    {{ country }}
-                    رو هم اینجا میتونی ببینی.
-                </p>
+                <div class="tour-title-breadcrumb-row">
+                    <div class="tour-page-title-box">
+                        <h1 class="blog_sec_title tour-page-title">هتل های {{ country }}</h1>
+                        <p class="spacial_tour_subtitle_">
+                            لیست تمام هتل های کشور
+                            {{ country }}
+                            رو هم اینجا میتونی ببینی.
+                        </p>
+                    </div>
+                    {% include 'ui/base/hotel-breadcrumb.html' with crumb_country=country %}
+                </div>
             {% elif city %}
-                <h1 class="blog_sec_title">هتل های {{ city }}</h1>
-                <p class="spacial_tour_subtitle_">
-                    لیست تمام هتل های شهر
-                    {{ city }}
-                    رو هم اینجا میتونی ببینی.
-                </p>
+                <div class="tour-title-breadcrumb-row">
+                    <div class="tour-page-title-box">
+                        <h1 class="blog_sec_title tour-page-title">هتل های {{ city }}</h1>
+                        <p class="spacial_tour_subtitle_">
+                            لیست تمام هتل های شهر
+                            {{ city }}
+                            رو هم اینجا میتونی ببینی.
+                        </p>
+                    </div>
+                    {% include 'ui/base/hotel-breadcrumb.html' with crumb_country=city.CountryName crumb_city=city %}
+                </div>
             {% else %}
                 <h5 class="blog_sec_title">معرفی هتل ها</h5>
                 <p class="spacial_tour_subtitle_">سفر هیجان انگیز شما از اینجا شروع میشود. کافی است یک مقصد را انتخاب
@@ -564,13 +559,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <div id="hotels-list" class="row">
-
+                    {% if Hotels and Hotels.number == 1 %}{% include 'ajax/country-hotel-list.html' with hotels=Hotels %}{% endif %}
                 </div>
             </div>
         </div>
     </div>
     {% include 'ui/base/hotel-slagon.html' %}
     {% include 'ui/base/faq.html' %}
+    </main>
     {% include 'ui/base/footer.html' %}
 </div>
 <script>
@@ -589,8 +585,24 @@
     var tour_id = '{{ Tour.id }}'
     var tour_slug = '{{ Tour.Slug }}'
     var tour_menu = '{{ Menu.slug }}'
-
+    var category_slug = '{{ category.slug|default:"" }}'
 </script>
-{% include 'ui/base/plugins.html' %}
+<script>
+    window.__afterJquery = window.__afterJquery || [];
+    window.__afterJquery.push(function () {
+        var box = document.getElementById('hotels-list');
+        if (!box || !box.querySelector('.hotel-cat')) return;
+        var skipped = false;
+        jQuery.ajaxPrefilter(function (options, original, xhr) {
+            if (skipped) return;
+            var body = String(original.data || options.data || '');
+            if (/\/(country|city)_hotels_ajax$/.test(options.url || '') && /"page":1[,}]/.test(body)) {
+                skipped = true;
+                xhr.abort();
+            }
+        });
+    });
+</script>
+{% include 'ui/base/plugins.html' with late_scripts=1 %}
 </body>
 </html>

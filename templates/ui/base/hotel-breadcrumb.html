@@ -1,0 +1,30 @@
+<nav class="{{ crumb_class|default:'tour-breadcrumb-ui' }}" aria-label="breadcrumb">
+    <a href="/" class="breadcrumb-home-link">
+        <img src="/media/favicon-60x60.png" width="20" height="20" alt="" aria-hidden="true">
+        <span>آرزوی سفر</span>
+    </a>
+    {% if not crumb_hotel %}
+    <span class="breadcrumb-separator" aria-hidden="true">&gt;</span>
+    <a href="{% url 'all-hotel' %}">هتل</a>
+    {% endif %}
+    {% if crumb_country %}
+    <span class="breadcrumb-separator" aria-hidden="true">&gt;</span>
+    {% if crumb_city or crumb_hotel %}
+    <a href="{% url 'all-hotel-list' crumb_country.id crumb_country.slug %}">هتل های {{ crumb_country.TitleC }}</a>
+    {% else %}
+    <span aria-current="page">هتل های {{ crumb_country.TitleC }}</span>
+    {% endif %}
+    {% endif %}
+    {% if crumb_city %}
+    <span class="breadcrumb-separator" aria-hidden="true">&gt;</span>
+    {% if crumb_hotel %}
+    <a href="{% url 'all-hotel-city-list' crumb_city.id crumb_city.slug %}">هتل های {{ crumb_city.Name }}</a>
+    {% else %}
+    <span aria-current="page">هتل های {{ crumb_city.Name }}</span>
+    {% endif %}
+    {% endif %}
+    {% if crumb_hotel %}
+    <span class="breadcrumb-separator" aria-hidden="true">&gt;</span>
+    <span aria-current="page">{{ crumb_hotel.HotelName }}</span>
+    {% endif %}
+</nav>

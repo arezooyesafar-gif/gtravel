@@ -1,0 +1,17 @@
+<div class="citt_list">
+    <a onclick="backToHotelList({{ country.menu_position }})" class="all_tour_country">
+    بازگشت
+    </a>
+    <a href="{% url 'all-hotel-list' country.id country.slug %}">
+    <img loading="lazy" class="country_flag_menu" src="{{country.Flagimg.url}}">
+                                                    <span class="city_title_menu">هتل های {{ country.TitleC }}</span>
+    </a>
+        {% for i in hotel_cities %}
+            <a href="{% url 'all-hotel-city-list' i.id i.slug %}">
+                <li class="city_manu_name">
+                    هتل های {{ i.Name }}
+                </li>
+            </a>
+        {% endfor %}
+    </div>
+    

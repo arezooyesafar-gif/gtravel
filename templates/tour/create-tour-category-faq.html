@@ -1,0 +1,142 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                افزودن پرسش و پاسخ برای دسته بندی
+                                <span class="change down">{{ category.name }}</span>
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'list-tour-category' %}" class="link">بازگشت به لیست دسته بندی ها </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-lg-4 m-b-5">
+            <div class="card">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="country_data">
+                            <h6 id="country_data" data-id="{{ category.id }}" class="title">
+                                اطلاعات ثبت شده دسته بندی
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 country_data_faq">
+                        <p class="country_name_data">
+                           {{ category.name }}
+                        </p>
+                    </div>
+                    <div class="col-lg-12 country_data_faq">
+                        <p class="country_slug_data">
+                            لینک سئو :
+                            {{ category.slug }}
+                        </p>
+                    </div>
+                    <div class="col-lg-3 country_data_faq">
+                        <div class="dropdown" style="margin-top: 12px;">
+                            <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                                    class="icon ni ni-more-h"></em></a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                <ul class="link-list-plain">
+                                    <li><a href="{% url 'update-tour-category' category.id %}">ویرایش</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="row">
+                    <div class="col-lg-12 country_data_faq">
+                        <p class="description">
+                            پرسش ها و پاسخ های ایجاد شده در این بخش در رابط کاربری
+                            بخش لیست تورهای مرتبط با این دسته بندی نمایش داده میشود.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8 m-b-5">
+            <div class="card">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="country_data">
+                            <h6 class="title">
+                                افزودن سوال
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="card">
+                            <div class="form_body">
+                                <div class="alert-light">
+                                    {% for message in messages %}
+                                        <p class="error-body ap">{{ message }}</p>
+                                    {% endfor %}
+                                </div>
+                                <form method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div id='faq-form' class="faq-part">
+                                        <div class="hd-basic-info faq" style="display: block;">
+                                            {{ FormSet.question }}
+                                        </div>
+                                        <div class="hd-basic-info faq" style="display: block;">
+                                            {{ FormSet.answer }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <button type="submit" class="save_button">
+                                            <i class="fa fa-check btn-icon font-20 edit-btn"></i>
+                                            <span id="save-button-title">
+                                                ذخیره
+                                            </span>
+                                        </button>
+                                    </div>
+                                    {{ FormSet.media }}
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="faq_list_category">
+        </div>
+        <script>
+            $(document).ready(function () {
+                function updatefaq(url, target, page) {
+                    $.ajax({
+                        url: url,
+                        data: {
+                            'page': page,
+                        },
+                        success: function (data) {
+                            $(target).html(data);
+                            if (callback) {
+                                callback();
+                            }
+                        }
+                    });
+                }
+
+                updatefaq('/dashboard/ajax_tour_category_faq_list/?category_id=' + {{ category.id }}, '#faq_list_category');
+                // PAGINATION WITHOUT SEARCH TERM
+                $(document).on('click', '.page-item', function () {
+                    const elem = $(this);
+                    const page = elem.data('page');
+                    updatefaq('/dashboard/ajax_tour_category_faq_list/?category_id=' + {{ category.id }}, '#faq_list_category', page);
+                });
+            })
+        </script>
+    </div>
+{% endblock %}

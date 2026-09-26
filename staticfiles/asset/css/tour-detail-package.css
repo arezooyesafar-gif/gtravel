@@ -1,0 +1,231 @@
+.hotel-info-link-btn{background:none;border:none;padding:0;color:#0a6ebd;font-size:13px;font-family:IranSans,Tahoma,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:4px;}
+.hotel-info-link-btn:hover{opacity:0.75;}
+html{scrollbar-gutter:stable;}
+body.modal-open{overflow-y:scroll!important;padding-right:0!important;padding-left:0!important;margin-right:0!important;margin-left:0!important;}
+body.modal-open .fixed-top,body.modal-open .sticky-top,body.modal-open .main_header{padding-right:0!important;padding-left:0!important;margin-right:0!important;margin-left:0!important;}
+.hotel-mpill{font-family:IranSans,Tahoma,sans-serif;font-size:13px;color:#444;border:1px solid #ddd;background:#f5f5f5;}
+.hotel-mpill.active{background:#0a6ebd!important;color:#fff!important;border-color:#0a6ebd!important;}
+.hotel-gallery-layout{display:flex;height:420px;}
+.hotel-gallery-main-wrap{flex:1;overflow:hidden;background:#000;}
+.hotel-gallery-main-img{width:100%;height:100%;object-fit:contain;}
+.hotel-gallery-thumbs-wrap{width:105px;overflow-y:auto;background:#f0f0f0;padding:4px;display:flex;flex-direction:column;gap:4px;scrollbar-width:thin;}
+.hotel-gallery-thumb{width:100%;height:85px;object-fit:cover;cursor:pointer;border-radius:4px;border:2px solid transparent;transition:border-color .15s;}
+.hotel-gallery-thumb:hover{border-color:#0a6ebd;}
+.thumb-active{border-color:#0a6ebd!important;}
+.hm-icon-row{position:absolute;bottom:6px;left:6px;display:flex;gap:5px;z-index:2;}
+.hm-icon-btn{width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.6);border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+.hm-icon-btn:hover{background:rgba(0,0,0,0.8);}
+.hotel_image_{position:relative;}
+.hotel_image_ img{width:100%;display:block;}
+.hotel-soldout-dim{opacity:.6;}
+.hotel_image_.hotel-soldout-dim{opacity:1;}
+.hotel_image_.hotel-soldout-dim img{opacity:.55;filter:grayscale(.45);}
+.package-soldout{background:#e7e9ed!important;}
+.package-soldout .bed_price_tlt_,.package-soldout .bed_price_,.package-soldout .infont,
+.package-soldout .doller{color:#5c6472!important;}
+.package-soldout .reservation .soldout-reserve-btn{background:#524c42!important;opacity:1;cursor:not-allowed;}
+#myTab.nav-tabs{background:transparent;border:none;padding:0;margin:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;justify-content:center;width:100%;gap:8px;}
+#myTab.nav-tabs::-webkit-scrollbar{display:none;}
+#myTab.nav-tabs .nav-link{background:#1d5cad;border:2px solid #1d5cad;border-radius:8px;color:#fff;padding:10px 14px;white-space:nowrap;font-size:14px;transition:background-color .15s,color .15s;}
+#myTab.nav-tabs .nav-link.active{background:#1d5cad;border:2px solid #1d5cad;color:#fff;font-weight:600;}
+#myTab.nav-tabs .nav-link:hover{background:#fff;border:2px solid #1d5cad;color:#1d5cad;}
+/* ---------- باکس هتل‌های پکیج در حالت دسکتاپ (>=992px) ----------
+   نسخه موبایل (<992px) کاملا دست‌نخورده باقی مانده است. */
+@media(min-width:992px){
+    /* هر پکیج = یک کادر پیوسته: هتل‌ها با خط‌چین از هم و نوار قیمت در انتهای همان کادر */
+    .row.pakage_container{--bs-gutter-x:0;margin-left:0!important;margin-right:0!important;margin-bottom:24px!important;
+        background:#fff;border:1.5px solid #dfe4ec;border-radius:16px;box-shadow:none;padding:0;overflow:hidden;}
+    /* scale:none تا کادر پکیج برای مودال‌های fixed داخلش containing block نسازد */
+    .pakage_container:hover{box-shadow:0 6px 20px rgba(30,45,80,.07);scale:none;}
+    .pakage_container .hbx-package{display:flex;flex-direction:column;gap:0;
+        background:transparent;border:none;border-radius:0;padding:0;}
+    .pakage_container > .col-lg-12.no-padding{background:#fafbfc;border:none;border-top:1.5px solid #dfe4ec;
+        border-radius:0;padding:0;}
+
+    /* ردیف هر هتل — بدون کادر مستقل، فقط جداکننده خط‌چین */
+    .hbx-row{display:flex;align-items:stretch;gap:16px;border:none;border-radius:0;padding:14px 16px;background:transparent;}
+    .hbx-row + .hbx-row{border-top:1px dashed #dde3ea;}
+    .hbx-row + .hbx-transfer + .hbx-row{border-top:none;}
+    .hbx-nights{background:#1d5cad;border-radius:10px;width:82px;flex:0 0 82px;color:#fff;display:flex;flex-direction:column;
+        align-items:center;justify-content:center;gap:6px;padding:10px 6px;text-align:center;}
+    .hbx-nights-num{font-weight:800;font-size:17px;font-family:'YekanBold',iransans,Tahoma,sans-serif;}
+    .hbx-nights-divider{width:60%;border-top:1.5px dashed rgba(255,255,255,.55);}
+    .hbx-nights-city{font-weight:700;font-size:16px;line-height:1.3;font-family:iransans,Tahoma,sans-serif;}
+    .hbx-photo{flex:0 0 210px;align-self:stretch;border-radius:10px;overflow:hidden;background:#dfe3ea;position:relative;}
+    .hbx-photo a{display:block;width:100%;height:100%;}
+    .hbx-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+    .hbx-flag{position:absolute;top:8px;right:8px;font-size:11px;font-family:iransans,Tahoma,sans-serif;color:#fff;
+        padding:2px 8px;border-radius:6px;}
+    .hbx-flag-top{background:#f5a623;}
+    .hbx-flag-gte{background:#1d5cad;top:auto;bottom:8px;}
+    .hbx-row-soldout .hbx-photo img,.hbx-row-soldout .hbx-nights,.hbx-row-soldout .hbx-info,
+    .hbx-row-soldout .hbx-meta{opacity:.55;}
+    .hbx-info{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+        text-align:right;gap:7px;padding:2px 6px;font-family:iransans,Tahoma,sans-serif;}
+    .hbx-name-fa{font-weight:800;font-size:19px;color:#1a1d24;text-decoration:none;}
+    .hbx-name-fa:hover{color:#1d5cad;}
+    .hbx-name-en{font-weight:600;font-size:14px;color:#6b7280;letter-spacing:.5px;text-transform:uppercase;}
+    .hbx-stars{display:flex;gap:3px;}
+    .hbx-actions{display:flex;gap:10px;margin-top:2px;}
+    .hbx-btn-out{display:inline-flex;align-items:center;gap:6px;border:1.5px solid #dbe2ee;background:none;border-radius:9px;
+        padding:6px 13px;color:#1d5cad;font-weight:600;font-size:14px;font-family:inherit;cursor:pointer;}
+    .hbx-btn-out:hover{background:#f3f7fd;}
+    .hbx-meta{flex:0 0 150px;display:flex;flex-direction:column;gap:8px;justify-content:center;
+        font-family:iransans,Tahoma,sans-serif;}
+    .hbx-meta-card{border:1.5px solid #e7eaef;border-radius:10px;padding:8px 11px;display:flex;align-items:center;gap:9px;}
+    .hbx-meta-label{font-size:12px;color:#6b7280;font-weight:500;}
+    .hbx-meta-value{font-size:17px;font-weight:800;color:#1a1d24;}
+    .hbx-b-logo{background:#003580;color:#fff;font-weight:800;font-size:15px;border-radius:6px;width:28px;height:28px;
+        flex:0 0 28px;display:flex;align-items:center;justify-content:center;}
+
+    /* نوار قیمت‌ها — داخل همان کادر پکیج */
+    .pakage_container .col-lg-12.no-padding > .row{flex-wrap:nowrap;margin:0;border:none;border-radius:0;
+        overflow:hidden;background:transparent;}
+    .pakage_container .col-lg-2.price_,.pakage_container .col-sm-12.col-lg-2.price_{flex:1 1 0;width:auto;max-width:none;
+        background:transparent;border:none;border-left:1.5px solid #e8ebf0;display:flex;flex-direction:column;
+        align-items:center;justify-content:center;gap:5px;padding:12px 8px;}
+    .pakage_container .col-lg-2.price_ .bed_price_tlt_{font-weight:700;font-size:16px;line-height:1.4;margin:0;}
+    .pakage_container .col-lg-2.price_ .bed_price_,.pakage_container .col-lg-2.price_ .infont{font-weight:600;font-size:14px;
+        line-height:1.4;margin:0;color:#1a1d24;}
+    .pakage_container .col-lg-2.price_ .doller{font-weight:700;font-size:15px;line-height:1.4;margin:0;color:#1d5cad;}
+    .pakage_container .col-lg-2.reservation{flex:0 0 180px;width:180px;max-width:180px;border:none;display:flex;
+        align-items:center;justify-content:center;padding:12px;}
+    .pakage_container .col-lg-2.reservation .dd_to_cart,
+    .pakage_container .col-lg-2.reservation .dd_to_cart.with-doller-price{background:#f5a623;color:#fff!important;border:none;
+        font-weight:800;font-size:18px;line-height:1.4;border-radius:10px;padding:12px 0;width:100%;margin:0;}
+    .pakage_container .col-lg-2.reservation .dd_to_cart:hover{background:#e6981b;}
+
+    .pakage_container .hotel_image_{height:100%;}
+    .pakage_container .hotel_image_ a{display:block;height:100%;}
+    .pakage_container .hotel_image_ img{height:120px;object-fit:cover;}
+    .pakage_container .hotel-desktop-text{display:inline!important;}
+    .pakage_container .night_count_{margin-top:0!important;text-align:right;}
+    .pakage_container .hotel_booking_tlt_{margin-top:0!important;}
+    .pakage_container .hotel_booking_rate_{position:static;left:auto;}
+    .pakage_container .hotel_booking_rate_::after{position:static;display:inline-block;vertical-align:middle;margin-right:4px;}
+    .pakage_container .hotel_en_tlt_{margin-bottom:2px!important;}
+    .pakage_container .hotel_rating_{margin-top:4px!important;margin-bottom:0!important;}
+}
+
+/* نوار انکرها: بدون سایه، با یک خط جداکننده زیرش */
+#myTab{box-shadow:none!important}
+/* بوت استرپ به .nav-tabs یک border-bottom می دهد و به هر .nav-link
+   مقدار margin-bottom:-1px تا تب روی آن خط بنشیند. چون تب های ما
+   کپسول گرد هستند، همان یک پیکسل لبه پایین بوردرشان را قایم می کند. */
+#myTab{border-bottom:0!important}
+#myTab .nav-link{margin-bottom:0!important}
+#myTab .nav-link{text-decoration:none!important;display:inline-block}
+#myTab .nav-item{flex:0 0 auto}
+/* رنگ پس زمینه دقیقا همرنگ .warp است تا کادر دیده نشود
+   ولی چون نوار sticky است باید مات باشد وگرنه محتوا از زیرش رد می شود */
+.tour-tabs-bar{background:#f6f6f6;border-bottom:0;
+    padding:8px 0 2px;margin-top:18px;margin-bottom:2px;overflow:visible}
+/* دکمه دانلود و تب ها هم تراز وسط باشند */
+.tour-tabs-bar .pdf-download-link{margin:0}
+.tour-section{scroll-margin-top:120px}
+/* رَپر بیرونی بی رنگ، ولی خود هر باکس سفید باشد */
+.tour-more-info{background:transparent;padding:0}
+.tour-more-info .more-info{background:#fff}
+/* در باکس «درباره تور» عنوان و آیکون کنار هم و بالا سمت راست بنشینند */
+.about-tour-box{padding:20px}
+.about-tour-head{display:flex;align-items:center;justify-content:flex-start;gap:10px;margin-bottom:14px}
+.about-tour-head i{font-size:26px;color:#008cba}
+.about-tour-head .documents-headline{margin:0;text-align:right;line-height:1.6}
+/* در موبایل همه تب ها باید دیده شوند، پس در چند سطر می شکنند.
+   sticky هم هست، پس پس زمینه باید مات بماند تا محتوا از زیرش رد نشود. */
+@media (max-width: 991px){
+    .tour-tabs-bar{margin-top:14px;margin-bottom:6px;background:#f6f6f6}
+    /* تب‌ها در موبایل یک سطری می‌مانند و داخل خودِ نوار اسکرول می‌شوند.
+       دو چیز مانع این کار بود:
+       ۱) ul داخل .tour-tabs-scroll که d-flex است یک فلکس‌آیتم است و
+          min-width:auto پیش‌فرض نمی‌گذارد از عرض محتوایش کوچک‌تر شود، پس
+          width:100% بی‌اثر می‌شد و ul تا ۵۴۸px کش می‌آمد و کل صفحه را
+          افقی سرریز می‌کرد. با min-width:0 حل می‌شود.
+       ۲) justify-content:center روی کانتینری که سرریز دارد باعث می‌شود
+          اولین آیتم بیرون از ناحیهٔ قابل‌اسکرول بیفتد و هیچ‌وقت دیده نشود -
+          همان «پکیج ها». با flex-start از ابتدا دیده می‌شود. */
+    .tour-tabs-scroll{overflow:visible;min-width:0}
+    .sticky-tabs ul{border-radius:14px;padding:6px}
+    #myTab.nav-tabs{flex-wrap:nowrap;justify-content:flex-start;gap:6px;
+        width:100%;min-width:0;max-width:100%;overflow-x:auto;
+        -webkit-overflow-scrolling:touch}
+    #myTab .nav-link{white-space:nowrap;min-width:auto;padding:0 12px!important;
+        font-size:12px!important;height:32px;line-height:32px}
+    .tour-section{margin-bottom:22px}
+    .package-side{margin-bottom:18px}
+    /* در موبایل ستون آیکون تمام عرض می شود و آیکون می چسبد بالا و وسط.
+       به جایش آیکون و عنوان کنار هم و راست چین شوند، مثل باکس «درباره تور».
+       استایل های inline روی این المان ها هستند، پس important لازم است. */
+    .tour-more-info .more-info{padding:16px}
+    .tour-more-info .tour-icon-side{flex-direction:row!important;
+        justify-content:flex-start!important;align-items:center!important;
+        gap:10px;margin-bottom:12px}
+    .tour-more-info .tour-icon-side i{font-size:24px!important;margin-bottom:0!important}
+    .tour-more-info .documents-headline{margin:0;text-align:right;line-height:1.6}
+    .tour-more-info .tour-data-side{padding:0!important;border-right:0!important}
+    .about-tour-box{padding:16px}
+}
+
+.tp-card{background:#fff;border-radius:16px;box-shadow:0 6px 22px rgba(17,24,39,.06);padding:24px 28px 14px;margin-bottom:20px}
+.tp-card-title{font-size:21px;font-weight:800;color:#1e293b;margin:0 0 6px}
+.tp-row{display:flex;align-items:stretch}
+.tp-rail{position:relative;width:44px;flex:none;display:flex;justify-content:center}
+.tp-line{position:absolute;width:3px;background:#e2e8f0}
+.tp-line-top{top:0;height:39px}
+.tp-line-bottom{top:39px;bottom:0}
+.tp-row.is-open .tp-line-top{background:linear-gradient(to bottom,#e2e8f0,#3b82f6)}
+.tp-row.is-open .tp-line-bottom{background:linear-gradient(to bottom,#3b82f6,#e2e8f0)}
+.tp-dot{position:relative;z-index:1;margin-top:22px;align-self:flex-start;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#fff;color:#94a3b8;border:2px solid #e2e8f0;font-size:15px;font-weight:700;transition:.2s}
+.tp-row.is-open .tp-dot{background:linear-gradient(135deg,#1e63c8,#2f80e8);color:#fff;border-color:transparent;box-shadow:0 4px 10px rgba(30,99,200,.35)}
+.tp-content{flex:1;min-width:0}
+.tp-row + .tp-row .tp-content{border-top:1px solid #f0f1f3}
+.tp-head{width:100%;background:none;border:none;padding:20px 0 20px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;font-family:inherit;text-align:right}
+.tp-title{font-size:17px;font-weight:700;color:#334155;transition:color .2s}
+.tp-row.is-open .tp-title{color:#1d4ed8}
+.tp-sub{font-weight:500;color:#64748b;font-size:15px}
+.tp-row.is-open .tp-sub{color:#3b82f6}
+.tp-caret{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex:none;color:#94a3b8;transition:transform .2s}
+.tp-row.is-open .tp-caret{transform:rotate(180deg);color:#1d4ed8}
+.tp-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.tp-row.is-open .tp-body{max-height:6000px}
+.tp-body-inner{padding:0 6px 26px 8px}
+.tp-img{display:block;width:100%;max-height:320px;object-fit:cover;border-radius:12px;margin-bottom:16px}
+.tp-desc,.tp-desc *{color:#4b5563;font-size:15.5px;line-height:2.15;text-align:justify}
+.tp-desc p{margin:0 0 10px}
+.tp-desc img{max-width:100%;height:auto;border-radius:10px}
+.tp-desc a{color:#1d4ed8}
+.tp-info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.tp-info-card{display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid #e6eefb;border-radius:10px;padding:7px 10px;background:#f8fbff}
+.tp-info-icon{width:24px;height:24px;flex:none;border-radius:50%;background:#e8f0fc;display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:#2563eb}
+.tp-info-label{font-size:12px;color:#64748b;margin:0;white-space:nowrap}
+.tp-info-label:after{content:':'}
+.tp-info-value{font-size:12.5px;font-weight:700;color:#1e293b;margin:0}
+@media (max-width:768px){
+    .tp-card{padding:18px 14px 10px;border-radius:14px}
+    .tp-rail{width:34px}
+    .tp-head{padding:16px 0 16px 8px}
+    .tp-title{font-size:15.5px}
+    .tp-sub{font-size:13.5px;display:block;margin-top:4px}
+    .tp-body-inner{padding:0 2px 20px 2px}
+    .tp-desc,.tp-desc *{font-size:14.5px;line-height:2}
+    .tp-info-grid{grid-template-columns:1fr;gap:8px}
+    .tp-info-card{padding:6px 10px}
+    .tp-info-icon{width:21px;height:21px;font-size:10px}
+    .tp-info-label{font-size:11px}
+    .tp-info-value{font-size:11.5px}
+}
+
+/* جداکننده ترانسفر بین شهری بین دو هتل */
+.hbx-transfer{display:flex;align-items:center;width:100%;padding:2px 16px;}
+.hbx-transfer-line{flex:1;height:1px;background:linear-gradient(to left,#d5dbe3,rgba(213,219,227,0));}
+.hbx-transfer-line:last-child{background:linear-gradient(to right,#d5dbe3,rgba(213,219,227,0));}
+.hbx-transfer-icon{padding:0 18px;display:flex;color:#5b6675;}
+.hbx-transfer-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.hotel_data_box .hbx-transfer{padding:2px 0;}
+.hotel_data_box .hbx-transfer-icon{padding:0 12px;}
+.hotel_data_box .hbx-transfer-icon svg{width:26px;height:26px;}
+@media (max-width: 991.98px){
+    .hbx-transfer{padding:2px 0;}
+    .hbx-transfer-icon{padding:0 12px;}
+    .hbx-transfer-icon svg{width:26px;height:26px;}
+}

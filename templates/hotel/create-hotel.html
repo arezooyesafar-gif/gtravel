@@ -262,6 +262,51 @@
                     {{ form.intertainment }}
                 </div>
             </div>
+            <style>
+                .inline-checkbox div.svc-item{display:inline-flex;align-items:center;gap:8px;min-height:38px;line-height:1.5;vertical-align:top}
+                .inline-checkbox div.svc-item label{flex:1;margin:0;cursor:pointer}
+                .inline-checkbox .svc-cost{height:26px;padding:0 4px;border:1px solid rgba(0,0,0,.25);border-radius:4px;background:rgba(255,255,255,.75);font-size:12px;line-height:24px;cursor:pointer}
+                .inline-checkbox div.svc-item.is-paid{box-shadow:inset 0 0 0 2px #e67e22}
+            </style>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const suffix = ' (با هزینه)';
+                    document.querySelectorAll('.inline-checkbox input[type="checkbox"]').forEach(function (paid) {
+                        if (!paid.value.endsWith(suffix)) {
+                            return;
+                        }
+                        const base = Array.from(document.getElementsByName(paid.name)).find(function (input) {
+                            return input.value === paid.value.slice(0, -suffix.length);
+                        });
+                        if (!base) {
+                            return;
+                        }
+                        const item = base.closest('div');
+                        const select = document.createElement('select');
+                        select.className = 'svc-cost';
+                        select.innerHTML = '<option value="free">رایگان</option><option value="paid">با هزینه</option>';
+                        item.classList.add('svc-item');
+                        item.appendChild(select);
+                        paid.closest('div').style.display = 'none';
+                        if (paid.checked) {
+                            base.checked = true;
+                            select.value = 'paid';
+                        }
+                        function sync() {
+                            paid.checked = base.checked && select.value === 'paid';
+                            item.classList.toggle('is-paid', paid.checked);
+                        }
+                        base.addEventListener('change', sync);
+                        select.addEventListener('change', function () {
+                            if (select.value === 'paid') {
+                                base.checked = true;
+                            }
+                            sync();
+                        });
+                        sync();
+                    });
+                });
+            </script>
             <div class="col-lg-6">
                 <div class="inner_section">
                     <p class=""> توضیحات متا مرتبط با هتل را وارد کنید </p>

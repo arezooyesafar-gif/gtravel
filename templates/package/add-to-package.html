@@ -1,4 +1,4 @@
-﻿{% extends 'admin-dashboard/base/base.html' %}
+{% extends 'admin-dashboard/base/base.html' %}
 {% block Main %}
     {% load humanize %}
     {% load jalali_tags %}
@@ -150,6 +150,10 @@
                                 <p class="label-text">انتخاب سرویس هتل دوم<span class="required"></span></p>
                                 {{ form.service_mhotel }}
                             </div>
+                            <div class='hotel-view'>
+                                <p class="label-text">ترانسفر بین شهری تا هتل دوم<span class="required"></span></p>
+                                {{ form.transfer_mhotel }}
+                            </div>
                         </div>
                         <div class="col-lg-6">
                             <p class="label-text">انتخاب هتل سوم<span class="required">*</span></p>
@@ -170,6 +174,10 @@
                             <div class='hotel-view'>
                                 <p class="label-text">انتخاب سرویس هتل سوم<span class="required"></span></p>
                                 {{ form.service_m1hotel }}
+                            </div>
+                            <div class='hotel-view'>
+                                <p class="label-text">ترانسفر بین شهری تا هتل سوم<span class="required"></span></p>
+                                {{ form.transfer_m1hotel }}
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -192,6 +200,10 @@
                                 <p class="label-text">انتخاب سرویس هتل چهارم<span class="required"></span></p>
                                 {{ form.service_m2hotel }}
                             </div>
+                            <div class='hotel-view'>
+                                <p class="label-text">ترانسفر بین شهری تا هتل چهارم<span class="required"></span></p>
+                                {{ form.transfer_m2hotel }}
+                            </div>
                         </div>
                         <div class="col-lg-6">
                             <p class="label-text">انتخاب هتل پنجم<span class="required">*</span></p>
@@ -213,10 +225,17 @@
                                 <p class="label-text">انتخاب سرویس هتل پنجم<span class="required"></span></p>
                                 {{ form.service_m3hotel }}
                             </div>
+                            <div class='hotel-view'>
+                                <p class="label-text">ترانسفر بین شهری تا هتل پنجم<span class="required"></span></p>
+                                {{ form.transfer_m3hotel }}
+                            </div>
                         </div>
                         <div class="col-lg-6">
                             <p class="label-text">انتخاب نوع ویو<span class="required">*</span></p>
                             {{ form.view }}
+                        </div>
+                        <div class="col-lg-12 soldout-field">
+                            <label class="soldout-label">{{ form.hotel_sold_out }} تکمیل ظرفیت (کل پکیج)</label>
                         </div>
                     </div>
                 </div>
@@ -323,7 +342,42 @@
             <div id="package_data" class="table-block">
 
             </div>
-            <a class="back-to-list" href="/dashboard/tour-list">ذخیره و اتمام</a>
+            <p class="tour_status_text {% if Tour.PubTour %}is_active{% else %}is_inactive{% endif %}">
+                <i class="tour_status_dot"></i>
+                این تور در حال حاضر
+                {% if Tour.PubTour %}فعال است{% else %}غیرفعال است{% endif %}
+            </p>
+            <div class="row">
+                <div class="col-lg-4">
+                    <form method="post" action="{% url 'tour-toggle-pub' Tour.id %}">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="tour_status_btn {% if Tour.PubTour %}is_off{% else %}is_on{% endif %}">
+                            {% if Tour.PubTour %}
+                                <i class="fa fa-times"></i> غیرفعال کردن تور
+                            {% else %}
+                                <i class="fa fa-check"></i> فعال کردن تور
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    {% if Tour.Slug %}
+                        <a class="tour_preview_btn" target="_blank" rel="noopener"
+                            href="{% url 'tour-detail' Tour.id Tour.Slug %}?preview={% now 'U' %}">
+                            <i class="fa fa-eye"></i> پیش‌نمایش تور
+                        </a>
+                    {% else %}
+                        <span class="tour_preview_btn is_disabled"
+                              title="برای این تور آدرس (Slug) ثبت نشده است">
+                            <i class="fa fa-eye"></i> پیش‌نمایش تور
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="col-lg-4">
+                    <a class="back-to-list" href="/dashboard/tour-list">ذخیره و اتمام</a>
+                </div>
+            </div>
         </div>
         <div class="col-lg-12">
             <div class="inner_section">

@@ -5,9 +5,8 @@
     <meta name="enamad" content="746303">
     <link rel=“canonical” href=“https://arezoosafar.com”/>
     <meta name="description"
-          content="شرکت آرزوی سفر پارسیان برگزار کننده  تور ارزان قیمت خارجی به صورت نقد و اقساط | مجری تخصصی تور روسیه">
-    <meta name="keywords" content="،تور اقساطی، تور خارجی، تور روسیه">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
+          content="معرفی کامل شرکت آرزوی سفر پارسیان">
+    {% comment %} <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script> {% endcomment %}
     <script async>
         window.dataLayer = window.dataLayer || [];
 
@@ -81,24 +80,24 @@
                 </div>
                 <div class="col-lg-4 col order-sm-first order-lg-last">
                     <div class="about-gallery">
-                        <img loading="lazy" src="/static/asset/css/images/office-1.jpg">
+                        <img loading="lazy" src="/static/asset/css/images/office-1.webp">
                     </div>
                     <div class="gallery-about-box">
                         <div class="owl-about-us owl-carousel owl-theme">
                             <div class="about-image">
-                                <img loading="lazy" src="/static/asset/css/images/office-2.png">
+                                <img loading="lazy" src="/static/asset/css/images/office-2.webp">
                             </div>
                             <div class="about-image">
-                                <img loading="lazy" src="/static/asset/css/images/office-3.png">
+                                <img loading="lazy" src="/static/asset/css/images/office-3.webp">
                             </div>
                             <div class="about-image">
-                                <img loading="lazy" src="/static/asset/css/images/office-4.png">
+                                <img loading="lazy" src="/static/asset/css/images/office-4.webp">
                             </div>
                             <div class="about-image">
-                                <img loading="lazy" src="/static/asset/css/images/office-5.png">
+                                <img loading="lazy" src="/static/asset/css/images/office-5.webp">
                             </div>
                             <div class="about-image">
-                                <img loading="lazy" src="/static/asset/css/images/office-1.jpg">
+                                <img loading="lazy" src="/static/asset/css/images/office-1.webp">
                             </div>
                         </div>
                     </div>
@@ -115,6 +114,7 @@
         var tour_id = '{{ Tour.id }}'
         var tour_slug = '{{ Tour.Slug }}'
         var tour_menu = '{{ Menu.slug }}'
+        var category_slug = '{{ category.slug|default:"" }}'
     </script>
 </div>
 </body>

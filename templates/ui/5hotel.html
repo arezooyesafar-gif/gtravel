@@ -1,11 +1,26 @@
+{% load responsive_img %}
 {% load humanize %}
 {% load static %}
 {% load jalali_tags %}
-<div class="col-lg-2 col-sm-4 no-padding">
-    <div class="hotel_image_">
+<div class="col-12 d-none d-lg-block hbx-package">
+    {% with hbx_hotel=i.HotelName hbx_service=i.service_hotel hbx_key='' hbx_sold_out=i.sold_out_map.hotel %}{% include 'ui/_hotel_row_desktop.html' %}{% endwith %}
+    {% if i.Mhotel %}{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.mhotel tr_label=i.transfer_label_map.mhotel %}{% endif %}
+    {% if i.Mhotel %}{% with hbx_hotel=i.Mhotel hbx_service=i.service_mhotel hbx_key='m' hbx_sold_out=i.sold_out_map.mhotel %}{% include 'ui/_hotel_row_desktop.html' %}{% endwith %}{% endif %}
+    {% if i.M1hotel %}{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.m1hotel tr_label=i.transfer_label_map.m1hotel %}{% endif %}
+    {% if i.M1hotel %}{% with hbx_hotel=i.M1hotel hbx_service=i.service_m1hotel hbx_key='m1' hbx_sold_out=i.sold_out_map.m1hotel %}{% include 'ui/_hotel_row_desktop.html' %}{% endwith %}{% endif %}
+    {% if i.M2hotel %}{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.m2hotel tr_label=i.transfer_label_map.m2hotel %}{% endif %}
+    {% if i.M2hotel %}{% with hbx_hotel=i.M2hotel hbx_service=i.service_m2hotel hbx_key='m2' hbx_sold_out=i.sold_out_map.m2hotel %}{% include 'ui/_hotel_row_desktop.html' %}{% endwith %}{% endif %}
+    {% if i.M3hotel %}{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.m3hotel tr_label=i.transfer_label_map.m3hotel %}{% endif %}
+    {% if i.M3hotel %}{% with hbx_hotel=i.M3hotel hbx_service=i.service_m3hotel hbx_key='m3' hbx_sold_out=i.sold_out_map.m3hotel %}{% include 'ui/_hotel_row_desktop.html' %}{% endwith %}{% endif %}
+</div>
+<div class="col-lg-3 col-sm-4 no-padding d-lg-none">
+    <div class="hotel_image_{% if i.sold_out_map.hotel %} hotel-soldout-dim{% endif %}">
         <a href="{% url 'hotel-detail' i.HotelName.id i.HotelName.Slug %}">
             {% if i.HotelName.HotelImage %}
-                <img loading="lazy" alt="{{ i.HotelName }}" src="{{ i.HotelName.HotelImage.url }}" width="100%">
+                <img loading="lazy" alt="{{ i.HotelName }}"
+                     src="{% img_url_at i.HotelName.HotelImage 480 %}"
+                     srcset="{% srcset_for i.HotelName.HotelImage "320,480" %}"
+                     sizes="(max-width: 991px) 90vw, 480px" width="100%" decoding="async">
             {% endif %}
             {% if i.HotelName.top_rate %}
                 <p class="top_rate_">TOP</p>
@@ -14,85 +29,97 @@
                 <p class="gte_hotel">گارانتی</p>
             {% endif %}
         </a>
+        {% with h0m_imgs=i.HotelName.hotel_images_set.all %}
+        {% if i.HotelName.HotelMap or h0m_imgs %}
+        <div class="hm-icon-row d-lg-none">
+            {% if i.HotelName.HotelMap %}<button class="hm-icon-btn" type="button" aria-label="موقعیت مکانی هتل" onclick="openHotelModal('hmodal-{{ i.id }}-{{ i.HotelName.id }}','location','hmapd-{{ i.id }}-{{ i.HotelName.id }}','{{ i.HotelName.HotelMap }}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></button>{% endif %}
+            {% if h0m_imgs %}<button class="hm-icon-btn" type="button" aria-label="تصاویر هتل" onclick="openHotelModal('hmodal-{{ i.id }}-{{ i.HotelName.id }}','gallery',null,null)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>{% endif %}
+        </div>
+        {% endif %}
+        {% endwith %}
     </div>
 </div>
-<div class="col-lg-10 col-sm-8 no-padding {% if i.Mhotel %}border-bottom-dashed{% endif %}">
-    <div class="row">
+<div class="col-lg-9 col-sm-8 no-padding d-lg-none {% if i.Mhotel %}border-bottom-dashed{% endif %}{% if i.sold_out_map.hotel %} hotel-soldout-dim{% endif %}">
+    <div class="row align-items-center">
         <div class="col-lg-6">
             <p class="hotel_fa_tlt_">{{ i.HotelName.HotelName|truncatechars:50 }}</p>
             <p class="hotel_en_tlt_">{{ i.HotelName.HotelNameEnglish|truncatechars:50 }}</p>
+            <div class="d-none d-lg-block">
+                {% if i.HotelName.HotelRating == '1' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>{% endif %}
+                {% if i.HotelName.HotelRating == '2' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>{% endif %}
+                {% if i.HotelName.HotelRating == '3' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>{% endif %}
+                {% if i.HotelName.HotelRating == '4' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>{% endif %}
+                {% if i.HotelName.HotelRating == '5' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>{% endif %}
+            </div>
         </div>
-        <div class="col-sm-6 col-lg-2 no-padding">
-            <p class="night_count_ hotel_view_text_">ویو :
-                {% if i.view_hotel %}
-                    {{ i.view_hotel }}
-                {% else %}
-                    -
-                {% endif %}
-            </p>
-            {% if i.HotelName.HotelRating == '1' %}
-                <p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
-            {% endif %}
-            {% if i.HotelName.HotelRating == '2' %}
-                <p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
-            {% endif %}
-            {% if i.HotelName.HotelRating == '3' %}
-                <p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
-            {% endif %}
-            {% if i.HotelName.HotelRating == '4' %}
-                <p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
-            {% endif %}
-            {% if i.HotelName.HotelRating == '5' %}
-                <p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
-            {% endif %}
-        </div>
-        <div class="col-sm-6 col-lg-2 no-padding">
-            <div class="hotel-service-mobile-wrapper">
-                <p class="night_count_">
-                    <span class="hotel-desktop-text">خدمات هتل</span>
-                    <i class="fa fa-coffee hotel-mobile-icon"></i>
+        <div class="col-sm-6 col-lg-3 no-padding">
+            <div class="d-lg-none">
+                <p class="night_count_ hotel_view_text_">ویو :
+                    {% if i.view_hotel %}{{ i.view_hotel }}{% else %}-{% endif %}
                 </p>
+                {% if i.HotelName.HotelRating == '1' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>{% endif %}
+                {% if i.HotelName.HotelRating == '2' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>{% endif %}
+                {% if i.HotelName.HotelRating == '3' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>{% endif %}
+                {% if i.HotelName.HotelRating == '4' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>{% endif %}
+                {% if i.HotelName.HotelRating == '5' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>{% endif %}
+            </div>
+            {% with h0_imgs=i.HotelName.hotel_images_set.all %}
+            <div class="d-none d-lg-block">
+                {% if i.HotelName.HotelMap %}<p class="night_count_"><button type="button" class="hotel-info-link-btn" onclick="openHotelModal('hmodal-{{ i.id }}-{{ i.HotelName.id }}','location','hmapd-{{ i.id }}-{{ i.HotelName.id }}','{{ i.HotelName.HotelMap }}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> موقعیت مکانی</button></p>{% endif %}
+                {% if h0_imgs %}<p class="night_count_"><button type="button" class="hotel-info-link-btn" onclick="openHotelModal('hmodal-{{ i.id }}-{{ i.HotelName.id }}','gallery',null,null)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> تصاویر هتل</button></p>{% endif %}
+            </div>
+            {% endwith %}
+        </div>
+        <div class="col-sm-6 col-lg-3 no-padding">
+            <div class="d-none d-lg-block">
+                <div class="d-flex align-items-center gap-3">
+                    <p class="night_count_ mb-0"><span class="hotel-desktop-text">خدمات هتل</span></p>
+                    <div class="hotel-services-list">
+                        {% if i.service_hotel %}<p class="hotel_class_ mb-0">{{ i.service_hotel }}</p>
+                        {% else %}
+                            {% if i.HotelName.HotelOR %}<p class="hotel_class_ mb-0">OR</p>{% endif %}
+                            {% if i.HotelName.HotelBB %}<p class="hotel_class_ mb-0">BB</p>{% endif %}
+                            {% if i.HotelName.HotelHB %}<p class="hotel_class_ mb-0">HB</p>{% endif %}
+                            {% if i.HotelName.HotelFB %}<p class="hotel_class_ mb-0">FB</p>{% endif %}
+                            {% if i.HotelName.HotelAll %}<p class="hotel_class_ mb-0">All</p>{% endif %}
+                            {% if i.HotelName.HotelUall %}<p class="hotel_class_ mb-0">U All</p>{% endif %}
+                            {% if i.HotelName.HotelMaxAll %}<p class="hotel_class_ mb-0">Max All</p>{% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-3 mt-1">
+                    <p class="hotel_booking_tlt_ mb-0">امتیاز بوکینگ</p>
+                    <p class="hotel_booking_rate_ mb-0">{{ i.HotelName.HotelBookingRate }}</p>
+                </div>
+            </div>
+            <div class="d-lg-none hotel-service-mobile-wrapper">
+                <p class="night_count_"><span class="hotel-desktop-text">خدمات هتل</span><i class="fa fa-coffee hotel-mobile-icon"></i></p>
                 <div class="hotel-services-list">
-                    {% if i.service_hotel %}
-                        <p class="hotel_class_">{{ i.service_hotel }}</p>
+                    {% if i.service_hotel %}<p class="hotel_class_">{{ i.service_hotel }}</p>
                     {% else %}
-                        {% if i.HotelName.HotelOR %}
-                            <p class="hotel_class_">OR</p>
-                        {% endif %}
-                        {% if i.HotelName.HotelBB %}
-                            <p class="hotel_class_">BB</p>
-                        {% endif %}
-                        {% if i.HotelName.HotelHB %}
-                            <p class="hotel_class_">HB</p>
-                        {% endif %}
-                        {% if i.HotelName.HotelFB %}
-                            <p class="hotel_class_">FB</p>
-                        {% endif %}
-                        {% if i.HotelName.HotelAll %}
-                            <p class="hotel_class_">All</p>
-                        {% endif %}
-                        {% if i.HotelName.HotelUall %}
-                            <p class="hotel_class_">U All</p>
-                        {% endif %}
-                        {% if i.HotelName.HotelMaxAll %}
-                            <p class="hotel_class_">Max All</p>
-                        {% endif %}
+                        {% if i.HotelName.HotelOR %}<p class="hotel_class_">OR</p>{% endif %}
+                        {% if i.HotelName.HotelBB %}<p class="hotel_class_">BB</p>{% endif %}
+                        {% if i.HotelName.HotelHB %}<p class="hotel_class_">HB</p>{% endif %}
+                        {% if i.HotelName.HotelFB %}<p class="hotel_class_">FB</p>{% endif %}
+                        {% if i.HotelName.HotelAll %}<p class="hotel_class_">All</p>{% endif %}
+                        {% if i.HotelName.HotelUall %}<p class="hotel_class_">U All</p>{% endif %}
+                        {% if i.HotelName.HotelMaxAll %}<p class="hotel_class_">Max All</p>{% endif %}
                     {% endif %}
                 </div>
             </div>
         </div>
-        <div class="d-sm-none col-sm-12 col-lg-2 d-lg-block">
-            <p class="hotel_booking_tlt_">امتیاز بوکینگ</p>
-            <p class="hotel_booking_rate_">{{ i.HotelName.HotelBookingRate }}</p>
-        </div>
     </div>
 </div>
 {% if i.Mhotel %}
-    <div class="col-lg-2 col-sm-4 no-padding">
-        <div class="hotel_image_">
+    <div class="col-12 no-padding d-lg-none">{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.mhotel tr_label=i.transfer_label_map.mhotel %}</div>
+    <div class="col-lg-3 col-sm-4 no-padding d-lg-none">
+        <div class="hotel_image_{% if i.sold_out_map.mhotel %} hotel-soldout-dim{% endif %}">
             <a href="{% url 'hotel-detail' i.Mhotel.id i.Mhotel.Slug %}">
                 {% if i.Mhotel.HotelImage %}
-                    <img loading="lazy" alt="{{ i.Mhotel }}" src="{{ i.Mhotel.HotelImage.url }}" width="100%">
+                    <img loading="lazy" alt="{{ i.Mhotel }}"
+                     src="{% img_url_at i.Mhotel.HotelImage 480 %}"
+                     srcset="{% srcset_for i.Mhotel.HotelImage "320,480" %}"
+                     sizes="(max-width: 991px) 90vw, 480px" width="100%" decoding="async">
                 {% endif %}
                 {% if i.Mhotel.top_rate %}
                     <p class="top_rate_">TOP</p>
@@ -101,86 +128,98 @@
                     <p class="gte_hotel">گارانتی</p>
                 {% endif %}
             </a>
+            {% with hmm_imgs=i.Mhotel.hotel_images_set.all %}
+            {% if i.Mhotel.HotelMap or hmm_imgs %}
+            <div class="hm-icon-row d-lg-none">
+                {% if i.Mhotel.HotelMap %}<button class="hm-icon-btn" type="button" aria-label="موقعیت مکانی هتل" onclick="openHotelModal('hmodal-{{ i.id }}-m{{ i.Mhotel.id }}','location','hmapd-{{ i.id }}-m{{ i.Mhotel.id }}','{{ i.Mhotel.HotelMap }}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></button>{% endif %}
+                {% if hmm_imgs %}<button class="hm-icon-btn" type="button" aria-label="تصاویر هتل" onclick="openHotelModal('hmodal-{{ i.id }}-m{{ i.Mhotel.id }}','gallery',null,null)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>{% endif %}
+            </div>
+            {% endif %}
+            {% endwith %}
         </div>
     </div>
-    <div class="col-lg-10 col-sm-8 no-padding {% if i.M1hotel %}border-bottom-dashed{% endif %}">
-        <div class="row">
+    <div class="col-lg-9 col-sm-8 no-padding d-lg-none {% if i.M1hotel %}border-bottom-dashed{% endif %}{% if i.sold_out_map.mhotel %} hotel-soldout-dim{% endif %}">
+        <div class="row align-items-center">
             <div class="col-lg-6">
                 <p class="hotel_fa_tlt_">{{ i.Mhotel.HotelName|truncatechars:50 }}</p>
                 <p class="hotel_en_tlt_">{{ i.Mhotel.HotelNameEnglish|truncatechars:50 }}</p>
+                <div class="d-none d-lg-block">
+                    {% if i.Mhotel.HotelRating == '1' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>{% endif %}
+                    {% if i.Mhotel.HotelRating == '2' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>{% endif %}
+                    {% if i.Mhotel.HotelRating == '3' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>{% endif %}
+                    {% if i.Mhotel.HotelRating == '4' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>{% endif %}
+                    {% if i.Mhotel.HotelRating == '5' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>{% endif %}
+                </div>
             </div>
-            <div class="col-sm-6 col-lg-2 no-padding">
-                <p class="night_count_ hotel_view_text_">ویو :
-                    {% if i.view_mhotel %}
-                        {{ i.view_mhotel }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </p>
-                {% if i.Mhotel.HotelRating == '1' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
-                {% endif %}
-                {% if i.Mhotel.HotelRating == '2' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
-                {% endif %}
-                {% if i.Mhotel.HotelRating == '3' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
-                {% endif %}
-                {% if i.Mhotel.HotelRating == '4' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
-                {% endif %}
-                {% if i.Mhotel.HotelRating == '5' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
-                {% endif %}
-            </div>
-            <div class="col-sm-6 col-lg-2 no-padding">
-                <div class="hotel-service-mobile-wrapper">
-                    <p class="night_count_">
-                        <span class="hotel-desktop-text">خدمات هتل</span>
-                        <i class="fa fa-coffee hotel-mobile-icon"></i>
+            <div class="col-sm-6 col-lg-3 no-padding">
+                <div class="d-lg-none">
+                    <p class="night_count_ hotel_view_text_">ویو :
+                        {% if i.view_mhotel %}{{ i.view_mhotel }}{% else %}-{% endif %}
                     </p>
+                    {% if i.Mhotel.HotelRating == '1' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>{% endif %}
+                    {% if i.Mhotel.HotelRating == '2' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>{% endif %}
+                    {% if i.Mhotel.HotelRating == '3' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>{% endif %}
+                    {% if i.Mhotel.HotelRating == '4' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>{% endif %}
+                    {% if i.Mhotel.HotelRating == '5' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>{% endif %}
+                </div>
+                {% with hm_imgs=i.Mhotel.hotel_images_set.all %}
+                <div class="d-none d-lg-block">
+                    {% if i.Mhotel.HotelMap %}<p class="night_count_"><button type="button" class="hotel-info-link-btn" onclick="openHotelModal('hmodal-{{ i.id }}-m{{ i.Mhotel.id }}','location','hmapd-{{ i.id }}-m{{ i.Mhotel.id }}','{{ i.Mhotel.HotelMap }}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> موقعیت مکانی</button></p>{% endif %}
+                    {% if hm_imgs %}<p class="night_count_"><button type="button" class="hotel-info-link-btn" onclick="openHotelModal('hmodal-{{ i.id }}-m{{ i.Mhotel.id }}','gallery',null,null)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> تصاویر هتل</button></p>{% endif %}
+                </div>
+                {% endwith %}
+            </div>
+            <div class="col-sm-6 col-lg-3 no-padding">
+                <div class="d-none d-lg-block">
+                    <div class="d-flex align-items-center gap-3">
+                        <p class="night_count_ mb-0"><span class="hotel-desktop-text">خدمات هتل</span></p>
+                        <div class="hotel-services-list">
+                            {% if i.service_mhotel %}<p class="hotel_class_ mb-0">{{ i.service_mhotel }}</p>
+                            {% else %}
+                                {% if i.Mhotel.HotelOR %}<p class="hotel_class_ mb-0">OR</p>{% endif %}
+                                {% if i.Mhotel.HotelBB %}<p class="hotel_class_ mb-0">BB</p>{% endif %}
+                                {% if i.Mhotel.HotelHB %}<p class="hotel_class_ mb-0">HB</p>{% endif %}
+                                {% if i.Mhotel.HotelFB %}<p class="hotel_class_ mb-0">FB</p>{% endif %}
+                                {% if i.Mhotel.HotelAll %}<p class="hotel_class_ mb-0">All</p>{% endif %}
+                                {% if i.Mhotel.HotelUall %}<p class="hotel_class_ mb-0">U All</p>{% endif %}
+                                {% if i.Mhotel.HotelMaxAll %}<p class="hotel_class_ mb-0">Max All</p>{% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 mt-1">
+                        <p class="hotel_booking_tlt_ mb-0">امتیاز بوکینگ</p>
+                        <p class="hotel_booking_rate_ mb-0">{{ i.Mhotel.HotelBookingRate }}</p>
+                    </div>
+                </div>
+                <div class="d-lg-none hotel-service-mobile-wrapper">
+                    <p class="night_count_"><span class="hotel-desktop-text">خدمات هتل</span><i class="fa fa-coffee hotel-mobile-icon"></i></p>
                     <div class="hotel-services-list">
-                        {% if i.service_mhotel %}
-                            <p class="hotel_class_">{{ i.service_mhotel }}</p>
+                        {% if i.service_mhotel %}<p class="hotel_class_">{{ i.service_mhotel }}</p>
                         {% else %}
-                            {% if i.Mhotel.HotelOR %}
-                                <p class="hotel_class_">OR</p>
-                            {% endif %}
-                            {% if i.Mhotel.HotelBB %}
-                                <p class="hotel_class_">BB</p>
-                            {% endif %}
-                            {% if i.Mhotel.HotelHB %}
-                                <p class="hotel_class_">HB</p>
-                            {% endif %}
-                            {% if i.Mhotel.HotelFB %}
-                                <p class="hotel_class_">FB</p>
-                            {% endif %}
-                            {% if i.Mhotel.HotelAll %}
-                                <p class="hotel_class_">All</p>
-                            {% endif %}
-                            {% if i.Mhotel.HotelUall %}
-                                <p class="hotel_class_">U All</p>
-                            {% endif %}
-                            {% if i.Mhotel.HotelMaxAll %}
-                                <p class="hotel_class_">Max All</p>
-                            {% endif %}
+                            {% if i.Mhotel.HotelOR %}<p class="hotel_class_">OR</p>{% endif %}
+                            {% if i.Mhotel.HotelBB %}<p class="hotel_class_">BB</p>{% endif %}
+                            {% if i.Mhotel.HotelHB %}<p class="hotel_class_">HB</p>{% endif %}
+                            {% if i.Mhotel.HotelFB %}<p class="hotel_class_">FB</p>{% endif %}
+                            {% if i.Mhotel.HotelAll %}<p class="hotel_class_">All</p>{% endif %}
+                            {% if i.Mhotel.HotelUall %}<p class="hotel_class_">U All</p>{% endif %}
+                            {% if i.Mhotel.HotelMaxAll %}<p class="hotel_class_">Max All</p>{% endif %}
                         {% endif %}
                     </div>
                 </div>
-            </div>
-            <div class="d-sm-none col-lg-2 d-lg-block">
-                <p class="hotel_booking_tlt_">امتیاز بوکینگ</p>
-                <p class="hotel_booking_rate_">{{ i.Mhotel.HotelBookingRate }}</p>
             </div>
         </div>
     </div>
 {% endif %}
 {% if i.M1hotel %}
-    <div class="col-lg-2 col-sm-4 no-padding">
-        <div class="hotel_image_">
+    <div class="col-12 no-padding d-lg-none">{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.m1hotel tr_label=i.transfer_label_map.m1hotel %}</div>
+    <div class="col-lg-3 col-sm-4 no-padding d-lg-none">
+        <div class="hotel_image_{% if i.sold_out_map.m1hotel %} hotel-soldout-dim{% endif %}">
             <a href="{% url 'hotel-detail' i.M1hotel.id i.M1hotel.Slug %}">
                 {% if i.M1hotel.HotelImage %}
-                    <img loading="lazy" alt="{{ i.M1hotel }}" src="{{ i.M1hotel.HotelImage.url }}" width="100%">
+                    <img loading="lazy" alt="{{ i.M1hotel }}"
+                     src="{% img_url_at i.M1hotel.HotelImage 480 %}"
+                     srcset="{% srcset_for i.M1hotel.HotelImage "320,480" %}"
+                     sizes="(max-width: 991px) 90vw, 480px" width="100%" decoding="async">
                 {% endif %}
                 {% if i.M1hotel.top_rate %}
                     <p class="top_rate_">TOP</p>
@@ -189,86 +228,98 @@
                     <p class="gte_hotel">گارانتی</p>
                 {% endif %}
             </a>
+            {% with hm1m_imgs=i.M1hotel.hotel_images_set.all %}
+            {% if i.M1hotel.HotelMap or hm1m_imgs %}
+            <div class="hm-icon-row d-lg-none">
+                {% if i.M1hotel.HotelMap %}<button class="hm-icon-btn" type="button" aria-label="موقعیت مکانی هتل" onclick="openHotelModal('hmodal-{{ i.id }}-m1{{ i.M1hotel.id }}','location','hmapd-{{ i.id }}-m1{{ i.M1hotel.id }}','{{ i.M1hotel.HotelMap }}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></button>{% endif %}
+                {% if hm1m_imgs %}<button class="hm-icon-btn" type="button" aria-label="تصاویر هتل" onclick="openHotelModal('hmodal-{{ i.id }}-m1{{ i.M1hotel.id }}','gallery',null,null)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>{% endif %}
+            </div>
+            {% endif %}
+            {% endwith %}
         </div>
     </div>
-    <div class="col-lg-10 col-sm-8 no-padding {% if i.M2hotel %}border-bottom-dashed{% endif %}">
-        <div class="row">
+    <div class="col-lg-9 col-sm-8 no-padding d-lg-none {% if i.M2hotel %}border-bottom-dashed{% endif %}{% if i.sold_out_map.m1hotel %} hotel-soldout-dim{% endif %}">
+        <div class="row align-items-center">
             <div class="col-lg-6">
                 <p class="hotel_fa_tlt_">{{ i.M1hotel.HotelName|truncatechars:50 }}</p>
                 <p class="hotel_en_tlt_">{{ i.M1hotel.HotelNameEnglish|truncatechars:50 }}</p>
+                <div class="d-none d-lg-block">
+                    {% if i.M1hotel.HotelRating == '1' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>{% endif %}
+                    {% if i.M1hotel.HotelRating == '2' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>{% endif %}
+                    {% if i.M1hotel.HotelRating == '3' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>{% endif %}
+                    {% if i.M1hotel.HotelRating == '4' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>{% endif %}
+                    {% if i.M1hotel.HotelRating == '5' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>{% endif %}
+                </div>
             </div>
-            <div class="col-sm-6 col-lg-2 no-padding">
-                <p class="night_count_ hotel_view_text_">ویو :
-                    {% if i.view_m1hotel %}
-                        {{ i.view_m1hotel }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </p>
-                {% if i.M1hotel.HotelRating == '1' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
-                {% endif %}
-                {% if i.M1hotel.HotelRating == '2' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
-                {% endif %}
-                {% if i.M1hotel.HotelRating == '3' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
-                {% endif %}
-                {% if i.M1hotel.HotelRating == '4' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
-                {% endif %}
-                {% if i.M1hotel.HotelRating == '5' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
-                {% endif %}
-            </div>
-            <div class="col-sm-6 col-lg-2 no-padding">
-                <div class="hotel-service-mobile-wrapper">
-                    <p class="night_count_">
-                        <span class="hotel-desktop-text">خدمات هتل</span>
-                        <i class="fa fa-coffee hotel-mobile-icon"></i>
+            <div class="col-sm-6 col-lg-3 no-padding">
+                <div class="d-lg-none">
+                    <p class="night_count_ hotel_view_text_">ویو :
+                        {% if i.view_m1hotel %}{{ i.view_m1hotel }}{% else %}-{% endif %}
                     </p>
+                    {% if i.M1hotel.HotelRating == '1' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>{% endif %}
+                    {% if i.M1hotel.HotelRating == '2' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>{% endif %}
+                    {% if i.M1hotel.HotelRating == '3' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>{% endif %}
+                    {% if i.M1hotel.HotelRating == '4' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>{% endif %}
+                    {% if i.M1hotel.HotelRating == '5' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>{% endif %}
+                </div>
+                {% with hm1_imgs=i.M1hotel.hotel_images_set.all %}
+                <div class="d-none d-lg-block">
+                    {% if i.M1hotel.HotelMap %}<p class="night_count_"><button type="button" class="hotel-info-link-btn" onclick="openHotelModal('hmodal-{{ i.id }}-m1{{ i.M1hotel.id }}','location','hmapd-{{ i.id }}-m1{{ i.M1hotel.id }}','{{ i.M1hotel.HotelMap }}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> موقعیت مکانی</button></p>{% endif %}
+                    {% if hm1_imgs %}<p class="night_count_"><button type="button" class="hotel-info-link-btn" onclick="openHotelModal('hmodal-{{ i.id }}-m1{{ i.M1hotel.id }}','gallery',null,null)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> تصاویر هتل</button></p>{% endif %}
+                </div>
+                {% endwith %}
+            </div>
+            <div class="col-sm-6 col-lg-3 no-padding">
+                <div class="d-none d-lg-block">
+                    <div class="d-flex align-items-center gap-3">
+                        <p class="night_count_ mb-0"><span class="hotel-desktop-text">خدمات هتل</span></p>
+                        <div class="hotel-services-list">
+                            {% if i.service_m1hotel %}<p class="hotel_class_ mb-0">{{ i.service_m1hotel }}</p>
+                            {% else %}
+                                {% if i.M1hotel.HotelOR %}<p class="hotel_class_ mb-0">OR</p>{% endif %}
+                                {% if i.M1hotel.HotelBB %}<p class="hotel_class_ mb-0">BB</p>{% endif %}
+                                {% if i.M1hotel.HotelHB %}<p class="hotel_class_ mb-0">HB</p>{% endif %}
+                                {% if i.M1hotel.HotelFB %}<p class="hotel_class_ mb-0">FB</p>{% endif %}
+                                {% if i.M1hotel.HotelAll %}<p class="hotel_class_ mb-0">All</p>{% endif %}
+                                {% if i.M1hotel.HotelUall %}<p class="hotel_class_ mb-0">U All</p>{% endif %}
+                                {% if i.M1hotel.HotelMaxAll %}<p class="hotel_class_ mb-0">Max All</p>{% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 mt-1">
+                        <p class="hotel_booking_tlt_ mb-0">امتیاز بوکینگ</p>
+                        <p class="hotel_booking_rate_ mb-0">{{ i.M1hotel.HotelBookingRate }}</p>
+                    </div>
+                </div>
+                <div class="d-lg-none hotel-service-mobile-wrapper">
+                    <p class="night_count_"><span class="hotel-desktop-text">خدمات هتل</span><i class="fa fa-coffee hotel-mobile-icon"></i></p>
                     <div class="hotel-services-list">
-                        {% if i.service_m1hotel %}
-                            <p class="hotel_class_">{{ i.service_m1hotel }}</p>
+                        {% if i.service_m1hotel %}<p class="hotel_class_">{{ i.service_m1hotel }}</p>
                         {% else %}
-                            {% if i.M1hotel.HotelOR %}
-                                <p class="hotel_class_">OR</p>
-                            {% endif %}
-                            {% if i.M1hotel.HotelBB %}
-                                <p class="hotel_class_">BB</p>
-                            {% endif %}
-                            {% if i.M1hotel.HotelHB %}
-                                <p class="hotel_class_">HB</p>
-                            {% endif %}
-                            {% if i.M1hotel.HotelFB %}
-                                <p class="hotel_class_">FB</p>
-                            {% endif %}
-                            {% if i.M1hotel.HotelAll %}
-                                <p class="hotel_class_">All</p>
-                            {% endif %}
-                            {% if i.M1hotel.HotelUall %}
-                                <p class="hotel_class_">U All</p>
-                            {% endif %}
-                            {% if i.M1hotel.HotelMaxAll %}
-                                <p class="hotel_class_">Max All</p>
-                            {% endif %}
+                            {% if i.M1hotel.HotelOR %}<p class="hotel_class_">OR</p>{% endif %}
+                            {% if i.M1hotel.HotelBB %}<p class="hotel_class_">BB</p>{% endif %}
+                            {% if i.M1hotel.HotelHB %}<p class="hotel_class_">HB</p>{% endif %}
+                            {% if i.M1hotel.HotelFB %}<p class="hotel_class_">FB</p>{% endif %}
+                            {% if i.M1hotel.HotelAll %}<p class="hotel_class_">All</p>{% endif %}
+                            {% if i.M1hotel.HotelUall %}<p class="hotel_class_">U All</p>{% endif %}
+                            {% if i.M1hotel.HotelMaxAll %}<p class="hotel_class_">Max All</p>{% endif %}
                         {% endif %}
                     </div>
                 </div>
-            </div>
-            <div class="d-sm-none col-lg-2 d-lg-block">
-                <p class="hotel_booking_tlt_">امتیاز بوکینگ</p>
-                <p class="hotel_booking_rate_">{{ i.M1hotel.HotelBookingRate }}</p>
             </div>
         </div>
     </div>
 {% endif %}
 {% if i.M2hotel %}
-    <div class="col-lg-2 col-sm-4 no-padding">
-        <div class="hotel_image_">
+    <div class="col-12 no-padding d-lg-none">{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.m2hotel tr_label=i.transfer_label_map.m2hotel %}</div>
+    <div class="col-lg-3 col-sm-4 no-padding d-lg-none">
+        <div class="hotel_image_{% if i.sold_out_map.m2hotel %} hotel-soldout-dim{% endif %}">
             <a href="{% url 'hotel-detail' i.M2hotel.id i.M2hotel.Slug %}">
                 {% if i.M2hotel.HotelImage %}
-                    <img loading="lazy" alt="{{ i.M2hotel }}" src="{{ i.M2hotel.HotelImage.url }}" width="100%">
+                    <img loading="lazy" alt="{{ i.M2hotel }}"
+                     src="{% img_url_at i.M2hotel.HotelImage 480 %}"
+                     srcset="{% srcset_for i.M2hotel.HotelImage "320,480" %}"
+                     sizes="(max-width: 991px) 90vw, 480px" width="100%" decoding="async">
                 {% endif %}
                 {% if i.M2hotel.top_rate %}
                     <p class="top_rate_">TOP</p>
@@ -277,86 +328,98 @@
                     <p class="gte_hotel">گارانتی ساتراپ</p>
                 {% endif %}
             </a>
+            {% with hm2m_imgs=i.M2hotel.hotel_images_set.all %}
+            {% if i.M2hotel.HotelMap or hm2m_imgs %}
+            <div class="hm-icon-row d-lg-none">
+                {% if i.M2hotel.HotelMap %}<button class="hm-icon-btn" type="button" aria-label="موقعیت مکانی هتل" onclick="openHotelModal('hmodal-{{ i.id }}-m2{{ i.M2hotel.id }}','location','hmapd-{{ i.id }}-m2{{ i.M2hotel.id }}','{{ i.M2hotel.HotelMap }}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></button>{% endif %}
+                {% if hm2m_imgs %}<button class="hm-icon-btn" type="button" aria-label="تصاویر هتل" onclick="openHotelModal('hmodal-{{ i.id }}-m2{{ i.M2hotel.id }}','gallery',null,null)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>{% endif %}
+            </div>
+            {% endif %}
+            {% endwith %}
         </div>
     </div>
-    <div class="col-lg-10 col-sm-8 no-padding {% if i.M3hotel %}border-bottom-dashed{% endif %}">
-        <div class="row">
+    <div class="col-lg-9 col-sm-8 no-padding d-lg-none {% if i.M3hotel %}border-bottom-dashed{% endif %}{% if i.sold_out_map.m2hotel %} hotel-soldout-dim{% endif %}">
+        <div class="row align-items-center">
             <div class="col-lg-6">
                 <p class="hotel_fa_tlt_">{{ i.M2hotel.HotelName|truncatechars:50 }}</p>
                 <p class="hotel_en_tlt_">{{ i.M2hotel.HotelNameEnglish|truncatechars:50 }}</p>
+                <div class="d-none d-lg-block">
+                    {% if i.M2hotel.HotelRating == '1' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>{% endif %}
+                    {% if i.M2hotel.HotelRating == '2' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>{% endif %}
+                    {% if i.M2hotel.HotelRating == '3' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>{% endif %}
+                    {% if i.M2hotel.HotelRating == '4' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>{% endif %}
+                    {% if i.M2hotel.HotelRating == '5' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>{% endif %}
+                </div>
             </div>
-            <div class="col-sm-6 col-lg-2 no-padding">
-                <p class="night_count_ hotel_view_text_">ویو :
-                    {% if i.view_m2hotel %}
-                        {{ i.view_m2hotel }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </p>
-                {% if i.M2hotel.HotelRating == '1' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
-                {% endif %}
-                {% if i.M2hotel.HotelRating == '2' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
-                {% endif %}
-                {% if i.M2hotel.HotelRating == '3' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
-                {% endif %}
-                {% if i.M2hotel.HotelRating == '4' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
-                {% endif %}
-                {% if i.M2hotel.HotelRating == '5' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
-                {% endif %}
-            </div>
-            <div class="col-sm-6 col-lg-2 no-padding">
-                <div class="hotel-service-mobile-wrapper">
-                    <p class="night_count_">
-                        <span class="hotel-desktop-text">خدمات هتل</span>
-                        <i class="fa fa-coffee hotel-mobile-icon"></i>
+            <div class="col-sm-6 col-lg-3 no-padding">
+                <div class="d-lg-none">
+                    <p class="night_count_ hotel_view_text_">ویو :
+                        {% if i.view_m2hotel %}{{ i.view_m2hotel }}{% else %}-{% endif %}
                     </p>
+                    {% if i.M2hotel.HotelRating == '1' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>{% endif %}
+                    {% if i.M2hotel.HotelRating == '2' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>{% endif %}
+                    {% if i.M2hotel.HotelRating == '3' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>{% endif %}
+                    {% if i.M2hotel.HotelRating == '4' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>{% endif %}
+                    {% if i.M2hotel.HotelRating == '5' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>{% endif %}
+                </div>
+                {% with hm2_imgs=i.M2hotel.hotel_images_set.all %}
+                <div class="d-none d-lg-block">
+                    {% if i.M2hotel.HotelMap %}<p class="night_count_"><button type="button" class="hotel-info-link-btn" onclick="openHotelModal('hmodal-{{ i.id }}-m2{{ i.M2hotel.id }}','location','hmapd-{{ i.id }}-m2{{ i.M2hotel.id }}','{{ i.M2hotel.HotelMap }}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> موقعیت مکانی</button></p>{% endif %}
+                    {% if hm2_imgs %}<p class="night_count_"><button type="button" class="hotel-info-link-btn" onclick="openHotelModal('hmodal-{{ i.id }}-m2{{ i.M2hotel.id }}','gallery',null,null)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> تصاویر هتل</button></p>{% endif %}
+                </div>
+                {% endwith %}
+            </div>
+            <div class="col-sm-6 col-lg-3 no-padding">
+                <div class="d-none d-lg-block">
+                    <div class="d-flex align-items-center gap-3">
+                        <p class="night_count_ mb-0"><span class="hotel-desktop-text">خدمات هتل</span></p>
+                        <div class="hotel-services-list">
+                            {% if i.service_m2hotel %}<p class="hotel_class_ mb-0">{{ i.service_m2hotel }}</p>
+                            {% else %}
+                                {% if i.M2hotel.HotelOR %}<p class="hotel_class_ mb-0">OR</p>{% endif %}
+                                {% if i.M2hotel.HotelBB %}<p class="hotel_class_ mb-0">BB</p>{% endif %}
+                                {% if i.M2hotel.HotelHB %}<p class="hotel_class_ mb-0">HB</p>{% endif %}
+                                {% if i.M2hotel.HotelFB %}<p class="hotel_class_ mb-0">FB</p>{% endif %}
+                                {% if i.M2hotel.HotelAll %}<p class="hotel_class_ mb-0">All</p>{% endif %}
+                                {% if i.M2hotel.HotelUall %}<p class="hotel_class_ mb-0">U All</p>{% endif %}
+                                {% if i.M2hotel.HotelMaxAll %}<p class="hotel_class_ mb-0">Max All</p>{% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 mt-1">
+                        <p class="hotel_booking_tlt_ mb-0">امتیاز بوکینگ</p>
+                        <p class="hotel_booking_rate_ mb-0">{{ i.M2hotel.HotelBookingRate }}</p>
+                    </div>
+                </div>
+                <div class="d-lg-none hotel-service-mobile-wrapper">
+                    <p class="night_count_"><span class="hotel-desktop-text">خدمات هتل</span><i class="fa fa-coffee hotel-mobile-icon"></i></p>
                     <div class="hotel-services-list">
-                        {% if i.service_m2hotel %}
-                            <p class="hotel_class_">{{ i.service_m2hotel }}</p>
+                        {% if i.service_m2hotel %}<p class="hotel_class_">{{ i.service_m2hotel }}</p>
                         {% else %}
-                            {% if i.M2hotel.HotelOR %}
-                                <p class="hotel_class_">OR</p>
-                            {% endif %}
-                            {% if i.M2hotel.HotelBB %}
-                                <p class="hotel_class_">BB</p>
-                            {% endif %}
-                            {% if i.M2hotel.HotelHB %}
-                                <p class="hotel_class_">HB</p>
-                            {% endif %}
-                            {% if i.M2hotel.HotelFB %}
-                                <p class="hotel_class_">FB</p>
-                            {% endif %}
-                            {% if i.M2hotel.HotelAll %}
-                                <p class="hotel_class_">All</p>
-                            {% endif %}
-                            {% if i.M2hotel.HotelUall %}
-                                <p class="hotel_class_">U All</p>
-                            {% endif %}
-                            {% if i.M2hotel.HotelMaxAll %}
-                                <p class="hotel_class_">Max All</p>
-                            {% endif %}
+                            {% if i.M2hotel.HotelOR %}<p class="hotel_class_">OR</p>{% endif %}
+                            {% if i.M2hotel.HotelBB %}<p class="hotel_class_">BB</p>{% endif %}
+                            {% if i.M2hotel.HotelHB %}<p class="hotel_class_">HB</p>{% endif %}
+                            {% if i.M2hotel.HotelFB %}<p class="hotel_class_">FB</p>{% endif %}
+                            {% if i.M2hotel.HotelAll %}<p class="hotel_class_">All</p>{% endif %}
+                            {% if i.M2hotel.HotelUall %}<p class="hotel_class_">U All</p>{% endif %}
+                            {% if i.M2hotel.HotelMaxAll %}<p class="hotel_class_">Max All</p>{% endif %}
                         {% endif %}
                     </div>
                 </div>
-            </div>
-            <div class="d-sm-none col-lg-2 d-lg-block">
-                <p class="hotel_booking_tlt_">امتیاز بوکینگ</p>
-                <p class="hotel_booking_rate_">{{ i.M2hotel.HotelBookingRate }}</p>
             </div>
         </div>
     </div>
 {% endif %}
 {% if i.M3hotel %}
-    <div class="col-lg-2 col-sm-4 no-padding">
-        <div class="hotel_image_">
+    <div class="col-12 no-padding d-lg-none">{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.m3hotel tr_label=i.transfer_label_map.m3hotel %}</div>
+    <div class="col-lg-3 col-sm-4 no-padding d-lg-none">
+        <div class="hotel_image_{% if i.sold_out_map.m3hotel %} hotel-soldout-dim{% endif %}">
             <a href="{% url 'hotel-detail' i.M3hotel.id i.M3hotel.Slug %}">
                 {% if i.M3hotel.HotelImage %}
-                    <img loading="lazy" alt="{{ i.M3hotel }}" src="{{ i.M3hotel.HotelImage.url }}" width="100%">
+                    <img loading="lazy" alt="{{ i.M3hotel }}"
+                     src="{% img_url_at i.M3hotel.HotelImage 480 %}"
+                     srcset="{% srcset_for i.M3hotel.HotelImage "320,480" %}"
+                     sizes="(max-width: 991px) 90vw, 480px" width="100%" decoding="async">
                 {% endif %}
                 {% if i.M3hotel.top_rate %}
                     <p class="top_rate_">TOP</p>
@@ -365,90 +428,213 @@
                     <p class="gte_hotel">گارانتی ساتراپ</p>
                 {% endif %}
             </a>
+            {% with hm3m_imgs=i.M3hotel.hotel_images_set.all %}
+            {% if i.M3hotel.HotelMap or hm3m_imgs %}
+            <div class="hm-icon-row d-lg-none">
+                {% if i.M3hotel.HotelMap %}<button class="hm-icon-btn" type="button" aria-label="موقعیت مکانی هتل" onclick="openHotelModal('hmodal-{{ i.id }}-m3{{ i.M3hotel.id }}','location','hmapd-{{ i.id }}-m3{{ i.M3hotel.id }}','{{ i.M3hotel.HotelMap }}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></button>{% endif %}
+                {% if hm3m_imgs %}<button class="hm-icon-btn" type="button" aria-label="تصاویر هتل" onclick="openHotelModal('hmodal-{{ i.id }}-m3{{ i.M3hotel.id }}','gallery',null,null)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>{% endif %}
+            </div>
+            {% endif %}
+            {% endwith %}
         </div>
     </div>
-    <div class="col-lg-10 col-sm-8 no-padding ">
-        <div class="row">
+    <div class="col-lg-9 col-sm-8 no-padding d-lg-none{% if i.sold_out_map.m3hotel %} hotel-soldout-dim{% endif %}">
+        <div class="row align-items-center">
             <div class="col-lg-6">
                 <p class="hotel_fa_tlt_">{{ i.M3hotel.HotelName|truncatechars:50 }}</p>
                 <p class="hotel_en_tlt_">{{ i.M3hotel.HotelNameEnglish|truncatechars:50 }}</p>
+                <div class="d-none d-lg-block">
+                    {% if i.M3hotel.HotelRating == '1' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>{% endif %}
+                    {% if i.M3hotel.HotelRating == '2' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>{% endif %}
+                    {% if i.M3hotel.HotelRating == '3' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>{% endif %}
+                    {% if i.M3hotel.HotelRating == '4' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>{% endif %}
+                    {% if i.M3hotel.HotelRating == '5' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>{% endif %}
+                </div>
             </div>
-            <div class="col-sm-6 col-lg-2 no-padding">
-                <p class="night_count_ hotel_view_text_">ویو :
-                    {% if i.view_m3hotel %}
-                        {{ i.view_m3hotel }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </p>
-                {% if i.M3hotel.HotelRating == '1' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>
-                {% endif %}
-                {% if i.M3hotel.HotelRating == '2' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>
-                {% endif %}
-                {% if i.M3hotel.HotelRating == '3' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>
-                {% endif %}
-                {% if i.M3hotel.HotelRating == '4' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>
-                {% endif %}
-                {% if i.M3hotel.HotelRating == '5' %}
-                    <p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>
-                {% endif %}
-            </div>
-            <div class="col-sm-6 col-lg-2 no-padding">
-                <div class="hotel-service-mobile-wrapper">
-                    <p class="night_count_">
-                        <span class="hotel-desktop-text">خدمات هتل</span>
-                        <i class="fa fa-coffee hotel-mobile-icon"></i>
+            <div class="col-sm-6 col-lg-3 no-padding">
+                <div class="d-lg-none">
+                    <p class="night_count_ hotel_view_text_">ویو :
+                        {% if i.view_m3hotel %}{{ i.view_m3hotel }}{% else %}-{% endif %}
                     </p>
+                    {% if i.M3hotel.HotelRating == '1' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-1" src="/media/rating/rating-1.png" width="100"></p>{% endif %}
+                    {% if i.M3hotel.HotelRating == '2' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-2" src="/media/rating/rating-2.png" width="100"></p>{% endif %}
+                    {% if i.M3hotel.HotelRating == '3' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-3" src="/media/rating/rating-3.png" width="100"></p>{% endif %}
+                    {% if i.M3hotel.HotelRating == '4' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-4" src="/media/rating/rating-4.png" width="100"></p>{% endif %}
+                    {% if i.M3hotel.HotelRating == '5' %}<p class="hotel_rating_"><img loading="lazy" alt="rating-5" src="/media/rating/rating-5.png" width="100"></p>{% endif %}
+                </div>
+                {% with hm3_imgs=i.M3hotel.hotel_images_set.all %}
+                <div class="d-none d-lg-block">
+                    {% if i.M3hotel.HotelMap %}<p class="night_count_"><button type="button" class="hotel-info-link-btn" onclick="openHotelModal('hmodal-{{ i.id }}-m3{{ i.M3hotel.id }}','location','hmapd-{{ i.id }}-m3{{ i.M3hotel.id }}','{{ i.M3hotel.HotelMap }}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> موقعیت مکانی</button></p>{% endif %}
+                    {% if hm3_imgs %}<p class="night_count_"><button type="button" class="hotel-info-link-btn" onclick="openHotelModal('hmodal-{{ i.id }}-m3{{ i.M3hotel.id }}','gallery',null,null)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> تصاویر هتل</button></p>{% endif %}
+                </div>
+                {% endwith %}
+            </div>
+            <div class="col-sm-6 col-lg-3 no-padding">
+                <div class="d-none d-lg-block">
+                    <div class="d-flex align-items-center gap-3">
+                        <p class="night_count_ mb-0"><span class="hotel-desktop-text">خدمات هتل</span></p>
+                        <div class="hotel-services-list">
+                            {% if i.service_m3hotel %}<p class="hotel_class_ mb-0">{{ i.service_m3hotel }}</p>
+                            {% else %}
+                                {% if i.M3hotel.HotelOR %}<p class="hotel_class_ mb-0">OR</p>{% endif %}
+                                {% if i.M3hotel.HotelBB %}<p class="hotel_class_ mb-0">BB</p>{% endif %}
+                                {% if i.M3hotel.HotelHB %}<p class="hotel_class_ mb-0">HB</p>{% endif %}
+                                {% if i.M3hotel.HotelFB %}<p class="hotel_class_ mb-0">FB</p>{% endif %}
+                                {% if i.M3hotel.HotelAll %}<p class="hotel_class_ mb-0">All</p>{% endif %}
+                                {% if i.M3hotel.HotelUall %}<p class="hotel_class_ mb-0">U All</p>{% endif %}
+                                {% if i.M3hotel.HotelMaxAll %}<p class="hotel_class_ mb-0">Max All</p>{% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 mt-1">
+                        <p class="hotel_booking_tlt_ mb-0">امتیاز بوکینگ</p>
+                        <p class="hotel_booking_rate_ mb-0">{{ i.M3hotel.HotelBookingRate }}</p>
+                    </div>
+                </div>
+                <div class="d-lg-none hotel-service-mobile-wrapper">
+                    <p class="night_count_"><span class="hotel-desktop-text">خدمات هتل</span><i class="fa fa-coffee hotel-mobile-icon"></i></p>
                     <div class="hotel-services-list">
-                        {% if i.service_m3hotel %}
-                            <p class="hotel_class_">{{ i.service_m3hotel }}</p>
+                        {% if i.service_m3hotel %}<p class="hotel_class_">{{ i.service_m3hotel }}</p>
                         {% else %}
-                            {% if i.M3hotel.HotelOR %}
-                                <p class="hotel_class_">OR</p>
-                            {% endif %}
-                            {% if i.M3hotel.HotelBB %}
-                                <p class="hotel_class_">BB</p>
-                            {% endif %}
-                            {% if i.M3hotel.HotelHB %}
-                                <p class="hotel_class_">HB</p>
-                            {% endif %}
-                            {% if i.M3hotel.HotelFB %}
-                                <p class="hotel_class_">FB</p>
-                            {% endif %}
-                            {% if i.M3hotel.HotelAll %}
-                                <p class="hotel_class_">All</p>
-                            {% endif %}
-                            {% if i.M3hotel.HotelUall %}
-                                <p class="hotel_class_">U All</p>
-                            {% endif %}
-                            {% if i.M3hotel.HotelMaxAll %}
-                                <p class="hotel_class_">Max All</p>
-                            {% endif %}
+                            {% if i.M3hotel.HotelOR %}<p class="hotel_class_">OR</p>{% endif %}
+                            {% if i.M3hotel.HotelBB %}<p class="hotel_class_">BB</p>{% endif %}
+                            {% if i.M3hotel.HotelHB %}<p class="hotel_class_">HB</p>{% endif %}
+                            {% if i.M3hotel.HotelFB %}<p class="hotel_class_">FB</p>{% endif %}
+                            {% if i.M3hotel.HotelAll %}<p class="hotel_class_">All</p>{% endif %}
+                            {% if i.M3hotel.HotelUall %}<p class="hotel_class_">U All</p>{% endif %}
+                            {% if i.M3hotel.HotelMaxAll %}<p class="hotel_class_">Max All</p>{% endif %}
                         {% endif %}
                     </div>
                 </div>
             </div>
-            <div class="d-sm-none col-lg-2 d-lg-block">
-                <p class="hotel_booking_tlt_">امتیاز بوکینگ</p>
-                <p class="hotel_booking_rate_">{{ i.M3hotel.HotelBookingRate }}</p>
-            </div>
         </div>
     </div>
 {% endif %}
-<div class="col-lg-12 no-padding">
+{% with h0_imgs=i.HotelName.hotel_images_set.all %}{% if i.HotelName.HotelMap or h0_imgs %}
+<div class="modal fade hotel-info-modal" id="hmodal-{{ i.id }}-{{ i.HotelName.id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header py-2 px-3">
+      <h2 class="modal-title fw-bold" style="font-size:14px;">{{ i.HotelName.HotelName }} <span style="font-weight:400;font-size:12px;color:#777;">{{ i.HotelName.HotelNameEnglish }}</span></h2>
+      <button type="button" class="btn-close" aria-label="بستن" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-0">
+      <ul class="nav nav-pills px-3 py-2 border-bottom" style="gap:6px;">
+        {% if h0_imgs %}<li><button class="nav-link hotel-mpill active py-1 px-3" data-bs-toggle="tab" data-bs-target="#hgal-{{ i.id }}-{{ i.HotelName.id }}">تصاویر</button></li>{% endif %}
+        {% if i.HotelName.HotelMap %}<li><button class="nav-link hotel-mpill {% if not h0_imgs %}active{% endif %} py-1 px-3" data-bs-toggle="tab" data-bs-target="#hmap-{{ i.id }}-{{ i.HotelName.id }}" data-hotel-location="{{ i.HotelName.HotelMap }}" data-map-div="hmapd-{{ i.id }}-{{ i.HotelName.id }}">لوکیشن</button></li>{% endif %}
+      </ul>
+      <div class="tab-content">
+        {% if h0_imgs %}<div class="tab-pane fade show active" id="hgal-{{ i.id }}-{{ i.HotelName.id }}"><div class="hotel-gallery-layout">
+          <div class="hotel-gallery-main-wrap"><img id="hmimg-{{ i.id }}-{{ i.HotelName.id }}" src="{{ h0_imgs.0.image.url }}" class="hotel-gallery-main-img" alt="{{ i.HotelName.HotelName }}" loading="lazy" decoding="async"></div>
+          <div class="hotel-gallery-thumbs-wrap">{% for img in h0_imgs %}<img src="{{ img.image.url }}" class="hotel-gallery-thumb {% if forloop.first %}thumb-active{% endif %}" data-src="{{ img.image.url }}" onclick="hSetImg('hmimg-{{ i.id }}-{{ i.HotelName.id }}',this)" alt="{{ i.HotelName.HotelName }}" loading="lazy" decoding="async">{% endfor %}</div>
+        </div></div>{% endif %}
+        {% if i.HotelName.HotelMap %}<div class="tab-pane fade {% if not h0_imgs %}show active{% endif %}" id="hmap-{{ i.id }}-{{ i.HotelName.id }}"><div id="hmapd-{{ i.id }}-{{ i.HotelName.id }}" style="height:65vh;"></div></div>{% endif %}
+      </div>
+    </div>
+  </div></div>
+</div>
+{% endif %}{% endwith %}
+{% if i.Mhotel %}{% with hm_imgs=i.Mhotel.hotel_images_set.all %}{% if i.Mhotel.HotelMap or hm_imgs %}
+<div class="modal fade hotel-info-modal" id="hmodal-{{ i.id }}-m{{ i.Mhotel.id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header py-2 px-3">
+      <h2 class="modal-title fw-bold" style="font-size:14px;">{{ i.Mhotel.HotelName }} <span style="font-weight:400;font-size:12px;color:#777;">{{ i.Mhotel.HotelNameEnglish }}</span></h2>
+      <button type="button" class="btn-close" aria-label="بستن" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-0">
+      <ul class="nav nav-pills px-3 py-2 border-bottom" style="gap:6px;">
+        {% if hm_imgs %}<li><button class="nav-link hotel-mpill active py-1 px-3" data-bs-toggle="tab" data-bs-target="#hgal-{{ i.id }}-m{{ i.Mhotel.id }}">تصاویر</button></li>{% endif %}
+        {% if i.Mhotel.HotelMap %}<li><button class="nav-link hotel-mpill {% if not hm_imgs %}active{% endif %} py-1 px-3" data-bs-toggle="tab" data-bs-target="#hmap-{{ i.id }}-m{{ i.Mhotel.id }}" data-hotel-location="{{ i.Mhotel.HotelMap }}" data-map-div="hmapd-{{ i.id }}-m{{ i.Mhotel.id }}">لوکیشن</button></li>{% endif %}
+      </ul>
+      <div class="tab-content">
+        {% if hm_imgs %}<div class="tab-pane fade show active" id="hgal-{{ i.id }}-m{{ i.Mhotel.id }}"><div class="hotel-gallery-layout">
+          <div class="hotel-gallery-main-wrap"><img id="hmimg-{{ i.id }}-m{{ i.Mhotel.id }}" src="{{ hm_imgs.0.image.url }}" class="hotel-gallery-main-img" alt="{{ i.Mhotel.HotelName }}" loading="lazy" decoding="async"></div>
+          <div class="hotel-gallery-thumbs-wrap">{% for img in hm_imgs %}<img src="{{ img.image.url }}" class="hotel-gallery-thumb {% if forloop.first %}thumb-active{% endif %}" data-src="{{ img.image.url }}" onclick="hSetImg('hmimg-{{ i.id }}-m{{ i.Mhotel.id }}',this)" alt="{{ i.Mhotel.HotelName }}" loading="lazy" decoding="async">{% endfor %}</div>
+        </div></div>{% endif %}
+        {% if i.Mhotel.HotelMap %}<div class="tab-pane fade {% if not hm_imgs %}show active{% endif %}" id="hmap-{{ i.id }}-m{{ i.Mhotel.id }}"><div id="hmapd-{{ i.id }}-m{{ i.Mhotel.id }}" style="height:65vh;"></div></div>{% endif %}
+      </div>
+    </div>
+  </div></div>
+</div>
+{% endif %}{% endwith %}{% endif %}
+{% if i.M1hotel %}{% with hm1_imgs=i.M1hotel.hotel_images_set.all %}{% if i.M1hotel.HotelMap or hm1_imgs %}
+<div class="modal fade hotel-info-modal" id="hmodal-{{ i.id }}-m1{{ i.M1hotel.id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header py-2 px-3">
+      <h2 class="modal-title fw-bold" style="font-size:14px;">{{ i.M1hotel.HotelName }} <span style="font-weight:400;font-size:12px;color:#777;">{{ i.M1hotel.HotelNameEnglish }}</span></h2>
+      <button type="button" class="btn-close" aria-label="بستن" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-0">
+      <ul class="nav nav-pills px-3 py-2 border-bottom" style="gap:6px;">
+        {% if hm1_imgs %}<li><button class="nav-link hotel-mpill active py-1 px-3" data-bs-toggle="tab" data-bs-target="#hgal-{{ i.id }}-m1{{ i.M1hotel.id }}">تصاویر</button></li>{% endif %}
+        {% if i.M1hotel.HotelMap %}<li><button class="nav-link hotel-mpill {% if not hm1_imgs %}active{% endif %} py-1 px-3" data-bs-toggle="tab" data-bs-target="#hmap-{{ i.id }}-m1{{ i.M1hotel.id }}" data-hotel-location="{{ i.M1hotel.HotelMap }}" data-map-div="hmapd-{{ i.id }}-m1{{ i.M1hotel.id }}">لوکیشن</button></li>{% endif %}
+      </ul>
+      <div class="tab-content">
+        {% if hm1_imgs %}<div class="tab-pane fade show active" id="hgal-{{ i.id }}-m1{{ i.M1hotel.id }}"><div class="hotel-gallery-layout">
+          <div class="hotel-gallery-main-wrap"><img id="hmimg-{{ i.id }}-m1{{ i.M1hotel.id }}" src="{{ hm1_imgs.0.image.url }}" class="hotel-gallery-main-img" alt="{{ i.M1hotel.HotelName }}" loading="lazy" decoding="async"></div>
+          <div class="hotel-gallery-thumbs-wrap">{% for img in hm1_imgs %}<img src="{{ img.image.url }}" class="hotel-gallery-thumb {% if forloop.first %}thumb-active{% endif %}" data-src="{{ img.image.url }}" onclick="hSetImg('hmimg-{{ i.id }}-m1{{ i.M1hotel.id }}',this)" alt="{{ i.M1hotel.HotelName }}" loading="lazy" decoding="async">{% endfor %}</div>
+        </div></div>{% endif %}
+        {% if i.M1hotel.HotelMap %}<div class="tab-pane fade {% if not hm1_imgs %}show active{% endif %}" id="hmap-{{ i.id }}-m1{{ i.M1hotel.id }}"><div id="hmapd-{{ i.id }}-m1{{ i.M1hotel.id }}" style="height:65vh;"></div></div>{% endif %}
+      </div>
+    </div>
+  </div></div>
+</div>
+{% endif %}{% endwith %}{% endif %}
+{% if i.M2hotel %}{% with hm2_imgs=i.M2hotel.hotel_images_set.all %}{% if i.M2hotel.HotelMap or hm2_imgs %}
+<div class="modal fade hotel-info-modal" id="hmodal-{{ i.id }}-m2{{ i.M2hotel.id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header py-2 px-3">
+      <h2 class="modal-title fw-bold" style="font-size:14px;">{{ i.M2hotel.HotelName }} <span style="font-weight:400;font-size:12px;color:#777;">{{ i.M2hotel.HotelNameEnglish }}</span></h2>
+      <button type="button" class="btn-close" aria-label="بستن" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-0">
+      <ul class="nav nav-pills px-3 py-2 border-bottom" style="gap:6px;">
+        {% if hm2_imgs %}<li><button class="nav-link hotel-mpill active py-1 px-3" data-bs-toggle="tab" data-bs-target="#hgal-{{ i.id }}-m2{{ i.M2hotel.id }}">تصاویر</button></li>{% endif %}
+        {% if i.M2hotel.HotelMap %}<li><button class="nav-link hotel-mpill {% if not hm2_imgs %}active{% endif %} py-1 px-3" data-bs-toggle="tab" data-bs-target="#hmap-{{ i.id }}-m2{{ i.M2hotel.id }}" data-hotel-location="{{ i.M2hotel.HotelMap }}" data-map-div="hmapd-{{ i.id }}-m2{{ i.M2hotel.id }}">لوکیشن</button></li>{% endif %}
+      </ul>
+      <div class="tab-content">
+        {% if hm2_imgs %}<div class="tab-pane fade show active" id="hgal-{{ i.id }}-m2{{ i.M2hotel.id }}"><div class="hotel-gallery-layout">
+          <div class="hotel-gallery-main-wrap"><img id="hmimg-{{ i.id }}-m2{{ i.M2hotel.id }}" src="{{ hm2_imgs.0.image.url }}" class="hotel-gallery-main-img" alt="{{ i.M2hotel.HotelName }}" loading="lazy" decoding="async"></div>
+          <div class="hotel-gallery-thumbs-wrap">{% for img in hm2_imgs %}<img src="{{ img.image.url }}" class="hotel-gallery-thumb {% if forloop.first %}thumb-active{% endif %}" data-src="{{ img.image.url }}" onclick="hSetImg('hmimg-{{ i.id }}-m2{{ i.M2hotel.id }}',this)" alt="{{ i.M2hotel.HotelName }}" loading="lazy" decoding="async">{% endfor %}</div>
+        </div></div>{% endif %}
+        {% if i.M2hotel.HotelMap %}<div class="tab-pane fade {% if not hm2_imgs %}show active{% endif %}" id="hmap-{{ i.id }}-m2{{ i.M2hotel.id }}"><div id="hmapd-{{ i.id }}-m2{{ i.M2hotel.id }}" style="height:65vh;"></div></div>{% endif %}
+      </div>
+    </div>
+  </div></div>
+</div>
+{% endif %}{% endwith %}{% endif %}
+{% if i.M3hotel %}{% with hm3_imgs=i.M3hotel.hotel_images_set.all %}{% if i.M3hotel.HotelMap or hm3_imgs %}
+<div class="modal fade hotel-info-modal" id="hmodal-{{ i.id }}-m3{{ i.M3hotel.id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header py-2 px-3">
+      <h2 class="modal-title fw-bold" style="font-size:14px;">{{ i.M3hotel.HotelName }} <span style="font-weight:400;font-size:12px;color:#777;">{{ i.M3hotel.HotelNameEnglish }}</span></h2>
+      <button type="button" class="btn-close" aria-label="بستن" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-0">
+      <ul class="nav nav-pills px-3 py-2 border-bottom" style="gap:6px;">
+        {% if hm3_imgs %}<li><button class="nav-link hotel-mpill active py-1 px-3" data-bs-toggle="tab" data-bs-target="#hgal-{{ i.id }}-m3{{ i.M3hotel.id }}">تصاویر</button></li>{% endif %}
+        {% if i.M3hotel.HotelMap %}<li><button class="nav-link hotel-mpill {% if not hm3_imgs %}active{% endif %} py-1 px-3" data-bs-toggle="tab" data-bs-target="#hmap-{{ i.id }}-m3{{ i.M3hotel.id }}" data-hotel-location="{{ i.M3hotel.HotelMap }}" data-map-div="hmapd-{{ i.id }}-m3{{ i.M3hotel.id }}">لوکیشن</button></li>{% endif %}
+      </ul>
+      <div class="tab-content">
+        {% if hm3_imgs %}<div class="tab-pane fade show active" id="hgal-{{ i.id }}-m3{{ i.M3hotel.id }}"><div class="hotel-gallery-layout">
+          <div class="hotel-gallery-main-wrap"><img id="hmimg-{{ i.id }}-m3{{ i.M3hotel.id }}" src="{{ hm3_imgs.0.image.url }}" class="hotel-gallery-main-img" alt="{{ i.M3hotel.HotelName }}" loading="lazy" decoding="async"></div>
+          <div class="hotel-gallery-thumbs-wrap">{% for img in hm3_imgs %}<img src="{{ img.image.url }}" class="hotel-gallery-thumb {% if forloop.first %}thumb-active{% endif %}" data-src="{{ img.image.url }}" onclick="hSetImg('hmimg-{{ i.id }}-m3{{ i.M3hotel.id }}',this)" alt="{{ i.M3hotel.HotelName }}" loading="lazy" decoding="async">{% endfor %}</div>
+        </div></div>{% endif %}
+        {% if i.M3hotel.HotelMap %}<div class="tab-pane fade {% if not hm3_imgs %}show active{% endif %}" id="hmap-{{ i.id }}-m3{{ i.M3hotel.id }}"><div id="hmapd-{{ i.id }}-m3{{ i.M3hotel.id }}" style="height:65vh;"></div></div>{% endif %}
+      </div>
+    </div>
+  </div></div>
+</div>
+{% endif %}{% endwith %}{% endif %}
+<div class="col-lg-12 no-padding{% if i.fully_sold_out %} package-soldout{% endif %}">
     <div class="row">
         <div class="col-sm-12 col-lg-2 price_">
             <p class="bed_price_tlt_ double-res">دو تخته</p>
             <p class="bed_price_ price-{{ i.id }} double-res" data-price="{{ i.DoubleBedPrice }}"
                data-new-price="{{ i.DoubleBedPrice }}">
-                {{ i.DoubleBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+               {% if i.DoubleBedPrice %}{{ i.DoubleBedPrice | floatformat:0 | intcomma }} {{ i.Pcry }}{% endif %}</p>
             {% if i.DoubleBedPrice_doller %}
                 <p class="doller d_price-{{ i.id }} double-res" data-doller-price="{{ i.DoubleBedPrice_doller }}">
-                    + {{ i.DoubleBedPrice_doller | intcomma:False }}
+                    + {{ i.DoubleBedPrice_doller | floatformat:0 | intcomma }}
                     {% if i.fr_Pcry %}
                         {{ i.fr_Pcry }}
                     {% else %}
@@ -458,7 +644,7 @@
             {% endif %}
             {% if not i.DoubleBedPrice_doller and DollerPrice %}
                 <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.DollerPrice }}">
-                    + {{ i.DollerPrice | intcomma:False }}
+                    + {{ i.DollerPrice | floatformat:0 | intcomma }}
                     {% if i.fr_Pcry %}
                         {{ i.fr_Pcry }}
                     {% else %}
@@ -471,10 +657,10 @@
             <p class="bed_price_tlt_">یک تخته</p>
             <p class="bed_price_ price-{{ i.id }}" data-price="{{ i.SingleBedPrice }}"
                data-new-price="{{ i.SingleBedPrice }}">
-                {{ i.SingleBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+               {% if i.SingleBedPrice %}{{ i.SingleBedPrice | floatformat:0 | intcomma }} {{ i.Pcry }}{% endif %}</p>
             {% if i.SingleBedPrice_doller %}
                 <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.SingleBedPrice_doller }}">
-                    + {{ i.SingleBedPrice_doller | intcomma:False }}
+                    + {{ i.SingleBedPrice_doller | floatformat:0 | intcomma }}
                     {% if i.fr_Pcry %}
                         {{ i.fr_Pcry }}
                     {% else %}
@@ -484,7 +670,7 @@
             {% endif %}
             {% if not i.SingleBedPrice_doller and DollerPrice %}
                 <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.DollerPrice }}">
-                    + {{ i.DollerPrice | intcomma:False }}
+                    + {{ i.DollerPrice | floatformat:0 | intcomma }}
                     {% if i.fr_Pcry %}
                         {{ i.fr_Pcry }}
                     {% else %}
@@ -497,10 +683,10 @@
             <p class="bed_price_tlt_">کودک با تخت</p>
             <p class="bed_price_ price-{{ i.id }}" data-price="{{ i.BabyWithBedPrice }}"
                data-new-price="{{ i.BabyWithBedPrice }}">
-                {{ i.BabyWithBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+                {% if i.BabyWithBedPrice %}{{ i.BabyWithBedPrice | floatformat:0 | intcomma }} {{ i.Pcry }}{% endif %}</p>
             {% if i.BabyWithBedPrice_doller %}
                 <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.BabyWithBedPrice_doller }}">
-                    + {{ i.BabyWithBedPrice_doller | intcomma:False }}
+                    + {{ i.BabyWithBedPrice_doller | floatformat:0 | intcomma }}
                     {% if i.fr_Pcry %}
                         {{ i.fr_Pcry }}
                     {% else %}
@@ -510,7 +696,7 @@
             {% endif %}
             {% if not i.BabyWithBedPrice_doller and DollerPrice %}
                 <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.DollerPrice }}">
-                    + {{ i.DollerPrice | intcomma:False }}
+                    + {{ i.DollerPrice| floatformat:0 | intcomma }}
                     {% if i.fr_Pcry %}
                         {{ i.fr_Pcry }}
                     {% else %}
@@ -523,10 +709,10 @@
             <p class="bed_price_tlt_">کودک بدون تخت</p>
             <p class="bed_price_ price-{{ i.id }}" data-price="{{ i.BabyWithoutBedPrice }}"
                data-new-price="{{ i.BabyWithoutBedPrice }}">
-                {{ i.BabyWithoutBedPrice | intcomma:False }} {{ i.Pcry }}</p>
+               {% if i.BabyWithoutBedPrice %}{{ i.BabyWithoutBedPrice | floatformat:0 | intcomma }} {{ i.Pcry }}{% endif %}</p>
             {% if i.BabyWithoutBedPrice_doller %}
                 <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.BabyWithoutBedPrice_doller }}">
-                    + {{ i.BabyWithoutBedPrice_doller | intcomma:False }}
+                    + {{ i.BabyWithoutBedPrice_doller | floatformat:0 | intcomma }}
                     {% if i.fr_Pcry %}
                         {{ i.fr_Pcry }}
                     {% else %}
@@ -536,7 +722,7 @@
             {% endif %}
             {% if not i.BabyWithoutBedPrice_doller and DollerPrice %}
                 <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.DollerPrice }}">
-                    + {{ i.DollerPrice | intcomma:False }}
+                    + {{ i.DollerPrice | floatformat:0 | intcomma }}
                     {% if i.fr_Pcry %}
                         {{ i.fr_Pcry }}
                     {% else %}
@@ -548,11 +734,11 @@
         <div class="col-sm-6 col-lg-2 price_">
             <p class="bed_price_tlt_">نوزاد</p>
             <p class="infont price-{{ i.id }}" data-price='{{ i.InfontPrice }}' data-new-price="{{ i.InfontPrice }}">
-                {{ i.InfontPrice | intcomma:False }} {{ i.Pcry }}
+                {% if i.InfontPrice %}{{ i.InfontPrice | floatformat:0 | intcomma }} {{ i.Pcry }}{% endif %}
             </p>
             {% if i.InfontPrice_doller %}
                 <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.InfontPrice_doller }}">
-                    + {{ i.InfontPrice_doller | intcomma:False }}
+                    + {{ i.InfontPrice_doller | floatformat:0 | intcomma }}
                     {% if i.fr_Pcry %}
                         {{ i.fr_Pcry }}
                     {% else %}
@@ -562,7 +748,7 @@
             {% endif %}
          {% if not i.InfontPrice_doller and DollerPrice %}
                 <p class="doller d_price-{{ i.id }}" data-doller-price="{{ i.DollerPrice }}">
-                    + {{ i.DollerPrice | intcomma:False }}
+                    + {{ i.DollerPrice| floatformat:0 | intcomma }}
                     {% if i.fr_Pcry %}
                         {{ i.fr_Pcry }}
                     {% else %}
@@ -572,12 +758,18 @@
             {% endif %}
         </div>
         <div class="col-lg-2 reservation">
-            <button type="button"
-                    class="dd_to_cart {% if i.DoubleBedPrice_doller or i.DollerPrice %}with-doller-price{% endif %}"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal{{ forloop.counter }}" onclick="calculateprice('{{ i.id }}')">
-                رزرو تــور
-            </button>
+            {% if i.fully_sold_out %}
+                <button type="button" class="dd_to_cart soldout-reserve-btn" disabled>
+                    تکمیل ظرفیت
+                </button>
+            {% else %}
+                <button type="button"
+                        class="dd_to_cart {% if i.DoubleBedPrice_doller or i.DollerPrice %}with-doller-price{% endif %}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal{{ forloop.counter }}" onclick="calculateprice('{{ i.id }}')">
+                    رزرو تــور
+                </button>
+            {% endif %}
         </div>
     </div>
 </div>

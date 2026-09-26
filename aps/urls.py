@@ -10,8 +10,10 @@ from tour.utils import mypdf
 from tour.views.views import PMemoriesCreate, memoriesSubmit
 from . import settings
 from django.conf.urls.static import static
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.views.static import serve
 from .ajax_views import *
+from .api_views import tour_feed_list, tour_feed_detail, tour_reserve
 from .sitemaps import StaticSitemap, blogSitemap, tourSitemap, hotelSitemap, tourContrySitemap, tourCitySitemap, \
     hotelCountrySitemap, hotelCitySitemap
 from .views import *
@@ -39,6 +41,11 @@ def read_robot(request):
     file_content = frb.read()
     frb.close()
     return HttpResponse(file_content, content_type="text/plain")
+
+def read_llms(request):
+    with open('llms.txt', 'r', encoding='utf-8') as f:
+        file_content = f.read()
+    return HttpResponse(file_content, content_type="text/plain; charset=utf-8")
 
 def read_search(request):
     frb = open('google953f8aa654184902.html', 'r')
@@ -160,6 +167,7 @@ urlpatterns = [
     path('pages/', include('pages.urls')),
     path('dashboard/wallet/', include('wallet.urls')),
     path('dashboard/hotels/', include('hotels.urls')),
+    path('dashboard/staff/', include('staff.urls')),
     path('dashboard/online-orders/', include('order.urls')),
     path('', (IndexPage), name='index-page'),
     path('visa/request', visa_request, name='visa_request'),
@@ -170,8 +178,11 @@ urlpatterns = [
     path('<str:slug>/<int:id>/all-tour', (CategoryTourList), name='all-tour-country'),
     path('tour/<int:id>/<str:Slug>', TourDetail, name='tour-detail'),
     path('tour/<str:slug>', MenuTourList, name='MenuTourList'),
-    path('tour-category/<slug:slug>/', tour_category_detail, name='tour-category-detail'),
-    
+    path('tours/<slug:slug>', tour_category_detail, name='tour-category-detail'),
+    #public JSON feed (auto price/detail sync for partner agencies)
+    path('api/tours/', tour_feed_list, name='tour-feed-list'),
+    path('api/tours/reserve/', tour_reserve, name='tour-reserve'),
+    path('api/tours/<str:slug>/', tour_feed_detail, name='tour-feed-detail'),
     #hotels urls
     path('all-hotel', (AllHotelList), name='all-hotel'),
     path('all-hotel/<int:id>/<str:slug>', (AllHotelCity), name='all-hotel-city-list'),
@@ -200,6 +211,7 @@ urlpatterns = [
          name="django.contrib.sitemaps.views.sitemap",
          ),
     path('robots.txt', read_robot),
+    path('llms.txt', read_llms),
     path('google953f8aa654184902.html', read_search),
     path('memories', (PMemoriesCreate), name='memories'),
     path('itineraries/<str:slug>', (CategoryMemo), name='memory-category'),
@@ -219,7 +231,8 @@ urlpatterns = [
     path('payWithWallet/<int:id>', payWithWallet, name='payWithWallet'),
     path('country_tour_cities', get_country_tours_city, name='get_country_tours_city'),
     path('get_country_tours_city_canvas', get_country_tours_city_mobile, name='get_country_tours_city_mobile'),
-
+    path('country_hotel_cities', get_country_hotel_cities, name='get_country_hotel_cities'),
+    path('get_country_hotel_cities_canvas', get_country_hotel_cities_mobile, name='get_country_hotel_cities_mobile'),
     # ajax views
 
     path('toursdata', index_tours_ajax, name='index_tours_ajax'),
@@ -229,6 +242,7 @@ urlpatterns = [
     path('country_tours_ajax', country_tours_ajax, name='country_tours_ajax'),
     path('city_tours_ajax', city_tours_ajax, name='city_tours_ajax'),
     path('custom-category-tours-ajax/', custom_category_tours_ajax, name='custom-category-tours-ajax'),
+    path('save-tour-interest', save_tour_interest, name='save-tour-interest'),
     path('postdata', index_posts_ajax, name='index_posts_ajax'),
     path('hotel_cities_ajax', (hotel_cities_ajax), name='hotel_cities_ajax'),
     path('country_hotels_ajax', country_hotels_ajax, name='country_hotels_ajax'),
@@ -237,6 +251,7 @@ urlpatterns = [
     path('sidebar_filter', sidebar_filter, name='sidebar_filter'),
     path('sidebar_filter_city', sidebar_filter_city, name='sidebar_filter_city'),
     path('menuSearch', menuSearch, name='menuSearch'),
+    path('tour-dates/<int:tour_id>', get_tour_dates_ajax, name='get_tour_dates'),
     path('add-reply', add_reply, name='add_reply'),
     path('submit-cm', submitCm, name='submitCm'),
     path('submit-hotel-cm', submitHotelCm, name='submitHotelCm'),
@@ -245,6 +260,8 @@ urlpatterns = [
     path('payment-redirect', payment_redirect, name='payment_redirect'),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 handler404='aps.views.handler404'

@@ -25,6 +25,19 @@ class update_main_page(forms.ModelForm):
             'cols': '126',
             'placeholder': '',
         })
+        self.fields['google_review_url'].widget.attrs.update({
+            'class': 'text-input',
+            'dir': 'ltr',
+            'placeholder': 'https://search.google.com/local/writereview?placeid=...',
+        })
+        for name in ('google_place_id', 'google_places_key', 'google_api_proxy'):
+            self.fields[name].widget.attrs.update({
+                'class': 'text-input',
+                'dir': 'ltr',
+            })
+        self.fields['google_place_id'].widget.attrs['placeholder'] = 'ChIJ...'
+        self.fields['google_places_key'].widget.attrs['placeholder'] = 'AIza...'
+        self.fields['google_api_proxy'].widget.attrs['placeholder'] = 'http://127.0.0.1:10809'
         self.fields['blog_title'].widget.attrs.update({
             'class': 'text-input',
             'placeholder': '',

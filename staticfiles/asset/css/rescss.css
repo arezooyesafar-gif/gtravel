@@ -1,0 +1,120 @@
+@media screen and (max-width: 1100px) {
+.spacial-tour {
+    display: block;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.spacial-offer {
+    width: 100%;
+}
+
+.filter-section {
+    width: 90%;
+}
+.navbar {
+    display: none;
+}
+
+.address-info {
+    display: block;
+    width: 100%;
+    line-height: 28px;
+    padding: 20px 10px;
+}
+
+.inner-container {
+    display: block;
+}
+
+.contact-info {
+    display: block;
+    height: auto;
+}
+
+.footer-links {
+    display: block;
+    margin: 0;
+    width: 100%;
+}
+
+.links-detail {
+    display: block;
+}
+
+.phone-info {
+    display: block;
+}
+
+.footer-container {
+    display: block;
+}
+
+.social-media {
+    margin-right: 43px;
+    display: inline-block;
+}
+.mail-info {
+    display: inline-block;
+}
+
+.cert.saman {
+    display: inline-block;
+}
+
+.cert.enamad {
+    display: inline-block;
+}
+.company-desc {
+    width: 100%;
+}
+
+.heading-title {
+    text-align: center;
+}
+.blog-post {
+    display: block;
+    width: 95%;
+    height: 90px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-title p {
+    line-height: 20px;
+    margin-bottom: 0;
+}
+
+.post-title {
+    height: 32px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+p.blog-heading-title {
+    margin-bottom: 40px;
+    text-align: center;
+}
+ul#nav {
+    display: none;
+}
+.left-side {
+    display: block;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content-container.col-sm-12.col-lg-11 {
+    display: block;
+    overflow: hidden;
+    width: 100% !important;
+}
+.right-side {
+    display: none;
+}
+p.blog-heading-title span {
+    display: block;
+    margin-top: 20px;
+}
+}

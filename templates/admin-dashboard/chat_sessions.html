@@ -1,0 +1,60 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+<div class="col-lg-12">
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <div class="card-title-group align-start mb-3">
+                <div class="card-title">
+                    <h5 class="subtitle">مکالمات چت‌بات</h5>
+                    <p class="text-muted" style="font-size:13px;">مجموع: {{ sessions|length }} مکالمه</p>
+                </div>
+            </div>
+            {% if sessions %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>شناسه</th>
+                            <th>IP</th>
+                            <th>آخرین پیام</th>
+                            <th>زمان</th>
+                            <th>جزئیات</th>
+                            <th>حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in sessions %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td style="font-size:12px;color:#888;">{{ item.session.session_id|slice:":10" }}...</td>
+                            <td>{{ item.session.ip|default:"-" }}</td>
+                            <td style="max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                {% if item.last_msg %}
+                                    <span style="color:{% if item.last_msg.role == 'user' %}#185FA5{% else %}#555{% endif %};">
+                                        {% if item.last_msg.role == 'user' %}👤{% else %}🤖{% endif %}
+                                        {{ item.last_msg.content|truncatechars:80 }}
+                                    </span>
+                                {% else %}-{% endif %}
+                            </td>
+                            <td style="font-size:12px;white-space:nowrap;">{{ item.session.updated_at|date:"Y/m/d H:i" }}</td>
+                            <td>
+                                <a href="{% url 'chat-session-detail' item.session.id %}" class="btn btn-sm btn-primary">مشاهده / پاسخ</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'chat-session-delete' item.session.id %}"
+                                   onclick="return confirm('این مکالمه حذف شود؟')"
+                                   style="color:#e11d48;font-size:13px;">حذف</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted">هنوز هیچ مکالمه‌ای ثبت نشده است.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

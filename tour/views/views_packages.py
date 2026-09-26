@@ -1,4 +1,5 @@
 import json
+from django.core.cache import cache
 from django.http import HttpResponse, JsonResponse
 from tablib import Dataset
 
@@ -145,7 +146,12 @@ def add_to_package(request, id):
                 package_data.M2hotel = hotel_4
             if hotel_5:
                 package_data.M3hotel = hotel_5
+            package_data.mhotel_sold_out = package_data.hotel_sold_out
+            package_data.m1hotel_sold_out = package_data.hotel_sold_out
+            package_data.m2hotel_sold_out = package_data.hotel_sold_out
+            package_data.m3hotel_sold_out = package_data.hotel_sold_out
             package_data.save()
+            cache.clear()
             return redirect('add-to-package', id=tour.id)
         else:
             messages.error(request, 'برای ثبت اطلاعات تمام فیلدها باید تکمیل گردد')
@@ -174,6 +180,18 @@ def add_to_package(request, id):
         'Cities': cities,
     }
     return render(request, 'package/add-to-package.html', context)
+
+@superuser_required(login_url='login')
+def toggle_tour_pub(request, id):
+    tour = Tour.objects.get(id=id)
+    if request.method == 'POST':
+        tour.PubTour = not tour.PubTour
+        tour.save(update_fields=['PubTour'])
+        if tour.PubTour:
+            messages.success(request, 'تور فعال شد و در سایت نمایش داده می‌شود')
+        else:
+            messages.success(request, 'تور غیرفعال شد و در سایت نمایش داده نمی‌شود')
+    return redirect('add-to-package', id=tour.id)
 
 
 @superuser_required(login_url='login')
@@ -213,7 +231,12 @@ def update_package(request, id):
                 package_data.M2hotel = hotel_4
             if hotel_5:
                 package_data.M3hotel = hotel_5
+            package_data.mhotel_sold_out = package_data.hotel_sold_out
+            package_data.m1hotel_sold_out = package_data.hotel_sold_out
+            package_data.m2hotel_sold_out = package_data.hotel_sold_out
+            package_data.m3hotel_sold_out = package_data.hotel_sold_out
             package_data.save()
+            cache.clear()
             return redirect('add-to-package', id=package.TourName.id)
         else:
             messages.error(request, 'برای ثبت اطلاعات تمام فیلدها باید تکمیل گردد')
@@ -230,14 +253,27 @@ def update_package(request, id):
 @superuser_required(login_url='login')
 def delete_package(request, id):
     package = Package.objects.get(id=id)
+    tour_id = package.TourName.id
+    date_plan_id = package.exclusive_date_plan_id
     package.delete()
-    return redirect('add-to-package', id=package.TourName.id)
+    cache.clear()
+    if date_plan_id:
+        return redirect('tour_date_plan_hotel_prices', id=date_plan_id)
+    return redirect('add-to-package', id=tour_id)
 
 
 @superuser_required(login_url='login')
 def packages(request):
     tour_id = request.GET.get('tour_id')
-    all_packages = Package.objects.filter(TourName_id=tour_id).order_by('DoubleBedPrice_doller')
+    date_plan_id = request.GET.get('date_plan_id')
+    if date_plan_id:
+        all_packages = Package.objects.filter(
+            TourName_id=tour_id, exclusive_date_plan_id=date_plan_id
+        ).order_by('DoubleBedPrice_doller')
+    else:
+        all_packages = Package.objects.filter(
+            TourName_id=tour_id, exclusive_date_plan__isnull=True
+        ).order_by('DoubleBedPrice_doller')
     main_packages = MainPackage.objects.all()
     all_currency = Currency.objects.all()
     context = {
@@ -293,6 +329,7 @@ def change_price_selected_package(request):
         package.BabyWithoutBedPrice += int(bwob_price)
         package.InfontPrice += int(infont_price)
         package.save()
+    cache.clear()
     return JsonResponse(
         {
             'status': 'ok',
@@ -418,7 +455,14 @@ def change_package_price_single(request):
     package.Pcry = prcy
     package.MainPkg = mainpackages
     package.view = main_view
+    soldout = request.GET.get('soldout') == 'true'
+    package.hotel_sold_out = soldout
+    package.mhotel_sold_out = soldout
+    package.m1hotel_sold_out = soldout
+    package.m2hotel_sold_out = soldout
+    package.m3hotel_sold_out = soldout
     package.save()
+    cache.clear()
     return JsonResponse(
         {
             'stutus': 'changed!'

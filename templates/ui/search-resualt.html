@@ -15,9 +15,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="header-banner">
+                    {% comment %} <div class="header-banner">
                         <img loading="lazy" src="/static/homepage-banner.webp">
-                    </div>
+                    </div> {% endcomment %}
                     <div class="header-background"></div>
                     <div class="filter-box">
                         <form method="post" action="/search-result">
@@ -154,17 +154,17 @@
                                         </div>
                                         <div class="col-sm-12 col-lg-12 no-padding ir_price">
                                             <p class="irprice">
-                                                {{ packages.0.DoubleBedPrice | intcomma:False }} {{ packages.0.Pcry }}
+                                                {{ packages.0.DoubleBedPrice | floatformat:0 | intcomma }} {{ packages.0.Pcry }}
                                                     {% if packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
-                                                        + {{ packages.0.DollerPrice | intcomma:False }}
+                                                        + {{ packages.0.DollerPrice | floatformat:0 | intcomma }}
                                                         {{ packages.0.fr_Pcry }}
                                                     {% endif %}
                                                 {% if not packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
-                                                    + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                                    + {{ packages.0.DoubleBedPrice_doller | floatformat:0 | intcomma }}
                                                     {{ packages.0.fr_Pcry }}
                                                 {% endif %}
                                                 {% if packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
-                                                    + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                                    + {{ packages.0.DoubleBedPrice_doller | floatformat:0 | intcomma }}
                                                     {{ packages.0.fr_Pcry }}
                                                 {% endif %}
                                                 {% if not packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
@@ -214,21 +214,20 @@
         <div class="container">
             <div class="insta">
                 <div class="row">
-                    <div class="col-lg-2">
+                    {% comment %} <div class="col-lg-2">
                         <div class="insta-box">
                             <div class="insta-motion">
                                 <img loading="lazy" alt="گیف اینستا" src="/media/instaarezoosafar.gif">
                             </div>
                         </div>
-
-                    </div>
+                    </div> {% endcomment %}
                     <div class="col-lg-7">
                         <h4 class="about_title">
                             معرفی تورهای جذاب و شگفت انگیـــز
                         </h4>
                         <p>با ما در اینستاگرام همراه شو تا از پیشنهادات لحظه آخری و تورهای جذاب مطلع بشی!</p>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <div class="input-section">
                             <div class="row">
                                 <div class="col-lg-12 t-center">
@@ -297,11 +296,11 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="office-img">
-                        <img loading="lazy" src="/static/asset/css/images/office-1.jpg">
+                        <img loading="lazy" src="/static/asset/css/images/office-1.webp">
                         <div class="image-list">
                             <div class="row">
                                 <div class="office-gallery">
-                                    <img loading="lazy" class="mini-images" src="/static/asset/css/images/office-2.png">
+                                    <img loading="lazy" class="mini-images" src="/static/asset/css/images/office-2.webp">
                                 </div>
                             </div>
                         </div>
@@ -369,6 +368,7 @@
         var tour_id = '{{ Tour.id }}'
         var tour_slug = '{{ Tour.Slug }}'
         var tour_menu = '{{ Menu.slug }}'
+        var category_slug = '{{ category.slug|default:"" }}'
     </script>
 </div>
 </body>

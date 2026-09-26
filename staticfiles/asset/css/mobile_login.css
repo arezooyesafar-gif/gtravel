@@ -1,0 +1,121 @@
+@font-face {
+    font-family: 'Yekan';
+    src: url('fonts/WebYekan.eot');
+    src: url('fonts/WebYekan.eot?#iefix') format('embedded-opentype'),
+    url('fonts/WebYekan.woff') format('woff'),
+    url('fonts/WebYekan.ttf') format('truetype');
+}
+.login_image_ {
+  margin-top: 120px;
+  text-align: center;
+}
+.login_image_ img {
+  width: 60%;
+}
+.login_form_ {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  padding-top: 45px;
+  border-radius: 10px;
+  text-align: right;
+}
+
+.user-in {
+  text-align: center;
+}
+#id_Username {
+  text-align: right;
+  direction: rtl;
+  font-family: yekan;
+  background: #F3F5FA;
+  border: none;
+  padding: 5px 30px;
+  color: #797979;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+#id_Password {
+  text-align: right;
+  direction: rtl;
+  font-family: yekan;
+  background: #F3F5FA;
+  border: none;
+  padding: 5px 30px;
+  color: #797979;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+.pass-in {
+  text-align: center;
+}
+.btn-block {
+  display: inline-block;
+  width: 81px;
+  position: relative;
+  right: 25px;
+  text-align: right;
+}
+button.login-btn {
+  background: #f0bb40;
+  border: 1px solid #efefef;
+  font-family: Yekan;
+  padding: 10px;
+  line-height: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  cursor: pointer !important;
+  text-decoration: none;
+  color:#000;
+  position: relative;
+  right: 15px;
+}
+a.login-btn {
+  text-decoration: none;
+  border-bottom: 1px solid #060606;
+  font-family: Yekan;
+  padding: 10px;
+  line-height: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 91%;
+  margin-bottom: 15px;
+  cursor: pointer !important;
+  color: #040404;
+  position: relative;
+  right: 15px;
+}
+.login_image_.register_page {
+  background: #fff;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 15px;
+}
+.avatar {
+  width: 70px;
+  height: 70px;
+  background: #efefef;
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 31px;
+  position: relative;
+  top: 20px;
+}
+.user_full_name {
+  font-family: yekan;
+}
+.success {
+  font-size: 11px;
+  color: green;
+  direction: rtl;
+  font-family: yekan;
+}

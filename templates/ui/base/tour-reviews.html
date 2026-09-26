@@ -1,0 +1,60 @@
+{% comment %}
+    نظرات مشتریان دربارهٔ تورهای این کشور.
+    از پنل ثبت می‌شوند (داشبورد ← نظرات مشتریان) و فقط در صفحهٔ تور همان
+    کشوری دیده می‌شوند که برایشان انتخاب شده.
+
+    عمداً بدون اسکیمای Review رندر می‌شود: قوانین دادهٔ ساختاریافتهٔ گوگل
+    اجازه نمی‌دهند برای نظراتی که از پلتفرم دیگری کپی شده‌اند ستاره بگیری،
+    و این کار جریمهٔ دستی دارد.
+{% endcomment %}
+{% if tour_reviews or set.google_review_url %}
+<section class="tour-reviews" aria-labelledby="tour-reviews-title">
+    <div class="tour-reviews-head">
+        <h2 id="tour-reviews-title" class="tour-reviews-title">
+            {% if tour_reviews %}نظر مسافران دربارهٔ تور {% if country %}{{ country.TitleC }}{% endif %}
+            {% else %}تجربهٔ خود را از تور {% if country %}{{ country.TitleC }} {% endif %}با بقیه در میان بگذارید{% endif %}
+        </h2>
+        {% if set.google_review_url %}
+        <a class="tour-reviews-cta" href="{{ set.google_review_url }}"
+           target="_blank" rel="noopener nofollow">
+            نظر خود را در گوگل ثبت کنید
+        </a>
+        {% endif %}
+    </div>
+
+    {% if tour_reviews %}
+    <div class="tour-reviews-grid">
+        {% for r in tour_reviews %}
+        <article class="tour-review">
+            <div class="tour-review-top">
+                <span class="tour-review-avatar" aria-hidden="true">{{ r.author|slice:":1" }}</span>
+                <div class="tour-review-who">
+                    <span class="tour-review-author">{{ r.author }}</span>
+                    <span class="tour-review-stars" aria-label="امتیاز {{ r.rating }} از ۵">
+                        {% for _ in "12345"|make_list %}{% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}{% endfor %}
+                    </span>
+                </div>
+            </div>
+            <p class="tour-review-text">{{ r.text }}</p>
+            <div class="tour-review-foot">
+                {% if r.review_date %}<span>{{ r.review_date }}</span>{% endif %}
+                {% if r.source_url %}
+                    <a class="tour-review-src tour-review-src-link" href="{{ r.source_url }}"
+                       target="_blank" rel="noopener nofollow">
+                        دیدن در گوگل
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M14 4h6v6M20 4l-8 8M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"
+                                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                {% elif r.source == 'google' %}
+                    <span class="tour-review-src">از گوگل مپ</span>
+                {% endif %}
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+{% endif %}

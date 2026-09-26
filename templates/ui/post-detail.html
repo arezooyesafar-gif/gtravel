@@ -4,25 +4,48 @@
     {% load static %}
     {% load humanize %}
     {% load jalali_tags %}
+    {% load responsive_img %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel=“canonical” href=“https://arezoosafar.com/blog{% url 'post-detail' Post.id Post.slug %}”/>
+    <link rel="canonical" href="https://arezoosafar.com{% url 'post-detail' Post.id Post.slug %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="{{ Post.metaKeyword }}">
     <meta name="description" content="{{ Post.metaDescription }}">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-35DTMEQBTC');
-    </script>
-
-    {% include 'ui/base/head.html' %}
+    {% srcset_with_original Post.Image '480,768' as hero_srcset %}
+    {% if hero_srcset %}
+    <link rel="preload" as="image" href="{{ Post.Image.url }}" imagesrcset="{{ hero_srcset }}" imagesizes="(max-width: 991px) calc(100vw - 32px), 914px" fetchpriority="high">
+    {% endif %}
+    <link rel="preload" as="font" type="font/woff" href="{% static 'asset/css/webfonts/fa-blog-solid.woff' %}" crossorigin>
+    {% include 'ui/base/head.html' with skip_base_meta=1 skip_material_icons=1 skip_fontawesome=1 delay_third_party=1 late_scripts=1 skip_popup_css=1 skip_owl_css=1 yekan_desktop_preload=1 %}
+    <style>
+        @font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:900;font-display:block;src:url("/static/asset/css/webfonts/fa-blog-solid.woff") format("woff")}
+        @font-face{font-family:"Font Awesome 6 Brands";font-style:normal;font-weight:400;font-display:block;src:url("/static/asset/css/webfonts/fa-blog-brands.woff") format("woff")}
+        @font-face{font-family:FontAwesome;font-display:block;src:url("/static/asset/css/webfonts/fa-blog-solid.woff") format("woff")}
+        .fa{font-family:var(--fa-style-family,"Font Awesome 6 Free");font-weight:var(--fa-style,900)}
+        .fa,.fa-brands,.fa-solid,.fab,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:var(--fa-display,inline-block);font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
+        .fa-solid,.fas{font-family:"Font Awesome 6 Free";font-weight:900}
+        .fa-brands,.fab{font-family:"Font Awesome 6 Brands";font-weight:400}
+        .fa-bars:before{content:"\f0c9"}
+        .fa-eye:before{content:"\f06e"}
+        .fa-plus:before{content:"\2b"}
+        .fa-minus:before{content:"\f068"}
+        .fa-podcast:before{content:"\f2ce"}
+        .fa-archive:before{content:"\f187"}
+        .fa-link:before{content:"\f0c1"}
+        .fa-money-check-dollar:before{content:"\f53d"}
+        .fa-money-bill:before{content:"\f0d6"}
+        .fa-calendar-week:before{content:"\f784"}
+        .fa-map-marker:before{content:"\f041"}
+        .fa-phone-volume:before{content:"\f2a0"}
+        .fa-user:before{content:"\f007"}
+        .fa-whatsapp:before{content:"\f232"}
+        .fa-instagram:before{content:"\f16d"}
+        .fa-telegram:before{content:"\f2c6"}
+        .post_page_body img, img.fav_post_image_{height:auto}
+        h2._all_fav_list_header._post_page{font-family:yekanbold!important;font-size:22px;font-weight:500;line-height:1.2;margin-top:0;margin-bottom:.5rem}
+        h2._all_fav_list_header._post_page::after{width:75%;background:url(/static/asset/images/pattern.png);position:absolute;height:8px;opacity:.5;content:'';top:25px;right:155px}
+        h3.fav_title_{font-size:13px;font-family:IranSans!important;font-weight:500;line-height:1.2;margin-top:3px;margin-bottom:0}
+    </style>
     {% if Post.ptitle %}
         <title>{{ Post.ptitle }}</title>
     {% else %}
@@ -31,13 +54,24 @@
 </head>
 <body style="background: #efefef">
 {% include 'ui/base/header.html' %}
-{% include 'ui/base/preloader.html' %}
+{% if is_preview %}
+<div style="position: fixed; top: 0; left: 0; right: 0; background: #f4bd0e; color: #000; text-align: center; padding: 10px 15px; z-index: 99999; font-family: IranSans; display: flex; align-items: center; justify-content: center; gap: 20px;">
+    <strong>این صفحه پیشنمایش است و منتشر نشده</strong>
+    <button onclick="window.close()" style="background: #333; color: #fff; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">بستن</button>
+</div>
+<div style="margin-top: 45px;"></div>
+{% endif %}
+{% comment %} {% include 'ui/base/preloader.html' %} {% endcomment %}
+<main>
 <section class="post_detail">
     <div class="container">
         <div class="row">
             <div id="post-body" class="col-lg-9">
                 <div class="post_page_image">
-                    <img alt="{{ Post.Title }}" class="_post_image" src="{{ Post.Image.url }}">
+                    <img alt="{{ Post.Title }}" class="_post_image" src="{{ Post.Image.url }}" {% img_dimensions Post.Image %}{% if hero_srcset %} srcset="{{ hero_srcset }}" sizes="(max-width: 991px) calc(100vw - 32px), 914px"{% endif %} fetchpriority="high" decoding="async">
+                    {% comment %} {% if Post.Image %}
+                        <img alt="{{ Post.Title }}" class="_post_image" src="{{ Post.Image.url }}">
+                    {% endif %} {% endcomment %}
                     <div class="post-header-blure">
                         <h1 class="_post_page_title">{{ Post.Title }}</h1>
                     </div>
@@ -47,7 +81,9 @@
                         {% if Post.modified_date %}
                           {% if Post.modified_date|date:"Y-m-d" != Post.PubDate|date:"Y-m-d" %}
                             آخرین بروزرسانی:
-                            {{ Post.modified_date|to_jalali:"%Y/%m/%d" }}
+                            <time datetime="{{ Post.modified_date|date:'c' }}">
+                                {{ Post.modified_date|to_jalali:"%Y/%m/%d" }}
+                            </time>
                           {% else %}
                             تاریخ انتشار:
                             {{ Post.PubDate|to_jalali:"%Y/%m/%d" }}
@@ -62,15 +98,24 @@
                         {{ Post.viewCount }}
                     </span>
                 </div>
+                <div class="post-toc-box" id="postTocBox"{% if '<h2' in Post.Description or '<h3' in Post.Description %}{% else %} style="display:none;"{% endif %}>
+                    <div class="post-toc-header" onclick="togglePostToc()">
+                        <span>فهرست محتوای مقاله</span>
+                        <i class="fa-solid fa-plus" id="postTocIcon"></i>
+                    </div>
+                    <div class="post-toc-body collapsed" id="postTocBody">
+                        <ul class="post-toc-list" id="postTocList"></ul>
+                    </div>
+                </div>
                 <div class="post_page_body">
                     <div class="_post_page_title">
 
                     </div>
                     <div class="_post_page_short_desc">
-                        {{ Post.ShortDesc|safe }}
+                        {{ Post.ShortDesc|responsive_html|safe }}
                     </div>
                     <div class="_post_page_full_desc">
-                        {{ Post.Description|safe }}
+                        {{ Post.Description|responsive_html|safe }}
                     </div>
                 </div>
                 <div class="comment-form">
@@ -97,14 +142,19 @@
                                           id="id_desc"></textarea>
                             </div>
                             <div class="col-lg-12 m-t-10">
-                                <button onclick="submitComment({{ Post.id }})" name="submit_comment"
+                                <button onclick="submitComment({{ Post.id }})" name="submit_comment"  id="submitCommentBtn" disabled
                                         class="btn-primary-comment">ارسال نظر
                                 </button>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        document.getElementById('submitCommentBtn').disabled = false;
+                                    });
+                                </script>                                    
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="comments" id="comments">
+                <div class="comments" id="comments" data-nosnippet>
                     {% for i in all_comments %}
                         <div class="comments_body">
                             <div class="comments_info">
@@ -186,10 +236,10 @@
             <div class="col-lg-3">
                 {% if Posts %}
                         <div id="fav-box" class="fav_box _post_page">
-                            <h5 class="_all_fav_list_header _post_page">
-                                <span><i class="fa fa-podcast"></i></span>
+                            <h2 class="_all_fav_list_header _post_page">
+                                <span><i class="fa fa-podcast" aria-hidden="true"></i></span>
                                 پربازدیدها
-                            </h5>
+                            </h2>
                             {% for i in Posts %}
                         
                             <a href="{% url 'post-detail' i.related_post.id i.related_post.slug %}">
@@ -197,11 +247,13 @@
                                     <div class="row">
                                         <div class="col-lg-3 no-padding">
                                             <img alt="{{ i.related_post.Title }}" class="fav_post_image_"
-                                                src="{{ i.related_post.Image.url }}">
+                                                src="{{ i.related_post.Image.url }}" {% img_dimensions i.related_post.Image %}
+                                                srcset="{% srcset_existing i.related_post.Image '480,768' %}"
+                                                sizes="(max-width: 991px) calc(100vw - 74px), 64px" loading="lazy" decoding="async">
                                         </div>
                                         <div class="col-lg-9">
                                             <div class="fav_post_title_">
-                                                <h6 class="fav_title_">{{ i.related_post.Title }}</h6>
+                                                <h3 class="fav_title_">{{ i.related_post.Title }}</h3>
                                                 <span class="categoryname"><i
                                                         class="fa fa-archive"></i>{{ i.related_post.Category }} </span>
                                             </div>
@@ -214,15 +266,7 @@
                     {% endif %}
                 <div class='post-sidebar'>
                     <div class="contact-banner">
-                        <p class="reseve-title">
-                            دریافت مشاوره و رزرو تور
-                        </p>
-                        <p class="reseve-phone">
-                            021-45128
-                        </p>
-                        <p class="reseve-desc">
-                            کارشناسان ما پاسخگوی شما خواهند بود
-                        </p>
+    {% include 'ui/base/contact-banner.html' %}
                     </div>
                     {% if Post.post_links %}
                         <div class="anchor-links margin-top-25">
@@ -239,22 +283,22 @@
                             لینک اشتراک گذاری
                         </p>
                         <div class="share-box">
-                            <a id="post-link" data-link="https://arezoosafar.com{% url 'post-detail' Post.id Post.slug %}" onclick="CopPostLink()">
+                            <a id="post-link" href="#" role="button" aria-label="کپی لینک مقاله" data-link="https://arezoosafar.com{% url 'post-detail' Post.id Post.slug %}" onclick="CopPostLink(); return false;">
                                 <i class="fa-solid fa-link post-social"></i>
                             </a>
                         </div>
                         <div class="share-box">
-                            <a href="https://api.whatsapp.com/send?text={% url 'post-detail' Post.id Post.slug %}">
+                            <a href="https://api.whatsapp.com/send?text={% url 'post-detail' Post.id Post.slug %}" aria-label="اشتراک در واتس‌اپ">
                                 <i class="fa-brands fa-whatsapp post-social"></i>
                             </a>
                         </div>
                         <div class="share-box">
-                            <a href="https://www.instagram.com/direct/new/?text={% url 'post-detail' Post.id Post.slug %}">
+                            <a href="https://www.instagram.com/direct/new/?text={% url 'post-detail' Post.id Post.slug %}" aria-label="اشتراک در اینستاگرام">
                                 <i class="fa-brands fa-instagram post-social"></i>
                             </a>
                         </div>
                         <div class="share-box">
-                            <a href="https://t.me/share/url?url={% url 'post-detail' Post.id Post.slug %}&text={{ Post.Title }}">
+                            <a href="https://t.me/share/url?url={% url 'post-detail' Post.id Post.slug %}&text={{ Post.Title }}" aria-label="اشتراک در تلگرام">
                                 <i class="fa-brands fa-telegram post-social"></i>
                             </a>
                         </div>
@@ -265,6 +309,7 @@
         </div>
     </div>
 </section>
+</main>
 <script>
     var country = '{{ contry.slug }}'
     var country_id = '{{ contry.id }}'
@@ -273,8 +318,10 @@
     var tour_id = '{{ Tour.id }}'
     var tour_slug = '{{ Tour.Slug }}'
     var tour_menu = '{{ Menu.slug }}'
+    var category_slug = '{{ category.slug|default:"" }}'
 </script>
 <script>
+    window.__onLate(function () {
     $(window).scroll(function () {
         var scroll = $(window).scrollTop();
         var tourBox = document.getElementById('post-body')
@@ -296,6 +343,7 @@
             }
         }
     })
+    });
     function CopPostLink() {
         var copyText = document.getElementById("post-link");
         copyTextData = copyText.getAttribute('data-link')
@@ -306,8 +354,80 @@
 
     }
 </script>
+<script>
+    function togglePostToc() {
+        var body = document.getElementById('postTocBody');
+        var icon = document.getElementById('postTocIcon');
+        body.classList.toggle('collapsed');
+        icon.classList.toggle('fa-minus');
+        icon.classList.toggle('fa-plus');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var content = document.querySelector('._post_page_full_desc');
+        var box = document.getElementById('postTocBox');
+        var list = document.getElementById('postTocList');
+        if (!content || !box || !list) return;
+
+        var headings = content.querySelectorAll('h2, h3');
+        if (!headings.length) {
+            box.style.display = 'none';
+            return;
+        }
+
+        headings.forEach(function (heading, index) {
+            if (!heading.id) {
+                heading.id = 'toc-heading-' + index;
+            }
+            var li = document.createElement('li');
+            li.className = heading.tagName === 'H3' ? 'toc-h3' : 'toc-h2';
+            var a = document.createElement('a');
+            a.href = '#' + heading.id;
+            a.textContent = heading.textContent;
+            li.appendChild(a);
+            list.appendChild(li);
+        });
+
+        list.addEventListener('click', function (e) {
+            var link = e.target.closest('a');
+            if (!link) return;
+            var target = document.querySelector(link.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({behavior: 'smooth', block: 'start'});
+            }
+        });
+
+        box.style.display = 'block';
+    });
+</script>
 
 {% include 'ui/base/footer.html' %}
-{% include 'ui/base/plugins.html' %}
+{% include 'ui/base/plugins.html' with late_scripts=1 %}
+
+<script>
+    window.__onLate(function () {
+        const csrfInput = document.querySelector(
+            'input[name="csrfmiddlewaretoken"]'
+        );
+
+        if (!csrfInput) {
+            console.error('CSRF token was not found.');
+            return;
+        }
+
+        if (!window.jQuery) {
+            console.error('jQuery was not found.');
+            return;
+        }
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRFToken': csrfInput.value
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

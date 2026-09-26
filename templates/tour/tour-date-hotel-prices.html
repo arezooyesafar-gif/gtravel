@@ -1,0 +1,608 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% load humanize %}
+    {% load jalali_tags %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                تغییر قیمت هتل‌ها برای تاریخ
+                                <span class="change down">
+                                    {{ DateItem.start_date|to_jalali:'%Y/%m/%d' }} - {{ DateItem.end_date|to_jalali:'%Y/%m/%d' }}
+                                </span>
+                            </h6>
+                            <p class="tour_info">{{ Tour.Title }}</p>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'tour_date_plan' Tour.id %}" class="link m-r-20">بازگشت به لیست تاریخ‌ها</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+        <div class="row m-t-20">
+            <div class="col-lg-12">
+                {% for message in messages %}
+                    <p class="tour_status_text is_active"><i class="tour_status_dot"></i>{{ message }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if has_override %}
+        <div class="row m-t-20">
+            <div class="col-lg-12">
+                <button type="button" id="hp-reset-all" class="hp-reset-all">
+                    بازگشت همه به قیمت خودکار
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row m-t-20">
+        <div class="col-lg-12">
+            <div class="hp-card hp-add-package-card">
+                <button type="button" class="hp-add-toggle" data-bs-toggle="collapse"
+                        data-bs-target="#hp-add-package-body" aria-expanded="false"
+                        aria-controls="hp-add-package-body">
+                    <i class="fa fa-plus-circle"></i> افزودن پکیج مخصوص این تاریخ
+                </button>
+                <div id="hp-add-package-body" class="collapse">
+                <p class="hp-add-package-note">
+                    این پکیج فقط برای بازه
+                    {{ DateItem.start_date|to_jalali:'%Y/%m/%d' }} - {{ DateItem.end_date|to_jalali:'%Y/%m/%d' }}
+                    نمایش داده می‌شود و در تاریخ پیش‌فرض تور یا تاریخ‌های دیگر دیده نخواهد شد.
+                </p>
+                <form method="POST" class="hp-add-package-form">
+                    {% csrf_token %}
+                    {{ add_form.non_field_errors }}
+                    <div class="hp-hotel-row hp-add-hotel-row">
+                        <div class="hp-hotel-field">
+                            <p class="hp-label">هتل اول<span class="required">*</span></p>
+                            <div class="hp-hotel-field-controls">
+                                <select name="add_hotel1" class="hp-hotel-select hp-hotel-select-js" required>
+                                    <option value="">هتل اول را انتخاب کنید</option>
+                                </select>
+                                <div class="hp-add-subfields">
+                                    {{ add_form.view_hotel }}
+                                    {{ add_form.service_hotel }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hp-hotel-field">
+                            <p class="hp-label">هتل دوم (اختیاری)</p>
+                            <div class="hp-hotel-field-controls">
+                                <select name="add_hotel2" class="hp-hotel-select hp-hotel-select-js">
+                                    <option value="">بدون هتل دوم</option>
+                                </select>
+                                <div class="hp-add-subfields">
+                                    {{ add_form.view_mhotel }}
+                                    {{ add_form.service_mhotel }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hp-hotel-field">
+                            <p class="hp-label">هتل سوم (اختیاری)</p>
+                            <div class="hp-hotel-field-controls">
+                                <select name="add_hotel3" class="hp-hotel-select hp-hotel-select-js">
+                                    <option value="">بدون هتل سوم</option>
+                                </select>
+                                <div class="hp-add-subfields">
+                                    {{ add_form.view_m1hotel }}
+                                    {{ add_form.service_m1hotel }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hp-hotel-field">
+                            <p class="hp-label">هتل چهارم (اختیاری)</p>
+                            <div class="hp-hotel-field-controls">
+                                <select name="add_hotel4" class="hp-hotel-select hp-hotel-select-js">
+                                    <option value="">بدون هتل چهارم</option>
+                                </select>
+                                <div class="hp-add-subfields">
+                                    {{ add_form.view_m2hotel }}
+                                    {{ add_form.service_m2hotel }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hp-hotel-field">
+                            <p class="hp-label">هتل پنجم (اختیاری)</p>
+                            <div class="hp-hotel-field-controls">
+                                <select name="add_hotel5" class="hp-hotel-select hp-hotel-select-js">
+                                    <option value="">بدون هتل پنجم</option>
+                                </select>
+                                <div class="hp-add-subfields">
+                                    {{ add_form.view_m3hotel }}
+                                    {{ add_form.service_m3hotel }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hp-add-meta-row">
+                        <div class="hp-add-meta-field">
+                            <p class="hp-label">نوع پکیج<span class="required">*</span></p>
+                            {{ add_form.MainPkg }}
+                        </div>
+                        <div class="hp-add-meta-field">
+                            <p class="hp-label">واحد پول<span class="required">*</span></p>
+                            {{ add_form.Pcry }}
+                        </div>
+                        <div class="hp-add-meta-field">
+                            <p class="hp-label">واحد پول خارجی</p>
+                            {{ add_form.fr_Pcry }}
+                        </div>
+                        <div class="hp-add-meta-field">
+                            <p class="hp-label">ویو کل پکیج</p>
+                            {{ add_form.view }}
+                        </div>
+                        <div class="hp-add-meta-field">
+                            <p class="hp-label">قیمت ثابت دلاری</p>
+                            {{ add_form.DollerPrice }}
+                        </div>
+                    </div>
+                    <div class="hp-fields">
+                        <div class="hp-field">
+                            <p class="hp-label">دو تخته</p>
+                            <div class="hp-input-wrap">
+                                {{ add_form.DoubleBedPrice }}
+                                <span class="hp-currency">{{ main_currency }}</span>
+                            </div>
+                            <div class="hp-input-wrap hp-input-wrap-sub">
+                                {{ add_form.DoubleBedPrice_doller }}
+                                <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                            </div>
+                        </div>
+                        <div class="hp-field">
+                            <p class="hp-label">یک تخته</p>
+                            <div class="hp-input-wrap">
+                                {{ add_form.SingleBedPrice }}
+                                <span class="hp-currency">{{ main_currency }}</span>
+                            </div>
+                            <div class="hp-input-wrap hp-input-wrap-sub">
+                                {{ add_form.SingleBedPrice_doller }}
+                                <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                            </div>
+                        </div>
+                        <div class="hp-field">
+                            <p class="hp-label">کودک با تخت</p>
+                            <div class="hp-input-wrap">
+                                {{ add_form.BabyWithBedPrice }}
+                                <span class="hp-currency">{{ main_currency }}</span>
+                            </div>
+                            <div class="hp-input-wrap hp-input-wrap-sub">
+                                {{ add_form.BabyWithBedPrice_doller }}
+                                <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                            </div>
+                        </div>
+                        <div class="hp-field">
+                            <p class="hp-label">کودک بدون تخت</p>
+                            <div class="hp-input-wrap">
+                                {{ add_form.BabyWithoutBedPrice }}
+                                <span class="hp-currency">{{ main_currency }}</span>
+                            </div>
+                            <div class="hp-input-wrap hp-input-wrap-sub">
+                                {{ add_form.BabyWithoutBedPrice_doller }}
+                                <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                            </div>
+                        </div>
+                        <div class="hp-field">
+                            <p class="hp-label">نوزاد</p>
+                            <div class="hp-input-wrap">
+                                {{ add_form.InfontPrice }}
+                                <span class="hp-currency">{{ main_currency }}</span>
+                            </div>
+                            <div class="hp-input-wrap hp-input-wrap-sub">
+                                {{ add_form.InfontPrice_doller }}
+                                <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hp-soldout-row">
+                        <label class="hp-soldout-label">
+                            {{ add_form.hotel_sold_out }} تکمیل ظرفیت (کل پکیج) از همین الان
+                        </label>
+                    </div>
+                    <button type="submit" name="add_package_sub" class="btn btn-lg btn-info btn-block m-t-10">
+                        <i class="fa fa-plus-circle btn-icon font-20 edit-btn"></i><span>افزودن پکیج برای این تاریخ</span>
+                    </button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="hp-list">
+            {% if exclusive_packages %}
+                <h4 class="card-title hs hp-exclusive-title">پکیج‌های مخصوص این تاریخ</h4>
+                {% for package in exclusive_packages %}
+                    <div class="hp-card">
+                        <div class="hp-card-head">
+                            <p class="hp-hotel-name">{{ package.HotelName.HotelName|default:'بدون نام هتل' }}</p>
+                            <span class="hp-badge hp-badge-exclusive">مخصوص این تاریخ</span>
+                        </div>
+                        <div class="hp-soldout-row">
+                            <label class="hp-soldout-label">
+                                <input type="checkbox" name="soldout_{{ package.id }}"
+                                       {% if package.hotel_sold_out %}checked{% endif %}>
+                                تکمیل ظرفیت (کل پکیج)
+                            </label>
+                            <label class="hp-hidden-label">
+                                <input type="checkbox" class="hp-hidden-checkbox" name="deletepkg_{{ package.id }}">
+                                حذف پکیج
+                            </label>
+                        </div>
+                        {% if package.hotel_slots %}
+                            <div class="hp-hotel-row hp-add-hotel-row">
+                                {% for slot in package.hotel_slots %}
+                                    <div class="hp-hotel-field">
+                                        <p class="hp-label">هتل: {{ slot.base_hotel.HotelName }}</p>
+                                        <div class="hp-hotel-field-controls">
+                                            <select name="{{ slot.post_key }}_{{ package.id }}"
+                                                    class="hp-hotel-select hp-hotel-select-js">
+                                                <option value="{{ slot.current_hotel.id }}" selected>{{ slot.current_hotel.HotelName }} - {{ slot.current_hotel.Hcity }}</option>
+                                            </select>
+                                            <div class="hp-add-subfields">
+                                                <select name="{{ slot.view_post_key }}_{{ package.id }}" class="hp-hotel-select">
+                                                    <option value="">انتخاب ویو</option>
+                                                    <option value="land View" {% if slot.current_view == 'land View' %}selected{% endif %}>Land View</option>
+                                                    <option value="Sea View" {% if slot.current_view == 'Sea View' %}selected{% endif %}>Sea View</option>
+                                                    <option value="Seaside View" {% if slot.current_view == 'Seaside View' %}selected{% endif %}>Seaside View</option>
+                                                </select>
+                                                <select name="{{ slot.service_post_key }}_{{ package.id }}" class="hp-hotel-select">
+                                                    <option value="">انتخاب سرویس</option>
+                                                    {% for code in service_choices %}
+                                                        <option value="{{ code }}" {% if slot.current_service == code %}selected{% endif %}>{{ code }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="hp-add-meta-row">
+                            <div class="hp-add-meta-field">
+                                <p class="hp-label">نوع پکیج</p>
+                                <select name="mainpkg_{{ package.id }}" class="hp-hotel-select">
+                                    {% for i in main_packages %}
+                                        <option value="{{ i.id }}" {% if package.meta.mainpkg_id == i.id %}selected{% endif %}>{{ i.PackageName }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="hp-add-meta-field">
+                                <p class="hp-label">واحد پول</p>
+                                <select name="currency_{{ package.id }}" class="hp-hotel-select">
+                                    {% for i in all_currency %}
+                                        <option value="{{ i.id }}" {% if package.meta.currency_id == i.id %}selected{% endif %}>{{ i.Title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="hp-add-meta-field">
+                                <p class="hp-label">واحد پول خارجی</p>
+                                <select name="fcurrency_{{ package.id }}" class="hp-hotel-select">
+                                    <option value="">انتخاب واحد ارزی</option>
+                                    {% for i in all_currency %}
+                                        <option value="{{ i.id }}" {% if package.meta.fcurrency_id == i.id %}selected{% endif %}>{{ i.Title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="hp-add-meta-field">
+                                <p class="hp-label">ویو کل پکیج</p>
+                                <select name="pkgview_{{ package.id }}" class="hp-hotel-select">
+                                    <option value="">انتخاب ویو</option>
+                                    <option value="land View" {% if package.meta.view == 'land View' %}selected{% endif %}>Land View</option>
+                                    <option value="Sea View" {% if package.meta.view == 'Sea View' %}selected{% endif %}>Sea View</option>
+                                    <option value="Seaside View" {% if package.meta.view == 'Seaside View' %}selected{% endif %}>Seaside View</option>
+                                </select>
+                            </div>
+                            <div class="hp-add-meta-field">
+                                <p class="hp-label">قیمت ثابت دلاری</p>
+                                <input type="text" name="dollerprice_{{ package.id }}" class="hp-input"
+                                       value="{{ package.meta.doller_price|default_if_none:'' }}">
+                            </div>
+                        </div>
+                        <div class="hp-fields">
+                            <div class="hp-field">
+                                <p class="hp-label">دو تخته</p>
+                                <div class="hp-input-wrap">
+                                    <input type="text" inputmode="numeric" class="hp-input"
+                                           name="double_{{ package.id }}" value="{{ package.values.DoubleBedPrice }}">
+                                    <span class="hp-currency">{{ main_currency }}</span>
+                                </div>
+                                <div class="hp-input-wrap hp-input-wrap-sub">
+                                    <input type="text" inputmode="numeric" class="hp-input hp-input-sub"
+                                           name="double_d_{{ package.id }}" value="{{ package.values.DoubleBedPrice_doller }}">
+                                    <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                                </div>
+                            </div>
+                            <div class="hp-field">
+                                <p class="hp-label">یک تخته</p>
+                                <div class="hp-input-wrap">
+                                    <input type="text" inputmode="numeric" class="hp-input"
+                                           name="single_{{ package.id }}" value="{{ package.values.SingleBedPrice }}">
+                                    <span class="hp-currency">{{ main_currency }}</span>
+                                </div>
+                                <div class="hp-input-wrap hp-input-wrap-sub">
+                                    <input type="text" inputmode="numeric" class="hp-input hp-input-sub"
+                                           name="single_d_{{ package.id }}" value="{{ package.values.SingleBedPrice_doller }}">
+                                    <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                                </div>
+                            </div>
+                            <div class="hp-field">
+                                <p class="hp-label">کودک با تخت</p>
+                                <div class="hp-input-wrap">
+                                    <input type="text" inputmode="numeric" class="hp-input"
+                                           name="bwb_{{ package.id }}" value="{{ package.values.BabyWithBedPrice }}">
+                                    <span class="hp-currency">{{ main_currency }}</span>
+                                </div>
+                                <div class="hp-input-wrap hp-input-wrap-sub">
+                                    <input type="text" inputmode="numeric" class="hp-input hp-input-sub"
+                                           name="bwb_d_{{ package.id }}" value="{{ package.values.BabyWithBedPrice_doller }}">
+                                    <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                                </div>
+                            </div>
+                            <div class="hp-field">
+                                <p class="hp-label">کودک بدون تخت</p>
+                                <div class="hp-input-wrap">
+                                    <input type="text" inputmode="numeric" class="hp-input"
+                                           name="bwob_{{ package.id }}" value="{{ package.values.BabyWithoutBedPrice }}">
+                                    <span class="hp-currency">{{ main_currency }}</span>
+                                </div>
+                                <div class="hp-input-wrap hp-input-wrap-sub">
+                                    <input type="text" inputmode="numeric" class="hp-input hp-input-sub"
+                                           name="bwob_d_{{ package.id }}" value="{{ package.values.BabyWithoutBedPrice_doller }}">
+                                    <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                                </div>
+                            </div>
+                            <div class="hp-field">
+                                <p class="hp-label">نوزاد</p>
+                                <div class="hp-input-wrap">
+                                    <input type="text" inputmode="numeric" class="hp-input"
+                                           name="infant_{{ package.id }}" value="{{ package.values.InfontPrice }}">
+                                    <span class="hp-currency">{{ main_currency }}</span>
+                                </div>
+                                <div class="hp-input-wrap hp-input-wrap-sub">
+                                    <input type="text" inputmode="numeric" class="hp-input hp-input-sub"
+                                           name="infant_d_{{ package.id }}" value="{{ package.values.InfontPrice_doller }}">
+                                    <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% for row in Rows %}
+                <div class="hp-card">
+                    <div class="hp-card-head">
+                        <p class="hp-hotel-name">{{ row.pkg.HotelName.HotelName|default:'بدون نام هتل' }}</p>
+                        {% if row.is_override %}
+                            <span class="hp-badge">قیمت این هتل برای این تاریخ تغییر کرده</span>
+                        {% endif %}
+                    </div>
+                    <div class="hp-soldout-row">
+                        <label class="hp-soldout-label">
+                            <input type="checkbox" class="hp-soldout-checkbox"
+                                   name="soldout_{{ row.pkg.id }}"
+                                   data-default="{{ row.default_sold_out|yesno:'1,' }}"
+                                   {% if row.is_sold_out %}checked{% endif %}>
+                            تکمیل ظرفیت (کل پکیج) برای این تاریخ
+                        </label>
+                        <label class="hp-hidden-label">
+                            <input type="checkbox" class="hp-hidden-checkbox"
+                                   name="hidden_{{ row.pkg.id }}"
+                                   {% if row.is_hidden %}checked{% endif %}>
+                            حذف پکیج از لیست این تاریخ
+                        </label>
+                    </div>
+                    {% if row.hotel_slots %}
+                        <div class="hp-hotel-row hp-add-hotel-row">
+                            {% for slot in row.hotel_slots %}
+                                <div class="hp-hotel-field">
+                                    <p class="hp-label">
+                                        هتل: {{ slot.base_hotel.HotelName }}
+                                        {% if slot.is_overridden %}<span class="hp-badge">جایگزین شده</span>{% endif %}
+                                    </p>
+                                    <div class="hp-hotel-field-controls">
+                                        <select name="{{ slot.post_key }}_{{ row.pkg.id }}"
+                                                id="{{ slot.post_key }}-{{ row.pkg.id }}"
+                                                class="hp-hotel-select hp-hotel-select-js">
+                                            <option value="{{ slot.current_hotel.id }}" selected>{{ slot.current_hotel.HotelName }} - {{ slot.current_hotel.Hcity.Name }}</option>
+                                        </select>
+                                        <div class="hp-add-subfields">
+                                            <select name="{{ slot.view_post_key }}_{{ row.pkg.id }}" class="hp-hotel-select">
+                                                <option value="">انتخاب ویو</option>
+                                                <option value="land View" {% if slot.current_view == 'land View' %}selected{% endif %}>Land View</option>
+                                                <option value="Sea View" {% if slot.current_view == 'Sea View' %}selected{% endif %}>Sea View</option>
+                                                <option value="Seaside View" {% if slot.current_view == 'Seaside View' %}selected{% endif %}>Seaside View</option>
+                                            </select>
+                                            <select name="{{ slot.service_post_key }}_{{ row.pkg.id }}" class="hp-hotel-select">
+                                                <option value="">انتخاب سرویس</option>
+                                                {% for code in service_choices %}
+                                                    <option value="{{ code }}" {% if slot.current_service == code %}selected{% endif %}>{{ code }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="hp-add-meta-row">
+                            <div class="hp-add-meta-field">
+                                <p class="hp-label">نوع پکیج</p>
+                                <select name="mainpkg_{{ row.pkg.id }}" class="hp-hotel-select">
+                                    {% for i in main_packages %}
+                                        <option value="{{ i.id }}" {% if row.meta.mainpkg_id == i.id %}selected{% endif %}>{{ i.PackageName }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="hp-add-meta-field">
+                                <p class="hp-label">واحد پول</p>
+                                <select name="currency_{{ row.pkg.id }}" class="hp-hotel-select">
+                                    {% for i in all_currency %}
+                                        <option value="{{ i.id }}" {% if row.meta.currency_id == i.id %}selected{% endif %}>{{ i.Title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="hp-add-meta-field">
+                                <p class="hp-label">واحد پول خارجی</p>
+                                <select name="fcurrency_{{ row.pkg.id }}" class="hp-hotel-select">
+                                    <option value="">انتخاب واحد ارزی</option>
+                                    {% for i in all_currency %}
+                                        <option value="{{ i.id }}" {% if row.meta.fcurrency_id == i.id %}selected{% endif %}>{{ i.Title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="hp-add-meta-field">
+                                <p class="hp-label">ویو کل پکیج</p>
+                                <select name="pkgview_{{ row.pkg.id }}" class="hp-hotel-select">
+                                    <option value="">انتخاب ویو</option>
+                                    <option value="land View" {% if row.meta.view == 'land View' %}selected{% endif %}>Land View</option>
+                                    <option value="Sea View" {% if row.meta.view == 'Sea View' %}selected{% endif %}>Sea View</option>
+                                    <option value="Seaside View" {% if row.meta.view == 'Seaside View' %}selected{% endif %}>Seaside View</option>
+                                </select>
+                            </div>
+                            <div class="hp-add-meta-field">
+                                <p class="hp-label">قیمت ثابت دلاری</p>
+                                <input type="text" name="dollerprice_{{ row.pkg.id }}" class="hp-input"
+                                       value="{{ row.meta.doller_price|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="hp-fields">
+                        <div class="hp-field">
+                            <p class="hp-label">دو تخته</p>
+                            <div class="hp-input-wrap">
+                                <input type="text" inputmode="numeric" class="hp-input override-input"
+                                       data-pkg="{{ row.pkg.id }}" data-default="{{ row.defaults.DoubleBedPrice }}"
+                                       name="double_{{ row.pkg.id }}" value="{{ row.values.DoubleBedPrice }}">
+                                <span class="hp-currency">{{ main_currency }}</span>
+                            </div>
+                            <div class="hp-input-wrap hp-input-wrap-sub">
+                                <input type="text" inputmode="numeric" class="hp-input hp-input-sub override-input"
+                                       data-pkg="{{ row.pkg.id }}" data-default="{{ row.defaults.DoubleBedPrice_doller }}"
+                                       name="double_d_{{ row.pkg.id }}" value="{{ row.values.DoubleBedPrice_doller }}">
+                                <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                            </div>
+                        </div>
+                        <div class="hp-field">
+                            <p class="hp-label">یک تخته</p>
+                            <div class="hp-input-wrap">
+                                <input type="text" inputmode="numeric" class="hp-input override-input"
+                                       data-pkg="{{ row.pkg.id }}" data-default="{{ row.defaults.SingleBedPrice }}"
+                                       name="single_{{ row.pkg.id }}" value="{{ row.values.SingleBedPrice }}">
+                                <span class="hp-currency">{{ main_currency }}</span>
+                            </div>
+                            <div class="hp-input-wrap hp-input-wrap-sub">
+                                <input type="text" inputmode="numeric" class="hp-input hp-input-sub override-input"
+                                       data-pkg="{{ row.pkg.id }}" data-default="{{ row.defaults.SingleBedPrice_doller }}"
+                                       name="single_d_{{ row.pkg.id }}" value="{{ row.values.SingleBedPrice_doller }}">
+                                <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                            </div>
+                        </div>
+                        <div class="hp-field">
+                            <p class="hp-label">کودک با تخت</p>
+                            <div class="hp-input-wrap">
+                                <input type="text" inputmode="numeric" class="hp-input override-input"
+                                       data-pkg="{{ row.pkg.id }}" data-default="{{ row.defaults.BabyWithBedPrice }}"
+                                       name="bwb_{{ row.pkg.id }}" value="{{ row.values.BabyWithBedPrice }}">
+                                <span class="hp-currency">{{ main_currency }}</span>
+                            </div>
+                            <div class="hp-input-wrap hp-input-wrap-sub">
+                                <input type="text" inputmode="numeric" class="hp-input hp-input-sub override-input"
+                                       data-pkg="{{ row.pkg.id }}" data-default="{{ row.defaults.BabyWithBedPrice_doller }}"
+                                       name="bwb_d_{{ row.pkg.id }}" value="{{ row.values.BabyWithBedPrice_doller }}">
+                                <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                            </div>
+                        </div>
+                        <div class="hp-field">
+                            <p class="hp-label">کودک بدون تخت</p>
+                            <div class="hp-input-wrap">
+                                <input type="text" inputmode="numeric" class="hp-input override-input"
+                                       data-pkg="{{ row.pkg.id }}" data-default="{{ row.defaults.BabyWithoutBedPrice }}"
+                                       name="bwob_{{ row.pkg.id }}" value="{{ row.values.BabyWithoutBedPrice }}">
+                                <span class="hp-currency">{{ main_currency }}</span>
+                            </div>
+                            <div class="hp-input-wrap hp-input-wrap-sub">
+                                <input type="text" inputmode="numeric" class="hp-input hp-input-sub override-input"
+                                       data-pkg="{{ row.pkg.id }}" data-default="{{ row.defaults.BabyWithoutBedPrice_doller }}"
+                                       name="bwob_d_{{ row.pkg.id }}" value="{{ row.values.BabyWithoutBedPrice_doller }}">
+                                <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                            </div>
+                        </div>
+                        <div class="hp-field">
+                            <p class="hp-label">نوزاد</p>
+                            <div class="hp-input-wrap">
+                                <input type="text" inputmode="numeric" class="hp-input override-input"
+                                       data-pkg="{{ row.pkg.id }}" data-default="{{ row.defaults.InfontPrice }}"
+                                       name="infant_{{ row.pkg.id }}" value="{{ row.values.InfontPrice }}">
+                                <span class="hp-currency">{{ main_currency }}</span>
+                            </div>
+                            <div class="hp-input-wrap hp-input-wrap-sub">
+                                <input type="text" inputmode="numeric" class="hp-input hp-input-sub override-input"
+                                       data-pkg="{{ row.pkg.id }}" data-default="{{ row.defaults.InfontPrice_doller }}"
+                                       name="infant_d_{{ row.pkg.id }}" value="{{ row.values.InfontPrice_doller }}">
+                                <span class="hp-currency hp-currency-sub">{{ foreign_currency }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="tour_info">هیچ هتلی (پکیجی) برای این تور ثبت نشده است.</p>
+            {% endfor %}
+        </div>
+        {% if Rows %}
+            <div class="row m-t-20">
+                <div class="col-lg-12">
+                    <button type="submit" class="btn btn-lg btn-info btn-block">
+                        <i class="fa fa-check btn-icon font-20 edit-btn"></i><span>ثبت تغییرات</span>
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            var $hotelSelects = $('.hp-hotel-select-js');
+            if ($hotelSelects.length) {
+                $.ajax({
+                    url: '/dashboard/package_hotel_list/',
+                    data: {},
+                    success: function (data) {
+                        $hotelSelects.each(function () {
+                            $(this).append(data);
+                        });
+                        $hotelSelects.select2();
+                    }
+                });
+            }
+        });
+
+        var resetAllBtn = document.getElementById('hp-reset-all');
+        if (resetAllBtn) {
+            resetAllBtn.addEventListener('click', function () {
+                document.querySelectorAll('.override-input').forEach(function (input) {
+                    input.value = input.dataset.default;
+                });
+                document.querySelectorAll('.hp-soldout-checkbox').forEach(function (checkbox) {
+                    checkbox.checked = checkbox.dataset.default === '1';
+                });
+                document.querySelectorAll('.hp-hidden-checkbox').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+                document.querySelectorAll('.hp-badge:not(.hp-badge-exclusive)').forEach(function (badge) {
+                    badge.remove();
+                });
+                resetAllBtn.remove();
+            });
+        }
+    </script>
+{% endblock %}

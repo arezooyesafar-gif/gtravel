@@ -5,15 +5,15 @@
 <html lang="fa-IR" dir="rtl">
 <head>
     {% include 'ui/base/head.html' %}
-    <link rel=“canonical” href=“https://arezoosafar.com/blog”/>
+    <link rel="canonical" href="https://arezoosafar.com/blog"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="آرزوی سفر ارائه دهنده انواع تورهای مسافرتی (داخلی، خارجی، لوکس و نمایشگاهی) به صورت نقد و اقساط، اخذ و مشاوره انواع ویزای توریستی، رزور بلیط و هتل. آرزوی شما را برآورده میکنیم">
     <meta name="keywords" content="تورهای داخلی,تورهای خارجی,تورهای نمایشگاهی,تورهای ارزان قیمت,تور ترکیه,تور روسیه,تور قسطی,تور اقساطی,آرزوی سفر">
-    <title>مجله گردشگری | شرکت خدمات مسافرت هوایی و گردشگری آرزوی سفر پارسیان</title>
+    <title>مجله گردشگری | شرکت خدمات مسافررت هوایی و گردشگری آرزوی سفر پارسیان</title>
 </head>
 <body>
 {% include 'ui/base/header.html' %}
-    {% include 'ui/base/preloader.html' %}
+{% include 'ui/base/preloader.html' %}
 <div class="warp">
     <section class="blog_intro_posts">
         <div class="container">
@@ -28,7 +28,6 @@
                         <div>
                             <img alt="{{ visa_post.Title }}" class="post_image_index feat" src="{{ visa_post.Image.url }}">
                         </div>
-
                         <div class="post_title_index">
                             <p class="_index_title blog_page">
                                 {{ visa_post.Title|truncatechars:40 }}
@@ -48,7 +47,6 @@
                                 <div>
                                     <img loading="lazy" alt=" {{ post.Title }}" class="post_image_index" src="{{ post.Image.url }}">
                                 </div>
-
                                 <div class="post_title_index">
                                     <p class="_index_title blog_page mini_blog">
                                         {{ post.Title|truncatechars:35 }}
@@ -70,7 +68,6 @@
                                 <div>
                                     <img alt="{{ post.Title }}" class="post_image_index" src="{{ post.Image.url }}">
                                 </div>
-
                                 <div class="post_title_index">
                                     <p class="_index_title blog_page mini_blog">
                                         {{ post.Title|truncatechars:35 }}
@@ -87,25 +84,43 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 list_post_">
-                    <h5 class="_all_post_list_header">
+                    <h5 class="_all_post_list_header{% if search_query %} search-active{% endif %}">
                         <span><i class="fa fa-bars"></i></span>
-                        مطالب وبلاگ گردشگری
+                        {% if search_query %}
+                            نتایج جستجو برای «{{ search_query }}»
+                        {% else %}
+                            مطالب وبلاگ گردشگری
+                        {% endif %}
                     </h5>
+                    <form method="get" action="{% url 'blog' %}" class="blog_search_form_">
+                        <input type="text" name="q" value="{{ search_query }}" placeholder="جستجو در مقالات..." class="blog_search_input_" autocomplete="off">
+                        <button type="submit" class="blog_search_btn_">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </form>
+                    {% if search_query and not data %}
+                        <p class="blog_search_empty_">مقاله‌ای مطابق با جستجوی شما پیدا نشد.</p>
+                    {% endif %}
                     {% for post in data %}
-                        <a class="" href="{% url 'post-detail' post.id post.slug %}">
                         <div class="post_body_">
                             <div class="row">
                                 <div class="col-lg-3">
                                     <div class="post_image_">
-                                        <img loading="lazy" alt="{{ post.Title }}" src="{{ post.Image.url }}">
+                                        <a href="{% url 'post-detail' post.id post.slug %}">
+                                            <img loading="lazy" alt="{{ post.Title }}" src="{{ post.Image.url }}">
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="col-lg-9">
                                     <div class="post_title_body">
-                                        <h3 class="post_title_">{{ post.Title }}</h3>
+                                        <h3 class="post_title_">
+                                            <a href="{% url 'post-detail' post.id post.slug %}" class="post-title-link">
+                                                {{ post.Title }}
+                                            </a>
+                                        </h3>
                                     </div>
                                     <div class="post_desc_short">
-                                        {{ post.ShortDesc | safe | truncatechars:260 }}
+                                        {{ post.ShortDesc|safe|truncatechars:260 }}
                                     </div>
                                     <div class="col-lg-2 view-detail" style="width: 100px">
                                         <div class="d-flex align-items-center justify-content-between flex-wrap" style="padding-right: 11px;">
@@ -116,42 +131,42 @@
                                         </div>
                                     </div>
                                     <div class="post_read_more_">
-                                        <span class="read_more_btn_">
+                                        <a href="{% url 'post-detail' post.id post.slug %}" class="read_more_btn_">
                                             مطالعه بیشتر
-                                        </span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </a>
                     {% endfor %}
                     <div class="pagination">
                         <ul class="pagination">
                             {% if data.has_previous %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page=1" aria-label="Previous">
+                                    <a class="page-link" href="?page=1{% if search_query %}&q={{ search_query|urlencode }}{% endif %}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                         <span class="sr-only">begin</span>
                                     </a>
-                                </li>   {% endif %}
-
+                                </li>
+                            {% endif %}
                             {% for n in data.paginator.page_range %}
                                 {% if data.number == n %}
                                     <li class="page-item active">
                                         <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
                                     </li>
                                 {% elif n > data.number|add:'-10' and n < data.number|add:'10' %}
-                                    <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="?page={{ n }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}">{{ n }}</a></li>
                                 {% endif %}
                             {% endfor %}
                             {% if data.has_next %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ data.paginator.num_pages }}" aria-label="Next">
+                                    <a class="page-link" href="?page={{ data.paginator.num_pages }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}"aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                         <span class="sr-only">end</span>
                                     </a>
                                 </li>
-                            {% endif %}   </ul>
+                            {% endif %}
+                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-3 category_list">
@@ -185,7 +200,6 @@
                                             </li>
                                         {% endif %}
                                     {% endfor %}
-
                                 </ul>
                             </nav>
                         </div>

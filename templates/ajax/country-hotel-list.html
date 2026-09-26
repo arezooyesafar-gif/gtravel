@@ -1,12 +1,12 @@
-{% for hotel in hotels %}
+{% load responsive_img %}{% for hotel in hotels %}
     <div class="col-lg-3">
         <a href="{% url 'hotel-detail' hotel.id hotel.Slug %}">
             <div class="hotel-cat">
                 <div class="cat-img">
                     {% if hotel.HotelImage %}
-                        <img alt="{{ hotel.HotelName }}" src="{{ hotel.HotelImage.url }}">
+                        <img alt="{{ hotel.HotelName }}" src="{{ hotel.HotelImage.url }}" loading="lazy" decoding="async" {% img_dimensions hotel.HotelImage %} srcset="{% srcset_budget hotel.HotelImage '480,640' %}" sizes="(max-width: 991px) calc(100vw - 32px), 290px">
                     {% else %}
-                        <img alt="{{ hotel.HotelName }}" src="/media/no-hotel-img.jpg">
+                        <img alt="{{ hotel.HotelName }}" src="/media/no-hotel-img.jpg" loading="lazy" decoding="async">
                     {% endif %}
                     {% if hotel.top_rate %}
                         <p class="top_rate_">TOP</p>

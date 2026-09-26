@@ -31,7 +31,7 @@ SERVICE_ICONS = {
     'چای/قهوه ساز': 'coffee_maker',
     'وان': 'bathtub',
     'صندوق امانات': 'fiber_pin',
-    'کمد و جالباسی': 'closet',
+    'کمد و جالباسی': 'checkroom',
     'تهویه مطبوع': 'toys',
     'حوله و دمپایی': 'dry',
     'سشوار': 'dry',

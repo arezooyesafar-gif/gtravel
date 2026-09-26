@@ -87,7 +87,7 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <p class="label-text tour_create">عکس کوچک</p>
-                            <label for="id_file" class="custom-file-upload text-input">
+                            <label for="id_thumbnail" class="custom-file-upload text-input">
                                 <i class="fa fa-cloud-upload-alt"></i><span id="thumbnail"> بارگذاری فایل</span>
                             </label>
                             {{ FormSet.thumbnail }}
@@ -139,9 +139,6 @@
                         },
                         success: function (data) {
                             $(target).html(data);
-                            if (callback) {
-                                callback();
-                            }
                         }
                     });
                 }

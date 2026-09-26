@@ -338,6 +338,10 @@
                             </span>
                         </div>
                         <div class="col-lg-2 position-relative">
+                            <label class="soldout-inline-label">
+                                <input type="checkbox" id="soldout-{{ package.id }}" class="soldout-inline-checkbox"
+                                       {% if package.hotel_sold_out %}checked{% endif %}> تکمیل ظرفیت (کل پکیج)
+                            </label>
                             <a class="remove-package-item" href="{% url 'delet-package' package.id %}">حذف پکیج</a>
                             <button onclick="packageChangeSingle('{{ package.id }}')"
                                     class="btn-submit">ثبت تغییرات

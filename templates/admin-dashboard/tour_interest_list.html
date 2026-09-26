@@ -1,0 +1,58 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+<div class="col-lg-12">
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <div class="card-title-group align-start mb-3">
+                <div class="card-title">
+                    <h5 class="subtitle">درخواست اطلاع‌رسانی تور</h5>
+                    <p class="text-muted" style="font-size:13px;">مجموع: {{ interests|length }} نفر</p>
+                </div>
+            </div>
+            {% if interests %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>نام</th>
+                            <th>نام خانوادگی</th>
+                            <th>موبایل</th>
+                            <th>صفحه تور</th>
+                            <th>نوع</th>
+                            <th>تاریخ ثبت</th>
+                            <th>حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in interests %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.family }}</td>
+                            <td style="direction:ltr; text-align:right;">{{ item.phone }}</td>
+                            <td>{{ item.page_slug }}</td>
+                            <td>
+                                {% if item.page_type == 'country' %}کشور
+                                {% elif item.page_type == 'city' %}شهر
+                                {% elif item.page_type == 'category' %}دسته‌بندی
+                                {% else %}{{ item.page_type }}{% endif %}
+                            </td>
+                            <td>{{ item.created_at|date:"Y/m/d H:i" }}</td>
+                            <td>
+                                <a href="{% url 'delete-tour-interest' item.id %}"
+                                   onclick="return confirm('این درخواست حذف شود؟')"
+                                   style="color:#e11d48; font-size:13px;">حذف</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted text-center" style="padding:2rem;">هنوز هیچ درخواستی ثبت نشده است.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

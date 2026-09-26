@@ -1,0 +1,43 @@
+/* صفحه «کلیدهای API آژانس‌ها» (tour/api-partner-list.html) */
+
+.agency-guide-box {
+    background: #f5f6fa;
+    border-radius: 8px;
+    padding: 14px 16px;
+}
+
+.guide-code {
+    background: #fff;
+    border: 1px solid #e5e9f2;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    word-break: break-all;
+}
+
+.agency-guide-section {
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.agency-guide-get {
+    background: rgba(30, 224, 172, 0.08);
+    border: 1px solid #1ee0ac;
+}
+
+.agency-guide-post {
+    background: rgba(101, 118, 255, 0.08);
+    border: 1px solid #6576ff;
+}
+
+.agency-guide-section-title {
+    font-size: 13px;
+}
+
+.agency-guide-get-title {
+    color: #12a17b;
+}
+
+.agency-guide-post-title {
+    color: #6576ff;
+}

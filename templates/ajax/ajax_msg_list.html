@@ -1,10 +1,26 @@
+{% load jalali_tags %}
+{% if can.messages.delete %}
+<form method="post" action="{% url 'messages-bulk-delete' %}" id="msg-delete-form">
+    {% csrf_token %}
+    <input type="hidden" name="mode" value="selected" id="msg-delete-mode">
+    <div class="msg-tools">
+        <button type="submit" class="btn btn-outline-danger" data-mode="selected">حذف پیام های انتخاب شده</button>
+        {% if allmsg.paginator.count %}
+        <button type="submit" class="btn btn-danger" data-mode="all" data-count="{{ allmsg.paginator.count }}">حذف همه پیام ها ({{ allmsg.paginator.count }})</button>
+        {% endif %}
+    </div>
+{% endif %}
 <table class="table BranchTable">
     <thead>
     <tr>
+        {% if can.messages.delete %}
+        <th class="TbHead"><input type="checkbox" id="msg-select-all" title="انتخاب همه"></th>
+        {% endif %}
         <th class="TbHead">ردیف</th>
         <th class="TbHead">نام</th>
         <th class="TbHead"> نام خانولدگی</th>
         <th class="TbHead">شماره تماس</th>
+        <th class="TbHead">تاریخ پیام</th>
         <th class="TbHead">متن پیام</th>
         <th class="TbHead">اقدامات</th>
     </tr>
@@ -12,20 +28,81 @@
     <tbody>
     <tr>
         {% for message in allmsg %}
+            {% if can.messages.delete %}
+            <td class="TbCells"><input type="checkbox" name="ids" value="{{ message.id }}" class="msg-select"></td>
+            {% endif %}
             <td class="TbCells serial">{{ forloop.counter0|add:allmsg.start_index }}</td>
             <td class="TbCells">{{ message.FirstName }}</td>
             <td class="TbCells">{{ message.LastName }}</td>
             <td class="TbCells">{{ message.Mobile }}</td>
             <td class="TbCells">
-                {{ message.Message|truncatechars:80 }}
+                {% if message.CreatedAt %}
+                    {{ message.CreatedAt|to_jalali:"%Y/%m/%d - %H:%M" }}
+                {% else %}
+                    -
+                {% endif %}
             </td>
             <td class="TbCells">
+                {{ message.Message|linebreaksbr }}
+            </td>
+            <td class="TbCells">
+                {% if can.messages.delete %}
                 <a href="{% url 'message_delete' message.id %}" style="color: red">حذف</a>
+                {% else %}
+                -
+                {% endif %}
             </td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
+{% if can.messages.delete %}
+</form>
+<style>
+    .msg-tools{display:flex;gap:10px;justify-content:flex-end;margin:0 0 12px}
+    #msg-delete-form input[type="checkbox"]{width:16px;height:16px;cursor:pointer}
+</style>
+<script>
+    (function () {
+        const form = document.getElementById('msg-delete-form');
+        if (!form) {
+            return;
+        }
+        const mode = document.getElementById('msg-delete-mode');
+        const all = document.getElementById('msg-select-all');
+        if (all) {
+            all.addEventListener('change', function () {
+                form.querySelectorAll('.msg-select').forEach(function (box) {
+                    box.checked = all.checked;
+                });
+            });
+        }
+        form.querySelectorAll('button[data-mode]').forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                if (button.dataset.mode === 'all') {
+                    if (!confirm('همه ' + button.dataset.count + ' پیام حذف شود؟')) {
+                        event.preventDefault();
+                        return;
+                    }
+                    mode.value = 'all';
+                    return;
+                }
+                const count = form.querySelectorAll('.msg-select:checked').length;
+                if (!count) {
+                    event.preventDefault();
+                    alert('هیچ پیامی انتخاب نشده است');
+                    return;
+                }
+                if (!confirm(count + ' پیام انتخاب شده حذف شود؟')) {
+                    event.preventDefault();
+                    return;
+                }
+                mode.value = 'selected';
+            });
+        });
+    })();
+</script>
+{% endif %}
 <div>
     <ul class="pagination">
         {% for n in allmsg.paginator.page_range %}

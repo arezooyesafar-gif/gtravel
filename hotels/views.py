@@ -200,6 +200,9 @@ def remove_hotel_image(request, id):
 @superuser_required(login_url='login')
 def comment_list(request):
     all_cms = hotel_comments.objects.all().order_by('-id')
+    request.session['seen_hotel_comment_id'] = (
+        hotel_comments.objects.order_by('-id').values_list('id', flat=True).first() or 0
+    )
     paginator = Paginator(all_cms, 10)
     pagenumber = request.GET.get('page')
     all_cms = paginator.get_page(pagenumber)

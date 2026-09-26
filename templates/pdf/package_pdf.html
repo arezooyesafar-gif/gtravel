@@ -1,0 +1,524 @@
+{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>{{ Tour.Title }}</title>
+<style>
+@font-face {
+    font-family: 'ArezooPDF';
+    src: url('https://arezoosafar.com/static/asset/css/fonts/arezoosafar.ttf') format('truetype');
+}
+@page { size: A4 portrait; margin: 0; }
+* { box-sizing: border-box; }
+html, body {
+    margin: 0; padding: 0;
+    direction: rtl;
+    font-family: 'ArezooPDF', Tahoma, Arial, sans-serif;
+    background: #fff;
+    color: #082b5f;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.pdf-page {
+    width: 210mm; height: 297mm;
+    overflow: hidden;
+    padding: 5mm 5mm 26mm;
+    position: relative;
+    page-break-after: always; break-after: page;
+}
+.pdf-page:last-child { page-break-after: auto; break-after: auto; }
+
+/* -- HERO ------------------------------------- */
+.hero-wrap {
+    border-radius: 18px; overflow: hidden;
+    height: 55mm;
+    box-shadow: 0 10px 36px rgba(16,63,155,.32);
+    margin-bottom: 1.5mm;
+}
+.hero-tbl { width: 100%; border-collapse: collapse; height: 55mm; }
+.hero-right {
+  width: 55%;
+  padding: 5mm 5mm 4mm 3mm;
+  vertical-align: top;
+  background:
+      radial-gradient(circle at 75% 20%, rgba(16,63,155,.55) 0%, rgba(16,63,155,0) 42%),
+      #0a1840;
+}
+.hero-left {
+  width: 45%;
+  padding: 0;
+  vertical-align: top;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-fade {
+  position: absolute;
+  top: 0;
+  right: -2px;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(
+      to left,
+      #0a1840 0%,
+      rgba(16,63,155,0.92) 18%,
+      rgba(16,63,155,0.68) 40%,
+      rgba(16,63,155,0.35) 65%,
+      rgba(16,63,155,0.12) 84%,
+      rgba(16,63,155,0) 100%
+  );
+}
+.hero-left img { width: 100%; height: 55mm; object-fit: cover; display: block; }
+.hero-no-img { width: 100%; height: 55mm; background: #d4e6f8; }
+
+.logo-row { display: table; width: 100%; margin-bottom: 3mm; }
+.logo-card {
+    display: table-cell;
+    width: 20mm; height: 20mm;
+    border-radius: 11px;
+    background: #ffc107;
+    padding: 1.5mm;
+    vertical-align: middle;
+    text-align: center;
+}
+.logo-card img { width: 100%; height: 100%; object-fit: contain; }
+.brand-block { display: table-cell; vertical-align: middle; padding-right: 3mm; }
+.brand-name { display: block; font-size: 13pt; font-weight: 900; color: #061f4e; }
+.brand-tag  { display: block; font-size: 7.5pt; color: #4a6fa0; margin-top: 1mm; }
+
+.badge {
+    display: inline-block;
+    background: #ffc107; color: #0a2e6e;
+    font-size: 8.5pt; font-weight: 900;
+    border-radius: 999px; padding: 1mm 5mm;
+    margin-bottom: 2.5mm;
+}
+.tour-title { font-size: 22pt; font-weight: 900; color: #fff; line-height: 1.15; margin: 0 0 1.5mm; }
+.tour-en {
+    display: block; font-size: 12pt; font-style: italic;
+    color: #1e63c0;
+    border-bottom: 1.5px dashed #80b0e8;
+    direction: ltr; text-align: right;
+    margin-bottom: 2mm;
+}
+.tour-loc { font-size: 8.5pt; color: #3a5a8a; }
+
+/* -- INFO STRIP ------------------------------- */
+.info-strip { width: 100%; border-collapse: separate; border-spacing: 2.5mm 0; margin-bottom: 3mm; }
+.ibox {
+    background: #fff;
+    border: 1.3px solid #cce0f5;
+    border-radius: 12px;
+    width: 20%;
+    vertical-align: middle;
+    padding: 2.5mm 2mm;
+    text-align: center;
+}
+.ibox-price {
+    background: linear-gradient(165deg, #0e3b8c, #061e5a);
+    border-radius: 12px;
+    width: 40%;
+    vertical-align: middle;
+    padding: 2.5mm 3mm;
+    text-align: center;
+}
+.ibox-icon {
+    display: block;
+    width: 10mm; height: 10mm;
+    border-radius: 50%;
+    background: #fff5cc;
+    margin: 0 auto 1.5mm;
+    text-align: center; line-height: 10mm;
+}
+.ibox-icon svg { vertical-align: middle; }
+.ibox-lbl { font-size: 7pt; color: #6b82a8; margin-bottom: 1mm; }
+.ibox-val { font-size: 9.5pt; font-weight: 900; color: #061f4e; }
+.ibox-airline-img { height: 14mm; max-width: 28mm; display: block; margin: 0 auto; object-fit: contain; }
+
+.price-lbl { font-size: 8pt; color: #ffc107; font-weight: 900; margin-bottom: 1.5mm; }
+.price-main { font-size: 13pt; font-weight: 900; color: #fff; line-height: 1.3; }
+.price-dollar { font-size: 9pt; color: #7ec8ff; font-weight: 700; }
+
+/* -- PRICE TABLE ------------------------------ */
+.price-wrap { margin-bottom: 3mm; }
+.price-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 8pt;
+    box-shadow: 0 4px 14px rgba(10,40,100,.09);
+    border: 1px solid #deeaf8;
+    border-top: none;
+}
+.price-table th {
+    background: linear-gradient(180deg, #2289dc, #0b64bd);
+    color: #fff;
+    padding: 2.5mm 1.5mm;
+    font-weight: 900;
+    border-left: 1px solid rgba(255,255,255,.22);
+    text-align: center;
+}
+.price-table th:first-child { border-top-right-radius: 12px; }
+.price-table th:last-child  { border-top-left-radius: 12px; border-left: 1px solid rgba(255,255,255,.22); }
+.price-table td {
+    padding: 1.8mm 1.5mm;
+    border-left: 1px solid #deeaf8;
+    border-top: 1px solid #deeaf8;
+    text-align: center;
+    vertical-align: middle;
+    color: #082b5f;
+}
+.price-table td:last-child { border-left: 1px solid #deeaf8; }
+.price-table tr:nth-child(even) td { background: #f4f9fd; }
+.price-table tr:last-child td { border-bottom: 1px solid #deeaf8; }
+
+.hotel { direction: ltr; text-align: left; font-weight: 800; font-size: 8.5pt; width: 27%; }
+.stars-col { color: #e6a800; font-size: 9pt; width: 8%; white-space: nowrap; font-weight: 900; }
+.svc-col   { width: 7%; }
+.bb-pill {
+    display: inline-block;
+    padding: .5mm 2mm;
+    border-radius: 4px;
+    background: #eff8ff;
+    border: 1px solid #61b3e5;
+    color: #006fd3;
+    font-weight: 900;
+    font-size: 7.5pt;
+}
+.pcol { width: 14.5%; white-space: nowrap; font-size: 9.5pt; font-weight: 700; }
+.pdollar { display: block; color: #0674c9; font-weight: 900; font-size: 9.5pt; }
+
+/* -- BOTTOM CARDS ----------------------------- */
+.bot-cards { width: 100%; border-collapse: separate; border-spacing: 2.5mm 0; margin-bottom: 3mm; }
+.bot-cards td {
+    width: 33.33%;
+    border-radius: 13px;
+    padding: 3mm;
+    vertical-align: top;
+    height: 33mm;
+    overflow: hidden;
+}
+.card-svc  { border: 1.8px solid #2989dc; background: #fff; }
+.card-docs { border: 1.8px solid #2989dc; background: #fff; }
+.card-note { border: 1.8px solid #ffc107; background: #fff8de; }
+
+.card-icon {
+    display: block;
+    width: 10mm; height: 10mm;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 10mm;
+    margin: 0 auto 1.5mm;
+}
+.ci-blue { background: #d9eeff; }
+.ci-yel  { background: #ffe070; }
+
+.card-ttl   { text-align: center; font-weight: 900; font-size: 9pt; color: #0a3070; margin-bottom: 2mm; }
+.card-ttl-y { color: #7a4300; }
+.card-bdy   { font-size: 7.5pt; line-height: 1.8; color: #2e3f55; }
+.ci { color: #1a7a4a; margin-left: 1.5mm; font-weight: 900; }
+.ni { color: #c05000; margin-left: 1.5mm; font-weight: 900; }
+
+/* -- FOOTER 3-col ------------------------------- */
+.footer-wrap {
+    position: absolute;
+    bottom: 4mm; left: 5mm; right: 5mm;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 7px 18px rgba(10,40,110,.14);
+}
+.footer-tbl { width: 100%; border-collapse: collapse; }
+.footer-tbl td {
+    background: #0a2864;
+    color: #fff;
+    padding: 1mm 4mm;
+    vertical-align: middle;
+    border: none;
+}
+
+/* nested layout: text RIGHT, icon LEFT (RTL order) */
+.f-inner { width: 100%; border-collapse: collapse; }
+.f-text  { vertical-align: middle; text-align: center; padding-left: 2mm; }
+.f-icon-cell { width: 8mm; vertical-align: middle; text-align: center; }
+
+.f-ic {
+    display: block;
+    width: 8mm; height: 8mm;
+    border-radius: 50%;
+    background: #ffc107;
+    text-align: center;
+    line-height: 8mm;
+    margin: 0 auto;
+}
+.f-ic svg  { vertical-align: middle; }
+.f-lbl   { font-size: 8pt; color: #ffc107; font-weight: 900; margin-bottom: 1mm; }
+.f-phone { font-size: 11pt; color: #fff; font-weight: 900; line-height: 1.4; white-space: nowrap; }
+.f-val   { font-size: 8pt; color: #fff; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+{% for page_pkgs in page_packages %}
+<div class="pdf-page">
+
+  {# -- HERO ------------------------------------ #}
+  <div class="hero-wrap">
+    <table class="hero-tbl"><tr>
+      <td class="hero-right">
+        <table style="width:100%;border-collapse:collapse;margin-bottom:2mm;"><tr>
+          <td style="vertical-align:middle;">
+            <span class="badge">&#9733; تور {{ Tour.Tcountry }}</span>
+          </td>
+          <td style="width:22mm;vertical-align:middle;text-align:right;">
+            <span style="display:inline-block;background:#fff;border-radius:10px;padding:0.5mm;">
+              <img src="https://arezoosafar.com/static/asset/css/images/logo-dark.png" alt="" style="width:20mm;height:20mm;object-fit:contain;display:block;">
+            </span>
+          </td>
+        </tr></table>
+        <div class="tour-title">{{ Tour.Title }}</div>
+        <div style="margin-top:2.5mm;font-weight:900;font-size:10.5pt;color:#a8c8f8;">&#9992; {{ Tour.NightCount }} شب و {{ Tour.DayCount }} روز</div>
+
+      </td>
+      <td class="hero-left">
+        {% if tour_image_b64 %}
+          <img src="{{ tour_image_b64 }}" alt="{{ Tour.Title }}">
+          <div class="hero-fade"></div>
+        {% else %}
+          <div class="hero-no-img"></div>
+        {% endif %}
+      </td>
+    </tr></table>
+  </div>
+
+  {# -- INFO STRIP ------------------------------- #}
+  <table class="info-strip" style="border-spacing:1.5mm 0;"><tr>
+    <td class="ibox" style="width:20%;">
+      <div class="ibox-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="ibox-lbl">تاریخ رفت</div>
+      <div class="ibox-val">
+        {% if selected_dp %}{{ selected_dp.start_date|to_jalali:'%Y/%m/%d' }}{% else %}{{ Tour.StartDate|to_jalali:'%Y/%m/%d' }}{% endif %}
+      </div>
+    </td>
+    <td class="ibox" style="width:20%;">
+      <div class="ibox-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="ibox-lbl">تاریخ برگشت</div>
+      <div class="ibox-val">
+        {% if selected_dp %}{{ selected_dp.end_date|to_jalali:'%Y/%m/%d' }}{% else %}{{ Tour.EndDate|to_jalali:'%Y/%m/%d' }}{% endif %}
+      </div>
+    </td>
+    <td class="ibox" style="width:20%;">
+      <div class="ibox-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="ibox-lbl">ساعت پرواز رفت</div>
+      <div class="ibox-val">{{ tourcity.FlightTime }}</div>
+    </td>
+    <td class="ibox" style="width:20%;">
+      <div class="ibox-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="ibox-lbl">ساعت پرواز برگشت</div>
+      <div class="ibox-val">{{ lc.FlightTime }}</div>
+    </td>
+    <td class="ibox" style="width:20%;padding:2mm;">
+      <div class="ibox-lbl" style="margin-bottom:2mm;">ایرلاین</div>
+      {% if airline_logo_b64 %}
+        <img class="ibox-airline-img" src="{{ airline_logo_b64 }}" alt="{{ tourcity.Airline.AirLineTitle }}">
+      {% else %}
+        <div class="ibox-val">{{ tourcity.Airline.AirLineTitle }}</div>
+      {% endif %}
+    </td>
+  </tr></table>
+
+  {# -- PRICE TABLE ------------------------------- #}
+  <div class="price-wrap">
+    <table class="price-table">
+      <tr>
+        <th class="hotel">نام هتل</th>
+        <th class="stars-col">درجه</th>
+        <th class="svc-col">خدمات</th>
+        <th class="pcol">دو تخته</th>
+        <th class="pcol">یک تخته</th>
+        <th class="pcol">کودک با تخت</th>
+        <th class="pcol">کودک بدون تخت</th>
+      </tr>
+      {% for i in page_pkgs %}
+      <tr>
+        <td class="hotel">
+          <span style="display:block;">{{ i.HotelName.HotelNameEnglish }}</span>
+          {% if i.Mhotel %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="display:block;">{{ i.Mhotel.HotelNameEnglish }}</span>{% endif %}
+          {% if i.M1hotel %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="display:block;">{{ i.M1hotel.HotelNameEnglish }}</span>{% endif %}
+          {% if i.M2hotel %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="display:block;">{{ i.M2hotel.HotelNameEnglish }}</span>{% endif %}
+          {% if i.M3hotel %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="display:block;">{{ i.M3hotel.HotelNameEnglish }}</span>{% endif %}
+        </td>
+        <td class="stars-col">
+          <span style="color:#e6a800;font-size:8.5pt;font-weight:900;font-family:Tahoma,Arial,sans-serif;direction:ltr;display:block;white-space:nowrap;letter-spacing:-1.2px;line-height:1;">{% if i.HotelName.HotelRating >= '1' %}★{% endif %}{% if i.HotelName.HotelRating >= '2' %}★{% endif %}{% if i.HotelName.HotelRating >= '3' %}★{% endif %}{% if i.HotelName.HotelRating >= '4' %}★{% endif %}{% if i.HotelName.HotelRating >= '5' %}★{% endif %}</span>
+          {% if i.Mhotel %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="color:#e6a800;font-size:8.5pt;font-weight:900;font-family:Tahoma,Arial,sans-serif;direction:ltr;display:block;white-space:nowrap;letter-spacing:-1.2px;line-height:1;">{% if i.Mhotel.HotelRating >= '1' %}★{% endif %}{% if i.Mhotel.HotelRating >= '2' %}★{% endif %}{% if i.Mhotel.HotelRating >= '3' %}★{% endif %}{% if i.Mhotel.HotelRating >= '4' %}★{% endif %}{% if i.Mhotel.HotelRating >= '5' %}★{% endif %}</span>{% endif %}
+          {% if i.M1hotel %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="color:#e6a800;font-size:8.5pt;font-weight:900;font-family:Tahoma,Arial,sans-serif;direction:ltr;display:block;white-space:nowrap;letter-spacing:-1.2px;line-height:1;">{% if i.M1hotel.HotelRating >= '1' %}★{% endif %}{% if i.M1hotel.HotelRating >= '2' %}★{% endif %}{% if i.M1hotel.HotelRating >= '3' %}★{% endif %}{% if i.M1hotel.HotelRating >= '4' %}★{% endif %}{% if i.M1hotel.HotelRating >= '5' %}★{% endif %}</span>{% endif %}
+          {% if i.M2hotel %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="color:#e6a800;font-size:8.5pt;font-weight:900;font-family:Tahoma,Arial,sans-serif;direction:ltr;display:block;white-space:nowrap;letter-spacing:-1.2px;line-height:1;">{% if i.M2hotel.HotelRating >= '1' %}★{% endif %}{% if i.M2hotel.HotelRating >= '2' %}★{% endif %}{% if i.M2hotel.HotelRating >= '3' %}★{% endif %}{% if i.M2hotel.HotelRating >= '4' %}★{% endif %}{% if i.M2hotel.HotelRating >= '5' %}★{% endif %}</span>{% endif %}
+          {% if i.M3hotel %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="color:#e6a800;font-size:8.5pt;font-weight:900;font-family:Tahoma,Arial,sans-serif;direction:ltr;display:block;white-space:nowrap;letter-spacing:-1.2px;line-height:1;">{% if i.M3hotel.HotelRating >= '1' %}★{% endif %}{% if i.M3hotel.HotelRating >= '2' %}★{% endif %}{% if i.M3hotel.HotelRating >= '3' %}★{% endif %}{% if i.M3hotel.HotelRating >= '4' %}★{% endif %}{% if i.M3hotel.HotelRating >= '5' %}★{% endif %}</span>{% endif %}
+        </td>
+        <td class="svc-col">
+          <span style="display:block;"><span class="bb-pill">{% if i.HotelName.HotelOR %}OR{% endif %}{% if i.HotelName.HotelBB %}BB{% endif %}{% if i.HotelName.HotelHB %}HB{% endif %}{% if i.HotelName.HotelFB %}FB{% endif %}{% if i.HotelName.HotelAll %}All{% endif %}{% if i.HotelName.HotelUall %}U All{% endif %}{% if i.HotelName.HotelMaxAll %}Max All{% endif %}</span></span>
+          {% if i.Mhotel %}{% if i.Mhotel.HotelOR != i.HotelName.HotelOR or i.Mhotel.HotelBB != i.HotelName.HotelBB or i.Mhotel.HotelHB != i.HotelName.HotelHB or i.Mhotel.HotelFB != i.HotelName.HotelFB or i.Mhotel.HotelAll != i.HotelName.HotelAll or i.Mhotel.HotelUall != i.HotelName.HotelUall or i.Mhotel.HotelMaxAll != i.HotelName.HotelMaxAll %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="display:block;"><span class="bb-pill">{% if i.Mhotel.HotelOR %}OR{% endif %}{% if i.Mhotel.HotelBB %}BB{% endif %}{% if i.Mhotel.HotelHB %}HB{% endif %}{% if i.Mhotel.HotelFB %}FB{% endif %}{% if i.Mhotel.HotelAll %}All{% endif %}{% if i.Mhotel.HotelUall %}U All{% endif %}{% if i.Mhotel.HotelMaxAll %}Max All{% endif %}</span></span>{% endif %}{% endif %}
+          {% if i.M1hotel %}{% if i.M1hotel.HotelOR != i.HotelName.HotelOR or i.M1hotel.HotelBB != i.HotelName.HotelBB or i.M1hotel.HotelHB != i.HotelName.HotelHB or i.M1hotel.HotelFB != i.HotelName.HotelFB or i.M1hotel.HotelAll != i.HotelName.HotelAll or i.M1hotel.HotelUall != i.HotelName.HotelUall or i.M1hotel.HotelMaxAll != i.HotelName.HotelMaxAll %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="display:block;"><span class="bb-pill">{% if i.M1hotel.HotelOR %}OR{% endif %}{% if i.M1hotel.HotelBB %}BB{% endif %}{% if i.M1hotel.HotelHB %}HB{% endif %}{% if i.M1hotel.HotelFB %}FB{% endif %}{% if i.M1hotel.HotelAll %}All{% endif %}{% if i.M1hotel.HotelUall %}U All{% endif %}{% if i.M1hotel.HotelMaxAll %}Max All{% endif %}</span></span>{% endif %}{% endif %}
+          {% if i.M2hotel %}{% if i.M2hotel.HotelOR != i.HotelName.HotelOR or i.M2hotel.HotelBB != i.HotelName.HotelBB or i.M2hotel.HotelHB != i.HotelName.HotelHB or i.M2hotel.HotelFB != i.HotelName.HotelFB or i.M2hotel.HotelAll != i.HotelName.HotelAll or i.M2hotel.HotelUall != i.HotelName.HotelUall or i.M2hotel.HotelMaxAll != i.HotelName.HotelMaxAll %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="display:block;"><span class="bb-pill">{% if i.M2hotel.HotelOR %}OR{% endif %}{% if i.M2hotel.HotelBB %}BB{% endif %}{% if i.M2hotel.HotelHB %}HB{% endif %}{% if i.M2hotel.HotelFB %}FB{% endif %}{% if i.M2hotel.HotelAll %}All{% endif %}{% if i.M2hotel.HotelUall %}U All{% endif %}{% if i.M2hotel.HotelMaxAll %}Max All{% endif %}</span></span>{% endif %}{% endif %}
+          {% if i.M3hotel %}{% if i.M3hotel.HotelOR != i.HotelName.HotelOR or i.M3hotel.HotelBB != i.HotelName.HotelBB or i.M3hotel.HotelHB != i.HotelName.HotelHB or i.M3hotel.HotelFB != i.HotelName.HotelFB or i.M3hotel.HotelAll != i.HotelName.HotelAll or i.M3hotel.HotelUall != i.HotelName.HotelUall or i.M3hotel.HotelMaxAll != i.HotelName.HotelMaxAll %}<span style="display:block;border-top:1px dashed rgba(160,190,220,0.45);margin:1mm 0 0.5mm;"></span><span style="display:block;"><span class="bb-pill">{% if i.M3hotel.HotelOR %}OR{% endif %}{% if i.M3hotel.HotelBB %}BB{% endif %}{% if i.M3hotel.HotelHB %}HB{% endif %}{% if i.M3hotel.HotelFB %}FB{% endif %}{% if i.M3hotel.HotelAll %}All{% endif %}{% if i.M3hotel.HotelUall %}U All{% endif %}{% if i.M3hotel.HotelMaxAll %}Max All{% endif %}</span></span>{% endif %}{% endif %}
+        </td>
+        <td class="pcol">
+          {% if i.DoubleBedPrice and i.DoubleBedPrice != 0 and i.DoubleBedPrice != '0' and i.DoubleBedPrice_doller and i.DoubleBedPrice_doller != 0 and i.DoubleBedPrice_doller != '0' %}
+            {{ i.DoubleBedPrice|add:price_adjustment|floatformat:0|intcomma }} {{ i.Pcry|default:"تومان" }}
+            <span class="pdollar">+ {{ i.DoubleBedPrice_doller }} {{ i.fr_Pcry|default:"دلار" }}</span>
+          {% elif i.DoubleBedPrice and i.DoubleBedPrice != 0 and i.DoubleBedPrice != '0' %}
+            {{ i.DoubleBedPrice|add:price_adjustment|floatformat:0|intcomma }} {{ i.Pcry|default:"تومان" }}
+          {% elif i.DoubleBedPrice_doller and i.DoubleBedPrice_doller != 0 and i.DoubleBedPrice_doller != '0' %}
+            <span class="pdollar">{{ i.DoubleBedPrice_doller }} {{ i.fr_Pcry|default:"دلار" }}</span>
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td class="pcol">
+          {% if i.SingleBedPrice and i.SingleBedPrice != 0 and i.SingleBedPrice != '0' and i.SingleBedPrice_doller and i.SingleBedPrice_doller != 0 and i.SingleBedPrice_doller != '0' %}
+            {{ i.SingleBedPrice|add:price_adjustment|floatformat:0|intcomma }} {{ i.Pcry|default:"تومان" }}
+            <span class="pdollar">+ {{ i.SingleBedPrice_doller }} {{ i.fr_Pcry|default:"دلار" }}</span>
+          {% elif i.SingleBedPrice and i.SingleBedPrice != 0 and i.SingleBedPrice != '0' %}
+            {{ i.SingleBedPrice|add:price_adjustment|floatformat:0|intcomma }} {{ i.Pcry|default:"تومان" }}
+          {% elif i.SingleBedPrice_doller and i.SingleBedPrice_doller != 0 and i.SingleBedPrice_doller != '0' %}
+            <span class="pdollar">{{ i.SingleBedPrice_doller }} {{ i.fr_Pcry|default:"دلار" }}</span>
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td class="pcol">
+          {% if i.BabyWithBedPrice and i.BabyWithBedPrice != 0 and i.BabyWithBedPrice != '0' and i.BabyWithBedPrice_doller and i.BabyWithBedPrice_doller != 0 and i.BabyWithBedPrice_doller != '0' %}
+            {{ i.BabyWithBedPrice|add:price_adjustment|floatformat:0|intcomma }} {{ i.Pcry|default:"تومان" }}
+            <span class="pdollar">+ {{ i.BabyWithBedPrice_doller }} {{ i.fr_Pcry|default:"دلار" }}</span>
+          {% elif i.BabyWithBedPrice and i.BabyWithBedPrice != 0 and i.BabyWithBedPrice != '0' %}
+            {{ i.BabyWithBedPrice|add:price_adjustment|floatformat:0|intcomma }} {{ i.Pcry|default:"تومان" }}
+          {% elif i.BabyWithBedPrice_doller and i.BabyWithBedPrice_doller != 0 and i.BabyWithBedPrice_doller != '0' %}
+            <span class="pdollar">{{ i.BabyWithBedPrice_doller }} {{ i.fr_Pcry|default:"دلار" }}</span>
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td class="pcol">
+          {% if i.BabyWithoutBedPrice and i.BabyWithoutBedPrice != 0 and i.BabyWithoutBedPrice != '0' and i.BabyWithoutBedPrice_doller and i.BabyWithoutBedPrice_doller != 0 and i.BabyWithoutBedPrice_doller != '0' %}
+            {{ i.BabyWithoutBedPrice|add:price_adjustment|floatformat:0|intcomma }} {{ i.Pcry|default:"تومان" }}
+            <span class="pdollar">+ {{ i.BabyWithoutBedPrice_doller }} {{ i.fr_Pcry|default:"دلار" }}</span>
+          {% elif i.BabyWithoutBedPrice and i.BabyWithoutBedPrice != 0 and i.BabyWithoutBedPrice != '0' %}
+            {{ i.BabyWithoutBedPrice|add:price_adjustment|floatformat:0|intcomma }} {{ i.Pcry|default:"تومان" }}
+          {% elif i.BabyWithoutBedPrice_doller and i.BabyWithoutBedPrice_doller != 0 and i.BabyWithoutBedPrice_doller != '0' %}
+            <span class="pdollar">{{ i.BabyWithoutBedPrice_doller }} {{ i.fr_Pcry|default:"دلار" }}</span>
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  {# -- INFANT PRICE NOTE ------------------------- #}
+  {% if infont and infont != 0 and infont != '0' or infont_dollar and infont_dollar != 0 and infont_dollar != '0' %}
+  <div style="text-align:left;font-size:9.5pt;color:#3a5a8a;padding:0.5mm 1mm 1.5mm;font-weight:700;">
+    ✦ قیمت نوزاد:
+    {% if infont and infont != 0 and infont != '0' and infont_dollar and infont_dollar != 0 and infont_dollar != '0' %}
+      <span style="color:#c05000;font-weight:900;">{{ infont|intcomma:False }} {{ page_pkgs.0.Pcry|default:"تومان" }}</span> + {{ infont_dollar }} {{ page_pkgs.0.fr_Pcry|default:"دلار" }}
+    {% elif infont and infont != 0 and infont != '0' %}
+      <span style="color:#c05000;font-weight:900;">{{ infont|intcomma:False }} {{ page_pkgs.0.Pcry|default:"تومان" }}</span>
+    {% elif infont_dollar and infont_dollar != 0 and infont_dollar != '0' %}
+      <span style="color:#c05000;font-weight:900;">{{ infont_dollar }} {{ page_pkgs.0.fr_Pcry|default:"دلار" }}</span>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {# -- BOTTOM CARDS ------------------------------ #}
+  <table class="bot-cards"><tr>
+    <td class="card-svc">
+      <div class="card-icon ci-blue">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="card-ttl">خدمات تور</div>
+      <div class="card-bdy">{{ svc_desc }}</div>
+    </td>
+    <td class="card-docs">
+      <div class="card-icon ci-blue">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a6ebd" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div class="card-ttl">مدارک لازم</div>
+      <div class="card-bdy">{{ doc_desc }}</div>
+    </td>
+    <td class="card-note">
+      <div class="card-icon ci-yel">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7a4300" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="card-ttl card-ttl-y">توضیحات تکمیلی</div>
+      <div class="card-bdy">{{ note_desc }}</div>
+
+    </td>
+  </tr></table>
+
+  {# -- FOOTER ---------------------------------- #}
+  <div class="footer-wrap">
+    <table class="footer-tbl" style="border-collapse:separate;border-spacing:0;"><tr>
+
+      <td style="width:23%;border-left:1px solid rgba(255,255,255,.25);">
+        <table class="f-inner"><tr>
+          <td class="f-text">
+            <div class="f-lbl">تماس با ما</div>
+            <div class="f-phone">021-44224444</div>
+            <div class="f-phone">021-45128</div>
+          </td>
+          <td class="f-icon-cell">
+            <div class="f-ic">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a2864" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42 2 2 0 0 1 3.57 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+          </td>
+        </tr></table>
+      </td>
+
+      <td style="width:18%;border-left:1px solid rgba(255,255,255,.25);">
+        <table class="f-inner"><tr>
+          <td class="f-text">
+            <div class="f-lbl">وب‌سایت</div>
+            <div class="f-val" style="font-size:10pt;font-weight:900;direction:ltr;text-align:center;">arezoosafar.com</div>
+          </td>
+          <td class="f-icon-cell">
+            <div class="f-ic">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a2864" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+          </td>
+        </tr></table>
+      </td>
+
+      <td style="width:59%;">
+        <table class="f-inner"><tr>
+          <td class="f-text">
+            <div class="f-lbl">آدرس</div>
+            <div class="f-val"> تهران، بلوار مرزداران بین خیابان نارون و سپهر پلاک 143 ساختمان دیپلمات طبقه چهارم</div>
+          </td>
+          <td class="f-icon-cell">
+            <div class="f-ic">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a2864" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+          </td>
+        </tr></table>
+      </td>
+
+    </tr></table>
+  </div>
+
+</div>
+{% endfor %}
+
+</body>
+</html>

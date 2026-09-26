@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static '/asset/css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static '/asset/css/uistyle.css' %}" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/media/favicon-32x32.png">
+    <link rel="icon" type="image/x-icon" href="/media/favicon-60x60.png">
     <title>موسسه گردشگری آرزو سفر پارسیان | {{ Tour.Title }}</title>
 </head>
 
@@ -304,10 +304,10 @@
                                 <p>دو تخته</p>
                             </div>
                             <div class="bed-price">
-                                <p class="pkg-price">{{ package.DoubleBedPrice | intcomma:False }}
+                                <p class="pkg-price">{{ package.DoubleBedPrice | floatformat:0 | intcomma }}
                                 </p>
                                 {% if package.DollerPrice %}
-                                <p class="doller-price"> + {{ package.DollerPrice | intcomma:False }}  </p>
+                                <p class="doller-price"> + {{ package.DollerPrice | floatformat:0 | intcomma }}  </p>
                                 {% endif %}
                             </div>
                         </div>
@@ -316,10 +316,10 @@
                                 <p>یک تخته</p>
                             </div>
                             <div class="bed-price">
-                                <p>{{ package.SingleBedPrice | intcomma:False }} <span class="courency">  </span>
+                                <p>{{ package.SingleBedPrice | floatformat:0 | intcomma }} <span class="courency">  </span>
                                 </p>
                                 {% if package.DollerPrice %}
-                                <p class="doller-price"> + {{ package.DollerPrice | intcomma:False }}  </p>
+                                <p class="doller-price"> + {{ package.DollerPrice | floatformat:0 | intcomma }}  </p>
                                 {% endif %}
                             </div>
                         </div>
@@ -329,10 +329,10 @@
                                 <p>کودک با تخت</p>
                             </div>
                             <div class="bed-price">
-                                <p>{{ package.BabyWithBedPrice | intcomma:False }} <span class="courency">  </span>
+                                <p>{{ package.BabyWithBedPrice | floatformat:0 | intcomma }} <span class="courency">  </span>
                                 </p>
                                 {% if package.DollerPrice %}
-                                <p class="doller-price"> + {{ package.DollerPrice | intcomma:False }}  </p>
+                                <p class="doller-price"> + {{ package.DollerPrice | floatformat:0 | intcomma }}  </p>
                                 {% endif %}
                             </div>
                         </div>
@@ -341,10 +341,10 @@
                                 <p>کودک بدون تخت</p>
                             </div>
                             <div class="bed-price">
-                                <p>{{ package.BabyWithoutBedPrice | intcomma:False }} <span class="courency"> 
+                                <p>{{ package.BabyWithoutBedPrice | floatformat:0 | intcomma }} <span class="courency"> 
                                     </span></p>
                                     {% if package.DollerPrice %}
-                                    <p class="doller-price"> + {{ package.DollerPrice | intcomma:False }}  </p>
+                                    <p class="doller-price"> + {{ package.DollerPrice | floatformat:0 | intcomma }}  </p>
                                     {% endif %}
                             </div>
                         </div>
@@ -353,9 +353,9 @@
                                 <p>نوزاد</p>
                             </div>
                             <div class="bed-price">
-                                <p>{{ package.InfontPrice | intcomma:False }} <span class="courency">  </span></p>
+                                <p>{{ package.InfontPrice | floatformat:0 | intcomma }} <span class="courency">  </span></p>
                                 {% if package.DollerPrice %}
-                                <p class="doller-price"> + {{ package.DollerPrice | intcomma:False }}  </p>
+                                <p class="doller-price"> + {{ package.DollerPrice | floatformat:0 | intcomma }}  </p>
                                 {% endif %}
                             </div>
                         </div>

@@ -1,0 +1,433 @@
+
+@font-face {
+    font-family: 'Yekan';
+    src: url('fonts/WebYekan.eot');
+    src: url('fonts/WebYekan.eot?#iefix') format('embedded-opentype'),
+    url('fonts/WebYekan.woff') format('woff'),
+    url('fonts/WebYekan.ttf') format('truetype'),
+    url('fonts/WebYekan.svg#WebYekan') format('svg');
+}
+body {
+    direction: rtl;
+    margin: 0;
+}
+.top-navbar {
+    width: 100%;
+    height: 60px;
+    background: #54C5D0cc;
+overflow: hidden;}
+.side-bar-right {
+    width: 15%;
+
+    background: #efefef;
+    display: inline-block;
+    margin-left: 15px;
+    float: right;
+    margin-right: 8px;
+    padding: 15px;
+    margin-top: 10px;
+}
+.top-center {
+    display: inline-block;
+    width: 60%;
+    height: 64px;
+    /* background: #ddd; */
+    margin-right: 50px;
+}
+.mainContent {
+    width: 75%;
+    
+    /* background: #ffffff; */
+    display: inline-block;
+    /* margin: 0px; */margin-top: 10px;
+    /* border-radius: 10px; */
+    /* border: 1px solid #efefef; */
+    /* padding: 45px; */
+    /* box-shadow: 0 0 6px #ededed8f; */}
+.logo {
+    height: 60px;
+    margin-right: 3px;
+    display: inline-block
+}
+img.logo-img {
+    width: 55px;
+    padding: 5px;
+}
+.logo-image {
+    display: inline-block;
+height: 60px;}
+.logo-slug {
+    display: inline-block;
+    float: left;
+    padding: 2px;
+}
+.logo-slug p {
+    color: #fff;
+    font-size: 16px;
+    font-family: yekan;
+    font-weight: 600;
+}
+p.nav-title {
+    font-family: 'Yekan';
+    font-size: 15px;
+    text-align: center;
+    margin: 0;
+}
+p.section-title {
+    font-size: 20px;
+    font-family: yekan;
+margin: 0;margin-bottom: 10px;}
+p.section-title::before {
+    content: '*';
+    width: 10px;
+    height:  10px;
+    background: #76d1d9;
+    font-size: 10px;
+    display: inline-block;
+    margin-left: 5px;
+    border-radius: 10px;
+    vertical-align: middle;
+}
+.bform {
+    width: 47%;
+    margin: 5px;
+    display: inline-block;
+}
+
+.branchname {
+    width: 80%;
+    line-height: 25px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 19px;
+    font-size: 14px;
+    font-family: yekan;
+}
+.brancode {
+    width: 84%;
+    line-height: 25px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 19px;
+    font-size: 14px;
+    font-family: yekan;
+}
+.branchmanager {
+    width: 93%;
+    line-height: 25px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 6px 19px;
+    font-size: 14px;
+    font-family: yekan;   
+}
+.branchphone {
+    width: 84%;
+    line-height: 25px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 19px;
+    font-size: 14px;
+    font-family: yekan;   
+}
+.branchaddress  { width: 90%;
+line-height: 25px;
+border: 1px solid #ccc;
+border-radius: 5px;
+
+font-size: 14px;
+font-family: yekan;   
+height: 135px;padding: 2px 15px;}
+.bform.name {
+}
+.bform.address {
+width: 100%;}
+#save-button {background: #fbfbfb;
+    border: 1px solid #e3e3e3;
+    padding: 10px;
+    width: 96%;
+    display: block;
+    font-family: yekan;
+    border-radius: 8px;
+    margin-top: 9px;
+    font-weight: bold;
+    cursor: pointer;
+}
+table.BranchTable {
+    border-collapse: collapse;
+    
+    text-align: center;
+    font-family: yekan;
+}
+
+th.TbHead {
+    border: 1px solid #ccc;
+    line-height: 35px;
+    background: #f9f9f9;
+}
+td.TbCells {
+    border: 1px solid #ccc;
+width: 5%;font-size: 14px;line-height: 24px;}
+.NoBranch p {
+    font-family: yekan;
+    text-align: center;
+}
+.NoBranch {
+    padding: 15px;
+    margin-top: 50px;
+    background: #f7f7f7;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+}
+span.current {
+    font-family: yekan;
+padding-left: 12px;padding-right: 12px;}
+a.PageNav {
+    font-family: yekan;
+    padding: 5px;
+    background: #fbfbfb;
+    border: 1px solid #ccc;
+    text-decoration: none;color: #2fa6b1;
+    font-size: 12px;
+}
+.pagination 
+{
+    margin-top: 30px;
+    text-align: center;
+display: inline-block;width: 50%;margin-left: auto;margin-right: auto;}
+.BranchList {
+    text-align: center;
+    font-size: 20px;
+    font-family: yekan;
+    background: #3f4776;
+    color: #fff;
+    margin-top: 6px;
+}
+
+.BranchList p {
+    padding: 15px 15px;
+    margin: 0;
+}
+.BranchForm {
+    width: 46%;
+    
+display: inline-block;}
+.BranchDashbordLeft {
+    display: inline-block;
+    width: 39.2%;   
+position: absolute;}
+#save-button:hover {
+    background: #3f4776;
+    color: #fff;
+    transition-duration: 0.5s;
+}
+.FirstSection {
+    padding: 40px 10px;
+    border: 1px solid #efefef;
+    
+    border-radius: 10px;
+    box-shadow: 0 0 3px #efefef;
+}
+a.EditBtn {
+    text-decoration: none;
+    color: #308734;
+    font-size: 12px;
+    background: #fbfbfb;
+    padding: 0px 7px;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+}
+p.WarningDeletBranch {
+    font-size: 16px;
+    font-family: yekan;
+    line-height: 35px;
+    padding: 19px 15px;
+    width: 90%;
+    text-align: justify;
+    background: #fffbd3;
+    border: 1px solid #ffc107;
+}
+.update-page {
+    width: 99% !important;
+}
+a#delet-button {
+    font-family: yekan;
+    font-weight: bold;
+    font-size: 14px;
+    color: #ffffff;
+    background: #f44336;
+    line-height: 25px;
+    padding: 10px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+.btn-right {
+    display: inline-block;
+    width: 65%;
+}
+a#delet-button:hover {
+    cursor: pointer;
+}
+.btn-left {
+    display: inline-block;
+}
+.categoryname {
+    line-height: 25px;
+    font-family: 'Yekan';
+    width: 93%;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+.NoCategory {
+    padding: 15px;
+    margin-top: 10px;
+    background: #f7f7f7;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+}
+select.categorybranch {
+    font-family: 'Yekan';
+    width: 96%;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.NoCategory p {
+    font-family: yekan;
+    text-align: center;
+}
+.CategoryDashbordLeft {
+    display: inline-block;
+    width: 53%;
+}
+.CategoryForm {
+    display: inline-block;
+    width: 46%;
+    float: right;
+}
+.CategoryList {
+    text-align: center;
+    font-size: 20px;
+    font-family: yekan;
+    background: #3f4776;
+    color: #fff;
+    margin-top: 6px;
+}
+.CategoryList p {
+    padding: 15px 15px;
+    margin: 0;
+}
+.pagination.category
+{
+    margin-top: 30px;
+    text-align: center;
+    display: block;
+    width: 50%;
+    margin-left: 0;
+    
+}
+.subcategoryname {
+    font-family: 'Yekan';
+    width: 90%;
+    line-height: 2;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+.ProductForm {
+    display: inline-block;
+    width: 35%;
+}
+.productname {
+    font-family: 'Yekan';
+    width: 88%;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+.productprct {
+    font-family: 'Yekan';
+    padding: 7px;
+    border: 1px solid #ccc;
+    width: 95%;}
+
+.productsbct {
+    font-family: 'Yekan';
+    padding: 7px;
+    border: 1px solid #ccc;
+    width: 95%;
+}
+
+.productstock {
+    font-family: 'Yekan';
+    width: 89%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    line-height: 25px;
+}
+.productstock {
+    font-family: 'Yekan';
+    width: 90%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    line-height: 25px;
+}
+.productdlv {
+    font-family: 'Yekan';
+    width: 95%;
+    padding: 7px;
+    border: 1px solid #ccc;
+}
+.productisdate {
+    font-family: 'Yekan';
+    line-height: 25px;
+    padding: 5px;
+    width: 91%;
+    border: 1px solid #ccc;
+}
+p.check-box-label {
+    font-family: yekan;
+}
+.productactive {
+    vertical-align: middle;
+}
+p.nav-main {
+    font-family: 'Yekan';
+    background: #000;
+    color: #fff;
+    padding: 10px 30px;
+}
+a.inv-item {
+    font-family: 'Yekan';
+    text-decoration: none;
+    color: #262626;
+    line-height: 30px;
+    font-size: 14px;
+    display: block;
+    padding: 5px 10px;
+}
+li::marker {
+    content: "";
+    display: none;
+}
+
+a.inv-item:hover {
+    background: #fff;
+    transition-duration: 0.5s;
+}
+ul.navigation-items {
+    padding-right: 15px;
+}
+.categoryparent {
+    font-family: 'Yekan', serif;
+    width: 99%;
+    border: 1px solid #ccc;
+    line-height: 25px;
+    padding: 6px;
+}
+.ProductDashbordLeft {
+    display: inline-block;
+    width: 64%;
+    float: left;
+}
+.btn-right.product-update {
+    width: 58%;
+}

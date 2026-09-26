@@ -2,6 +2,7 @@ from blog.dataset import get_all_blog_posts, get_all_blog_cats
 from hotels.forms import CreateHotelMenuForm
 from hotels.models import Hotel_Menu
 from tour.dataset import *
+from django.core.cache import cache
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from tour.forms import *
@@ -145,6 +146,8 @@ def OrderDelete(request, id):
 
 @superuser_required(login_url='login')
 def OrderInbox(request):
+    from django.utils import timezone
+    request.session['seen_order'] = timezone.now().isoformat()
     orders = TourOrder.objects.all()
     paginator = Paginator(orders, 15)
     PageNumber = request.GET.get('page')
@@ -384,17 +387,23 @@ def CreateTourCategory(request):
 @superuser_required(login_url='login')
 def UpdateTourCategory(request, id):
     category = CustomTourCategory.objects.get(id=id)
-    forms = CreateTourCategoryForm(instance=category)
-    if request.method == 'POST':
-        forms = CreateTourCategoryForm(request.POST, request.FILES, instance=category)
 
-        if forms.is_valid():
-            forms.save()
+    if request.method == 'POST':
+        form = CreateTourCategoryForm(request.POST, request.FILES, instance=category)
+
+        if form.is_valid():
+            category = form.save()
+
+            category.refresh_from_db()
+
             return redirect('list-tour-category')
-    context = {
-        'form': forms
-    }
-    return render(request, 'tour/create-tour-category.html', context)
+
+    else:
+        form = CreateTourCategoryForm(instance=category)
+
+    return render(request, 'tour/create-tour-category.html', {
+        'form': form
+    })
 
 @superuser_required(login_url='login')
 def DeleteTourCategory(request, id):
@@ -482,6 +491,8 @@ def CreateSlideShow(request, id):
 
 @superuser_required(login_url='login')
 def ContactUsInbox(request):
+    from django.utils import timezone
+    request.session['seen_contact'] = timezone.now().isoformat()
     messages = ContactUs.objects.all()
     paginator = Paginator(messages, 10)
     pageNumber = request.GET.get('page')
@@ -546,6 +557,38 @@ def export_numbers_csv(request):
     for i in numbers:
         writer.writerow([str(i.Mobile)])
     return response
+
+@superuser_required(login_url='login')
+def update_dollar_rate(request):
+    if request.method == 'POST':
+        rate = request.POST.get('dollar_rate', '').strip()
+        if rate.isdigit():
+            footer = Footer.objects.first()
+            if not footer:
+                footer = Footer.objects.create(
+                    About='', Address='', Phone='', Email='',
+                    instagram='', Linkedin='', Telegram='',
+                    Samandehi='', Etehadieh='', PsLaw='',
+                    dollar_rate=int(rate)
+                )
+            else:
+                footer.dollar_rate = int(rate)
+                footer.save()
+    return redirect('dashboard')
+
+@superuser_required(login_url='login')
+def tour_interest_list(request):
+    from django.utils import timezone
+    request.session['seen_interest'] = timezone.now().isoformat()
+    interests = TourInterest.objects.order_by('-created_at')
+    context = {'interests': interests}
+    return render(request, 'admin-dashboard/tour_interest_list.html', context)
+
+
+@superuser_required(login_url='login')
+def delete_tour_interest(request, id):
+    TourInterest.objects.filter(id=id).delete()
+    return redirect('tour-interest-list')
 
 
 @superuser_required(login_url='login')
@@ -615,13 +658,12 @@ def add_trip_plan(request, id):
             item.tour = tour
             item.save()
             return redirect('add_trip_plan', tour.id)
-        else:
-            return redirect('add_trip_plan', tour.id)
     context = {
         'Tour': tour,
         'forms': forms
     }
     return render(request, 'tour/add-trip-plan.html', context)
+
 
 @superuser_required(login_url='login')
 def update_trip_plan(request, id):
@@ -633,10 +675,9 @@ def update_trip_plan(request, id):
         if forms.is_valid():
             forms.save()
             return redirect('add_trip_plan', tour.id)
-        else:
-            return redirect('add_trip_plan', tour.id)
     context = {
         'Tour': tour,
+        'plan': plan,
         'forms': forms
     }
     return render(request, 'tour/add-trip-plan.html', context)
@@ -716,3 +757,117 @@ def add_country_to_spacial(request, id):
         'forms': forms
     }
     return render(request, 'tour/spacial-city.html', context)
+
+@superuser_required(login_url='login')
+def tour_review_list(request):
+    reviews = TourReview.objects.select_related('country')
+    return render(request, 'admin-dashboard/tour-review-list.html',
+                  {'reviews': reviews})
+
+
+@superuser_required(login_url='login')
+def tour_review_create(request):
+    forms = TourReviewForm()
+    if request.method == 'POST':
+        forms = TourReviewForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            cache.clear()
+            return redirect('tour-review-list')
+    return render(request, 'tour/tour-review-form.html',
+                  {'form': forms, 'is_new': True})
+
+
+@superuser_required(login_url='login')
+def tour_review_update(request, id):
+    review = TourReview.objects.get(id=id)
+    forms = TourReviewForm(instance=review)
+    if request.method == 'POST':
+        forms = TourReviewForm(request.POST, instance=review)
+        if forms.is_valid():
+            forms.save()
+            cache.clear()
+            return redirect('tour-review-list')
+    return render(request, 'tour/tour-review-form.html',
+                  {'form': forms, 'is_new': False, 'review': review})
+
+
+@superuser_required(login_url='login')
+def tour_review_delete(request, id):
+    TourReview.objects.filter(id=id).delete()
+    cache.clear()
+    return redirect('tour-review-list')
+
+
+
+
+@superuser_required(login_url='login')
+def tour_review_fetch_google(request):
+    """نظرهای گوگل مپ را از سمت سرور می‌خواند و ثبت می‌کند.
+
+    اگر خود سرور به گوگل نرسد (فیلترینگ)، همان تنظیمات به مرورگرِ مدیر
+    برگردانده می‌شود تا درخواست از آنجا فرستاده شود.
+    """
+    from django.http import JsonResponse
+    from tour.google_reviews import GoogleReviewsError, sync_from_google, _config
+    from theme.models import index_page
+
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'فقط POST'}, status=405)
+
+    setting = index_page.objects.first()
+    if setting is None:
+        return JsonResponse({'ok': False,
+                             'error': 'تنظیمات قالب هنوز ساخته نشده است.'})
+    try:
+        result = sync_from_google(setting)
+    except GoogleReviewsError as exc:
+        data = {'ok': False, 'error': exc.message, 'network': exc.network}
+        if exc.network:
+            # مسیر جایگزین: درخواست از مرورگر خودِ مدیر
+            try:
+                place_id, api_key, _proxy = _config(setting)
+                data['place_id'] = place_id
+                data['api_key'] = api_key
+            except GoogleReviewsError:
+                data['network'] = False
+        return JsonResponse(data)
+
+    cache.clear()
+    return JsonResponse({'ok': True, 'created': result['created'],
+                         'updated': result['updated'],
+                         'skipped': result['skipped'],
+                         'fetched': result['fetched'],
+                         'place': result['place'],
+                         'rating': result['rating'],
+                         'total_ratings': result['total_ratings']})
+
+
+@superuser_required(login_url='login')
+def tour_review_import_google(request):
+    """پاسخ گوگل را که مرورگر گرفته تحویل می‌گیرد و ثبت می‌کند."""
+    import json as _json
+
+    from django.http import JsonResponse
+    from tour.google_reviews import import_reviews, normalize
+
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'فقط POST'}, status=405)
+    try:
+        payload = _json.loads(request.body.decode('utf-8') or '{}')
+    except ValueError:
+        return JsonResponse({'ok': False, 'error': 'داده‌ی ارسالی خراب بود.'})
+
+    rows = normalize(payload)
+    if not rows:
+        return JsonResponse({'ok': False,
+                             'error': 'گوگل برای این مکان نظری برنگرداند.'})
+    result = import_reviews(rows)
+    cache.clear()
+    return JsonResponse({'ok': True, 'created': result['created'],
+                         'updated': result['updated'],
+                         'skipped': result['skipped'],
+                         'fetched': len(rows),
+                         'place': (payload.get('displayName') or {}).get('text', ''),
+                         'rating': payload.get('rating'),
+                         'total_ratings': payload.get('userRatingCount')})

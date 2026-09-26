@@ -1,0 +1,273 @@
+/* جایگزین دست‌نویس Bootstrap 5 — فقط همون کلاس‌هایی که واقعاً تو سایت
+   استفاده می‌شن (طبق ممیزی کامل قالب‌ها)، نه کل واژگان بوت‌استرپ.
+   مقادیر grid/container/offcanvas/modal دقیقاً از bootstrap.min.css
+   فعلی همین پروژه استخراج شده تا ظاهر صد در صد یکسان بمونه. */
+
+/* ===== Container / Row / Col ===== */
+.container{
+    --bs-gutter-x:0.5rem;
+    width:100%;
+    padding-right:calc(var(--bs-gutter-x) * .5);
+    padding-left:calc(var(--bs-gutter-x) * .5);
+    margin-right:auto;
+    margin-left:auto;
+}
+@media (min-width:576px){.container{max-width:540px}}
+@media (min-width:768px){.container{max-width:720px}}
+@media (min-width:992px){.container{max-width:960px}}
+@media (min-width:1200px){.container{max-width:1140px}}
+@media (min-width:1400px){.container{max-width:1320px}}
+
+.row{
+    --bs-gutter-x:1.5rem;
+    --bs-gutter-y:0;
+    display:flex;
+    flex-wrap:wrap;
+    margin-top:calc(-1 * var(--bs-gutter-y));
+    margin-right:calc(-.5 * var(--bs-gutter-x));
+    margin-left:calc(-.5 * var(--bs-gutter-x));
+}
+.row>*{
+    flex-shrink:0;
+    width:100%;
+    max-width:100%;
+    padding-right:calc(var(--bs-gutter-x) * .5);
+    padding-left:calc(var(--bs-gutter-x) * .5);
+    margin-top:var(--bs-gutter-y);
+}
+.col{flex:1 0 0%}
+.col-auto{flex:0 0 auto;width:auto}
+
+/* ===== Bare col-N (no breakpoint) ===== */
+.col-1{flex:0 0 auto;width:8.33333333%}
+.col-2{flex:0 0 auto;width:16.66666667%}
+.col-3{flex:0 0 auto;width:25%}
+.col-4{flex:0 0 auto;width:33.33333333%}
+.col-5{flex:0 0 auto;width:41.66666667%}
+.col-6{flex:0 0 auto;width:50%}
+.col-7{flex:0 0 auto;width:58.33333333%}
+.col-8{flex:0 0 auto;width:66.66666667%}
+.col-9{flex:0 0 auto;width:75%}
+.col-10{flex:0 0 auto;width:83.33333333%}
+.col-11{flex:0 0 auto;width:91.66666667%}
+.col-12{flex:0 0 auto;width:100%}
+
+/* ===== col-sm-N ===== */
+@media (min-width:576px){
+.col-sm-1{flex:0 0 auto;width:8.33333333%}
+.col-sm-2{flex:0 0 auto;width:16.66666667%}
+.col-sm-3{flex:0 0 auto;width:25%}
+.col-sm-4{flex:0 0 auto;width:33.33333333%}
+.col-sm-5{flex:0 0 auto;width:41.66666667%}
+.col-sm-6{flex:0 0 auto;width:50%}
+.col-sm-7{flex:0 0 auto;width:58.33333333%}
+.col-sm-8{flex:0 0 auto;width:66.66666667%}
+.col-sm-9{flex:0 0 auto;width:75%}
+.col-sm-10{flex:0 0 auto;width:83.33333333%}
+.col-sm-11{flex:0 0 auto;width:91.66666667%}
+.col-sm-12{flex:0 0 auto;width:100%}
+}
+
+/* ===== col-md-N (زیرمجموعه‌ی واقعاً استفاده‌شده) ===== */
+@media (min-width:768px){
+.col-md-1{flex:0 0 auto;width:8.33333333%}
+.col-md-2{flex:0 0 auto;width:16.66666667%}
+.col-md-3{flex:0 0 auto;width:25%}
+.col-md-4{flex:0 0 auto;width:33.33333333%}
+.col-md-5{flex:0 0 auto;width:41.66666667%}
+.col-md-6{flex:0 0 auto;width:50%}
+.col-md-9{flex:0 0 auto;width:75%}
+.col-md-12{flex:0 0 auto;width:100%}
+}
+
+/* ===== col-lg-N ===== */
+@media (min-width:992px){
+.col-lg-1{flex:0 0 auto;width:8.33333333%}
+.col-lg-2{flex:0 0 auto;width:16.66666667%}
+.col-lg-3{flex:0 0 auto;width:25%}
+.col-lg-4{flex:0 0 auto;width:33.33333333%}
+.col-lg-5{flex:0 0 auto;width:41.66666667%}
+.col-lg-6{flex:0 0 auto;width:50%}
+.col-lg-7{flex:0 0 auto;width:58.33333333%}
+.col-lg-8{flex:0 0 auto;width:66.66666667%}
+.col-lg-9{flex:0 0 auto;width:75%}
+.col-lg-10{flex:0 0 auto;width:83.33333333%}
+.col-lg-11{flex:0 0 auto;width:91.66666667%}
+.col-lg-12{flex:0 0 auto;width:100%}
+}
+
+/* ===== col-xl-N (زیرمجموعه‌ی واقعاً استفاده‌شده: 6,12) ===== */
+@media (min-width:1200px){
+.col-xl-6{flex:0 0 auto;width:50%}
+.col-xl-12{flex:0 0 auto;width:100%}
+}
+
+/* ===== Display utilities ===== */
+.d-none{display:none!important}
+.d-block{display:block!important}
+.d-flex{display:flex!important}
+.d-grid{display:grid!important}
+@media (min-width:576px){
+.d-sm-none{display:none!important}
+.d-sm-block{display:block!important}
+.d-sm-flex{display:flex!important}
+}
+@media (min-width:768px){
+.d-md-none{display:none!important}
+.d-md-block{display:block!important}
+}
+@media (min-width:992px){
+.d-lg-none{display:none!important}
+.d-lg-block{display:block!important}
+.d-lg-flex{display:flex!important}
+}
+
+/* ===== Spacing utilities (فقط مقادیر واقعاً استفاده‌شده) ===== */
+.m-0{margin:0!important}
+.p-0{padding:0!important}
+.p-5{padding:3rem!important}
+.px-3{padding-right:1rem!important;padding-left:1rem!important}
+.py-1{padding-top:.25rem!important;padding-bottom:.25rem!important}
+.py-2{padding-top:.5rem!important;padding-bottom:.5rem!important}
+.pt-5{padding-top:3rem!important}
+.mt-1{margin-top:.25rem!important}
+.mt-2{margin-top:.5rem!important}
+.mt-3{margin-top:1rem!important}
+.mt-5{margin-top:3rem!important}
+.mb-0{margin-bottom:0!important}
+.mb-1{margin-bottom:.25rem!important}
+.mb-2{margin-bottom:.5rem!important}
+.mb-3{margin-bottom:1rem!important}
+.mb-4{margin-bottom:1.5rem!important}
+
+/* ===== Flex utilities ===== */
+.align-items-center{align-items:center!important}
+.align-items-start{align-items:flex-start!important}
+.justify-content-center{justify-content:center!important}
+.justify-content-between{justify-content:space-between!important}
+.flex-wrap{flex-wrap:wrap!important}
+
+/* ===== Text utilities ===== */
+.text-center{text-align:center!important}
+.text-start{text-align:right!important}
+.text-end{text-align:left!important}
+.text-muted{color:#6c757d!important}
+.text-danger{color:#dc3545!important}
+.text-nowrap{white-space:nowrap!important}
+
+/* ===== Position ===== */
+.position-relative{position:relative!important}
+
+/* ===== Forms ===== */
+.form-control{
+    display:block;width:100%;padding:.375rem .75rem;font-size:1rem;font-weight:400;
+    line-height:1.5;color:#212529;background-color:#fff;background-clip:padding-box;
+    border:1px solid #ced4da;border-radius:.375rem;
+    transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.form-control:focus{color:#212529;background-color:#fff;border-color:#86b7fe;outline:0;box-shadow:0 0 0 .25rem rgba(13,110,253,.25)}
+.form-select{
+    display:block;width:100%;padding:.375rem 2.25rem .375rem .75rem;font-size:1rem;font-weight:400;
+    line-height:1.5;color:#212529;background-color:#fff;border:1px solid #ced4da;border-radius:.375rem;
+}
+.form-label{margin-bottom:.5rem}
+.form-check{display:block;min-height:1.5rem;padding-right:1.5em;margin-bottom:.125rem}
+.form-check-input{width:1em;height:1em;margin-top:.25em;margin-right:-1.5em;vertical-align:top;background-color:#fff;border:1px solid rgba(0,0,0,.25)}
+.form-check-label{}
+
+/* ===== btn-close ===== */
+.btn-close{
+    box-sizing:content-box;width:1em;height:1em;padding:.25em;color:#000;background:transparent
+        url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e")
+        center/1em auto no-repeat;border:0;border-radius:.375rem;opacity:.5;
+}
+.btn-close:hover{color:#000;opacity:.75}
+
+/* ===== Badge ===== */
+.badge{display:inline-block;padding:.35em .65em;font-size:.75em;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:.375rem}
+
+/* ===== Tabs ===== */
+.nav-tabs{display:flex;flex-wrap:wrap;list-style:none;border-bottom:1px solid #dee2e6;margin:0;padding:0}
+.nav-tabs .nav-link{display:block;padding:.5rem 1rem;color:#0d6efd;text-decoration:none;border:1px solid transparent;border-top-left-radius:.375rem;border-top-right-radius:.375rem;cursor:pointer}
+.nav-tabs .nav-link.active{color:#495057;background-color:#fff;border-color:#dee2e6 #dee2e6 #fff}
+.tab-content>.tab-pane{display:none}
+.tab-content>.active{display:block}
+.fade{transition:opacity .15s linear;opacity:0}
+.fade.show{opacity:1}
+
+/* ===== Table ===== */
+.table-responsive{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* ===== Modal ===== */
+.modal{
+    --bs-modal-width:500px;--bs-modal-margin:.5rem;
+    position:fixed;top:0;left:0;z-index:1055;display:none;width:100%;height:100%;
+    overflow-x:hidden;overflow-y:auto;outline:0;
+}
+.modal.show{display:block}
+.modal-dialog{position:relative;width:auto;margin:var(--bs-modal-margin);pointer-events:none;max-width:var(--bs-modal-width)}
+.modal.fade .modal-dialog{transition:transform .3s ease-out;transform:translate(0,-50px)}
+.modal.show .modal-dialog{transform:none}
+@media (min-width:576px){
+.modal-dialog{max-width:var(--bs-modal-width);margin:1.75rem auto}
+}
+.modal-content{
+    position:relative;display:flex;flex-direction:column;width:100%;
+    color:#212529;background-color:#fff;background-clip:padding-box;
+    border:1px solid rgba(0,0,0,.175);border-radius:.5rem;outline:0;pointer-events:auto;
+}
+.modal-header{
+    display:flex;flex-shrink:0;align-items:center;justify-content:space-between;
+    padding:1rem;border-bottom:1px solid #dee2e6;border-top-left-radius:calc(.5rem - 1px);border-top-right-radius:calc(.5rem - 1px);
+}
+.modal-title{margin-bottom:0;line-height:1.5}
+.modal-body{position:relative;flex:1 1 auto;padding:1rem}
+.modal-footer{
+    display:flex;flex-wrap:wrap;flex-shrink:0;align-items:center;justify-content:flex-end;
+    padding:.75rem;border-top:1px solid #dee2e6;gap:.5rem;
+}
+.modal-backdrop{position:fixed;top:0;left:0;z-index:1050;width:100vw;height:100vh;background-color:#000}
+.modal-backdrop.fade{opacity:0}
+.modal-backdrop.show{opacity:.5}
+body.modal-open{overflow:hidden}
+
+/* ===== Offcanvas ===== */
+.offcanvas{
+    --bs-offcanvas-width:400px;--bs-offcanvas-padding-x:1rem;--bs-offcanvas-padding-y:1rem;
+    position:fixed;bottom:0;z-index:1045;display:flex;flex-direction:column;max-width:100%;
+    visibility:hidden;background-color:#fff;background-clip:padding-box;outline:0;
+    transition:transform .3s ease-in-out;
+}
+.offcanvas.offcanvas-start{top:0;left:0;width:var(--bs-offcanvas-width);border-right:1px solid rgba(0,0,0,.175);transform:translateX(-100%)}
+.offcanvas.show{visibility:visible;transform:none}
+.offcanvas-backdrop{position:fixed;top:0;left:0;z-index:1040;width:100vw;height:100vh;background-color:#000}
+.offcanvas-backdrop.fade{opacity:0}
+.offcanvas-backdrop.show{opacity:.5}
+.offcanvas-header{display:flex;align-items:center;justify-content:space-between;padding:var(--bs-offcanvas-padding-y) var(--bs-offcanvas-padding-x)}
+.offcanvas-title{margin-bottom:0;line-height:1.5}
+.offcanvas-body{flex-grow:1;padding:var(--bs-offcanvas-padding-y) var(--bs-offcanvas-padding-x);overflow-y:auto}
+body.offcanvas-open{overflow:hidden}
+
+/* ===== Accordion (نسخهٔ استاندارد Bootstrap 5؛ accordion قدیمی خود سایت
+   تو uistyle.css با کلاس‌های متفاوت (button.accordion/.panel) جداست و
+   دست‌نخورده می‌مونه) ===== */
+.accordion-item{background-color:#fff;border:1px solid rgba(0,0,0,.125)}
+.accordion-item:first-of-type{border-top-left-radius:.375rem;border-top-right-radius:.375rem}
+.accordion-header{margin-bottom:0}
+.accordion-button{
+    position:relative;display:flex;align-items:center;width:100%;padding:1rem 1.25rem;
+    font-size:1rem;text-align:right;background-color:#fff;border:0;border-radius:0;
+    overflow-anchor:none;transition:color .15s ease-in-out,background-color .15s ease-in-out;cursor:pointer;
+}
+.accordion-button:not(.collapsed){color:#0c63e4;background-color:#e7f1ff;box-shadow:inset 0 -1px 0 rgba(0,0,0,.125)}
+.accordion-button::after{
+    flex-shrink:0;width:1.25rem;height:1.25rem;margin-right:auto;margin-left:0;content:"";
+    background-repeat:no-repeat;background-size:1.25rem;transition:transform .2s ease-in-out;
+    background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 01.708 0L8 10.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z'/%3e%3c/svg%3e");
+}
+.accordion-button:not(.collapsed)::after{transform:rotate(-180deg)}
+.accordion-collapse{}
+.accordion-collapse.collapse:not(.show){display:none}
+.accordion-body{padding:1rem 1.25rem}
+.collapse:not(.show){display:none}
+.collapsing{height:0;overflow:hidden;transition:height .35s ease}

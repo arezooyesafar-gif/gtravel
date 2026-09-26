@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="93.759" height="68.054" viewBox="0 0 93.759 68.054">
+  <g id="Group_23" data-name="Group 23" transform="translate(-1382.837 -704.667)">
+    <g id="Group_19" data-name="Group 19">
+      <g id="Group_7" data-name="Group 7">
+        <line id="Line_1" data-name="Line 1" x1="1.95" y2="9.01" transform="translate(1448.074 705.021)" fill="#fff"/>
+        <rect id="Rectangle_6" data-name="Rectangle 6" width="9.218" height="3.35" transform="translate(1446.437 713.677) rotate(-77.794)" fill="#282d33"/>
+      </g>
+      <g id="Group_8" data-name="Group 8">
+        <line id="Line_2" data-name="Line 2" x2="2.819" y2="8.777" transform="translate(1432.728 706.118)" fill="#fff"/>
+        <rect id="Rectangle_7" data-name="Rectangle 7" width="3.35" height="9.218" transform="translate(1431.133 706.631) rotate(-17.806)" fill="#282d33"/>
+      </g>
+      <g id="Group_9" data-name="Group 9">
+        <line id="Line_3" data-name="Line 3" x2="6.826" y2="6.192" transform="translate(1418.3 715.715)" fill="#fff"/>
+        <rect id="Rectangle_8" data-name="Rectangle 8" width="3.35" height="9.216" transform="translate(1417.175 716.956) rotate(-47.792)" fill="#282d33"/>
+      </g>
+      <g id="Group_10" data-name="Group 10">
+        <line id="Line_4" data-name="Line 4" x2="9.009" y2="1.948" transform="translate(1410.601 731.241)" fill="#fff"/>
+        <rect id="Rectangle_9" data-name="Rectangle 9" width="3.349" height="9.217" transform="translate(1410.247 732.878) rotate(-77.799)" fill="#282d33"/>
+      </g>
+      <g id="Group_11" data-name="Group 11">
+        <line id="Line_5" data-name="Line 5" y1="2.817" x2="8.777" transform="translate(1411.696 745.719)" fill="#fff"/>
+        <rect id="Rectangle_10" data-name="Rectangle 10" width="9.218" height="3.35" transform="translate(1411.184 746.942) rotate(-17.799)" fill="#282d33"/>
+      </g>
+      <g id="Group_12" data-name="Group 12">
+        <line id="Line_6" data-name="Line 6" y1="6.829" x2="6.196" transform="translate(1421.293 756.138)" fill="#fff"/>
+        <rect id="Rectangle_11" data-name="Rectangle 11" width="9.22" height="3.35" transform="translate(1420.052 761.842) rotate(-47.786)" fill="#282d33"/>
+      </g>
+      <g id="Group_13" data-name="Group 13">
+        <line id="Line_7" data-name="Line 7" y1="9.01" x2="1.953" transform="translate(1436.818 761.654)" fill="#fff"/>
+        <rect id="Rectangle_12" data-name="Rectangle 12" width="9.22" height="3.35" transform="translate(1435.18 770.31) rotate(-77.765)" fill="#282d33"/>
+      </g>
+      <g id="Group_14" data-name="Group 14">
+        <line id="Line_8" data-name="Line 8" x1="2.814" y1="8.777" transform="translate(1451.297 760.79)" fill="#fff"/>
+        <rect id="Rectangle_13" data-name="Rectangle 13" width="3.35" height="9.217" transform="translate(1449.703 761.302) rotate(-17.776)" fill="#282d33"/>
+      </g>
+      <g id="Group_15" data-name="Group 15">
+        <line id="Line_9" data-name="Line 9" x1="6.825" y1="6.194" transform="translate(1461.718 753.777)" fill="#fff"/>
+        <rect id="Rectangle_14" data-name="Rectangle 14" width="3.35" height="9.217" transform="matrix(0.672, -0.741, 0.741, 0.672, 1460.592, 755.017)" fill="#282d33"/>
+      </g>
+      <g id="Group_16" data-name="Group 16">
+        <line id="Line_10" data-name="Line 10" x1="9.006" y1="1.951" transform="translate(1467.235 742.495)" fill="#fff"/>
+        <rect id="Rectangle_15" data-name="Rectangle 15" width="3.35" height="9.215" transform="matrix(0.212, -0.977, 0.977, 0.212, 1466.88, 744.132)" fill="#282d33"/>
+      </g>
+      <g id="Group_17" data-name="Group 17">
+        <line id="Line_11" data-name="Line 11" x1="8.777" y2="2.815" transform="translate(1466.369 727.15)" fill="#fff"/>
+        <rect id="Rectangle_16" data-name="Rectangle 16" width="9.218" height="3.349" transform="translate(1465.857 728.371) rotate(-17.785)" fill="#282d33"/>
+      </g>
+      <g id="Group_18" data-name="Group 18">
+        <line id="Line_12" data-name="Line 12" x1="6.193" y2="6.828" transform="translate(1459.357 712.72)" fill="#fff"/>
+        <rect id="Rectangle_17" data-name="Rectangle 17" width="9.218" height="3.35" transform="matrix(0.672, -0.741, 0.741, 0.672, 1458.116, 718.422)" fill="#282d33"/>
+      </g>
+    </g>
+    <g id="Group_20" data-name="Group 20">
+      <path id="Path_1" data-name="Path 1" d="M1462.828,737.841a19.407,19.407,0,1,1-19.408-19.406A19.412,19.412,0,0,1,1462.828,737.841Z" fill="#fff"/>
+      <path id="Path_2" data-name="Path 2" d="M1443.42,758.924a21.082,21.082,0,1,1,21.082-21.083A21.105,21.105,0,0,1,1443.42,758.924Zm0-38.814a17.733,17.733,0,1,0,17.733,17.731A17.751,17.751,0,0,0,1443.42,720.11Z" fill="#282d33"/>
+    </g>
+    <path id="Path_3" data-name="Path 3" d="M1443.42,751.428a13.585,13.585,0,1,1,13.585-13.587A13.6,13.6,0,0,1,1443.42,751.428Z" fill="#fadd4b"/>
+    <g id="Group_21" data-name="Group 21">
+      <path id="Path_4" data-name="Path 4" d="M1451.511,758.726a13.727,13.727,0,0,0,.1-1.593,13.431,13.431,0,0,0-17.1-12.955,19.756,19.756,0,0,0-39.326,2.7c0,.044,0,.088,0,.132a12.056,12.056,0,0,0,1.378,24.032h54.228a.176.176,0,0,1,.008-.028c.173.015.345.028.519.028a6.161,6.161,0,0,0,.19-12.32Z" fill="#fff"/>
+      <path id="Path_5" data-name="Path 5" d="M1452.323,772.721h-55.757a13.732,13.732,0,0,1-3.018-27.127,21.432,21.432,0,0,1,42.3-3.42,14.8,14.8,0,0,1,2.3-.182,15.157,15.157,0,0,1,15.138,15.141c0,.052,0,.1,0,.159a7.839,7.839,0,0,1-.956,15.364Zm-2.665-3.471,1.286.1c.126.011.25.022.377.022a4.487,4.487,0,0,0,.14-8.971l-1.826-.054.213-1.814a12.114,12.114,0,0,0,.088-1.4,11.76,11.76,0,0,0-14.975-11.343l-1.85.519-.261-1.9a18.081,18.081,0,0,0-35.991,2.477l0,1.626-1.485.17a10.381,10.381,0,0,0,1.188,20.693h53.048Z" fill="#282d33"/>
+    </g>
+    <g id="Group_22" data-name="Group 22">
+      <path id="Path_6" data-name="Path 6" d="M1403.652,747.812l-3.35-.013a15.639,15.639,0,0,1,15.61-15.553v3.35A12.283,12.283,0,0,0,1403.652,747.812Z" fill="#282d33"/>
+    </g>
+  </g>
+</svg>

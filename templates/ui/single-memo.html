@@ -1,32 +1,22 @@
 {% load humanize %}
 {% load static %}
 {% load jalali_tags %}
+{% load responsive_img %}
 <!DOCTYPE html>
 <html lang="fa-IR" dir="rtl">
 <head>
-    {% include 'ui/base/head.html' %}
+    {% include 'ui/base/head.html' with skip_material_icons=1 delay_third_party=1 %}
     <link rel=“canonical” href=“https://arezoosafar.com/read-jounery/{{ Memo.id }}”/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description"
           content="آرزوی سفر ارائه دهنده انواع تورهای مسافرتی (داخلی، خارجی، لوکس و نمایشگاهی) به صورت نقد و اقساط، اخذ و مشاوره انواع ویزای توریستی، رزور بلیط و هتل. آرزوی شما را برآورده میکنیم">
     <meta name="keywords"
           content="تورهای داخلی,تورهای خارجی,تورهای نمایشگاهی,تورهای ارزان قیمت,تور ترکیه,تور روسیه,تور قسطی,تور اقساطی,آرزوی سفر">
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-35DTMEQBTC');
-    </script>
     <title> سفرنامه - {{ Memo.Name }} {{ Memo.Family }} | شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان</title>
 </head>
 <body>
 {% include 'ui/base/header.html' %}
+<main>
 <div class="warp">
     <div class="container">
         <div class="row">
@@ -35,7 +25,11 @@
                     <div class="memo-list-card">
                         <div class="memories-image view-page">
                             {% if Memo.img1 %}
-                                <img loading="lazy" src="{{ Memo.img1.url }}">
+                                <img src="{% img_url_at Memo.img1 768 %}"
+                                     srcset="{% srcset_for Memo.img1 "480,768" %}"
+                                     sizes="(max-width: 991px) calc(100vw - 40px), 700px"
+                                     alt="سفرنامه {{ Memo.headline }}" {% img_dimensions Memo.img1 %}
+                                     fetchpriority="high" decoding="async">
                             {% endif %}
                         <div class="data-box">
                             <div class="row">
@@ -71,7 +65,7 @@
                                     {{ Memo.headline }}
                                 </h1>
                                 <div class="memo-message">
-                                    <p> {{ Memo.Message|safe }}</p>
+                                    <p> {{ Memo.Message|responsive_html|safe }}</p>
                                 </div>
                             </div>
                         </div>
@@ -81,15 +75,7 @@
             </div>
             <div class="col-lg-3">
                 <div class="contact-banner" style="margin-top: 100px">
-                    <p class="reseve-title">
-                        دریافت مشاوره و رزرو تور
-                    </p>
-                    <p class="reseve-phone">
-                        021-45128
-                    </p>
-                    <p class="reseve-desc">
-                        کارشناسان ما پاسخگوی شما خواهند بود
-                    </p>
+    {% include 'ui/base/contact-banner.html' %}
                 </div>
                 <div class="spacial-tours">
                     {% for tours, cities, packages in pubTours %}
@@ -105,9 +91,9 @@
                                             </div>
                                         {% endif %}
                                         {% if tours.TourImage %}
-                                            <img loading="lazy" class="tour-main-img" src="{{ tours.TourImage.url }}">
+                                            <img loading="lazy" decoding="async" class="tour-main-img" src="{% img_url_at tours.TourImage 480 %}" alt="{{ tours.Title }}" {% img_dimensions tours.TourImage %}>
                                         {% else %}
-                                            <img loading="lazy" class="tour-main-img"
+                                            <img loading="lazy" decoding="async" class="tour-main-img" alt="{{ tours.Title }}"
                                                  src="/static/asset/css/images/No_Image_Available.jpg">
                                         {% endif %}
                                         <span class="country_flag_list">
@@ -170,18 +156,18 @@
                                             </div>
                                             <div class="col-sm-12 col-lg-12 no-padding ir_price">
                                                 <p class="irprice">
-                                                    {{ packages.0.DoubleBedPrice | intcomma:False }}
+                                                    {{ packages.0.DoubleBedPrice | floatformat:0 | intcomma }}
                                                     {{ packages.0.Pcry }}
                                                     {% if packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
-                                                        + {{ packages.0.DollerPrice | intcomma:False }}
+                                                        + {{ packages.0.DollerPrice | floatformat:0 | intcomma }}
                                                         {{ packages.0.fr_Pcry }}
                                                     {% endif %}
                                                     {% if not packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
-                                                        + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                                        + {{ packages.0.DoubleBedPrice_doller | floatformat:0 | intcomma }}
                                                         {{ packages.0.fr_Pcry }}
                                                     {% endif %}
                                                     {% if packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
-                                                        + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                                        + {{ packages.0.DoubleBedPrice_doller | floatformat:0 | intcomma }}
                                                         {{ packages.0.fr_Pcry }}
                                                     {% endif %}
                                                     {% if not packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
@@ -217,6 +203,7 @@
         </div>
     </div>
 
+</main>
     {% include 'ui/base/footer.html' %}
     {% include 'ui/base/plugins.html' %}
     <script>

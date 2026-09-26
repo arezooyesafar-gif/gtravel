@@ -7,17 +7,6 @@
     <meta name="description"
           content="شرکت آرزوی سفر پارسیان برگزار کننده  تور ارزان قیمت خارجی به صورت نقد و اقساط | مجری تخصصی تور روسیه">
     <meta name="keywords" content="،تور اقساطی، تور خارجی، تور روسیه">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
-    <script async>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-35DTMEQBTC');
-    </script>
     <script>
         !function (t, e, n) {
             t.yektanetAnalyticsObject = n, t[n] = t[n] || function () {
@@ -249,6 +238,7 @@
         var tour_id = '{{ Tour.id }}'
         var tour_slug = '{{ Tour.Slug }}'
         var tour_menu = '{{ Menu.slug }}'
+        var category_slug = '{{ category.slug|default:"" }}'
     </script>
 </div>
 </body>

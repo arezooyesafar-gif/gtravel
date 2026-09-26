@@ -18,7 +18,7 @@
                     <td class="TbCells serial">{{ forloop.counter }}</td>
                     <td class="TbCells amount">{{ package.PackageName }}</td>
                     <td class="TbCells">{{ package.TourName }}</td>
-                    <td class="TbCells">{{ package.SingleBedPrice | intcomma:False }}</td>
+                    <td class="TbCells">{{ package.SingleBedPrice | floatformat:0 | intcomma }}</td>
                     <td class="TbCells">
                         <a class="EditBtn" href="">
                             <i class="mdi mdi-table-edit font-20 edit-btn"></i>

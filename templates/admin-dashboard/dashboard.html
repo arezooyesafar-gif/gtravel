@@ -1,9 +1,20 @@
 {% extends 'admin-dashboard/base/base.html' %}
 {% block Main %}
     {% include 'admin-dashboard/dashboard/top_counter.html' %}
+    {% if can.settings.any %}
+    {% include 'admin-dashboard/dashboard/dollar_rate.html' %}
+    {% endif %}
+    {% if can.tours.any %}
     {% include 'admin-dashboard/dashboard/tour_table.html' %}
+    {% endif %}
+    {% if can.flights.any %}
     {% include 'admin-dashboard/dashboard/airlines.html' %}
+    {% endif %}
+    {% if can.blog.any %}
     {% include 'admin-dashboard/dashboard/posts.html' %}
+    {% endif %}
+    {% if can.hotels.any %}
     {% include 'admin-dashboard/dashboard/hotels.html' %}
+    {% endif %}
     <!-- .col -->
 {% endblock %}

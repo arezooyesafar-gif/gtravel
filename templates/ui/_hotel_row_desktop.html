@@ -1,0 +1,102 @@
+{% load responsive_img %}
+{% load tour_filters %}
+<div class="hbx-row{% if hbx_sold_out %} hbx-row-soldout{% endif %}">
+    <div class="hbx-nights">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="#fff"></path>
+            <path d="M16 4l.5 1.4L18 6l-1.5.6L16 8l-.5-1.4L14 6l1.5-.6L16 4z" fill="#fff"></path>
+        </svg>
+        {% with hbx_nights=Cities|nights_in_city:hbx_hotel.Hcity %}
+            {% if hbx_nights %}
+                <div class="hbx-nights-num">{{ hbx_nights|persian_digits }} شب</div>
+                <div class="hbx-nights-divider"></div>
+            {% endif %}
+        {% endwith %}
+        <div class="hbx-nights-city">{{ hbx_hotel.Hcity.Name }}</div>
+    </div>
+    <div class="hbx-photo">
+        <a href="{% url 'hotel-detail' hbx_hotel.id hbx_hotel.Slug %}">
+            {% if hbx_hotel.HotelImage %}
+                <img loading="lazy" alt="{{ hbx_hotel.HotelName }}"
+                     src="{% img_url_at hbx_hotel.HotelImage 480 %}"
+                     srcset="{% srcset_for hbx_hotel.HotelImage "320,480" %}"
+                     sizes="(max-width: 991px) 45vw, 260px" decoding="async">
+            {% endif %}
+            {% if hbx_hotel.top_rate %}<span class="hbx-flag hbx-flag-top">TOP</span>{% endif %}
+            {% if hbx_hotel.satrap_gte %}<span class="hbx-flag hbx-flag-gte">گارانتی</span>{% endif %}
+        </a>
+    </div>
+    <div class="hbx-info">
+        <a class="hbx-name-fa" href="{% url 'hotel-detail' hbx_hotel.id hbx_hotel.Slug %}">{{ hbx_hotel.HotelName|truncatechars:50 }}</a>
+        <div class="hbx-name-en">{{ hbx_hotel.HotelNameEnglish|truncatechars:50 }}</div>
+        {% if hbx_hotel.HotelRating %}
+            <div class="hbx-stars" dir="ltr">
+                {% for star in "12345"|make_list %}
+                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 18.5 6.1 20.8l1.2-6.6L2.5 9l6.6-.9L12 2z"
+                              fill="{% if forloop.counter <= hbx_hotel.HotelRating|add:0 %}#f5a623{% else %}#d7dbe1{% endif %}"></path>
+                    </svg>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% with hbx_imgs=hbx_hotel.hotel_images_set.all %}
+            {% if hbx_hotel.HotelMap or hbx_imgs %}
+                <div class="hbx-actions">
+                    {% if hbx_hotel.HotelMap %}
+                        <button type="button" class="hbx-btn-out"
+                                onclick="openHotelModal('hmodal-{{ i.id }}-{{ hbx_key }}{{ hbx_hotel.id }}','location','hmapd-{{ i.id }}-{{ hbx_key }}{{ hbx_hotel.id }}','{{ hbx_hotel.HotelMap }}')">
+                            <span>موقعیت مکانی</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M12 22s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z" fill="#1d5cad"></path>
+                                <circle cx="12" cy="10" r="2.4" fill="#fff"></circle>
+                            </svg>
+                        </button>
+                    {% endif %}
+                    {% if hbx_imgs %}
+                        <button type="button" class="hbx-btn-out"
+                                onclick="openHotelModal('hmodal-{{ i.id }}-{{ hbx_key }}{{ hbx_hotel.id }}','gallery',null,null)">
+                            <span>تصاویر هتل</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <rect x="3" y="5" width="18" height="14" rx="2" stroke="#1d5cad" stroke-width="1.6"></rect>
+                                <circle cx="8" cy="10" r="1.6" fill="#1d5cad"></circle>
+                                <path d="M4 17l5-4 3 2.5L16 11l4 4" stroke="#1d5cad" stroke-width="1.6" stroke-linejoin="round" fill="none"></path>
+                            </svg>
+                        </button>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+    <div class="hbx-meta">
+        <div class="hbx-meta-card">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 17h16M12 6.5V5m-7 12a7 7 0 0 1 14 0" stroke="#1d5cad" stroke-width="1.7" stroke-linecap="round"></path>
+                <circle cx="12" cy="6.2" r="1.1" fill="#1d5cad"></circle>
+            </svg>
+            <div>
+                <div class="hbx-meta-label">خدمات هتل</div>
+                <div class="hbx-meta-value">
+                    {% if hbx_service %}{{ hbx_service }}
+                    {% else %}
+                        {% if hbx_hotel.HotelOR %}OR {% endif %}
+                        {% if hbx_hotel.HotelBB %}BB {% endif %}
+                        {% if hbx_hotel.HotelHB %}HB {% endif %}
+                        {% if hbx_hotel.HotelFB %}FB {% endif %}
+                        {% if hbx_hotel.HotelAll %}All {% endif %}
+                        {% if hbx_hotel.HotelUall %}U All {% endif %}
+                        {% if hbx_hotel.HotelMaxAll %}Max All{% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if hbx_hotel.HotelBookingRate %}
+            <div class="hbx-meta-card">
+                <span class="hbx-b-logo">B.</span>
+                <div>
+                    <div class="hbx-meta-label">امتیاز بوکینگ</div>
+                    <div class="hbx-meta-value">{{ hbx_hotel.HotelBookingRate }}</div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>

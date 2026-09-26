@@ -1,10 +1,11 @@
 {% load humanize %}
 {% load static %}
 {% load jalali_tags %}
+{% load responsive_img %}
 <!DOCTYPE html>
 <html lang="fa-IR" dir="rtl">
 <head>
-    {% include 'ui/base/head.html' %}
+    {% include 'ui/base/head.html' with skip_material_icons=1 delay_third_party=1 %}
     <link rel=“canonical” href="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="{{ category.meta_desc }}">
@@ -19,6 +20,7 @@
 <body>
 {% include 'ui/base/header.html' %}
 {% include 'ui/base/preloader.html' %}
+<main>
 <div class="warp">
     <div class="container">
         <div class="row">
@@ -31,7 +33,7 @@
                                     <div class="col-lg-4">
                                         <div class="memories-image">
                                             {% if memo.img1 %}
-                                                <img loding="lazy" alt="{{ memo.headline }}" src="{{ memo.img1.url }}">
+                                                <img alt="{{ memo.headline }}" src="{% img_url_at memo.img1 480 %}"{% srcset_budget memo.img1 '480,768' as memo_srcset %}{% if memo_srcset %} srcset="{{ memo_srcset }}" sizes="(max-width: 991px) calc(100vw - 88px), 324px"{% endif %} {% img_dimensions memo.img1 %} {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -113,7 +115,7 @@
                         <div class="col-md-9 mx-auto mt-5 pt-5">
                             <div class="alert alert-warning text-center p-5" role="alert">
                                 <i class="fa fa-sad-tear fa-3x mb-3"></i>
-                                <h4>متاسفانه سفرنامه‌ای یافت نشد!</h4>
+                                <h3>متاسفانه سفرنامه‌ای یافت نشد!</h3>
                                 <p>هیچ سفرنامه‌ای در این دسته‌بندی وجود ندارد.</p>
                             </div>
                         </div>
@@ -123,10 +125,10 @@
             <div class="col-lg-3 memo_category_list" style="padding-top: 90px">
                 <div class="container">
                     <div class="fav_box">
-                        <h5 class="_all_fav_list_header">
+                        <h3 class="_all_fav_list_header">
                             <span><i class="fa fa-podcast"></i></span>
                             دسته بندی ها
-                        </h5>
+                        </h3>
                         <nav class='animated bounceInDown bg-white'>
                             <ul style="padding-right: 0rem !important;">
                                 {% for i , k in categories %}
@@ -136,7 +138,7 @@
                                             </a>
                                             {% if k != 0 %}
                                                 <div class='menu-toggle-box left'>
-                                                    <img src="/media/down-arrow.png">
+                                                    <img src="/media/down-arrow.png" alt="" width="16" height="16" loading="lazy" decoding="async">
                                                 </div>
                                             {% endif %}
                                             <ul style="padding-right: 0rem !important;">
@@ -157,15 +159,7 @@
                     </div>
                 </div>
                 <div class="contact-banner">
-                    <p class="reseve-title">
-                        دریافت مشاوره و رزرو تور
-                    </p>
-                    <p class="reseve-phone">
-                        021-45128
-                    </p>
-                    <p class="reseve-desc">
-                        کارشناسان ما پاسخگوی شما خواهند بود
-                    </p>
+    {% include 'ui/base/contact-banner.html' %}
                 </div>
                 <div class="spacial-tours">
                     {% for tours, cities, packages in pubTours %}
@@ -181,9 +175,9 @@
                                             </div>
                                         {% endif %}
                                         {% if tours.TourImage %}
-                                            <img loading="lazy" class="tour-main-img" src="{{ tours.TourImage.url }}">
+                                            <img loading="lazy" decoding="async" class="tour-main-img" src="{% img_url_at tours.TourImage 480 %}" alt="{{ tours.Title }}" {% img_dimensions tours.TourImage %}>
                                         {% else %}
-                                            <img loading="lazy" class="tour-main-img"
+                                            <img loading="lazy" decoding="async" class="tour-main-img" alt="{{ tours.Title }}"
                                                  src="/static/asset/css/images/No_Image_Available.jpg">
                                         {% endif %}
                                         <span class="country_flag_list">
@@ -246,18 +240,18 @@
                                             </div>
                                             <div class="col-sm-12 col-lg-12 no-padding ir_price">
                                                 <p class="irprice">
-                                                    {{ packages.0.DoubleBedPrice | intcomma:False }}
+                                                    {{ packages.0.DoubleBedPrice | floatformat:0 | intcomma }}
                                                     {{ packages.0.Pcry }}
                                                             {% if packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
-                                                                + {{ packages.0.DollerPrice | intcomma:False }}
+                                                                + {{ packages.0.DollerPrice| floatformat:0 | intcomma}}
                                                                 {{ packages.0.fr_Pcry }}
                                                             {% endif %}
                                                     {% if not packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
-                                                        + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                                        + {{ packages.0.DoubleBedPrice_doller | floatformat:0 | intcomma }}
                                                         {{ packages.0.fr_Pcry }}
                                                     {% endif %}
                                                     {% if packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
-                                                        + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                                        + {{ packages.0.DoubleBedPrice_doller| floatformat:0 | intcomma }}
                                                         {{ packages.0.fr_Pcry }}
                                                     {% endif %}
                                                     {% if not packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
@@ -292,6 +286,7 @@
             </div>
         </div>
     </div>
+</main>
     {% include 'ui/base/footer.html' %}
     {% include 'ui/base/plugins.html' %}
     <script>

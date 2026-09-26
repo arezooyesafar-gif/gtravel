@@ -1,0 +1,320 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% load static %}
+{% block Main %}
+    <link rel="stylesheet" href="{% static 'assets/css/api-partner-list.css' %}">
+    {% if messages %}
+        <div class="row m-t-20">
+            <div class="col-lg-12">
+                {% for message in messages %}
+                    <p class="alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row m-t-40">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                {% if EditingPartner %}ویرایش آژانس «{{ EditingPartner.name }}»{% else %}کلیدهای API آژانس‌های همکار{% endif %}
+                            </h6>
+                        </div>
+                        {% if EditingPartner %}
+                            <div class="card-tools">
+                                <a href="{% url 'api-partner-list' %}" class="link">انصراف از ویرایش</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-inner">
+                    {% if not EditingPartner %}
+                        <p class="text-soft" style="margin-bottom:20px;">
+                            هر آژانسی که می‌خواهید بتواند از طریق API قیمت تورهای شما را بخواند، اینجا اضافه کنید.
+                            بعد از ثبت، یک کلید به‌صورت خودکار ساخته می‌شود و راهنمای تحویل آن به آژانس زیر لیست نمایش داده می‌شود.
+                        </p>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% if EditingPartner %}
+                            <input type="hidden" name="partner_id" value="{{ EditingPartner.id }}">
+                        {% endif %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">نام آژانس<span class="text-danger">*</span></label>
+                                {{ Form.name }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">توضیحات</label>
+                                {{ Form.note }}
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:14px;">
+                            <div class="col-md-4">
+                                <label class="form-label d-block">وضعیت</label>
+                                <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;" for="{{ Form.is_active.id_for_label }}">
+                                    {{ Form.is_active }}
+                                    <span>فعال</span>
+                                </label>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary w-100" style="margin-top:32px;">
+                                    {% if EditingPartner %}ذخیره تغییرات{% else %}افزودن آژانس{% endif %}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row m-t-30">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <h6 class="title">لیست آژانس‌های دارای دسترسی</h6>
+                </div>
+                <div class="card-inner p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                            <tr>
+                                <th>نام آژانس</th>
+                                <th>کلید API</th>
+                                <th>آخرین استفاده</th>
+                                <th>وضعیت</th>
+                                <th>اقدامات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for p in Partners %}
+                                <tr>
+                                    <td>{{ p.name }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center" style="gap:8px;">
+                                            <code style="font-size:12px;">{{ p.api_key }}</code>
+                                            <button type="button" class="btn btn-sm btn-outline-primary copy-key-btn" data-key="{{ p.api_key }}">کپی</button>
+                                        </div>
+                                    </td>
+                                    <td>{% if p.last_used_at %}{{ p.last_used_at|date:"Y-m-d H:i" }}{% else %}<span class="text-soft">هنوز استفاده نشده</span>{% endif %}</td>
+                                    <td>
+                                        {% if p.is_active %}
+                                            <span class="badge badge-dim bg-success">فعال</span>
+                                        {% else %}
+                                            <span class="badge badge-dim bg-danger">غیرفعال</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <a class="btn btn-sm btn-outline-primary" href="{% url 'toggle-api-partner' p.id %}">{% if p.is_active %}غیرفعال کن{% else %}فعال کن{% endif %}</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'api-partner-list' %}?edit={{ p.id }}">ویرایش</a>
+                                        <a class="btn btn-sm btn-outline-danger" href="{% url 'delete-api-partner' p.id %}">حذف</a>
+                                        <button type="button" class="btn btn-sm btn-outline-light guide-toggle-btn" data-target="guide-{{ p.id }}">راهنمای تحویل</button>
+                                    </td>
+                                </tr>
+                                <tr id="guide-{{ p.id }}" class="agency-guide-row" style="display:none;">
+                                    <td colspan="5">
+                                        <div class="agency-guide-box">
+                                            <p class="text-soft" style="margin-bottom:10px;">
+                                                اول محدوده‌ای که می‌خواهید «{{ p.name }}» ببیند را انتخاب کنید. بعد، بسته به این‌که
+                                                آژانس چی خواسته: اگه فقط می‌خواد قیمت بخونه، <strong>فقط بخش سبز (GET)</strong> رو
+                                                عیناً بفرستید؛ اگه گفت می‌خواد رزرو هم بفرسته، <strong>بخش آبی (POST)</strong> رو هم
+                                                اضافه کنید. هر بخش یه دکمه‌ی «کپی همه‌ی این بخش» دارد — همون رو بزنید و مستقیم
+                                                برای آژانس پیست کنید.
+                                            </p>
+                                            <div class="row g-2" style="margin-bottom:12px;">
+                                                <div class="col-auto">
+                                                    <label class="form-label mb-1" style="font-size:12px;">محدوده فید</label>
+                                                    <select class="form-select form-select-sm scope-type-select" data-guide="{{ p.id }}" style="min-width:150px;">
+                                                        <option value="all">همه‌ی تورها</option>
+                                                        <option value="country">فقط یک کشور</option>
+                                                        <option value="city">فقط یک شهر</option>
+                                                        <option value="tour">فقط یک تور</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-auto scope-value-wrap" data-guide="{{ p.id }}" style="display:none;">
+                                                    <label class="form-label mb-1" style="font-size:12px;">انتخاب</label>
+                                                    <select class="form-select form-select-sm scope-value-select" data-guide="{{ p.id }}" style="min-width:220px;"></select>
+                                                </div>
+                                            </div>
+
+                                            <div class="agency-guide-section agency-guide-get">
+                                                <div class="d-flex align-items-center justify-content-between" style="margin-bottom:8px;">
+                                                    <strong class="agency-guide-section-title agency-guide-get-title">🟢 اگر آژانس فقط قیمت می‌خواهد (GET) — این بخش را بفرستید</strong>
+                                                    <button type="button" class="btn btn-sm btn-outline-primary copy-get-btn" data-guide="{{ p.id }}" data-key="{{ p.api_key }}">کپی همه‌ی این بخش</button>
+                                                </div>
+                                                <div class="d-flex align-items-center" style="gap:8px; margin-bottom:6px;">
+                                                    <span class="text-soft" style="min-width:110px;">آدرس فید:</span>
+                                                    <code class="guide-code" id="guide-url-{{ p.id }}">{{ feed_base_url }}</code>
+                                                    <button type="button" class="btn btn-sm btn-outline-primary copy-key-btn" data-key-target="guide-url-{{ p.id }}">کپی</button>
+                                                </div>
+                                                <div class="d-flex align-items-center" style="gap:8px;">
+                                                    <span class="text-soft" style="min-width:110px;">هدر لازم:</span>
+                                                    <code class="guide-code" id="guide-header-{{ p.id }}">X-API-Key: {{ p.api_key }}</code>
+                                                    <button type="button" class="btn btn-sm btn-outline-primary copy-key-btn" data-key="X-API-Key: {{ p.api_key }}">کپی</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="agency-guide-section agency-guide-post" style="margin-top:12px;">
+                                                <div class="d-flex align-items-center justify-content-between" style="margin-bottom:8px;">
+                                                    <strong class="agency-guide-section-title agency-guide-post-title">🔵 اگر آژانس می‌خواهد رزرو هم بفرستد (POST) — این بخش را بفرستید</strong>
+                                                    <button type="button" class="btn btn-sm btn-outline-primary copy-post-btn" data-guide="{{ p.id }}" data-key="{{ p.api_key }}">کپی همه‌ی این بخش</button>
+                                                </div>
+                                                <p class="text-soft" style="margin:0 0 6px;font-size:12px;">
+                                                    همین هدر بالا رو با یه POST به این آدرس ثابت بفرستن (نیازی به تایپ اسلاگ تور نیست، فقط <code>package_id</code> کافیه):
+                                                </p>
+                                                <div class="d-flex align-items-center" style="gap:8px; margin-bottom:6px;">
+                                                    <span class="text-soft" style="min-width:110px;">آدرس رزرو:</span>
+                                                    <code class="guide-code" id="guide-reserve-url-{{ p.id }}">{{ feed_base_url }}reserve/</code>
+                                                    <button type="button" class="btn btn-sm btn-outline-primary copy-key-btn" data-key-target="guide-reserve-url-{{ p.id }}">کپی</button>
+                                                </div>
+                                                <p class="text-soft" style="margin:4px 0;font-size:12px;">بدنه‌ی JSON:</p>
+                                                <pre class="guide-code" id="guide-json-{{ p.id }}" style="display:block;white-space:pre-wrap;">{
+  "package_id": 123,
+  "name": "علی",
+  "family": "رضایی",
+  "mobile": "09121234567",
+  "adult": 2,
+  "adult_single": 0,
+  "child_with_bed": 0,
+  "child_without_bed": 0,
+  "infant": 0,
+  "description": "اختیاری"
+}</pre>
+                                                <p class="text-soft" style="margin:6px 0 0;font-size:12px;">
+                                                    این فقط یه درخواست رزرو ثبت می‌کنه (مثل رزرو از خود سایت)؛ خودتون از لیست سفارش‌ها پیگیریش می‌کنید، پرداخت آنلاین نداره.
+                                                    <code>package_id</code> رو از همون فید GET (بخش packages هر تور) می‌گیرن.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="5" class="text-center text-soft" style="padding:20px;">هنوز آژانسی اضافه نشده است.</td></tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var API_FEED_BASE_URL = "{{ feed_base_url }}";
+        var API_COUNTRIES = [
+            {% for c in countries %}{slug: "{{ c.slug|escapejs }}", title: "{{ c.TitleC|escapejs }}"},{% endfor %}
+        ];
+        var API_CITIES = [
+            {% for c in cities %}{slug: "{{ c.slug|escapejs }}", title: "{{ c.Name|escapejs }}"},{% endfor %}
+        ];
+        var API_TOURS = [
+            {% for t in tours %}{slug: "{{ t.Slug|escapejs }}", title: "{{ t.Title|escapejs }}"},{% endfor %}
+        ];
+
+        function apiBuildUrl(guideId) {
+            var typeSelect = document.querySelector('.scope-type-select[data-guide="' + guideId + '"]');
+            var valueSelect = document.querySelector('.scope-value-select[data-guide="' + guideId + '"]');
+            var codeEl = document.getElementById('guide-url-' + guideId);
+            if (!typeSelect || !codeEl) return;
+            var type = typeSelect.value;
+            var url = API_FEED_BASE_URL;
+            if (type === 'country' && valueSelect && valueSelect.value) {
+                url += '?country=' + valueSelect.value;
+            } else if (type === 'city' && valueSelect && valueSelect.value) {
+                url += '?city=' + valueSelect.value;
+            } else if (type === 'tour' && valueSelect && valueSelect.value) {
+                url += valueSelect.value + '/';
+            }
+            codeEl.textContent = url;
+        }
+
+        function apiFillValueSelect(guideId) {
+            var typeSelect = document.querySelector('.scope-type-select[data-guide="' + guideId + '"]');
+            var wrap = document.querySelector('.scope-value-wrap[data-guide="' + guideId + '"]');
+            var valueSelect = document.querySelector('.scope-value-select[data-guide="' + guideId + '"]');
+            var type = typeSelect.value;
+            if (type === 'all') {
+                wrap.style.display = 'none';
+                valueSelect.innerHTML = '';
+                return;
+            }
+            wrap.style.display = '';
+            var list = type === 'country' ? API_COUNTRIES : (type === 'city' ? API_CITIES : API_TOURS);
+            var html = '';
+            for (var i = 0; i < list.length; i++) {
+                html += '<option value="' + list[i].slug + '">' + list[i].title + '</option>';
+            }
+            valueSelect.innerHTML = html;
+        }
+
+        document.addEventListener('change', function (e) {
+            var typeSelect = e.target.closest('.scope-type-select');
+            if (typeSelect) {
+                var guideId = typeSelect.getAttribute('data-guide');
+                apiFillValueSelect(guideId);
+                apiBuildUrl(guideId);
+                return;
+            }
+            var valueSelect = e.target.closest('.scope-value-select');
+            if (valueSelect) {
+                apiBuildUrl(valueSelect.getAttribute('data-guide'));
+            }
+        });
+
+        function apiCopyText(text, btn) {
+            navigator.clipboard.writeText(text).then(function () {
+                var original = btn.textContent;
+                btn.textContent = 'کپی شد';
+                setTimeout(function () { btn.textContent = original; }, 1500);
+            });
+        }
+
+        document.addEventListener('click', function (e) {
+            var copyBtn = e.target.closest('.copy-key-btn');
+            if (copyBtn) {
+                var text;
+                var targetId = copyBtn.getAttribute('data-key-target');
+                if (targetId) {
+                    var targetEl = document.getElementById(targetId);
+                    text = targetEl ? targetEl.textContent : '';
+                } else {
+                    text = copyBtn.getAttribute('data-key');
+                }
+                apiCopyText(text, copyBtn);
+                return;
+            }
+            var getBtn = e.target.closest('.copy-get-btn');
+            if (getBtn) {
+                var gGuideId = getBtn.getAttribute('data-guide');
+                var gKey = getBtn.getAttribute('data-key');
+                var gUrlEl = document.getElementById('guide-url-' + gGuideId);
+                var gUrl = gUrlEl ? gUrlEl.textContent : '';
+                var gText = 'آدرس فید:\n' + gUrl + '\n\nهدر لازم:\nX-API-Key: ' + gKey;
+                apiCopyText(gText, getBtn);
+                return;
+            }
+            var postBtn = e.target.closest('.copy-post-btn');
+            if (postBtn) {
+                var pGuideId = postBtn.getAttribute('data-guide');
+                var pKey = postBtn.getAttribute('data-key');
+                var pUrlEl = document.getElementById('guide-reserve-url-' + pGuideId);
+                var pJsonEl = document.getElementById('guide-json-' + pGuideId);
+                var pUrl = pUrlEl ? pUrlEl.textContent : '';
+                var pJson = pJsonEl ? pJsonEl.textContent : '';
+                var pText = 'آدرس ثبت رزرو:\n' + pUrl + '\n\nهدر لازم:\nX-API-Key: ' + pKey + '\n\nبدنه‌ی JSON:\n' + pJson;
+                apiCopyText(pText, postBtn);
+                return;
+            }
+            var guideBtn = e.target.closest('.guide-toggle-btn');
+            if (guideBtn) {
+                var row = document.getElementById(guideBtn.getAttribute('data-target'));
+                if (row) {
+                    row.style.display = (row.style.display === 'none') ? '' : 'none';
+                }
+            }
+        });
+    </script>
+{% endblock %}

@@ -10,6 +10,7 @@ from aps import settings
 from tour.views.views_tour import superuser_required
 from visa.forms import visa_request_form, thaiVisaForm
 from visa.models import visa_request_item, ThaiVisa
+from staff.access import user_can
 from .forms import LoginForm
 from .models import person_profile, profile
 from wallet.models import wallet
@@ -175,10 +176,10 @@ def profile_view(request):
 @login_required(login_url='otp_login')
 def visa_list(request):
     user = request.user
-    prof = profile.objects.get(user=user)
+    prof, _ = profile.objects.get_or_create(user=user)
 
     # 1) ساختن کوئری پایه
-    if user.is_superuser:
+    if user_can(user, 'visas', 'view'):
         qs = visa_request_item.objects.all()
     else:
         qs = visa_request_item.objects.filter(user=user.id)
@@ -213,7 +214,8 @@ def visa_list(request):
 @login_required(login_url='otp_login')
 def update_visa_request(request, id):
     item = visa_request_item.objects.get(id=id)
-    if not request.user.is_superuser:
+    visa_manager = user_can(request.user, 'visas', 'edit')
+    if not visa_manager:
         forms = visa_request_form(instance=item)
         if request.method == 'POST':
             forms = visa_request_form(request.POST, request.FILES, instance=item)
@@ -241,7 +243,7 @@ def update_visa_request(request, id):
             'meta_robots':'NOINDEX,FOLLOW'
         }
         return render(request, 'layout/form-2.html', context)
-    if request.user.is_superuser:
+    if visa_manager:
         forms = visa_request_form(instance=item)
         if request.method == 'POST':
             sex = request.POST.get('sex')
@@ -303,9 +305,9 @@ def thai_visa_panel(request, id):
 
 @login_required(login_url='otp_login')
 def thai_visa_list(request):
-    if request.user.is_superuser:
+    if user_can(request.user, 'visas', 'view'):
         user = User.objects.get(id=request.user.id)
-        prof = profile.objects.get(user=user)
+        prof, _ = profile.objects.get_or_create(user=user)
         all_items = ThaiVisa.objects.all().order_by('-id')
         paginator = Paginator(all_items, 20)
         pagenumber = request.GET.get('page')
@@ -318,7 +320,7 @@ def thai_visa_list(request):
         return render(request, 'layout/your-applications-thai.html', context)
     else:
         user = User.objects.get(id=request.user.id)
-        prof = profile.objects.get(user=user)
+        prof, _ = profile.objects.get_or_create(user=user)
         all_items = ThaiVisa.objects.filter(user=request.user.id).order_by('-id')
         paginator = Paginator(all_items, 20)
         pagenumber = request.GET.get('page')
@@ -333,7 +335,8 @@ def thai_visa_list(request):
 @login_required(login_url='otp_login')
 def update_thai_visa_request(request, id):
     item = ThaiVisa.objects.get(id=id)
-    if not request.user.is_superuser:
+    visa_manager = user_can(request.user, 'visas', 'edit')
+    if not visa_manager:
         forms = thaiVisaForm(instance=item)
         if request.method == 'POST':
             forms = thaiVisaForm(request.POST, request.FILES, instance=item)
@@ -382,7 +385,7 @@ def update_thai_visa_request(request, id):
             'item': item,
         }
         return render(request, 'layout/form-thai.html', context)
-    if request.user.is_superuser:
+    if visa_manager:
         forms = thaiVisaForm(instance=item)
         if request.method == 'POST':
             forms = thaiVisaForm(request.POST, request.FILES, instance=item)
@@ -435,14 +438,19 @@ def update_thai_visa_request(request, id):
 
 @login_required(login_url='otp_login')
 def visa_list_admin(request):
-    all_items = visa_request_item.objects.all()
+    user = request.user
+    prof, _ = profile.objects.get_or_create(user=user)
+    all_items = visa_request_item.objects.all().order_by('-id')
     paginator = Paginator(all_items, 30)
     pagenumber = request.GET.get('page')
     all_items = paginator.get_page(pagenumber)
     context = {
         'all_items': all_items,
+        'prof': prof,
+        'user': user,
+        'search_query': '',
     }
-    return render(request, 'tour/visa_list.html', context)
+    return render(request, 'layout/your-applications.html', context)
 
 @login_required(login_url='otp_login')
 def visa_view(request, id):
@@ -469,7 +477,7 @@ def delete_thai_visa_request(request, id):
 @login_required(login_url='login')
 def user_profile(request,id):
     user = User.objects.get(id=id)
-    prof = person_profile.objects.get(user=user)
+    prof, _ = person_profile.objects.get_or_create(user=user)
     first_name = request.POST.get('first_name')
     username = request.POST.get('username')
     last_name = request.POST.get('last_name')
@@ -516,7 +524,7 @@ def user_list(request):
 @login_required(login_url='login')
 def user_profile_update(request,id):
     user = User.objects.get(id=id)
-    prof = person_profile.objects.get(user=user)
+    prof, _ = person_profile.objects.get_or_create(user=user)
     first_name = request.POST.get('first_name')
     username = request.POST.get('username')
     last_name = request.POST.get('last_name')
@@ -548,9 +556,11 @@ def user_profile_update(request,id):
 
 @login_required(login_url='login')
 def delete_user(request, id):
-    user= User.objects.get(id=id)
-    user.delete()
-    return
+    user = User.objects.filter(id=id, is_superuser=False).first()
+    if user:
+        user.delete()
+        messages.success(request, 'کاربر حذف شد.')
+    return redirect('user_list')
 
 @login_required(login_url='login')
 def reset_password_admin(request, id):

@@ -27,6 +27,12 @@
                     <div class="hotel-filter">
                         <form method="get" action="/hotel_search">
                             {% csrf_token %}
+                            {% if request.GET.countryname %}
+                                <input type="hidden" name="countryname" value="{{ request.GET.countryname }}">
+                            {% endif %}
+                            {% if request.GET.cityname %}
+                                <input type="hidden" name="cityname" value="{{ request.GET.cityname }}">
+                            {% endif %}
                             <div class="row filter">
                                 <div class="col-lg-3">
                                     <input type="text" class="form-control" placeholder="نام هتل" name="hotelname">
@@ -126,13 +132,12 @@
         <div class="container">
             <div class="insta" style="margin-top: 80px;">
                 <div class="row">
-                    <div class="col-lg-2">
+                    {% comment %} <div class="col-lg-2">
                         <div class="insta-box">
                             <div class="insta-motion">
                                 <img loading="lazy" src="/media/insta.gif">
                             </div>
-                        </div>
-
+                        </div> {% endcomment %}
                     </div>
                     <div class="col-lg-7">
                         <h4 class="about_title">
@@ -140,7 +145,7 @@
                         </h4>
                         <p>با ما در اینستاگرام همراه شو تا از پیشنهادات لحظه آخری و تورهای جذاب مطلع بشی!</p>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <div class="input-section">
                             <div class="row">
                                 <div class="col-lg-12 t-center">
@@ -168,6 +173,7 @@
     var city = '{{ city.slug }}'
     var city_id = '{{ city.id }}'
     var tour_menu = '{{ Menu.slug }}'
+    var category_slug = '{{ category.slug|default:"" }}'
 </script>
 {% include 'ui/base/footer.html' %}
 {% include 'ui/base/plugins.html' %}

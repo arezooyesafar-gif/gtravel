@@ -1,0 +1,70 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+<div class="row m-t-40">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-inner border-bottom">
+                <div class="card-title-group">
+                    <div class="card-title">
+                        <h6 class="title">کاربران پشتیبانی</h6>
+                    </div>
+                    <div class="card-tools">
+                        <a href="{% url 'staff-change-log' %}" class="link m-r-20">تاریخچه تغییرات</a>
+                        <a href="{% url 'staff-create' %}" class="link">ایجاد کاربر پشتیبانی</a>
+                    </div>
+                </div>
+            </div>
+            <form method="get" class="row m-20">
+                <div class="col-lg-10">
+                    <input type="text" name="search" value="{{ search }}" class="text-input search-input" placeholder="نام یا نام کاربری">
+                </div>
+                <div class="col-lg-2">
+                    <button type="submit" class="btn btn-lg btn-info btn-block">جستجو</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row m-t-20">
+    <div class="col-sm-12 col-lg-12">
+        <div class="table-block">
+            {% for msg in messages %}<p class="success" style="text-align:center">{{ msg }}</p>{% endfor %}
+            <table class="table BranchTable">
+                <thead>
+                <tr>
+                    <th class="TbHead">ردیف</th>
+                    <th class="TbHead">نام</th>
+                    <th class="TbHead">نام کاربری</th>
+                    <th class="TbHead">وضعیت</th>
+                    <th class="TbHead">دسترسی ها</th>
+                    <th class="TbHead">اقدامات</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in users %}
+                <tr>
+                    <td class="TbCells serial">{{ forloop.counter0|add:users.start_index }}</td>
+                    <td class="TbCells">{{ item.get_full_name|default:'-' }}</td>
+                    <td class="TbCells">{{ item.username }}</td>
+                    <td class="TbCells">{% if item.is_active %}فعال{% else %}غیر فعال{% endif %}</td>
+                    <td class="TbCells" style="max-width:420px">{{ item.staff_access.summary|default:'بدون دسترسی' }}</td>
+                    <td class="TbCells">
+                        <a href="{% url 'staff-update' item.id %}">ویرایش</a>
+                        <a href="{% url 'staff-change-log' %}?user={{ item.id }}" class="m-r-20">تغییرات</a>
+                        <a href="{% url 'staff-delete' item.id %}" style="color:red" class="m-r-20" onclick="return confirm('کاربر حذف شود؟')">حذف</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td class="TbCells" colspan="6">هنوز کاربر پشتیبانی ثبت نشده است</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <ul class="pagination">
+                {% for n in users.paginator.page_range %}
+                <li class="page-item {% if users.number == n %}active{% endif %}"><a class="page-link" href="?page={{ n }}&search={{ search }}">{{ n }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

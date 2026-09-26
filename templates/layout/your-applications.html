@@ -36,7 +36,12 @@
                             <th scope="col">Status <span>(وضیعت درخواست)</span></th>
                             <th scope="col">Approve Time <span>(تاریخ صدور)</span></th>
                             <th scope="col">File <span>(دریافت فایل)</span></th>
-                            {% if request.user.is_superuser %}
+                            {% if can.visas.any %}
+                            <th scope="col">Applicant Name <span>(نام متقاضی)</span></th>
+                            <th scope="col">Phone <span>(شماره)</span></th>
+                            <th scope="col">Agency <span>(آژانس)</span></th>
+                            {% endif %}
+                            {% if can.visas.delete %}
                             <th scope="col">Remove Request <span>(حذف درخواست)</span></th>
                             {% endif %}
                         </tr>
@@ -61,7 +66,22 @@
                                         </a>
                                     {% endif %}
                                 </td>
-                                {% if request.user.is_superuser %}
+                                {% if can.visas.any %}
+                                <td>
+                                    {% if item.user %}{{ item.user.get_full_name|default:item.user.username }}{% endif %}
+                                </td>
+                                <td>
+                                    {% if item.user %}{{ item.user.person_profile_set.first.mobile_number|default:"-" }}{% endif %}
+                                </td>
+                                <td>
+                                    {% if item.user %}
+                                        {% with agency=item.user.profile_set.first.agancy_name %}
+                                            {% if agency %}{{ agency }}{% else %}-{% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                </td>                                
+                                {% endif %}
+                                {% if can.visas.delete %}
                                 <td>
                                     <a href="{% url 'delete_visa_request' item.id %}">
                                         <button style="background: red;" type="button" class="btn btn-theme">Remove <span>(حذف )</span>

@@ -99,12 +99,20 @@
                 </div>
             </div>
             {% endif %}
-            <div class="col-lg-12">
-                <button type="submit" class="btn btn-lg btn-info btn-block">
-                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">ایجاد
-                                مطلب</span>
+            <div class="col-lg-12" style="display: flex; gap: 10px;">
+                <button type="submit" class="btn btn-lg btn-info" style="flex: 1;">
+                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">ایجاد مطلب</span>
                 </button>
-            </div>
+                {% if post %}
+                <button type="submit"
+                        formaction="{% url 'preview-post' %}"
+                        formtarget="_blank"
+                        class="btn btn-lg btn-success"
+                        style="flex: 0 0 150px;">
+                    <i class="fa fa-eye"></i> پیشنمایش زنده
+                </button>
+                {% endif %}
+            </div>            
             {{ form.media }}
         </div>
     </form>

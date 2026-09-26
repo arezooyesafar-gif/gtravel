@@ -1,0 +1,1021 @@
+/* Mobile archive cards: restore the exact legacy tour-card markup/style.
+   Desktop keeps the new modern card. */
+.legacy-mobile-tour-card {
+  display: none !important;
+}
+
+@media (max-width: 991px) {
+  .tour-listing-layout .modern-tour-card {
+    display: none !important;
+  }
+  .tour-listing-layout .legacy-mobile-tour-card {
+    display: flex !important;
+  }
+  .tour-listing-layout .tour_grid.modern-tour-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* =========================================================
+   Tour archive UI — desktop cards based on the supplied reference.
+   Page grid, top sort bar and right sidebar remain the original site UI.
+   Scope: tour archive / country / city / category / installment
+   ========================================================= */
+
+@media (min-width: 992px) {
+
+  .tour-listing-layout {
+    --tour-blue: #1e58bf;
+    --tour-sky: #50aae8;
+    --tour-yellow: #fdbb05;
+    --tour-text: #23262b;
+    --tour-muted: #4b4b4b;
+    --tour-page: #f5f5f5;
+  }
+
+  /* The page-level grid, top sort bar and right filter intentionally use the
+     original site styles. Only a small semantic icon is added to each sort item. */
+  .tour-listing-layout .sort-field-icon {
+    display: inline-block !important;
+    margin-left: 6px !important;
+    color: #6f7782 !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    opacity: .85 !important;
+  }
+
+  .tour-listing-layout .sort-btn.active .sort-field-icon {
+    color: #4e99c6 !important;
+    opacity: 1 !important;
+  }
+
+  /* List wrapper: fixed at 100% before and after AJAX replacement. */
+  .tour-listing-layout #all-tours.row {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .tour-listing-layout #all-tours > .tour-box,
+  .tour-listing-layout .modern-tour-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .tour-listing-layout .tour_grid.modern-tour-grid {
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Fallback for an older cached setSort(): it moved .tour_grid nodes directly
+     under #all-tours, bypassing .tour-box's flex gap. */
+  .tour-listing-layout #all-tours > .tour_grid.modern-tour-grid {
+    margin-bottom: 16px !important;
+  }
+
+  /* Tour card */
+  .tour-listing-layout .modern-tour-card {
+    direction: rtl !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    min-height: 274px !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06) !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__image {
+    position: relative !important;
+    flex: 0 0 286px !important;
+    width: 286px !important;
+    min-width: 286px !important;
+    height: 274px !important;
+    min-height: 274px !important;
+    overflow: hidden !important;
+    border-radius: 0 14px 14px 0 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__image .tour-main-img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    object-fit: cover !important;
+  }
+
+  /* yellow last-minute ribbon */
+  .tour-listing-layout .modern-tour-card__badge {
+    direction: rtl !important;
+    position: absolute !important;
+    top: 20px !important;
+    right: -8px !important;
+    z-index: 4 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 9px !important;
+    width: 142px !important;
+    min-width: 142px !important;
+    height: 40px !important;
+    padding: 7px 15px 7px 16px !important;
+    border: 0 !important;
+    border-radius: 20px 6px 0 20px !important;
+    background: #fdbb05 !important;
+    color: #050505 !important;
+    box-shadow: 0 3px 8px rgba(0,0,0,.14) !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__badge::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__badge-fold {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: -9px !important;
+    z-index: 6 !important;
+    display: block !important;
+    width: 10px !important;
+    height: 9px !important;
+    background: #916d07 !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%) !important;
+    pointer-events: none !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__badge-icon {
+    display: block !important;
+    flex: 0 0 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    fill: #fdbb05 !important;
+    stroke: #1f1f1f !important;
+    stroke-width: 1.5 !important;
+    stroke-linejoin: round !important;
+  }
+
+  /* country pill + circular flag */
+  .tour-listing-layout .modern-tour-card__country {
+    direction: rtl !important;
+    position: absolute !important;
+    right: -11px !important;
+    bottom: 14px !important;
+    z-index: 4 !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__country-flag {
+    z-index: 2 !important;
+    display: flex !important;
+    flex: 0 0 30px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    height: 30px !important;
+    overflow: hidden !important;
+    border: 2px solid #fff !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,.2) !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__country-flag img {
+    display: block !important;
+    width: 30px !important;
+    height: 30px !important;
+    max-width: none !important;
+    object-fit: cover !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__country-name {
+    margin-right: -16px !important;
+    padding: 5px 24px 5px 13px !important;
+    border-radius: 999px !important;
+    background: rgba(40,40,40,.45) !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 20px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Main content */
+  .tour-listing-layout .modern-tour-card__content {
+    direction: rtl !important;
+    position: relative !important;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    height: 274px !important;
+    padding: 20px 24px 20px 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__title {
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #23262b !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    line-height: 1.5 !important;
+    text-align: right !important;
+    text-wrap: pretty !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__divider {
+    width: 100% !important;
+    margin: 15px 0 16px !important;
+    border: 0 !important;
+    border-top: 1.5px dotted #d8d8d8 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__meta {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 13px !important;
+    margin: 0 !important;
+    color: #4b4b4b !important;
+    font-size: 15.5px !important;
+    line-height: 1.35 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__meta-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    margin: 0 !important;
+    font-family: YekanBold, IranSans, Tahoma, sans-serif !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__meta-row span {
+    font-family: YekanBold, IranSans, Tahoma, sans-serif !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__meta-row:first-child {
+    font-size: 14.5px !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__meta-icon {
+    display: block !important;
+    flex: 0 0 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    fill: none !important;
+    stroke: #8d8d8d !important;
+    stroke-width: 1.7 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+  }
+
+  .tour-listing-layout .modern-tour-card .irprice.modern-tour-card__price {
+    display: block !important;
+    margin: 15px 0 0 !important;
+    padding: 0 !important;
+    color: #1a5fc8 !important;
+    background: transparent !important;
+    font-family: YekanBold, IranSans, Tahoma, sans-serif !important;
+    font-size: 19.5px !important;
+    font-weight: 700 !important;
+    line-height: 1.5 !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+  }
+
+  .tour-listing-layout .modern-tour-card .modern-tour-card__price .lable-txt {
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__actions {
+    direction: rtl !important;
+    position: absolute !important;
+    right: 24px !important;
+    bottom: 20px !important;
+    left: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 26px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__action,
+  .tour-listing-layout button.modern-tour-card__action,
+  .tour-listing-layout a.modern-tour-card__action,
+  .tour-listing-layout .modern-tour-card__action.pdf_download_link,
+  .tour-listing-layout .modern-tour-card__dates {
+    direction: rtl !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 42px !important;
+    margin: 0 !important;
+    padding: 11px 18px !important;
+    border: 1px dashed #c6bdbd !important;
+    border-radius: 8px !important;
+    background: rgba(231,231,231,.45) !important;
+    color: #1e58bf !important;
+    box-shadow: none !important;
+    font-family: inherit !important;
+    font-size: 15.5px !important;
+    font-weight: 600 !important;
+    line-height: 18px !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__dates {
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+    font-weight: 700 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__action:hover,
+  .tour-listing-layout button.modern-tour-card__action:hover,
+  .tour-listing-layout a.modern-tour-card__action:hover {
+    background: rgba(231,231,231,.65) !important;
+    color: #1e58bf !important;
+    text-decoration: none !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__action-chevron,
+  .tour-listing-layout .modern-tour-card__action-calendar {
+    display: block !important;
+    flex: 0 0 auto !important;
+    fill: none !important;
+    stroke: #1e58bf !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__action-chevron {
+    width: 15px !important;
+    height: 15px !important;
+    stroke-width: 2.2 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__action-calendar {
+    width: 18px !important;
+    height: 18px !important;
+    stroke-width: 1.7 !important;
+  }
+
+  /* Airline block */
+  .tour-listing-layout .modern-tour-card__airline {
+    direction: rtl !important;
+    position: relative !important;
+    flex: 0 0 214px !important;
+    width: 214px !important;
+    min-width: 214px !important;
+    height: 274px !important;
+    padding: 20px 18px 18px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    border-right: 1.5px dashed #dcdcdc !important;
+    box-sizing: border-box !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__airline::before,
+  .tour-listing-layout .modern-tour-card__airline::after {
+    content: "" !important;
+    position: absolute !important;
+    right: -14px !important;
+    z-index: 3 !important;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    background: #f5f5f5 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__airline::before { top: -14px !important; }
+  .tour-listing-layout .modern-tour-card__airline::after { bottom: -14px !important; }
+
+  .tour-listing-layout .modern-tour-card__airline-logo {
+    display: flex !important;
+    flex: 0 0 70px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 181px !important;
+    height: 70px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    box-sizing: border-box !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__airline-logo img {
+    display: block !important;
+    width: auto !important;
+    max-width: 181px !important;
+    height: auto !important;
+    max-height: 70px !important;
+    margin: 0 !important;
+    object-fit: contain !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__ground {
+    color: #555 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__route {
+    direction: rtl !important;
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+    align-items: center !important;
+    justify-items: center !important;
+    row-gap: 19px !important;
+    width: 89% !important;
+    margin: 19px !important;
+    padding-top: 18px !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__airport-code {
+    direction: ltr !important;
+    color: #1f1f1f !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__plane {
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__plane > span {
+    display: block !important;
+    width: 15px !important;
+    height: 1.5px !important;
+    background: #d9d9d9 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__plane svg {
+    display: block !important;
+    width: 20px !important;
+    height: 20px !important;
+    fill: #3f8ede !important;
+    transform: rotate(-90deg) !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__airport-name {
+    direction: rtl !important;
+    max-width: 104px !important;
+    overflow: hidden !important;
+    color: #4a4a4a !important;
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+    text-align: center !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__airline-divider {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__detail.more_detail_link {
+    direction: rtl !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    width: 85% !important;
+    min-width: 0 !important;
+    min-height: 42px !important;
+    position: absolute !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+    padding: 11px 18px !important;
+    background: #61b3e5 !important;
+    color: #fff !important;
+    border-radius: 5px !important;
+    border: 1px solid #61b3e5 !important;
+    transition-duration: .4s !important;
+    box-sizing: border-box !important;
+    font-family: YekanBold, IranSans, Tahoma, sans-serif !important;
+    font-size: 15.5px !important;
+    font-weight: 600 !important;
+    line-height: 18px !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__detail.more_detail_link:hover {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #61b3e5 !important;
+    transform: translateX(-50%) !important;
+    text-decoration: none !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__detail svg {
+    display: block !important;
+    flex: 0 0 15px !important;
+    width: 15px !important;
+    height: 15px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 2.2 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+  }
+
+  /* Pagination */
+  .tour-listing-layout .modern-tour-pagination,
+  .tour-listing-layout .pagination {
+    width: 100% !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    margin: 6px 0 18px !important;
+  }
+
+  .tour-listing-layout .modern-tour-pagination .page-link {
+    min-width: 38px !important;
+    height: 38px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #e7eaf0 !important;
+    border-radius: 10px !important;
+    background: #fff !important;
+    color: #1f2937 !important;
+    cursor: pointer !important;
+  }
+
+  .tour-listing-layout .modern-tour-pagination .active .page-link {
+    border-color: #2563c9 !important;
+    background: #2563c9 !important;
+    color: #fff !important;
+  }
+
+  /* Installment archive support */
+  .installment-tour-listing { padding-top: 28px !important; }
+  .installment-heading-bar {
+    direction: rtl !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 0 22px !important;
+  }
+
+  .installment-heading-bar {
+    min-height: 56px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+  .installment-heading-title { color: #182230 !important; font-size: 17px !important; font-weight: 800 !important; }
+  .installment-sidebar-info .accordion-body { padding: 8px 16px 14px !important; }
+  .modern-sidebar-link { display: flex !important; align-items: center !important; justify-content: space-between !important; padding: 10px 2px !important; border-bottom: 1px solid #edf0f3 !important; color: #263238 !important; font-size: 13px !important; text-decoration: none !important; }
+  .modern-sidebar-link:last-child { border-bottom: 0 !important; }
+  .modern-sidebar-link span { color: #2563c9 !important; font-weight: 700 !important; }
+  .modern-sidebar-empty { color: #8b95a5 !important; font-size: 13px !important; }
+}
+
+/* Intermediate desktop: keep the same geometry as long as the viewport can fit it. */
+@media (min-width: 992px) and (max-width: 1240px) {
+
+
+  .tour-listing-layout .modern-tour-card__image {
+    flex-basis: 245px !important;
+    width: 245px !important;
+    min-width: 245px !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__airline {
+    flex-basis: 190px !important;
+    width: 190px !important;
+    min-width: 190px !important;
+  }
+
+  .tour-listing-layout .modern-tour-card__title { font-size: 19px !important; }
+  .tour-listing-layout .modern-tour-card .irprice.modern-tour-card__price { font-size: 17px !important; }
+  .tour-listing-layout .modern-tour-card__actions { gap: 10px !important; }
+  .tour-listing-layout .modern-tour-card__action,
+  .tour-listing-layout button.modern-tour-card__action,
+  .tour-listing-layout a.modern-tour-card__action { padding-right: 11px !important; padding-left: 11px !important; font-size: 13.5px !important; }
+}
+
+/* Mobile intentionally untouched: this stylesheet only changes desktop (>= 992px). */
+
+/* =========================================================
+   v9 — mobile-only cleanup
+   1) sort/filter bar always fills the whole row with 3 equal cells
+   2) legacy mobile price strip reaches both edges of the card
+   Desktop (>= 992px) is intentionally untouched.
+   ========================================================= */
+@media (max-width: 991px) {
+  .tour-listing-layout .tour-listing-results {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .tour-listing-layout .sort-bar {
+    direction: rtl !important;
+    display: flex !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 14px 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .tour-listing-layout .sort-bar .sort-btn {
+    display: flex !important;
+    flex: 1 1 33.333333% !important;
+    width: 33.333333% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 12px 4px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+  }
+
+  .tour-listing-layout .sort-bar .sort-btn:last-child {
+    border-left: 0 !important;
+  }
+
+  /* Remove the Bootstrap side gutter that stopped the grey price strip
+     before the left edge on the legacy mobile card. */
+  .tour-listing-layout .legacy-mobile-tour-card .with-bg,
+  .tour-listing-layout .legacy-mobile-tour-card .with-bg > .row,
+  .tour-listing-layout .legacy-mobile-tour-card .with-bg > .row > .col-sm-12.col-lg-6,
+  .tour-listing-layout .legacy-mobile-tour-card .price-info,
+  .tour-listing-layout .legacy-mobile-tour-card .price-info > div,
+  .tour-listing-layout .legacy-mobile-tour-card .hr-irprice {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .tour-listing-layout .legacy-mobile-tour-card .price-info,
+  .tour-listing-layout .legacy-mobile-tour-card .hr-irprice,
+  .tour-listing-layout .legacy-mobile-tour-card .horzental-price {
+    background: #f5f5f5 !important;
+  }
+
+  .tour-listing-layout .legacy-mobile-tour-card .horzental-price {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+
+
+/* =========================================================
+   v11 — mobile special/last-minute badge
+   Keep the legacy mobile card, but make Feature labels match
+   the desktop yellow ribbon (including star + folded corner).
+   ========================================================= */
+@media (max-width: 991px) {
+  .tour-listing-layout .legacy-mobile-tour-card .mobile-special-badge {
+    direction: rtl !important;
+    position: absolute !important;
+    top: 14px !important;
+    right: -7px !important;
+    left: auto !important;
+    z-index: 12 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    width: auto !important;
+    min-width: 126px !important;
+    max-width: calc(100% - 18px) !important;
+    height: 36px !important;
+    margin: 0 !important;
+    padding: 6px 13px 6px 14px !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 18px 5px 0 18px !important;
+    background: #fdbb05 !important;
+    color: #050505 !important;
+    box-shadow: 0 3px 8px rgba(0,0,0,.14) !important;
+    font-family: YekanBold, IranSans, Tahoma, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+  }
+
+  .tour-listing-layout .legacy-mobile-tour-card .mobile-special-badge p {
+    display: block !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: inherit !important;
+    font: inherit !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .tour-listing-layout .legacy-mobile-tour-card .mobile-special-badge__icon {
+    display: block !important;
+    flex: 0 0 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    fill: #fdbb05 !important;
+    stroke: #1f1f1f !important;
+    stroke-width: 1.5 !important;
+    stroke-linejoin: round !important;
+  }
+
+  .tour-listing-layout .legacy-mobile-tour-card .mobile-special-badge__fold {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: -8px !important;
+    z-index: 13 !important;
+    display: block !important;
+    width: 9px !important;
+    height: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #916d07 !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%) !important;
+    pointer-events: none !important;
+  }
+
+  /* The legacy image wrapper must not clip the folded corner. */
+  .tour-listing-layout .legacy-mobile-tour-card .tour.image {
+    overflow: visible !important;
+  }
+}
+
+/* =========================================================
+   v12 — force the VISIBLE mobile feature badge to match desktop.
+   The mobile page currently renders .modern-tour-card__badge,
+   so target it directly (without relying on legacy wrapper).
+   Also keep the same look on the legacy mobile badge if shown.
+   ========================================================= */
+@media (max-width: 991px) {
+  html body .modern-tour-card__badge,
+  html body .tour-listing-layout .modern-tour-card__badge,
+  html body .mobile-special-badge,
+  html body .tour-listing-layout .mobile-special-badge {
+    direction: rtl !important;
+    position: absolute !important;
+    top: 14px !important;
+    right: -7px !important;
+    left: auto !important;
+    z-index: 50 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    width: auto !important;
+    min-width: 126px !important;
+    max-width: calc(100% - 14px) !important;
+    height: 36px !important;
+    margin: 0 !important;
+    padding: 6px 13px 6px 14px !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 18px 5px 0 18px !important;
+    background: #fdbb05 !important;
+    background-image: none !important;
+    color: #050505 !important;
+    box-shadow: 0 3px 8px rgba(0,0,0,.14) !important;
+    font-family: YekanBold, IranSans, Tahoma, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .modern-tour-card__badge::before,
+  html body .modern-tour-card__badge::after,
+  html body .mobile-special-badge::before,
+  html body .mobile-special-badge::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  html body .modern-tour-card__badge span:not(.modern-tour-card__badge-fold),
+  html body .mobile-special-badge p {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #050505 !important;
+    font: inherit !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  html body .modern-tour-card__badge-icon,
+  html body .mobile-special-badge__icon {
+    display: block !important;
+    flex: 0 0 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    fill: #fdbb05 !important;
+    stroke: #1f1f1f !important;
+    stroke-width: 1.5 !important;
+    stroke-linejoin: round !important;
+    color: #1f1f1f !important;
+  }
+
+  html body .modern-tour-card__badge-fold,
+  html body .mobile-special-badge__fold {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: -8px !important;
+    left: auto !important;
+    z-index: 51 !important;
+    display: block !important;
+    width: 9px !important;
+    height: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: #916d07 !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%) !important;
+    pointer-events: none !important;
+  }
+
+  /* Ensure the folded corner is not clipped on either mobile card variant. */
+  html body .modern-tour-card,
+  html body .modern-tour-card__image,
+  html body .legacy-mobile-tour-card .tour.image {
+    overflow: visible !important;
+  }
+}
+
+/* =========================================================
+   v13 — EXACT desktop Feature ribbon on legacy mobile cards.
+   The mobile template now uses the same DOM/classes as desktop.
+   ========================================================= */
+@media (max-width: 991px) {
+  html body .tour-listing-layout .legacy-mobile-tour-card .mobile-modern-tour-badge.modern-tour-card__badge {
+    direction: rtl !important;
+    position: absolute !important;
+    top: 20px !important;
+    right: -8px !important;
+    left: auto !important;
+    z-index: 60 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 9px !important;
+    width: 142px !important;
+    min-width: 142px !important;
+    max-width: none !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 7px 15px 7px 16px !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 20px 6px 0 20px !important;
+    background: #fdbb05 !important;
+    background-image: none !important;
+    color: #050505 !important;
+    box-shadow: 0 3px 8px rgba(0,0,0,.14) !important;
+    font-family: YekanBold, IranSans, Tahoma, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+  }
+
+  html body .tour-listing-layout .legacy-mobile-tour-card .mobile-modern-tour-badge.modern-tour-card__badge::before,
+  html body .tour-listing-layout .legacy-mobile-tour-card .mobile-modern-tour-badge.modern-tour-card__badge::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  html body .tour-listing-layout .legacy-mobile-tour-card .mobile-modern-tour-badge.modern-tour-card__badge > span:not(.modern-tour-card__badge-fold) {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #050505 !important;
+    font: inherit !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  html body .tour-listing-layout .legacy-mobile-tour-card .mobile-modern-tour-badge .modern-tour-card__badge-icon {
+    display: block !important;
+    flex: 0 0 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    fill: #fdbb05 !important;
+    stroke: #1f1f1f !important;
+    stroke-width: 1.5 !important;
+    stroke-linejoin: round !important;
+  }
+
+  html body .tour-listing-layout .legacy-mobile-tour-card .mobile-modern-tour-badge .modern-tour-card__badge-fold {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: -9px !important;
+    left: auto !important;
+    z-index: 61 !important;
+    display: block !important;
+    width: 10px !important;
+    height: 9px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: #916d07 !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%) !important;
+    pointer-events: none !important;
+  }
+
+  html body .tour-listing-layout .legacy-mobile-tour-card .tour.image {
+    position: relative !important;
+    overflow: visible !important;
+  }
+}
+
+.tour-main-img,
+.tour-main-img.horzental {
+  object-fit: cover;
+  object-position: center;
+}
+
+h3.section-heading {
+  font-size: 20px;
+  line-height: 24px;
+  margin: 15px 0 8px;
+}

@@ -1,4 +1,4 @@
-{% load jalali_tags %}{% load humanize %}
+{% load jalali_tags %}{% load humanize %}{% load responsive_img %}
 {% for tours,packages, cities in pubTours %}
     {% if forloop.counter < 9 %}
     <div class="col-lg-3 tour_grid">
@@ -20,9 +20,13 @@
                     {% endif %}
                 {% endif %}
                 {% if tours.TourImage %}
-                    <img loading="lazy" class="tour-main-img" src="{{ tours.TourImage.url }}">
+                    <img loading="lazy" class="tour-main-img" src="{{ tours.TourImage.url }}"
+                         srcset="{% srcset_for tours.TourImage "320,480,768" %}"
+                         sizes="(max-width: 991px) 100vw, 25vw"
+                         alt="{{ tours.Title }}" width="400" height="180">
                 {% else %}
-                    <img loading="lazy" class="tour-main-img" src="/static/asset/css/images/No_Image_Available.jpg">
+                    <img loading="lazy" class="tour-main-img" src="/static/asset/css/images/No_Image_Available.jpg"
+                         alt="{{ tours.Title }}" width="400" height="180">
                 {% endif %}
                 <span class="country_flag_list">
                                             <img src="{{ tours.Tcountry.Flagimg.url }}" alt="پرچم {{ tours.Tcountry.TitleC }}" width="30" height="30" loading="lazy">
@@ -84,9 +88,9 @@
                     </div>
                     <div class="col-sm-12 col-lg-12 no-padding ir_price">
                         <p class="irprice">
-                            {{ packages.0.DoubleBedPrice | intcomma:False }} {{ packages.0.Pcry }}
+                            {{ packages.0.DoubleBedPrice | floatformat:0 | intcomma }} {{ packages.0.Pcry }}
                             {% if packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
-                                + {{ packages.0.DollerPrice | intcomma:False }}
+                                + {{ packages.0.DollerPrice | floatformat:0 | intcomma }}
                                 {% if packages.0.fr_Pcry %}
                                     {{ packages.0.fr_Pcry }}
                                 {% else %}
@@ -94,7 +98,7 @@
                                 {% endif %}
                             {% endif %}
                             {% if not packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
-                                + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                + {{ packages.0.DoubleBedPrice_doller | floatformat:0 | intcomma }}
                                 {% if packages.0.fr_Pcry %}
                                     {{ packages.0.fr_Pcry }}
                                 {% else %}
@@ -102,7 +106,7 @@
                                 {% endif %}
                             {% endif %}
                             {% if packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
-                                + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                + {{ packages.0.DoubleBedPrice_doller | floatformat:0 | intcomma }}
                                 {% if packages.0.fr_Pcry %}
                                     {{ packages.0.fr_Pcry }}
                                 {% else %}

@@ -29,7 +29,81 @@
                             کاربر گرامی، {{Order.Name}} {{ Order.Family}} عزیز
                             رزرو شما با شماره تماس {{Order.Mobile}} و کد پیگیری {{Order.OrderCode}} ثبت گردید.
                         </p>
-                        <a href="/" class="home-link">بازگشت به صفحه اصلی</a>
+                        <p class="oi-note">کارشناسان ما در اولین فرصت با شما تماس می‌گیرند. لطفاً کد پیگیری خود را نزد خود نگه دارید.</p>
+
+                        <div class="oi-grid">
+                            <div class="oi-item">
+                                <span class="oi-label">کد پیگیری</span>
+                                <span class="oi-value oi-code">{{ Order.OrderCode }}</span>
+                            </div>
+                            <div class="oi-item">
+                                <span class="oi-label">نام و نام خانوادگی</span>
+                                <span class="oi-value">{{ Order.Name }} {{ Order.Family }}</span>
+                            </div>
+                            <div class="oi-item">
+                                <span class="oi-label">شماره تماس</span>
+                                <span class="oi-value">{{ Order.Mobile }}</span>
+                            </div>
+                            <div class="oi-item">
+                                <span class="oi-label">وضعیت درخواست</span>
+                                <span class="oi-value"><span class="oi-badge">{{ Order.OrderStat|default:"ثبت شده" }}</span></span>
+                            </div>
+                            {% if Order.OrderTour %}
+                            <div class="oi-item oi-item-wide">
+                                <span class="oi-label">تور انتخابی</span>
+                                <span class="oi-value">
+                                    <a class="oi-tour-link" href="/tour/{{ Order.OrderTour.id }}/{{ Order.OrderTour.Slug }}">{{ Order.OrderTour.Title }}</a>
+                                </span>
+                            </div>
+                            <div class="oi-item">
+                                <span class="oi-label">تاریخ رفت</span>
+                                <span class="oi-value">{{ Order.OrderTour.StartDate|to_jalali:'%Y/%m/%d' }}</span>
+                            </div>
+                            <div class="oi-item">
+                                <span class="oi-label">تاریخ برگشت</span>
+                                <span class="oi-value">{{ Order.OrderTour.EndDate|to_jalali:'%Y/%m/%d' }}</span>
+                            </div>
+                            <div class="oi-item">
+                                <span class="oi-label">مدت سفر</span>
+                                <span class="oi-value">{{ Order.OrderTour.NightCount }} شب و {{ Order.OrderTour.DayCount }} روز</span>
+                            </div>
+                            {% endif %}
+                            {% if Order.Orderpackage.HotelName %}
+                            <div class="oi-item">
+                                <span class="oi-label">هتل انتخابی</span>
+                                <span class="oi-value">{{ Order.Orderpackage.HotelName.HotelName }}{% if Order.Orderpackage.service_hotel %} - {{ Order.Orderpackage.service_hotel }}{% endif %}</span>
+                            </div>
+                            {% endif %}
+                            <div class="oi-item oi-item-wide">
+                                <span class="oi-label">تعداد مسافران</span>
+                                <span class="oi-value">
+                                    {% if Order.adult %}<span class="oi-chip">{{ Order.adult }} بزرگسال (۲ تخته)</span>{% endif %}
+                                    {% if Order.adult2 %}<span class="oi-chip">{{ Order.adult2 }} بزرگسال (۱ تخته)</span>{% endif %}
+                                    {% if Order.chield %}<span class="oi-chip">{{ Order.chield }} کودک با تخت</span>{% endif %}
+                                    {% if Order.chield2 %}<span class="oi-chip">{{ Order.chield2 }} کودک بدون تخت</span>{% endif %}
+                                    {% if Order.infont %}<span class="oi-chip">{{ Order.infont }} نوزاد</span>{% endif %}
+                                </span>
+                            </div>
+                            {% if Order.OrderTime %}
+                            <div class="oi-item">
+                                <span class="oi-label">تاریخ ثبت درخواست</span>
+                                <span class="oi-value">{{ Order.OrderTime|to_jalali:'%Y/%m/%d' }}</span>
+                            </div>
+                            {% endif %}
+                            {% if Order.description %}
+                            <div class="oi-item oi-item-wide">
+                                <span class="oi-label">توضیحات شما</span>
+                                <span class="oi-value">{{ Order.description }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="oi-actions">
+                            <a href="/" class="home-link">بازگشت به صفحه اصلی</a>
+                            {% if Order.OrderTour %}
+                            <a href="/tour/{{ Order.OrderTour.id }}/{{ Order.OrderTour.Slug }}" class="oi-link-2">مشاهده صفحه تور</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 </div>
@@ -40,7 +114,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="office-img">
-                        <img loading="lazy" src="/static/asset/css/images/office-1.jpg">
+                        <img loading="lazy" src="/static/asset/css/images/office-1.webp">
                     </div>
                 </div>
                 <div class="col-lg-8">

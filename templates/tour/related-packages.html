@@ -77,7 +77,7 @@
                                         <td class="TbCells amount">{{ package.HotelName }}</td>
                                         <td class="TbCells amount">{{ package.Mhotel }}</td>
                                         <td class="TbCells">{{ package.TourName }}</td>
-                                        <td class="TbCells">{{ package.SingleBedPrice | intcomma:False }}</td>
+                                        <td class="TbCells">{{ package.SingleBedPrice | floatformat:0 | intcomma }}</td>
                                         <td class="TbCells">
                                             <a data-toggle="tooltip" data-placement="bottom"
                                                title="ویرایش پکیج"

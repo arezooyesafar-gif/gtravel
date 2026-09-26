@@ -1,0 +1,19 @@
+/* صفحه «دریافت قیمت از آژانس‌ها» (tour/tour-external-sources.html) */
+
+/* تم سایت یه قانون سراسری داره (.row>* { flex-shrink:0 }) که ستون‌ها رو از کوچیک‌شدن منع می‌کنه؛
+   اگه هر متن بدون فاصله (مثل یه URL) داخل ستون باشه، کل ردیف رو به بیرون هل می‌ده و کارت از عرض
+   طبیعی‌ش بیرون می‌زنه. این‌جا فقط برای همین صفحه خنثی‌ش می‌کنیم تا محتوا بشکنه، نه کارت رو بکشه بیرون. */
+#ext-sources-page .row > [class*="col-"] {
+    min-width: 0;
+}
+
+#ext-sources-page code,
+#ext-sources-page pre,
+#ext-sources-page .form-text {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+#ext-sources-page input.form-control {
+    max-width: 100%;
+}

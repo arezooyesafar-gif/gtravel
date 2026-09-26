@@ -1,0 +1,84 @@
+{% comment %}
+    محتوای جعبهٔ «دریافت مشاوره و رزرو تور».
+    این فایل فقط *درون* .contact-banner قرار می‌گیرد؛ خودِ div بیرونی در هر صفحه
+    می‌ماند تا کلاس‌های اختصاصی آن صفحه (desktop-d-none، mobile-d-block و
+    استایل‌های inline) دست‌نخورده بمانند.
+
+    شماره‌ای که کاربر ثبت می‌کند به /save-tour-interest می‌رود و در «لیست
+    درخواست مشاوره» پنل و شمارندهٔ اعلان‌ها دیده می‌شود.
+{% endcomment %}
+<p class="reseve-title">دریافت مشاوره و رزرو تور</p>
+<p class="reseve-phone">021-45128</p>
+<p class="reseve-desc">کارشناسان ما پاسخگوی شما خواهند بود</p>
+
+<form class="reseve-lead" onsubmit="return submitConsultLead(this)">
+    {% csrf_token %}
+    <input type="tel" name="phone" class="reseve-lead-input" required
+           inputmode="numeric" autocomplete="tel" maxlength="15"
+           placeholder="شماره موبایل شما" aria-label="شماره موبایل شما">
+    <button type="submit" class="reseve-lead-btn">ثبت شماره</button>
+    <p class="reseve-lead-msg" role="status" aria-live="polite"></p>
+</form>
+
+<script>
+    /* بدون وابستگی به jQuery یا theme_funcs نوشته شده تا در هر قالبی که این
+       جعبه هست کار کند. اگر جعبه دو بار در یک صفحه بیاید (مثل صفحهٔ هتل که
+       نسخهٔ موبایل و دسکتاپ دارد) تابع دوباره تعریف نمی‌شود. */
+    if (typeof window.submitConsultLead !== 'function') {
+        window.submitConsultLead = function (form) {
+            var input = form.querySelector('.reseve-lead-input');
+            var btn = form.querySelector('.reseve-lead-btn');
+            var msg = form.querySelector('.reseve-lead-msg');
+            var token = form.querySelector('[name=csrfmiddlewaretoken]');
+            var phone = (input.value || '').trim();
+
+            function say(text, isError) {
+                msg.textContent = text;
+                msg.classList.toggle('is-error', !!isError);
+                msg.style.display = 'block';
+            }
+
+            if (!/^0?9\d{9}$/.test(phone.replace(/[\s-]/g, ''))) {
+                say('شماره موبایل را درست وارد کنید', true);
+                input.focus();
+                return false;
+            }
+
+            btn.disabled = true;
+            var path = window.location.pathname;
+            var type = /\/city-tours$/.test(path) ? 'city'
+                : /\/all-tour$/.test(path) ? 'country'
+                : /^\/tours\//.test(path) ? 'category'
+                : /^\/tour\//.test(path) ? 'tour'
+                : /^\/hotels?\//.test(path) || /hotel/.test(path) ? 'hotel'
+                : 'other';
+
+            fetch('/save-tour-interest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'X-CSRFToken': token ? token.value : '',
+                },
+                body: JSON.stringify({
+                    name: '', family: '', phone: phone,
+                    page_type: type, page_slug: path,
+                }),
+            }).then(function (r) {
+                return r.json().catch(function () { return {}; });
+            }).then(function (d) {
+                if (d && d.status === 'ok') {
+                    say('شمارهٔ شما ثبت شد، به‌زودی تماس می‌گیریم');
+                    input.value = '';
+                    input.disabled = true;
+                } else {
+                    say((d && d.msg) || 'ثبت نشد، دوباره تلاش کنید', true);
+                    btn.disabled = false;
+                }
+            }).catch(function () {
+                say('ارتباط برقرار نشد، دوباره تلاش کنید', true);
+                btn.disabled = false;
+            });
+            return false;
+        };
+    }
+</script>

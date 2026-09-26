@@ -1,0 +1,145 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+    {% load humanize %}
+    {% if messages %}
+        <div class="row m-t-20">
+            <div class="col-lg-12">
+                {% for message in messages %}
+                    <p class="alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row m-t-40">
+            <div class="col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-inner border-bottom">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">
+                                    اعمال قیمت پیشنهادی «{{ Offer.source.agency_name }}» روی
+                                    <span class="change down">{{ Tour.Title }}</span>
+                                </h6>
+                            </div>
+                            <div class="card-tools">
+                                <a href="{% url 'tour-external-sources' Tour.id %}" class="link">بازگشت</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if Offer.matched_hotel_name %}
+                        <div class="card-inner">
+                            <p class="text-soft" style="margin:0;">
+                                سیستم اسم هتل «<b>{{ Offer.matched_hotel_name }}</b>» رو تو صفحه‌ی آژانس پیدا کرد و با پکیج
+                                «<b>{{ Offer.matched_package }}</b>» تو تور خودتون تطبیق داد؛ پکیج و قیمت‌های زیر بر همین اساس
+                                پیش‌پر شده‌اند — قبل از ثبت حتماً چک کنید درست باشه.
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-20">
+            <div class="col-lg-5">
+                <div class="card h-100">
+                    <div class="card-inner">
+                        <label class="form-label">قیمت‌های دریافتی از آژانس (فقط جهت مرجع، هنوز جایی ثبت نشده)</label>
+                        <table class="table table-sm" style="font-size:13px;">
+                            <tbody>
+                            <tr>
+                                <td>دو تخته</td>
+                                <td>{% if Offer.price_amount %}{{ Offer.price_amount|intcomma }} {{ Offer.price_currency }}{% else %}-{% endif %}</td>
+                                <td>{% if Offer.price_amount_foreign %}{{ Offer.price_amount_foreign|intcomma }} {{ Offer.price_currency_foreign }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>یک تخته</td>
+                                <td>{% if Offer.single_bed_amount %}{{ Offer.single_bed_amount|intcomma }} {{ Offer.price_currency }}{% else %}-{% endif %}</td>
+                                <td>{% if Offer.single_bed_amount_foreign %}{{ Offer.single_bed_amount_foreign|intcomma }} {{ Offer.price_currency_foreign }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>کودک با تخت</td>
+                                <td>{% if Offer.child_with_bed_amount %}{{ Offer.child_with_bed_amount|intcomma }} {{ Offer.price_currency }}{% else %}-{% endif %}</td>
+                                <td>{% if Offer.child_with_bed_amount_foreign %}{{ Offer.child_with_bed_amount_foreign|intcomma }} {{ Offer.price_currency_foreign }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>کودک بدون تخت</td>
+                                <td>{% if Offer.child_without_bed_amount %}{{ Offer.child_without_bed_amount|intcomma }} {{ Offer.price_currency }}{% else %}-{% endif %}</td>
+                                <td>{% if Offer.child_without_bed_amount_foreign %}{{ Offer.child_without_bed_amount_foreign|intcomma }} {{ Offer.price_currency_foreign }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>نوزاد</td>
+                                <td>{% if Offer.infant_amount %}{{ Offer.infant_amount|intcomma }} {{ Offer.price_currency }}{% else %}-{% endif %}</td>
+                                <td>{% if Offer.infant_amount_foreign %}{{ Offer.infant_amount_foreign|intcomma }} {{ Offer.price_currency_foreign }}{% endif %}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        {% if Offer.raw_response %}
+                            <details>
+                                <summary style="cursor:pointer;">پاسخ خام آژانس</summary>
+                                <pre style="max-height:300px;overflow:auto;white-space:pre-wrap;font-size:11px;">{{ Offer.raw_response }}</pre>
+                            </details>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card h-100">
+                    <div class="card-inner">
+                        <label class="form-label">پکیج مقصد در تور شما<span class="text-danger">*</span></label>
+                        {{ Form.package }}
+
+                        <div class="row g-3" style="margin-top:10px;">
+                            <div class="col-md-6">
+                                <label class="form-label">دو تخته (ارز اول)</label>
+                                {{ Form.double_bed_price }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">دو تخته (ارز دوم)</label>
+                                {{ Form.double_bed_price_foreign }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">یک تخته (ارز اول)</label>
+                                {{ Form.single_bed_price }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">یک تخته (ارز دوم)</label>
+                                {{ Form.single_bed_price_foreign }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">کودک با تخت (ارز اول)</label>
+                                {{ Form.child_with_bed_price }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">کودک با تخت (ارز دوم)</label>
+                                {{ Form.child_with_bed_price_foreign }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">کودک بدون تخت (ارز اول)</label>
+                                {{ Form.child_without_bed_price }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">کودک بدون تخت (ارز دوم)</label>
+                                {{ Form.child_without_bed_price_foreign }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">نوزاد (ارز اول)</label>
+                                {{ Form.infant_price }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">نوزاد (ارز دوم)</label>
+                                {{ Form.infant_price_foreign }}
+                            </div>
+                        </div>
+
+                        <p class="text-soft" style="margin-top:10px;font-size:12px;">
+                            این مقادیر پیش از ذخیره قابل ویرایش هستند؛ چیزی که اینجا ثبت کنید همان چیزی است که روی سایت شما نمایش داده می‌شود.
+                            فیلدهای خالی صفر ثبت می‌شوند.
+                        </p>
+                        <button type="submit" class="btn btn-primary" style="margin-top:16px;">اعمال قیمت روی تور</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

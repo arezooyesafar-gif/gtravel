@@ -10,18 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="{{ PMemories.metaKeyword }}">
     <meta name="description" content="{{ PMemories.metaDescription }}">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-35DTMEQBTC');
-    </script>
-
     {% include 'ui/base/head.html' %}
     {% if PMemories.headline %}
         <title>{{ PMemories.headline }}</title>
@@ -212,15 +200,7 @@
                     {% endif %}
                 <div class='memo-sidebar'>
                     <div class="contact-banner">
-                        <p class="reseve-title">
-                            دریافت مشاوره و رزرو تور
-                        </p>
-                        <p class="reseve-phone">
-                            021-45128
-                        </p>
-                        <p class="reseve-desc">
-                            کارشناسان ما پاسخگوی شما خواهند بود
-                        </p>
+    {% include 'ui/base/contact-banner.html' %}
                     </div>
                     {% if PMemories.memo_links %}
                         <div class="anchor-links margin-top-25">
@@ -271,6 +251,7 @@
     var tour_id = '{{ Tour.id }}'
     var tour_slug = '{{ Tour.Slug }}'
     var tour_menu = '{{ Menu.slug }}'
+    var category_slug = '{{ category.slug|default:"" }}'
 </script>
 <script>
     $(window).scroll(function () {

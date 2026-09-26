@@ -1,25 +1,114 @@
 {% load static %}
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+{% if not skip_base_meta %}<meta charset="UTF-8">{% endif %}
+<link rel="preload" as="font" type="font/woff2" href="{% static '/asset/css/fonts/arezoosafar.woff2' %}" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="{% static '/asset/css/fonts/YekanBakhFaNum_Light.woff2' %}" crossorigin{% if yekan_desktop_preload %} media="(min-width: 992px)"{% endif %}>
+{% if preload_hero_image %}
+<link rel="preload" as="image" href="/media/arezoosafar.webp" fetchpriority="high">
+{% endif %}
+{% if not skip_base_meta %}<meta http-equiv="X-UA-Compatible" content="IE=edge">{% endif %}
+{% if not skip_base_meta %}<meta name="viewport" content="width=device-width, initial-scale=1">{% endif %}
 <meta name="google-site-verification" content="DMOf0FICZxaIM--a9dT5nd_lHapYs0Wxr_M8fAYjZL0"/>
-<script async src="https://news.google.com/swg/js/v1/publisher.js"></script>
 {% if meta_robots %}
 <meta name="robots" content="{{ meta_robots }}">
 {% else %}
 <meta name="robots" content="INDEX,FOLLOW">
 {% endif %}
-<link href="{% static '/asset/css/layout.css' %}" rel="stylesheet">
-<link href="{% static '/asset/css/all.min.css' %}" rel="stylesheet">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+{% if not skip_material_icons %}
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{% endif %}
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    // Google Analytics
+    gtag('config', 'G-35DTMEQBTC');
+
+    // Google Ads
+    gtag('config', 'AW-18348511084');
+
+    // load the gtag library itself after the page has finished loading so it
+    // doesn't compete with critical rendering resources; calls above are
+    // queued in dataLayer and get processed as soon as it loads
+{% if delay_third_party %}
+    window.__whenEngaged = function (fn) {
+        var done = false;
+        var startY = window.scrollY || 0;
+        var evs = ['scroll', 'pointerdown', 'touchstart', 'keydown', 'mousemove'];
+        function run(e) {
+            if (done) return;
+            if (e && e.type === 'scroll' && Math.abs((window.scrollY || 0) - startY) < 10) return;
+            done = true;
+            evs.forEach(function (t) { window.removeEventListener(t, run, true); });
+            fn();
+        }
+        evs.forEach(function (t) { window.addEventListener(t, run, {capture: true, passive: true}); });
+        function arm() { setTimeout(run, 5000); }
+        if (document.readyState === 'complete') { arm(); } else { window.addEventListener('load', arm); }
+    };
+    window.__whenEngaged(function () {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC';
+        document.head.appendChild(s);
+    });
+{% else %}
+    window.addEventListener('load', function () {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC';
+        document.head.appendChild(s);
+    });
+{% endif %}
+</script>
+{% comment %} publisher.js حذف شد: روی سرور گوگل 403 می‌گیرد و ویجت
+Preferred Sources هیچ‌وقت فعال نمی‌شود، ولی یک iframe مخفی با
+left:-10px !important تزریق می‌کرد که در هر صفحهٔ سایت ۱۰ پیکسل
+اسکرول افقی می‌ساخت (با اندازه‌گیری headless تأیید شد). لینک متنیِ
+فوتر که تنها چیز دیده‌شده بود دست‌نخورده کار می‌کند. برای برگرداندن،
+همین تگ را دوباره اضافه کنید. {% endcomment %}
+{% if not skip_material_icons %}
+{% if not skip_material_icons %}<link rel="preload" as="style" href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap" rel="stylesheet"></noscript>{% endif %}
+{% endif %}
+<link href="{% static '/asset/css/layout.css' %}?v=8" rel="stylesheet">
+{% if not skip_popup_css %}<link rel="preload" as="style" href="{% static '/asset/css/tour-dates-popup.css' %}" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="{% static '/asset/css/tour-dates-popup.css' %}" rel="stylesheet"></noscript>{% endif %}
+{% if not skip_fontawesome %}
+<link rel="preload" as="style" href="{% static '/asset/css/all.min.css' %}" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="{% static '/asset/css/all.min.css' %}" rel="stylesheet"></noscript>
+{% endif %}
+{% comment %} jQuery نباید defer باشد: ۴۱ قالب اسکریپت درون‌خطی دارند که
+$ را صدا می‌زنند و اسکریپت‌های defer بعد از پارس شدن کل صفحه اجرا می‌شوند،
+یعنی بعد از آن‌ها. با defer روی صفحاتی مثل وبلاگ و جست‌وجو خطای
+"$ is not defined" می‌آمد و آن اسکریپت‌ها اصلاً کار نمی‌کردند. {% endcomment %}
+{% if late_scripts %}
+<script>
+window.__lateQueue = [];
+window.__onLate = function (fn) { if (window.__lateReady) { fn(); } else { window.__lateQueue.push(fn); } };
+</script>
+{% else %}
 <script src="/static/slider/vendors/jquery.min.js"></script>
-<link rel="stylesheet" href="/static/slider/css/docs.theme.min.css">
-<link rel="stylesheet" href="/static/slider/owlcarousel/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="/static/slider/owlcarousel/assets/owl.theme.default.min.css">
+<script src="/static/asset/js/menu.js" defer></script>
+{% endif %}
+{% if not skip_slider %}<link rel="preload" as="style" href="/static/slider/css/docs.theme.min.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="/static/slider/css/docs.theme.min.css" rel="stylesheet"></noscript>
+{% if not skip_owl_css %}<link rel="preload" as="style" href="/static/slider/owlcarousel/assets/owl.carousel.min.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="/static/slider/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet"></noscript>
+<link rel="preload" as="style" href="/static/slider/owlcarousel/assets/owl.theme.default.min.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="/static/slider/owlcarousel/assets/owl.theme.default.min.css" rel="stylesheet"></noscript>{% endif %}{% endif %}
 <link href="/static/asset/css/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link href="/static/dist/css/icons/font-awesome/css/fontawesome.css" rel="stylesheet">
-<link rel="icon" type="image/x-icon" href="/media/favicon01.png">
+{% comment %} <link href="/static/dist/css/icons/font-awesome/css/fontawesome.css" rel="stylesheet"> {% endcomment %}
+<link rel="icon" type="image/x-icon" href="/media/favicon-60x60.png">
 {#    <link rel="icon" type="image/x-icon" href="/media/favicon.png">#}
-<script src="/static/slider/owlcarousel/owl.carousel.js"></script>
-<script src="/static/asset/js/theme_funcs.js"></script>
-<link rel="icon" type="image/x-icon" href="/media/favicon-32x32.png">
-<link rel="apple-touch-icon" href="/media/favicon-32x32.png">
+{% if not late_scripts %}<script src="/static/slider/owlcarousel/owl.carousel.js"  defer></script>{% endif %}
+<script>var DOLLAR_RATE = {{ dollar_rate|default:170000 }};</script>
+{% if not late_scripts %}<script src="/static/asset/js/theme_funcs.js?v=9" defer></script>{% endif %}
+<link rel="icon" type="image/x-icon" href="/media/favicon-60x60.png">
+<link rel="apple-touch-icon" href="/media/favicon-60x60.png">

@@ -93,7 +93,7 @@ def ads_file_list(request):
     return render(request, 'pages/file_list.html', context)
 
 def superuser_required(login_url=None):
-    return user_passes_test(lambda u: u.is_superuser, login_url=login_url)
+    return user_passes_test(lambda u: u.is_superuser or hasattr(u, 'staff_access'), login_url=login_url)
 
 @superuser_required(login_url='login')
 def create_page(request):

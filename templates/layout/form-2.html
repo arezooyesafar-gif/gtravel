@@ -34,16 +34,28 @@
        {% endfor %}
     {% endif %}
             <form method="POST" novalidate="novalidate" enctype="multipart/form-data" class="box-main">
+            {% if staff_readonly %}
+            <div style="background:#fff6d9; border:1px solid #e0c97f; border-radius:8px; padding:12px 16px; margin:12px 0; font-weight:bold; text-align:center;">
+                شما فقط اجازه مشاهده این درخواست را دارید؛ امکان ثبت تغییرات وجود ندارد.
+            </div>
+            {% endif %}
                 {% csrf_token %}
                 <div class="child">
                 <div>
                     <a href="/media/empty_form.pdf" target="_blank" class="download_pdf">Download Empty Form</a>
                 </div>
-                {% if request.user.is_superuser and item %}
+                {% if can.visas.any and item %}
                 <div>
                     <a href="{% url 'visa_pdf' item.id %}" target="_blank" class="download_pdf">Download Form with Data</a>
                 </div>
-                {% endif %}
+                <div style="background:#f0f4ff; border:1px solid #c0cfe0; border-radius:8px; padding:12px 16px; margin-bottom:12px;">
+                    <p style="font-weight:bold; margin-bottom:8px;">اطلاعات ثبت‌کننده درخواست</p>
+                    <p style="margin:4px 0;">نام : <strong>{{ item.user.get_full_name|default:item.user.username }}</strong></p>
+                    {% comment %} <p style="margin:4px 0;">شماره : <strong>{{ item.user.person_profile_set.first.mobile_number|default:"-" }}</strong></p> {% endcomment %}
+                    <p style="margin:4px 0;">شماره : <strong>{{ item.user.username|default:"-" }}</strong></p>
+                    <p style="margin:4px 0;">آژانس : <strong>{% with agency=item.user.profile_set.first.agancy_name %}{% if agency %}{{ agency }}{% else %}-{% endif %}{% endwith %}</strong></p>
+                </div>
+                {% endif %}                
                 {% if item.person_image %}
                     <div>
                     <p style="text-align:left;">Person Image</p>
@@ -142,7 +154,7 @@
                             <p>توضیحات : <span>محل خدمت سربازی</span></p>
                         </div>
                     </div>
-                {% if request.user.is_superuser %}
+                {% if can.visas.edit %}
                     <div>
                         <label for="">Request Status</label>
                         <select name="req_stat" class="form-select">

@@ -1,3 +1,4 @@
+{% load responsive_img %}
 {% if country %}
     <div class="container">
         <section class="slagon {% if contry %}country-info-box{% endif %}">
@@ -25,6 +26,8 @@
                                             {% if category.image %}
                                                 <img class="city-img-text"
                                                      src="{{ category.image.url }}"
+                                                     srcset="{% srcset_for category.image "80,160" %}"
+                                                     sizes="52px"
                                                      alt="{{ category.name }}"
                                                      width="91"
                                                      height="91"
@@ -75,18 +78,13 @@
                 <div id="article"
                      class="{% if city.Description_anchor %}col-lg-9{% else %}col-lg-12{% endif %} country-desc">
 
-                    {% if city.Description %}
+                     {% if city.Description %}
                         <p class="head-desc">
                             اطلاعات کاربردی خرید تور
                             {{ city }}
                         </p>
-
-                        <div class="article-body">
-                            {{ city.Description|safe }}
-                        </div>
                     {% endif %}
-
-                    {% if city.tour_categories.all %}
+                     {% if city.tour_categories.all %}
                         <div class="row">
                             {% for category in city.tour_categories.all %}
                                 <div class="col-sm-12 col-lg-4">
@@ -97,6 +95,8 @@
                                                 {% if category.image %}
                                                     <img class="city-img-text"
                                                          src="{{ category.image.url }}"
+                                                         srcset="{% srcset_for category.image "80,160" %}"
+                                                         sizes="52px"
                                                          alt="{{ category.name }}"
                                                          width="91"
                                                          height="91"
@@ -114,6 +114,75 @@
                                     </a>
                                 </div>
                             {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if city.Description %}
+                        <div class="article-body">
+                            {{ city.Description|safe }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    </div>
+{% endif %}
+{% comment %} {% if category.description or category.children.exists %} {% endcomment %}
+{% if category.description or active_child_categories %}
+    <div class="container">
+        <section class="slagon country-info-box">
+            <div class="row">
+
+                <div id="article" class="col-lg-12 country-desc">
+
+                    {% if category.description %}
+                        <p class="head-desc">
+                            اطلاعات کاربردی
+                            {{ category.name }}
+                        </p>
+                    {% endif %}
+
+                    {% comment %} {% if category.children.all %} {% endcomment %}
+                    {% if active_child_categories %}
+                        <div class="row">
+
+                            {% comment %} {% for child in category.children.all %} {% endcomment %}
+                            {% for child in active_child_categories %}
+                                {% comment %} {% if child.is_active %} {% endcomment %}
+                                    <div class="col-sm-12 col-lg-4">
+                                        <a href="{% url 'tour-category-detail' child.slug %}">
+                                            <div class="row intext-list">
+
+                                                <div class="col-sm-3 col-lg-3 no-padding">
+                                                    {% if child.image %}
+                                                        <img class="city-img-text"
+                                                             src="{{ child.image.url }}"
+                                                             srcset="{% srcset_for child.image "80,160" %}"
+                                                             sizes="52px"
+                                                             alt="{{ child.name }}"
+                                                             width="91"
+                                                             height="91"
+                                                             loading="lazy">
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="col-sm-9 col-lg-9 no-padding">
+                                                    <span class="ctry_name_arc">
+                                                        {{ child.name }}
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% comment %} {% endif %} {% endcomment %}
+                            {% endfor %}
+
+                        </div>
+                    {% endif %}
+
+                    {% if category.description %}
+                        <div class="article-body">
+                            {{ category.description|safe }}
                         </div>
                     {% endif %}
 
@@ -145,7 +214,7 @@
         <section class="slagon container">
             <div class="row">
                 <div class="col-lg-12 about_detail">
-                    <h5 class="slagon_title_">{{ set.about_title }}</h5>
+                    <h3 class="slagon_title_">{{ set.about_title }}</h3>
                     <p class="slagon_txt_">
                         {{ set.about_text|safe }}
                     </p>

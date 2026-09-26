@@ -1,27 +1,87 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa-IR" dir="rtl">
 <head>
+
     {% load static %}
+{% load responsive_img %}
     {% load humanize %}
     {% load jalali_tags %}
     <meta charset="UTF-8">
-    <link href="{% static 'asset/plyr/plyr.css' %}" rel="stylesheet">
-    <script src="{% static 'asset/plyr/plyr.polyfilled.js' %}"></script>
     <link href="{% static 'assets/css/city-country-media.css' %}" rel="stylesheet">
 
     {% if city %}
         <meta name="description" content="{{ city.tourmd }}">
-        <meta name="keywords" content="{{ city.tourmk }}">
         <link rel="canonical" href="https://arezoosafar.com{% url 'city-tours' city.slug city.id  %}"/>
     {% elif country %}
         <meta name="description" content="{{ country.tourmd }}">
-        <meta name="keywords" content="{{ country.tourmk }}">
         <link rel="canonical" href="https://arezoosafar.com{% url 'all-tour-country' country.slug country.id  %}"/>
+    {% elif category %}
+        <meta name="description" content="{{ category.meta_description }}">
+        <link rel="canonical" href="https://arezoosafar.com{% url 'tour-category-detail' category.slug %}"/>
     {% else %}
         <meta name="description"
               content=" رزرو تور اقساطی بدون ضامن | آرزوی سفر پارسیان ارائه دهنده تورهای قسطی با پایین ترین کارمزد– مشاوره و رزرو تور قسطی تماس با 02145128">
-        <meta name="keywords" content="تور اقساطی, تور قسطی, تور, خرید تور قسطی, تور ارزان اقساطی, تور ارزان قسطی, تور ارزان, شرایط تور اقساطی">
         <link rel="canonical" href="https://arezoosafar.com/all-tour"/>
+    {% endif %}
+    {% if city %}
+        <meta property="og:type" content="website">
+        <meta property="og:locale" content="fa_IR">
+        <meta property="og:site_name" content="آرزوی سفر">
+        <meta property="og:title" content="{% if city.tltitle %}{{ city.tltitle }}{% else %}تور {{ city.Name }}{% endif %}">
+        <meta property="og:description" content="{{ city.tourmd }}">
+        <meta property="og:url" content="https://arezoosafar.com{% url 'city-tours' city.slug city.id %}">
+    {% if city.cityImg %}
+        <meta property="og:image" content="https://arezoosafar.com{{ city.cityImg.url }}">
+        <meta property="og:image:secure_url" content="https://arezoosafar.com{{ city.cityImg.url }}">
+    {% endif %}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{% if city.tltitle %}{{ city.tltitle }}{% else %}تور {{ city.Name }}{% endif %}">
+        <meta name="twitter:description" content="{{ city.tourmd }}">
+    {% if city.cityImg %}
+        <meta name="twitter:image" content="https://arezoosafar.com{{ city.cityImg.url }}">
+    {% endif %}
+    {% elif country %}
+        <meta property="og:type" content="website">
+        <meta property="og:locale" content="fa_IR">
+        <meta property="og:site_name" content="آرزوی سفر">
+        <meta property="og:title" content="{% if country.tltitle %}{{ country.tltitle }}{% else %}تور {{ country.TitleC }}{% endif %}">
+        <meta property="og:description" content="{{ country.tourmd }}">
+        <meta property="og:url" content="https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}">
+    {% if country.country_iamge %}
+        <meta property="og:image" content="https://arezoosafar.com{{ country.country_iamge.url }}">
+        <meta property="og:image:secure_url" content="https://arezoosafar.com{{ country.country_iamge.url }}">
+    {% endif %}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{% if country.tltitle %}{{ country.tltitle }}{% else %}تور {{ country.TitleC }}{% endif %}">
+        <meta name="twitter:description" content="{{ country.tourmd }}">
+    {% if country.country_iamge %}
+        <meta name="twitter:image" content="https://arezoosafar.com{{ country.country_iamge.url }}">
+    {% endif %}
+    {% elif category %}
+        <meta property="og:type" content="website">
+        <meta property="og:locale" content="fa_IR">
+        <meta property="og:site_name" content="آرزوی سفر">
+        <meta property="og:title" content="{{ category.meta_title }}">
+        <meta property="og:description" content="{{ category.meta_description }}">
+        <meta property="og:url" content="https://arezoosafar.com{% url 'tour-category-detail' category.slug %}">
+        <meta property="og:image" content="https://arezoosafar.com/static/asset/images/logo-horzental.png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ category.meta_title }}">
+        <meta name="twitter:description" content="{{ category.meta_description }}">
+        <meta name="twitter:image" content="https://arezoosafar.com/static/asset/images/logo-horzental.png">
+    {% else %}
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fa_IR">
+    <meta property="og:site_name" content="آرزوی سفر">
+    <meta property="og:title" content="تور اقساطی بدون ضامن | خرید تور قسطی 12 ماهه">
+    <meta property="og:description" content="رزرو تور اقساطی بدون ضامن | آرزوی سفر پارسیان ارائه دهنده تورهای قسطی با پایین ترین کارمزد">
+    <meta property="og:url" content="https://arezoosafar.com/all-tour">
+    <meta property="og:image" content="https://arezoosafar.com/static/asset/images/logo-horzental.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="تور اقساطی بدون ضامن | خرید تور قسطی 12 ماهه">
+    <meta name="twitter:description" content="رزرو تور اقساطی بدون ضامن | آرزوی سفر پارسیان ارائه دهنده تورهای قسطی با پایین ترین کارمزد">
+    <meta name="twitter:image" content="https://arezoosafar.com/static/asset/images/logo-horzental.png">
     {% endif %}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,403 +96,339 @@
           href="{{ city.cityImg.url }}"
           fetchpriority="high">
     {% endif %}
-    <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "uw4rum37lz");
-    </script>
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "Arezoo Safar Parsian.",
-          "alternateName": "آرزوی سفر پارسیان",
-          "url": "https://arezoosafar.com/",
-          "logo": "https://arezoosafar.com/static/asset/images/logo-horzental.png",
-          "contactPoint": [
+          "@graph": [
             {
-              "@type": "ContactPoint",
+              "@type": "TravelAgency",
+              "@id": "https://arezoosafar.com/#organization",
+              "name": "آرزوی سفر پارسیان",
+              "alternateName": [
+                "Arezoo Safar Parsian",
+                "آژانس مسافرتی و گردشگری آرزوی سفر پارسیان"
+              ],
+              "url": "https://arezoosafar.com/",
+              "logo": {
+                "@type": "ImageObject",
+                "@id": "https://arezoosafar.com/#logo",
+                "url": "https://arezoosafar.com/static/asset/images/logo-horzental.png",
+                "contentUrl": "https://arezoosafar.com/static/asset/images/logo-horzental.png",
+                "caption": "لوگو آرزوی سفر پارسیان"
+              },
+              "image": {
+                "@id": "https://arezoosafar.com/#logo"
+              },
               "telephone": "+982145128000",
-              "contactType": "customer service",
-              "areaServed": "IR",
-              "availableLanguage": "Persian"
+              "contactPoint": [
+                {
+                  "@type": "ContactPoint",
+                  "telephone": "+982145128000",
+                  "contactType": "customer service",
+                  "areaServed": "IR",
+                  "availableLanguage": ["fa"]
+                },
+                {
+                  "@type": "ContactPoint",
+                  "telephone": "+982145128000",
+                  "contactType": "sales",
+                  "areaServed": "IR",
+                  "availableLanguage": ["fa"]
+                }
+              ],
+              "sameAs": [
+                "https://www.instagram.com/arezooyesafarparsian/"
+              ]
             },
             {
-              "@type": "ContactPoint",
-              "telephone": "+982145128000",
-              "contactType": "sales",
-              "areaServed": "IR",
-              "availableLanguage": "Persian"
-            }
-          ],
-          "sameAs": ["https://www.instagram.com/arezooyesafarparsian/"]
-        }
-    </script>
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            {% if city %}
-            "@graph": [
+              "@type": "WebSite",
+              "@id": "https://arezoosafar.com/#website",
+              "url": "https://arezoosafar.com/",
+              "name": "آرزوی سفر پارسیان",
+              "description": "شرکت آرزوی سفر پارسیان برگزارکننده تورهای خارجی به صورت نقد و اقساط، مجری تور روسیه و کارگزار تورهای خارجی",
+              "publisher": {
+                "@id": "https://arezoosafar.com/#organization"
+              },
+              "inLanguage": "fa-IR"
+            },
+            {
+              "@type": "CollectionPage",
+              "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#webpage",
+              "url": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}",
+              "name": "{% if city %}تور {{ city.Name|escapejs }}{% elif country %}تور {{ country.TitleC|escapejs }}{% elif category %}{{ category.name|escapejs }}{% else %}تور اقساطی{% endif %}",
+              "headline": "{% if city and city.tltitle %}{{ city.tltitle|escapejs }}{% elif country and country.tltitle %}{{ country.tltitle|escapejs }}{% elif category and category.meta_title %}{{ category.meta_title|escapejs }}{% else %}تور اقساطی بدون ضامن | خرید تور قسطی 12 ماهه{% endif %}",
+              "description": "{% if city %}{{ city.tourmd|escapejs }}{% elif country %}{{ country.tourmd|escapejs }}{% elif category %}{{ category.meta_description|escapejs }}{% else %}رزرو تور اقساطی بدون ضامن | آرزوی سفر پارسیان ارائه دهنده تورهای قسطی با پایین ترین کارمزد{% endif %}",
+              "inLanguage": "fa-IR",
+              "isPartOf": {
+                "@id": "https://arezoosafar.com/#website"
+              },
+              "publisher": {
+                "@id": "https://arezoosafar.com/#organization"
+              },
+              "primaryImageOfPage": {
+                "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#primaryimage"
+              },
+              "image": {
+                "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#primaryimage"
+              },
+              "thumbnailUrl": "{% if city and city.cityImg %}https://arezoosafar.com{{ city.cityImg.url }}{% elif country and country.country_iamge %}https://arezoosafar.com{{ country.country_iamge.url }}{% else %}https://arezoosafar.com/static/asset/css/images/world-map.png{% endif %}",
+              "breadcrumb": {
+                "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#breadcrumb"
+              },
+              "about": [
+                {% if city %}
                 {
-                    "@type": [
-                        "WebPage",
-                        "FAQPage"
-                    ],
-                    "@id": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}",
-                    "url": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}",
-                    "name": "{{ city.tltitle }}",
-                    "isPartOf": {
-                        "@id": "https://arezoosafar.com/#website"
-                    },
-                    "primaryImageOfPage": {
-                        "@id": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}#primaryimage"
-                    },
-                    "image": {
-                        "@id": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}#primaryimage"
-                    },
-                    "thumbnailUrl": "https://arezoosafar.com{{ city.cityImg.url }}",
-                    "description": "{{ city.tourmd }}",
-                    "breadcrumb": {
-                        "@id": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}#breadcrumb"
-                    },
-                    "mainEntity": [
-                    {% for q in all_faqs %}
-                        {
-                            "@id": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}#faq-question-{{forloop.counter}}"
-                        }{% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                    ],
-                    "inLanguage": "fa-IR",
-                    "potentialAction": [
-                        {
-                            "@type": "ReadAction",
-                            "target": [
-                                "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}"
-                            ]
-                        }
-                    ]
+                  "@type": "City",
+                  "name": "{{ city.Name|escapejs }}"
                 },
                 {
-                    "@type": "ImageObject",
-                    "@id": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}#primaryimage",
-                    "inLanguage": "fa-IR",
-                    "url": "https://arezoosafar.com{{ city.cityImg.url }}",
-                    "contentUrl": "https://arezoosafar.com{{ city.cityImg.url }}",
-                    "width": 1211,
-                    "height": 400,
-                    "caption": "تور {{ city.Name }}"
+                  "@type": "TouristDestination",
+                  "name": "{{ city.Name|escapejs }}"
+                }
+                {% elif country %}
+                {
+                  "@type": "Country",
+                  "name": "{{ country.TitleC|escapejs }}"
                 },
                 {
-                    "@type": "BreadcrumbList",
-                    "@id": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}#breadcrumb",
-                    "itemListElement": [
-                        {
-                            "@type": "ListItem",
-                            "position": 1,
-                            "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
-                            "item": "https://arezoosafar.com/"
-                        },
-                        {
-                            "@type": "ListItem",
-                            "position": 2,
-                            "name": " تور اقساطی بدون ضامن | خرید تور قسطی12 ماهه✈️ ! ",
-                            "item": "https://arezoosafar.com/all-tour"
-                        },
-                        {
-                            "@type": "ListItem",
-                            "position": 3,
-                            "name": "{{city.CountryName.TitleC}}",
-                            "item": "https://arezoosafar.com{% url 'all-tour-country' city.CountryName.slug city.CountryName.id %}"
-                        },
-                        {
-                            "@type": "ListItem",
-                            "position": 4,
-                            "name": "{{ city.tltitle }}"
-                        }
-                    ]
+                  "@type": "TouristDestination",
+                  "name": "{{ country.TitleC|escapejs }}"
+                }
+                {% elif category %}
+                {
+                  "@type": "Thing",
+                  "name": "{{ category.name|escapejs }}"
+                }
+                {% else %}
+                {
+                  "@type": "Thing",
+                  "name": "تور اقساطی"
+                }
+                {% endif %}
+              ],
+              "mainEntity": [
+                {% if pubTours and tours_list %}
+                {
+                  "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#tour-list"
+                }{% if all_faqs %},{% endif %}
+                {% endif %}
+                {% if all_faqs %}
+                {
+                  "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#faq"
+                }
+                {% endif %}
+              ]
+            },
+            {
+              "@type": "ImageObject",
+              "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#primaryimage",
+              "inLanguage": "fa-IR",
+              "url": "{% if city and city.cityImg %}https://arezoosafar.com{{ city.cityImg.url }}{% elif country and country.country_iamge %}https://arezoosafar.com{{ country.country_iamge.url }}{% else %}https://arezoosafar.com/static/asset/css/images/world-map.png{% endif %}",
+              "contentUrl": "{% if city and city.cityImg %}https://arezoosafar.com{{ city.cityImg.url }}{% elif country and country.country_iamge %}https://arezoosafar.com{{ country.country_iamge.url }}{% else %}https://arezoosafar.com/static/asset/css/images/world-map.png{% endif %}",
+              "width": {% if city and city.cityImg %}1211{% else %}387{% endif %},
+              "height": {% if city and city.cityImg %}400{% else %}192{% endif %},
+              "caption": "{% if city %}تور {{ city.Name|escapejs }}{% elif country %}تور {{ country.TitleC|escapejs }}{% elif category %}{{ category.name|escapejs }}{% else %}تور اقساطی{% endif %}"
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "صفحه اصلی",
+                  "item": "https://arezoosafar.com/"
                 },
                 {
-                    "@type": "WebSite",
-                    "@id": "https://arezoosafar.com/#website",
-                    "url": "https://arezoosafar.com/",
-                    "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
-                    "description": "شرکت آرزوی سفر پارسیان برگزار کننده  تور ارزان قیمت خارجی به صورت نقد و اقساط | مجری تور روسیه و کارگزار تور تایلند",
-                    "publisher": {
-                        "@id": "https://arezoosafar.com/#organization"
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "تمام تورها",
+                  "item": "https://arezoosafar.com/all-tour"
+                }
+                {% if city %}
+                ,
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "تور {{ city.CountryName.TitleC|escapejs }}",
+                  "item": "https://arezoosafar.com{% url 'all-tour-country' city.CountryName.slug city.CountryName.id %}"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 4,
+                  "name": "تور {{ city.Name|escapejs }}",
+                  "item": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}"
+                }
+                {% elif country %}
+                ,
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "تور {{ country.TitleC|escapejs }}",
+                  "item": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}"
+                }
+                {% elif category %}
+                    {% if category_country %}
+                    ,
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "تور {{ category_country.TitleC|escapejs }}",
+                        "item": "https://arezoosafar.com{% url 'all-tour-country' category_country.slug category_country.id %}"
                     }
-                },
+                    {% endif %}
+                    {% if category_city %}
+                    ,
+                    {
+                        "@type": "ListItem",
+                        "position": 4,
+                        "name": "تور {{ category_city.Name|escapejs }}",
+                        "item": "https://arezoosafar.com{% url 'city-tours' category_city.slug category_city.id %}"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 5,
+                        "name": "{{ category.name|escapejs }}",
+                        "item": "https://arezoosafar.com{% url 'tour-category-detail' category.slug %}"
+                    }
+                    {% else %}
+                    ,
+                    {
+                        "@type": "ListItem",
+                        "position": {% if category_country %}4{% else %}3{% endif %},
+                        "name": "{{ category.name|escapejs }}",
+                        "item": "https://arezoosafar.com{% url 'tour-category-detail' category.slug %}"
+                    }
+                    {% endif %}
+                {% endif %}
+              ]
+            }
+            {% if all_faqs %}
+            ,
+            {
+              "@type": "FAQPage",
+              "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#faq",
+              "url": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#faq",
+              "name": "سوالات متداول {% if city %}تور {{ city.Name|escapejs }}{% elif country %}تور {{ country.TitleC|escapejs }}{% elif category %}{{ category.name|escapejs }}{% else %}تور اقساطی{% endif %}",
+              "inLanguage": "fa-IR",
+              "isPartOf": {
+                "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#webpage"
+              },
+              "mainEntity": [
                 {% for q in all_faqs %}
                 {
-                    "@type": "Question",
-                    "@id": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}#faq-question-{{forloop.counter}}",
-                    "position": {{forloop.counter}},
-                    "url": "https://arezoosafar.com{% url 'city-tours' city.slug city.id %}#faq-question-{{forloop.counter}}",
-                    {% if q.question %}
-                    "name": "{{ q.question }}",                   
+                  "@type": "Question",
+                  "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#faq-question-{{ forloop.counter }}",
+                  "position": {{ forloop.counter }},
+                  {% if q.question %}
+                  "name": "{{ q.question|striptags|escapejs }}",
+                  {% else %}
+                  "name": "{{ q.Question|striptags|escapejs }}",
+                  {% endif %}
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    {% if q.answer %}
+                    "text": "{{ q.answer|striptags|escapejs }}",
                     {% else %}
-                    "name": "{{ q.Question }}",                    
+                    "text": "{{ q.Answer|striptags|escapejs }}",
                     {% endif %}
-                    "answerCount": {{forloop.counter}},
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        {% if q.answer %}
-                        "text": "{{ q.answer|safe }}",                
-                        {% else %}
-                        "text": "{{ q.Answer|safe }}",               
-                        {% endif %}
-                        "inLanguage": "fa-IR"
-                    },
                     "inLanguage": "fa-IR"
+                  },
+                  "inLanguage": "fa-IR"
                 }{% if not forloop.last %},{% endif %}
                 {% endfor %}
-            ]
-        {% elif country %}
-        "@graph": [
-        {
-            "@type": [
-                "WebPage",
-                "FAQPage"
-            ],
-            "@id": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}",
-            "url": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}",
-            "name": " تور {{ country.TitleC }}",
-            "isPartOf": {
-                "@id": "https://arezoosafar.com/#website"
-            },
-            "primaryImageOfPage": {
-                "@id": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}#primaryimage"
-            },
-            "image": {
-                "@id": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}#primaryimage"
-            },
-            "thumbnailUrl": "https://arezoosafar.com{{ country.country_iamge.url }}",
-            "description": "{{ country.tourmd }}",
-            "breadcrumb": {
-                "@id": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}#breadcrumb"
-            },
-            "mainEntity": [
-            {% for q in all_faqs %}
-                {
-                    "@id": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}#faq-question-{{forloop.counter}}"
-                }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-            ],
-            "inLanguage": "fa-IR",
-            "potentialAction": [
-                {
-                    "@type": "ReadAction",
-                    "target": [
-                        "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}"
-                    ]
-                }
-            ]
-        },
-        {
-            "@type": "ImageObject",
-            "@id": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}#primaryimage",
-            "inLanguage": "fa-IR",
-            "url": "https://arezoosafar.com{{ country.country_iamge.url }}",
-            "contentUrl": "https://arezoosafar.com{{ country.country_iamge.url }}",
-            "width": 387,
-            "height": 192,
-            "caption": "تور {{ country.TitleC }}"
-        },
-        {
-            "@type": "BreadcrumbList",
-            "@id": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}#breadcrumb",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
-                    "item": "https://arezoosafar.com/"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": " تور اقساطی بدون ضامن | خرید تور قسطی12 ماهه✈️ ! ",
-                    "item": "https://arezoosafar.com/all-tour"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 3,
-                    "name": "{{country.TitleC}}",
-                    "item": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}"
-                }
-            ]
-        },
-        {
-            "@type": "WebSite",
-            "@id": "https://arezoosafar.com/#website",
-            "url": "https://arezoosafar.com/",
-            "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
-            "description": "شرکت آرزوی سفر پارسیان برگزار کننده  تور ارزان قیمت خارجی به صورت نقد و اقساط | مجری تور روسیه و کارگزار تور تایلند",
-            "publisher": {
-                "@id": "https://arezoosafar.com/#organization"
+              ]
             }
-        },
-        {% for q in all_faqs %}
-        {
-            "@type": "Question",
-            "@id": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}#faq-question-{{forloop.counter}}",
-            "position": {{forloop.counter}},
-            "url": "https://arezoosafar.com{% url 'all-tour-country' country.slug country.id %}#faq-question-{{forloop.counter}}",
-            {% if q.question %}
-            "name": "{{ q.question }}",                   
-            {% else %}
-            "name": "{{ q.Question }}",                    
             {% endif %}
-            "answerCount": {{forloop.counter}},
-            "acceptedAnswer": {
-                "@type": "Answer",
-                {% if q.answer %}
-                "text": "{{ q.answer|safe }}",                
-                {% else %}
-                "text": "{{ q.Answer|safe }}",               
-                {% endif %}
-                "inLanguage": "fa-IR"
-            },
-            "inLanguage": "fa-IR"
-        }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-        ]
-        {% else %}
-        "@graph": [
-        {
-            "@type": [
-                "WebPage",
-                "FAQPage"
-            ],
-            "@id": "https://arezoosafar.com/all-tour",
-            "url": "https://arezoosafar.com/all-tour",
-            "name": "تور اقساطی بدون ضامن | خرید تور قسطی12 ماهه✈️ ! ",
-            "isPartOf": {
-                "@id": "https://arezoosafar.com/#website"
-            },
-            "primaryImageOfPage": {
-                "@id": "https://arezoosafar.com/all-tour#primaryimage"
-            },
-            "image": {
-                "@id": "https://arezoosafar.com/all-tour#primaryimage"
-            },
-            "thumbnailUrl": "https://arezoosafar.com/static/asset/css/images/world-map.png",
-            "description": "رزرو تور اقساطی بدون ضامن | آرزوی سفر پارسیان ارائه دهنده تورهای قسطی با پایین ترین کارمزد– مشاوره و رزرو تور قسطی تماس با 02145128",
-            "breadcrumb": {
-                "@id": "https://arezoosafar.com/all-tour#breadcrumb"
-            },
-            "mainEntity": [
-            {% for q in all_faqs %}
+            {% if pubTours and tours_list %}
+            ,
+            {
+              "@type": "ItemList",
+              "@id": "https://arezoosafar.com{% if city %}{% url 'city-tours' city.slug city.id %}{% elif country %}{% url 'all-tour-country' country.slug country.id %}{% elif category %}{% url 'tour-category-detail' category.slug %}{% else %}/all-tour{% endif %}#tour-list",
+              "name": "{% if city %}لیست تورهای {{ city.Name|escapejs }}{% elif country %}لیست تورهای {{ country.TitleC|escapejs }}{% elif category %}لیست {{ category.name|escapejs }}{% else %}لیست تورهای اقساطی{% endif %}",
+              "description": "{% if city %}لیست تورهای {{ city.Name|escapejs }} در آرزوی سفر پارسیان.{% elif country %}لیست تورهای {{ country.TitleC|escapejs }} در آرزوی سفر پارسیان.{% elif category %}لیست تورهای مربوط به {{ category.name|escapejs }} در آرزوی سفر پارسیان.{% else %}لیست آخرین تورهای اقساطی و خارجی آرزوی سفر پارسیان.{% endif %}",
+              "itemListOrder": "https://schema.org/ItemListOrderAscending",
+              "numberOfItems": {{ tours_list|length }},
+              "itemListElement": [
+                {% for tours, packages, cities, dates in pubTours %}
                 {
-                    "@id": "https://arezoosafar.com/all-tour#faq-question-{{forloop.counter}}"
+                  "@type": "ListItem",
+                  "position": {{ forloop.counter }},
+                  "url": "https://arezoosafar.com{% url 'tour-detail' tours.id tours.Slug %}",
+                  "item": {
+                    "@type": "TouristTrip",
+                    "@id": "https://arezoosafar.com{% url 'tour-detail' tours.id tours.Slug %}#trip",
+                    "name": "{{ tours.Title|escapejs }}",
+                    "url": "https://arezoosafar.com{% url 'tour-detail' tours.id tours.Slug %}",
+                    "image": "{% if tours.TourImage %}https://arezoosafar.com{{ tours.TourImage.url }}{% else %}https://arezoosafar.com/static/asset/css/images/No_Image_Available.jpg{% endif %}",
+                    "description": "{{ tours.Title|escapejs }}؛ {{ tours.NightCount }} شب و {{ tours.DayCount }} روز؛ تاریخ شروع {{ tours.StartDate|to_jalali:'%Y/%m/%d' }}{% if packages.0.DoubleBedPrice %}؛ شروع قیمت از {{ packages.0.DoubleBedPrice|intcomma }} {{ packages.0.Pcry|escapejs }}{% endif %}{% if packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %} + {{ packages.0.DollerPrice|intcomma }} {% if packages.0.fr_Pcry %}{{ packages.0.fr_Pcry|escapejs }}{% else %}دلار{% endif %}{% endif %}{% if not packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %} + {{ packages.0.DoubleBedPrice_doller|intcomma }} {% if packages.0.fr_Pcry %}{{ packages.0.fr_Pcry|escapejs }}{% else %}دلار{% endif %}{% endif %}{% if packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %} + {{ packages.0.DoubleBedPrice_doller|intcomma }} {% if packages.0.fr_Pcry %}{{ packages.0.fr_Pcry|escapejs }}{% else %}دلار{% endif %}{% endif %}.",
+{% if packages.0.DoubleBedPrice %}
+                    {% comment %}
+                        واحد پول هر پکیج می‌تواند تومان، دلار یا یورو باشد (Package.Pcry).
+                        اگر برای همه IRR بگذاریم، توری که ۱۱۹۰ دلار است به گوگل
+                        ۱۱۹۰ ریال معرفی می‌شود.
+                    {% endcomment %}
+                    "offers": {
+                      "@type": "Offer",
+                      "price": "{{ packages.0.DoubleBedPrice }}",
+                      "priceCurrency": "{% if 'دلار' in packages.0.Pcry.Title %}USD{% elif 'یورو' in packages.0.Pcry.Title %}EUR{% else %}IRR{% endif %}",
+                      "availability": "https://schema.org/InStock",
+                      "url": "https://arezoosafar.com{% url 'tour-detail' tours.id tours.Slug %}",
+                      "seller": {
+                        "@id": "https://arezoosafar.com/#organization"
+                      }
+                    },
+{% endif %}
+                    "provider": {
+                      "@id": "https://arezoosafar.com/#organization"
+                    },
+                    "touristType": "گردشگران ایرانی",
+                    "itinerary": {
+                      "@type": "ItemList",
+                      "itemListElement": [
+                        {
+                          "@type": "ListItem",
+                          "position": 1,
+                          "item": {
+                            "@type": "City",
+                            "name": "{% if tours.Tcity %}{{ tours.Tcity.Name|escapejs }}{% elif city %}{{ city.Name|escapejs }}{% else %}{{ tours.Tcountry.TitleC|escapejs }}{% endif %}"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-            ],
-            "inLanguage": "fa-IR",
-            "potentialAction": [
-                {
-                    "@type": "ReadAction",
-                    "target": [
-                        "https://arezoosafar.com/all-tour"
-                    ]
-                }
-            ]
-        },
-        {
-            "@type": "ImageObject",
-            "inLanguage": "fa-IR",
-            "@id": "https://arezoosafar.com/all-tour#primaryimage",
-            "url": "https://arezoosafar.com/all-tour",
-            "contentUrl": "https://arezoosafar.com/static/asset/css/images/world-map.png",
-            "width": 387,
-            "height": 192
-        },
-        {
-            "@type": "BreadcrumbList",
-            "@id": "https://arezoosafar.com/all-tour#breadcrumb",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
-                    "item": "https://arezoosafar.com/"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": " تور اقساطی بدون ضامن | خرید تور قسطی12 ماهه✈️ ! ",
-                    "item": "https://arezoosafar.com/all-tour"
-                }
-            ]
-        },
-        {
-            "@type": "WebSite",
-            "@id": "https://arezoosafar.com/#website",
-            "url": "https://arezoosafar.com/",
-            "name": " آژانس مسافرتی و گردشگری آرزوی سفر پارسیان (کارگزار رسمی تور روسیه)",
-            "description": "شرکت آرزوی سفر پارسیان برگزار کننده  تور ارزان قیمت خارجی به صورت نقد و اقساط | مجری تور روسیه و کارگزار تور تایلند",
-            "publisher": {
-                "@id": "https://arezoosafar.com/#organization"
+                {% endfor %}
+              ]
             }
-        },
-        {% for q in all_faqs %}
-        {
-            "@type": "Question",
-            "@id": "https://arezoosafar.com/all-tour#faq-question-{{forloop.counter}}",
-            "position": {{forloop.counter}},
-            "url": "https://arezoosafar.com/all-tour#faq-question-{{forloop.counter}}",
-            {% if q.question %}
-            "name": "{{ q.question }}",                   
-            {% else %}
-            "name": "{{ q.Question }}",                    
             {% endif %}
-            "answerCount": {{forloop.counter}},
-            "acceptedAnswer": {
-                "@type": "Answer",
-                {% if q.answer %}
-                "text": "{{ q.answer|safe }}",                
-                {% else %}
-                "text": "{{ q.Answer|safe }}",               
-                {% endif %}
-                "inLanguage": "fa-IR"
-            },
-            "inLanguage": "fa-IR"
-        }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-        ]
-        {% endif %}
+          ]
         }
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script>    
-    <script>
-        window.dataLayer = window.dataLayer || [];
 
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'G-35DTMEQBTC');
-    </script>
-    {% include 'ui/base/head.html' %}
+    {% include 'ui/base/head.html' with skip_base_meta=1 skip_material_icons=1 skip_fontawesome=1 delay_third_party=1 %}
+    {% if not country and not city %}<link rel="preload" as="image" href="/static/asset/css/images/world-map.webp" fetchpriority="high" media="(min-width: 992px)">{% endif %}
+    <link href="{% static 'assets/css/tour-listing-modern.css' %}?v=15" rel="stylesheet">
     {% if city.tltitle %}
         <title> {{ city.tltitle }} </title>
     {% elif country.tltitle %}
         <title> {{ country.tltitle }} </title>
+    {% elif category.meta_title %}
+        <title> {{ category.meta_title }} </title>
     {% else %}
         <title> تور اقساطی بدون ضامن | خرید تور قسطی12 ماهه✈️ ! </title>
     {% endif %}
+    <noscript><style>.owl-dest-city,.owl-dest{display:flex !important;flex-wrap:nowrap;overflow-x:auto;gap:12px;padding:10px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}.owl-dest-city::-webkit-scrollbar,.owl-dest::-webkit-scrollbar{display:none}.owl-dest-city>div,.owl-dest>div{flex:0 0 144px;width:90px;overflow:hidden;text-align:center}.owl-dest>div img{width:84px;height:84px;object-fit:contain;display:block;margin:0 auto}</style></noscript>
 
 </head>
 <body>
 {% include 'ui/base/header.html' %}
 <main>
-{% if country.id == 4 %}
+{% comment %} {% if country.id == 4 %}
 <div class="col-sm-12 d-lg-none d-sm-block">
     <a href="https://arezoosafar.com/visa/request" class="visa-link-mobile">درخواست ویزای آنلاین روسیه</a>
 </div>
-{% endif %}
+{% endif %} {% endcomment %}
 {% if country.id == 8 %}
 <div class="col-sm-12 d-lg-none d-sm-block">
     <a href="https://arezoosafar.com/visa/request" class="visa-link-mobile">درخواست ویزای آنلاین تایلند</a>
@@ -440,7 +436,7 @@
 {% endif %}
 <div class="warp">
     {% csrf_token %}
-    {% if cities or countries %}
+    {% if cities or countries or country %}
         <section class="destinaton_selector">
             <div class="container">
                 {% if not category %}
@@ -451,27 +447,38 @@
                                     <img class="country_main_image" src="{{ country.country_iamge.url }}" alt="تورهای {{ country.TitleC }}" fetchpriority="high" loading="eager" decoding="async" width="387" height="192">
                                 {% endif %}
                             {% else %}
-                                <img loading="lazy" class="country_main_image d-sm-none d-lg-block" src="/static/asset/css/images/world-map.png">
+                                <img class="country_main_image d-sm-none d-lg-block" src="/static/asset/css/images/world-map.webp" alt="نقشه مقاصد تور آرزوی سفر" width="524" height="261" fetchpriority="high" decoding="async">
                             {% endif %}
                         </div>
                         <div class="col-sm-12 col-lg-8">
-                            {% if not cities %}
+                            {% if not cities and not country %}
                                 <h1 class="blog_sec_title">تور اقساطی</h1>
                             {% else %}
                                 <h1 class="blog_sec_title"> تور
                                     {{ country.TitleC }}
                                     </h1>
                             {% endif %}
-                            {% if not cities %}
+                            {% if not cities and not country %}
                                 <p class="spacial_tour_subtitle_">
                                     کشور و شهر مورد نظرت رو انتخاب کن و تورهاش رو ببین
                                 </p>
                             {% else %}
-                                <p class="spacial_tour_subtitle_">
+                                {% comment %} <p class="spacial_tour_subtitle_">
                                     کدوم شهر از
                                     {{ country.TitleC }}
                                     میخوای بری ؟
-                                </p>
+                                </p> {% endcomment %}
+                                <nav class="tour-breadcrumb-ui" aria-label="breadcrumb">
+                                    <a href="/" class="breadcrumb-home-link">
+                                        <img src="https://arezoosafar.com/media/favicon-60x60.png" width="20" height="20" alt="" loading="lazy">
+                                        <span>آرزوی سفر</span>
+                                    </a>
+                                    <span class="breadcrumb-separator">&gt;</span>
+                                    <a href="/all-tour">تور</a>
+                                    <span class="breadcrumb-separator">&gt;</span>
+                                    <span>تور {{ country.TitleC }}</span>
+                                </nav>    
+                    
                             {% endif %}
                             <div class="row">
                                 {% if cities %}
@@ -496,7 +503,7 @@
                                     {% endfor %}
                                     </div>
                                 {% endif %}
-                                {% if not cities %}
+                                {% if not cities and not country %}
                                     {% if not city %}
                                         <div class="owl-dest owl-carousel owl-theme">
                                         {% for i in spacialDest_tour %}
@@ -506,7 +513,7 @@
                                                 {% else %}
                                                     <a href="{% url 'city-tours' i.city.slug i.city.id %}">{% endif %}
                                                 <div class="pdest_image">
-                                                    <img loading="lazy" src="{{ i.tourpage_icon.url }}">
+                                                    <img loading="lazy" decoding="async" src="{% img_url_at i.tourpage_icon 200 %}" alt="" width="92" height="89">
                                                 </div>
                                                 <div class="pdest_name">
                                                     <p>تور
@@ -541,11 +548,11 @@
                                 <div class="row section-box">
                                     <div class="col-sm-4 col-lg-4">
                                         <div class="icon-box">
-                                            <img loading="lazy" class="icon-img" src="/media/installment/1.png">
+                                            <img loading="lazy" decoding="async" class="icon-img" src="/media/installment/1.png" alt="" width="94" height="94">
                                         </div>
                                     </div>
                                     <div class="col-sm-8 col-lg-8 no-padding">
-                                        <h4 class="section-heading">بدون نیاز به ضامن</h4>
+                                        <h3 class="section-heading">بدون نیاز به ضامن</h3>
                                         <p class="section-desc">تنها با داشتن چک صیادی بدون نیاز به ضامن</p>
                                     </div>
                                 </div>
@@ -554,11 +561,11 @@
                                 <div class="row section-box">
                                     <div class="col-sm-4 col-lg-4">
                                         <div class="icon-box">
-                                            <img loading="lazy" class="icon-img" src="/media/installment/2.png">
+                                            <img loading="lazy" decoding="async" class="icon-img" src="/media/installment/2.png" alt="" width="94" height="94">
                                         </div>
                                     </div>
                                     <div class="col-sm-8 col-lg-8 no-padding">
-                                        <h4 class="section-heading">اقساط بلند مدت</h4>
+                                        <h3 class="section-heading">اقساط بلند مدت</h3>
                                         <p class="section-desc">باز پرداخت اقساط 2 تا 12 ماهه</p>
                                     </div>
                                 </div>
@@ -567,11 +574,11 @@
                                 <div class="row section-box">
                                     <div class="col-sm-4 col-lg-4">
                                         <div class="icon-box">
-                                            <img loading="lazy" class="icon-img" src="/media/installment/3.png">
+                                            <img loading="lazy" decoding="async" class="icon-img" src="/media/installment/3.png" alt="" width="94" height="94">
                                         </div>
                                     </div>
                                     <div class="col-sm-8 col-lg-8 no-padding">
-                                        <h4 class="section-heading">دریافت آسان </h4>
+                                        <h3 class="section-heading">دریافت آسان </h3>
                                         <p class="section-desc">فرایند خرید آسان و بی دردسر</p>
                                     </div>
                                 </div>
@@ -585,69 +592,132 @@
     <section class="tour_list_page
         {% if not cities or not countries %}margin_top{% endif %}
         {% if origins %}origin_top{% endif %}">
-        <div class="container">
+        <div class="container tour-listing-container">
             {% if city %}
                 <div class="row">
                     <div class="col-lg-12" style="margin-top: 90px;">
                         {% if city.cityImg %}
-                            <img loading="lazy" class="city-full-img" src="{{ city.cityImg.url }}"   alt="تور {{ city.Name }}">
+                            <img fetchpriority="high" class="city-full-img" src="{{ city.cityImg.url }}"   alt="تور {{ city.Name }}" loading="lazy" decoding="async">
                         {% endif %}
                     </div>
                 </div>
             {% endif %}
             <div class="row">
                 <div class="col-lg-12">
-                    {% if city %}
-                        <h1 class="blog_sec_title" style="margin-bottom: 30px;padding-right: 0;">تور
-                           {{ city.Name }}</h1>
-                    {% elif country %}
-                        <h2 class="blog_sec_title" style="margin-bottom: 30px;padding-right: 0;">لیست آخرین
-                            تورهای {{ country.TitleC }}</h2>
-                    {% elif category %}
-                        <h2 class="blog_sec_title" style="margin-bottom: 30px;padding-right: 0;">لیست آخرین
-                            تورهای {{ category_title }}</h2>
-                    {% else %}
-                        <h3 class="blog_sec_title" style="margin-bottom: 30px;padding-right: 0;">لیست آخرین تورهای
-                            اقساطی</h3>
+
+                    {% if not country %}
+                    <div class="tour-title-breadcrumb-row">
+                        
+                        <div class="tour-page-title-box">
+                            {% if city %}
+                                <h1 class="blog_sec_title tour-page-title">تور {{ city.Name }}</h1>
+                            {% comment %} {% elif country %} 
+                                 <h2 class="blog_sec_title tour-page-title">لیست آخرین تورهای {{ country.TitleC }}</h2>  {% endcomment %}
+                            {% elif category %}
+                                <h1 class="blog_sec_title tour-page-title">{{ category_title }}</h1>
+                            {% else %}
+                                <h3 class="blog_sec_title tour-page-title">لیست آخرین تورهای اقساطی</h3>
+                            {% endif %}
+                        </div>
+                        
+                        {% if city %}
+                            <nav class="tour-breadcrumb-ui" aria-label="breadcrumb">
+                                <a href="/" class="breadcrumb-home-link">
+                                    <img src="https://arezoosafar.com/media/favicon-60x60.png" width="20" height="20" alt="" loading="lazy">
+                                    <span>آرزوی سفر</span>
+                                </a>
+                                <span class="breadcrumb-separator">&gt;</span>
+                                <a href="/all-tour">تور</a>
+                                <span class="breadcrumb-separator">&gt;</span>
+                                <a href="{% url 'all-tour-country' city.CountryName.slug city.CountryName.id %}">تور {{ city.CountryName.TitleC }}</a>
+                                <span class="breadcrumb-separator">&gt;</span>
+                                <span>تور {{ city.Name }}</span>
+                            </nav>
+                        {% comment %} {% elif country %}
+                            <nav class="tour-breadcrumb-ui" aria-label="breadcrumb">
+                                <a href="/" class="breadcrumb-home-link">
+                                    <img src="https://arezoosafar.com/media/favicon-60x60.png" width="20" height="20" alt="" loading="lazy">
+                                    <span>آرزوی سفر</span>
+                                </a>
+                                <span class="breadcrumb-separator">&gt;</span>
+                                <a href="/all-tour">تور</a>
+                                <span class="breadcrumb-separator">&gt;</span>
+                                <span>تور {{ country.TitleC }}</span>
+                            </nav> {% endcomment %}
+                        
+                        {% elif category %}
+                            <nav class="tour-breadcrumb-ui" aria-label="breadcrumb">
+                                <a href="/" class="breadcrumb-home-link">
+                                    <img src="https://arezoosafar.com/media/favicon-60x60.png" width="20" height="20" alt="" loading="lazy">
+                                    <span>آرزوی سفر</span>
+                                </a>
+                        
+                                <span class="breadcrumb-separator">&gt;</span>
+                        
+                                <a href="/all-tour">تور</a>
+                        
+                                {% if category_country %}
+                                    <span class="breadcrumb-separator">&gt;</span>
+                                    <a href="{% url 'all-tour-country' category_country.slug category_country.id %}">
+                                        تور {{ category_country.TitleC }}
+                                    </a>
+                                {% endif %}
+                        
+                                {% if category_city %}
+                                    <span class="breadcrumb-separator">&gt;</span>
+                                    <a href="{% url 'city-tours' category_city.slug category_city.id %}">
+                                        تور {{ category_city.Name }}
+                                    </a>
+                                {% endif %}
+                        
+                                <span class="breadcrumb-separator">&gt;</span>
+                                <span>{{ category.name }}</span>
+                            </nav>
+                        {% elif not country and not city and not category %}
+                            <nav class="tour-breadcrumb-ui" aria-label="breadcrumb">
+                                <a href="/" class="breadcrumb-home-link">
+                                    <img src="https://arezoosafar.com/media/favicon-60x60.png" width="20" height="20" alt="" loading="lazy">
+                                    <span>آرزوی سفر</span>
+                                </a>
+                                <span class="breadcrumb-separator">&gt;</span>
+                                <span>تور</span>
+                            </nav>
+                        {% endif %}
+                    </div>
                     {% endif %}
-                    <div class="row">
-                        <div class="order-sm-last col-lg-3 order-lg-first">
+                    <div class="row tour-listing-layout">
+                        <div class="order-sm-last col-lg-3 order-lg-first tour-listing-sidebar">
                             <div id="sidebar" class="sticky_menu">
                                 <!-- Media -->
                                 {% if media_list %}
+                                <div class="sidebar-audio-card">
                                     {% for media in media_list %}
                                         <div class="media-item" data-src="{{ media.file.url }}" data-type="{{ media.media_type }}" data-title="{{ media.title }}"></div>
-                                        <div class="sidebar-audio-container">
-                                            <div class="accordion">
-                                                <p class="audio-accordion-header">{{ media.title }}</p>
-                                                <div class="audio-content-wrapper">
-                                                    {% if city and city.cityImg %}
-                                                        <img class="audio-city-image" src="{{ city.cityImg.url }}" alt="تور {{ city.Name }}" loading="lazy">
-                                                    {% elif country and country.country_iamge %}
-                                                        <img class="audio-city-image" src="{{ country.country_iamge.url }}" alt="تور {{ country.Name }}" loading="lazy">
-                                                    {% endif %}
-                                                    <div class="audio-wave-box">
-                                                        <img class="audio-wave-img" src="/media/media/tour_media/voicewave.svg" alt="voice wave" loading="lazy">
-                                                        <button class="audio-play-btn" data-audio-url="{{ media.file.url }}" data-audio-title="{{ media.title }}">
-                                                            <i class="fa fa-play"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                        <div class="audio-row">
+                                            {% if media_list|length == 1 %}
+                                                {% if media.thumbnail %}
+                                                    <img class="audio-row-thumb" src="{{ media.thumbnail.url }}" alt="{{ media.title }}" loading="lazy">
+                                                {% elif city and city.cityImg %}
+                                                    <img class="audio-row-thumb" src="{{ city.cityImg.url }}" alt="تور {{ city.Name }}" loading="lazy">
+                                                {% elif country and country.country_iamge %}
+                                                    <img class="audio-row-thumb" src="{{ country.country_iamge.url }}" alt="تور {{ country.Name }}" loading="lazy">
+                                                {% endif %}
+                                            {% endif %}
+                                            <span class="audio-row-title">{{ media.title }}</span>
+                                            <div class="audio-row-wave">
+                                                <img class="audio-wave-img" src="/media/media/tour_media/voicewave.svg" alt="" loading="lazy">
+                                                <button class="audio-play-btn" data-audio-url="{{ media.file.url }}" data-audio-title="{{ media.title }}" aria-label="پخش {{ media.title }}">
+                                                    <svg class="fa fa-play" style="width:1em;height:1em;vertical-align:-0.125em" fill="currentColor" viewBox="0 0 384 512" aria-hidden="true"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+                                                </button>
                                             </div>
                                         </div>
+                                        {% if not forloop.last %}<div class="audio-row-divider"></div>{% endif %}
                                     {% endfor %}
+                                </div>
                                 {% endif %}
 
                                 <div class="contact-banner">
-                                    <p class="reseve-title">
-                                        دریافت مشاوره و رزرو تور
-                                    </p>
-                                    <p class="reseve-phone">
-                                        021-45128
-                                    </p>
-                                    <p class="reseve-desc">
-                                        کارشناسان ما پاسخگوی شما خواهند بود
-                                    </p>
+    {% include 'ui/base/contact-banner.html' %}
                                 </div>
                                 <div class="sidebar-container">
                                     <div class="accordion" id="accordionExample">
@@ -663,17 +733,17 @@
                                                  aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                                 <div class="accordion-body filter-side">
                                                     <div class="range-input">
-                                                        <div class="range_container">
+                                                        <div class="range_container" >
                                                             <div class="sliders_control">
                                                                 <input id="toSlider" onchange="SidebarFilter()"
-                                                                       type="range" value="100000000"
+                                                                       type="range" value="300000000"
                                                                        min="0"
-                                                                       max="100000000"
+                                                                       max="300000000"
                                                                        aria-label="حداکثر قیمت"/>
                                                                 <input id="fromSlider" onchange="SidebarFilter()"
                                                                        type="range" value="0"
                                                                        min="5000000"
-                                                                       max="100000000"
+                                                                       max="300000000"
                                                                        aria-label="حداقل قیمت"/>
                                                                 <div class="row label-box">
                                                                     <div class="col-sm-6 col-lg-6 no-padding right-label">
@@ -707,7 +777,7 @@
                                         </div>
                                         {% if countries %}
                                             <div class="accordion-item">
-                                                <p class="accordion-header" id="headingTwo">
+                                                <p class="accordion-header" id="headingCountry">
                                                     <button class="accordion-button collapsed" type="button"
                                                             data-bs-toggle="collapse" data-bs-target="#collapseCountry"
                                                             aria-expanded="false" aria-controls="collapseCountry">
@@ -715,7 +785,7 @@
                                                     </button>
                                                 </p>
                                                 <div id="collapseCountry" class="accordion-collapse collapse"
-                                                     aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                     aria-labelledby="headingCountry" data-bs-parent="#accordionExample">
                                                     <div class="accordion-body filter-side">
                                                         {% for countries, countries_tours in countries %}
                                                             <div class="checkbox-city">
@@ -805,7 +875,7 @@
                                                                                      class="city-checkbox"
                                                                                      type="checkbox"
                                                                                      data-rate="3"></span>
-                                                        <img loading="lazy" class="rating-hotel" src="/media/rating/rating-3.png"   alt="هتل ۳ ستاره">
+                                                        <img loading="lazy" decoding="async" width="90" height="18" class="rating-hotel" src="/media/rating/rating-3.png" alt="هتل 3 ستاره">
                                                     </div>
                                                     <div class="checkbox-city">
                                                     <span class="input-check"><input onclick="SidebarFilter()"
@@ -813,7 +883,7 @@
                                                                                      class="city-checkbox"
                                                                                      type="checkbox"
                                                                                      data-rate="4"></span>
-                                                        <img loading="lazy" class="rating-hotel" src="/media/rating/rating-4.png" alt="هتل ۴ ستاره">
+                                                        <img loading="lazy" decoding="async" width="90" height="18" class="rating-hotel" src="/media/rating/rating-4.png" alt="هتل ۴ ستاره">
                                                     </div>
                                                     <div class="checkbox-city">
                                                     <span class="input-check"><input onclick="SidebarFilter()"
@@ -821,13 +891,13 @@
                                                                                      class="city-checkbox"
                                                                                      type="checkbox"
                                                                                      data-rate="5"></span>
-                                                        <img loading="lazy" class="rating-hotel" src="/media/rating/rating-5.png" alt="هتل ۵ ستاره">
+                                                        <img loading="lazy" decoding="async" width="90" height="18" class="rating-hotel" src="/media/rating/rating-5.png" alt="هتل ۵ ستاره">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="accordion-item">
-                                            <p class="accordion-header" id="headingThree">
+                                            <p class="accordion-header" id="headingFour">
                                                 <button class="accordion-button collapsed" type="button"
                                                         data-bs-toggle="collapse" data-bs-target="#collapsefour"
                                                         aria-expanded="false" aria-controls="collapsefour">
@@ -835,7 +905,7 @@
                                                 </button>
                                             </p>
                                             <div id="collapsefour" class="accordion-collapse collapse"
-                                                 aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                 aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                                 <div class="accordion-body filter-side">
                                                     <div class="trip-period">
                                                         <input onchange="SidebarFilter()" id="day-Count" type="number"
@@ -845,7 +915,7 @@
                                             </div>
                                         </div>
                                         <div class="accordion-item">
-                                            <p class="accordion-header" id="headingThree">
+                                            <p class="accordion-header" id="headingFive">
                                                 <button class="accordion-button collapsed" type="button"
                                                         data-bs-toggle="collapse" data-bs-target="#collapsefive"
                                                         aria-expanded="false" aria-controls="collapsefive">
@@ -853,7 +923,7 @@
                                                 </button>
                                             </p>
                                             <div id="collapsefive" class="accordion-collapse collapse"
-                                                 aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                 aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                                                 <div class="accordion-body filter-side">
                                                     {% for airline in airlines %}
                                                         <div class="checkbox-city">
@@ -872,23 +942,77 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-9 no-padding">
-                            <div id="all-tours" class="row">
-
+                        <div class="col-lg-9 no-padding tour-listing-results">
+                            <div class="sort-bar" aria-label="مرتب سازی تورها">
+                                <button class="col-lg-4 sort-btn" data-sort="price" onclick="setSort(this)">
+                                    <svg class="material-icons sort-field-icon" style="width:1em;height:1em;vertical-align:-0.125em" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.41 11.58l-9-9A2 2 0 0011 2H4a2 2 0 00-2 2v7a2 2 0 00.59 1.42l9 9a2 2 0 002.82 0l7-7a2 2 0 000-2.84zM6.5 8A1.5 1.5 0 118 6.5 1.5 1.5 0 016.5 8z"/></svg>
+                                    <span>قیمت</span>
+                                    <svg class="material-icons sort-icon sort-dir-icon left" style="width:1em;height:1em;vertical-align:-0.125em" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8z"/></svg>
+                                    <svg class="material-icons sort-icon left" style="width:1em;height:1em;vertical-align:-0.125em" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h6v-2H3zM3 6v2h18V6zm0 7h12v-2H3z"/></svg>
+                                </button>
+                                <button class="col-lg-4 sort-btn" data-sort="duration" onclick="setSort(this)">
+                                    <svg class="material-icons sort-field-icon" style="width:1em;height:1em;vertical-align:-0.125em" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                    <span>مدت سفر</span>
+                                    <svg class="material-icons sort-icon sort-dir-icon left" style="width:1em;height:1em;vertical-align:-0.125em" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8z"/></svg>
+                                    <svg class="material-icons sort-icon left" style="width:1em;height:1em;vertical-align:-0.125em" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h6v-2H3zM3 6v2h18V6zm0 7h12v-2H3z"/></svg>
+                                </button>
+                                <button class="col-lg-4 sort-btn" data-sort="date" onclick="setSort(this)">
+                                    <svg class="material-icons sort-field-icon" style="width:1em;height:1em;vertical-align:-0.125em" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 3h-1V1h-2v2H7V1H5v2H4a2 2 0 00-2 2v16a2 2 0 002 2h16a2 2 0 002-2V5a2 2 0 00-2-2zm0 18H4V9h16z"/></svg>
+                                    <span>تاریخ پرواز</span>
+                                    <svg class="material-icons sort-icon sort-dir-icon left" style="width:1em;height:1em;vertical-align:-0.125em" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8z"/></svg>
+                                    <svg class="material-icons sort-icon left" style="width:1em;height:1em;vertical-align:-0.125em" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h6v-2H3zM3 6v2h18V6zm0 7h12v-2H3z"/></svg>
+                                </button>
                             </div>
+                            <div id="all-tours" class="row">
+      
+                                {% if country and pubTours and tours_list %}
+                                    {% include 'ajax/layout/tour-list.html' %}
+                                {% elif city and pubTours and tours_list %}
+                                    {% include 'ajax/layout/tour-list.html' %}
+                                {% elif category and pubTours and tours_list %}
+                                    {% include 'ajax/layout/tour-list.html' %}    
+                                {% elif not country and not city and not category and pubTours and tours_list %}
+                                    {% include 'ajax/layout/tour-list.html' %}
+                                {% endif %}           
+                            </div>
+                            {% include 'ui/base/travelogue-banner.html' %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <div id="tourDatesModal" class="tdm-overlay" onclick="closeTourDatesModal()">
+        <div class="tdm-box" onclick="event.stopPropagation()">
+            <div class="tdm-header">
+                <span>تاریخ های برگزاری تور</span>
+                <button class="tdm-close" onclick="closeTourDatesModal()">✕</button>
+            </div>
+            <div class="tdm-grid" id="tourDatesContent"></div>
+        </div>
+    </div>
+    <script>
+    function openTourDatesModal(tourId) {
+        var c = document.getElementById('tourDatesContent');
+        c.innerHTML = '<p class="tdm-loading">در حال بارگذاری...</p>';
+        document.getElementById('tourDatesModal').style.display = 'flex';
+        fetch('/tour-dates/' + tourId)
+            .then(function(r){ return r.text(); })
+            .then(function(html){ c.innerHTML = html; });
+    }
+    function closeTourDatesModal() {
+        document.getElementById('tourDatesModal').style.display = 'none';
+    }
+    </script>    
+
     {% include 'ui/base/slagon.html' %}
     {% if  cities or not countries %}
         <section>
             <div class="container">
                 <div class="insta">
                     <div class="row">
-                        <div class="col-lg-2">
+                        {% comment %} <div class="col-lg-2">
                             <div class="insta-box">
                                 <div class="col-lg-12">
                                     <div class="insta-motion">
@@ -896,14 +1020,14 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> {% endcomment %}
                         <div class="col-lg-7">
                             <h3 class="about_title">
                                 معرفی تورهای جذاب و شگفت انگیـــز
                             </h3>
                             <p>با ما در اینستاگرام همراه شو تا از پیشنهادات لحظه آخری و تورهای جذاب مطلع بشی!</p>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="input-section">
                                 <div class="row">
                                     <div class="col-lg-12 t-center">
@@ -921,6 +1045,11 @@
                     </div>
                 </div>
             </div>
+        </section>
+    {% endif %}
+    {% if country %}
+        <section class="container">
+            {% include 'ui/base/tour-reviews.html' %}
         </section>
     {% endif %}
     {% include 'ui/base/faq.html' %}
@@ -942,7 +1071,7 @@
         var tour_id = '{{ Tour.id }}'
         var tour_slug = '{{ Tour.Slug }}'
         var tour_menu = '{{ Menu.slug }}'
-        var category_slug = '{{ category.slug }}'
+        var category_slug = '{{ category.slug|default:"" }}'
     </script>
     <script>
         function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
@@ -1038,9 +1167,23 @@
         toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
         fromInput.oninput = () => controlFromInput(fromSlider, fromInput, toInput, toSlider);
         toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
+
+        if (typeof updatePriceSliderMax === 'function') {
+            updatePriceSliderMax();
+        } else {
+            document.addEventListener('DOMContentLoaded', function() { updatePriceSliderMax(); });
+        }
+        var _allToursEl = document.getElementById('all-tours');
+        if (_allToursEl) {
+            new MutationObserver(function() { updatePriceSliderMax(); })
+                .observe(_allToursEl, { childList: true });
+        }
     </script>
 </div>
 </main>
-<script src="{% static 'assets/js/city-country-media.js' %}"></script>
+{% comment %} defer: لایت‌هاوس این را روی مسیر بحرانی می‌دید (۵۵۲ms). فقط
+openPlayer/closePlayer/seek را تعریف می‌کند که از onclick صدا زده می‌شوند،
+یعنی بعد از پارس شدن صفحه — پس تأخیر انداختنش رفتاری را عوض نمی‌کند. {% endcomment %}
+<script src="{% static 'assets/js/city-country-media.js' %}" defer></script>
 </body>
 </html>

@@ -1,7 +1,11 @@
+{% load responsive_img %}
 <div class="col-sm-12 col-lg-6 master_post m-b-20">
     <a style="height: 310px;" class="blog_post_index" href="/russia_visa">
         <div class="main-post-img">
-            <img class="post_image_index" src="{{visa_post.Image.url }}">
+            <img class="post_image_index" src="{{visa_post.Image.url }}"
+                 srcset="{% srcset_for visa_post.Image "480,768,1200" %}"
+                 sizes="(max-width: 767px) 100vw, 50vw"
+                 alt="{{ visa_post.Title }}" width="600" height="310">
         </div>
         <div class="post_title_index">
             <p class="_index_title">
@@ -21,7 +25,10 @@
                     <a class="blog_post_index mini_list"
                        href="{% url 'post-detail' post.id post.slug %}">
                         <div class="">
-                            <img loading="lazy" class="post_image_index" src="{{ post.Image.url }}">
+                            <img loading="lazy" class="post_image_index" src="{{ post.Image.url }}"
+                                 srcset="{% srcset_for post.Image "320,480,768" %}"
+                                 sizes="(max-width: 767px) 50vw, 25vw"
+                                 alt="{{ post.Title }}" width="300" height="150">
                         </div>
                         <div class="post_title_index">
                             <p class="_index_title mini_show">

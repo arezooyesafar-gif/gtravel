@@ -162,15 +162,15 @@
                             <div class="row bottom_section">
                                 <div class="col-lg-8 tour_top_right price_section">
                                     {% if packages.0.DollerPrice %}
-                                        <p class="main_price_">{{ packages.0.DoubleBedPrice | intcomma:False }}
+                                        <p class="main_price_">{{ packages.0.DoubleBedPrice | floatformat:0 | intcomma }}
                                             {% if packages.0.Pcry %}
                                                 {{ packages.0.Pcry }}
                                             {% endif %}
                                         </p>
                                         <p class="doller-price">
-                                            + {{ packages.0.DollerPrice | intcomma:False }}  </p>
+                                            + {{ packages.0.DollerPrice | floatformat:0 | intcomma }}  </p>
                                     {% else %}
-                                        <p class="singel-price">{{ packages.0.DoubleBedPrice | intcomma:False }}
+                                        <p class="singel-price">{{ packages.0.DoubleBedPrice | floatformat:0 | intcomma }}
                                             {% if packages.0.Pcry %}
                                                 {{ packages.0.Pcry }}
                                             {% endif %}

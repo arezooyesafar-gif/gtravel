@@ -34,6 +34,30 @@
                             <p class="label-text city_form">متن صفحه اقساط <span class="required">*</span></p>
                             {{ forms.about_text }}
                         </div>
+                        <div class="col-lg-12" style="margin-top:28px;">
+                            <p class="label-text city_form">لینک ثبت نظر در گوگل</p>
+                            {{ forms.google_review_url }}
+                            <p class="text-muted" style="font-size:12px;margin-top:-12px;">
+                                از Google Business Profile ← Ask for reviews کپی کنید.
+                                خالی باشد، دکمهٔ «ثبت نظر در گوگل» نمایش داده نمی‌شود.
+                            </p>
+                        </div>
+                        <div class="col-lg-6" style="margin-top:28px;">
+                            <p class="label-text city_form">شناسهٔ مکان در گوگل (Place ID)</p>
+                            {{ forms.google_place_id }}
+                        </div>
+                        <div class="col-lg-6" style="margin-top:28px;">
+                            <p class="label-text city_form">کلید Places API</p>
+                            {{ forms.google_places_key }}
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text city_form">پراکسی درخواست به گوگل (اختیاری)</p>
+                            {{ forms.google_api_proxy }}
+                            <p class="text-muted" style="font-size:12px;margin-top:-12px;">
+                                این دو تا برای دکمهٔ «دریافت نظرها از گوگل» در صفحهٔ نظرات مشتریان لازم‌اند.
+                                پراکسی فقط وقتی لازم است که خود سرور به گوگل دسترسی نداشته باشد.
+                            </p>
+                        </div>
                         {{ forms.media }}
                     </div>
                 </div>

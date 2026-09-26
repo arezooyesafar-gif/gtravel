@@ -29,6 +29,8 @@ class TourMenuAdmin(admin.ModelAdmin):
 class PostCategoryAdmin(admin.ModelAdmin):
     list_display = ['CatName']
 
+class FooterAdmin(admin.ModelAdmin):
+    list_display = ['Address', 'Phone', 'dollar_rate']
 
 admin.site.register(Tour, TourAdmin)
 admin.site.register(AirLineData, AirLineAdmin)

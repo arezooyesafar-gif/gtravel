@@ -144,6 +144,14 @@ class CreateHotelForm(forms.ModelForm):
             'class': 'text-input',
         })
 
+    def clean(self):
+        cleaned_data = super().clean()
+        for name in ('HotelService', 'RoomService', 'Service', 'intertainment'):
+            values = cleaned_data.get(name) or []
+            paid = {value[:-len(PAID_SUFFIX)] for value in values if value.endswith(PAID_SUFFIX)}
+            cleaned_data[name] = [value for value in values if value not in paid]
+        return cleaned_data
+
     class Meta:
         model = Hotel_Data
         exclude = ['Creator']

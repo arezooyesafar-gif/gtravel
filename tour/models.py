@@ -1,3 +1,6 @@
+
+import secrets
+
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -30,6 +33,13 @@ RATING = [
 ]
 SERVICE = [
     ('OR','OR'),('BB','BB'),('HB','HB'),('FB','FB'),('ALL','ALL'),('U ALL','U ALL'),('max ALL','max ALL')
+]
+CITY_TRANSFER = [
+    ('', 'بدون ترانسفر'),
+    ('bus', 'اتوبوس'),
+    ('train', 'قطار'),
+    ('flight', 'پرواز داخلی'),
+    ('boat', 'قایق'),
 ]
 HOTEL_SERVICES = [
     ('پارکینگ', 'پارکینگ'), ('آسانسور', 'آسانسور'), ('شاتل', 'شاتل')
@@ -242,6 +252,8 @@ class Tour(models.Model):
     ShortDsc = RichTextUploadingField(max_length=6000, null=True, blank=True)
     documents = RichTextUploadingField(max_length=6000, null=True, blank=True)
     Description = RichTextUploadingField(max_length=10000, null=True, blank=True)
+    cancel_policy = RichTextUploadingField(null=True, blank=True, verbose_name='قوانین کنسلی')
+    about_tour = RichTextUploadingField(null=True, blank=True, verbose_name='درباره تور')
     Feature = models.BooleanField(default=False)
     Installment = models.BooleanField(default=False)
     Cash = models.BooleanField(default=False)
@@ -279,6 +291,7 @@ class Tour(models.Model):
         related_name='tours',
         verbose_name='دسته‌بندی‌های سفارشی'
     )
+    force_pub = models.BooleanField(default=False, verbose_name='نمایش تور تاریخ گذشته')
 
 
     def __str__(self):
@@ -321,7 +334,7 @@ class TourCity(models.Model):
 class CustomTourCategory(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
-    description = RichTextUploadingField(max_length=3000, null=True, blank=True)
+    description = RichTextUploadingField(max_length=35000, null=True, blank=True)
 
     parent = models.ForeignKey(
         'self',
@@ -343,7 +356,33 @@ class CustomTourCategory(models.Model):
     image = models.ImageField(upload_to='tour/category-images/%Y/%m/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+    meta_title = models.CharField(max_length=150, null=True, blank=True)
+    meta_keyword = models.CharField(max_length=150, null=True, blank=True)
+    meta_description = models.CharField(max_length=150, null=True, blank=True)
+    meta_robots = models.CharField(
+            max_length=50,
+            choices=ROBOTS_CHOICES,
+            default='INDEX,FOLLOW',
+            verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
+            help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
+    )
+    
+    def sync_locations(self):
+        tours = self.tours.select_related('Tcity', 'Tcountry')
+        cities = set()
+        countries = set()
 
+        for tour in tours:
+            if tour.Tcity_id:
+                cities.add(tour.Tcity_id)
+
+            if tour.Tcountry_id:
+                countries.add(tour.Tcountry_id)
+
+        self.cities.set(cities)
+        self.countries.set(countries)
+
+        
     class Meta:
         ordering = ['-created_at']
 
@@ -356,6 +395,11 @@ class CustomTourCategory(models.Model):
         if not self.slug:
             self.slug = slugify(self.name, allow_unicode=True)
         super().save(*args, **kwargs)
+
+class TourCategoryFAQ(models.Model):
+    category = models.ForeignKey(CustomTourCategory, on_delete=models.CASCADE, null=True, blank=True)
+    question = models.CharField(max_length=500, null=True, blank=True)
+    answer = RichTextUploadingField(max_length=5000, null=True, blank=True, config_name='col_lg_6')
 
 class CityCountryMedia(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name="city_media", null=True, blank=True )
@@ -388,6 +432,7 @@ class MainPackage(models.Model):
         verbose_name_plural = 'Main Package'
 
 class Package(models.Model):
+    is_sold_out = models.BooleanField(default=False, verbose_name='پر شده / موجود نیست')
     VIEW = [
         ('','انتخاب ویو'),
         ('land View','Land View'),
@@ -415,6 +460,15 @@ class Package(models.Model):
     M4hotel = models.ForeignKey(Hotel_Data, on_delete=models.CASCADE, null=True, blank=True, related_name='m4hotel')
     view_m4hotel = models.CharField(choices=VIEW, max_length=300, null=True, blank=True)
     service_m4hotel = models.CharField(choices=SERVICE, max_length=300, null=True, blank=True)
+    hotel_sold_out = models.BooleanField(default=False, verbose_name='تکمیل ظرفیت - هتل اول')
+    mhotel_sold_out = models.BooleanField(default=False, verbose_name='تکمیل ظرفیت - هتل دوم')
+    m1hotel_sold_out = models.BooleanField(default=False, verbose_name='تکمیل ظرفیت - هتل سوم')
+    m2hotel_sold_out = models.BooleanField(default=False, verbose_name='تکمیل ظرفیت - هتل چهارم')
+    m3hotel_sold_out = models.BooleanField(default=False, verbose_name='تکمیل ظرفیت - هتل پنجم')
+    transfer_mhotel = models.CharField(choices=CITY_TRANSFER, max_length=20, null=True, blank=True, verbose_name='ترانسفر تا هتل دوم')
+    transfer_m1hotel = models.CharField(choices=CITY_TRANSFER, max_length=20, null=True, blank=True, verbose_name='ترانسفر تا هتل سوم')
+    transfer_m2hotel = models.CharField(choices=CITY_TRANSFER, max_length=20, null=True, blank=True, verbose_name='ترانسفر تا هتل چهارم')
+    transfer_m3hotel = models.CharField(choices=CITY_TRANSFER, max_length=20, null=True, blank=True, verbose_name='ترانسفر تا هتل پنجم')
     DoubleBedPrice = models.IntegerField(default=0)
     SingleBedPrice = models.IntegerField(default=0)
     BabyWithBedPrice = models.IntegerField(default=0)
@@ -429,6 +483,15 @@ class Package(models.Model):
     Pcry = models.ForeignKey(Currency, on_delete=models.CASCADE, null=True, blank=True)
     fr_Pcry = models.ForeignKey(Currency, on_delete=models.CASCADE, null=True, blank=True, related_name="forign_prcy")
     view = models.CharField(choices=VIEW, max_length=300, null=True, blank=True)
+    exclusive_date_plan = models.ForeignKey('date_plan', on_delete=models.CASCADE, null=True, blank=True,
+                                             related_name='exclusive_packages',
+                                             verbose_name='مخصوص این تاریخ برگزاری (خالی یعنی برای همه تاریخ‌ها)')
+
+    @property
+    def is_toman(self):
+        if not self.Pcry_id:
+            return False
+        return 'تومان' in str(self.Pcry)
 
     def __str__(self):
         formated_price = "{:,.0f}".format(int(self.DoubleBedPrice))
@@ -445,16 +508,78 @@ class date_plan(models.Model):
         ('افزایش','افزایش'),
         ('کاهش','کاهش'),
     ]
+    CURRENCY = [
+        ('تومان', 'تومان'),
+        ('دلار', 'دلار'),
+    ]
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
-    price = models.IntegerField(default=0)
+    price = models.IntegerField(default=0, verbose_name='اختلاف قیمت ارز اول')
+    price_dollar = models.IntegerField(default=0, null=True, blank=True, verbose_name='اختلاف قیمت ارز دوم')
+    price_currency = models.CharField(choices=CURRENCY, max_length=10, default='تومان')
     price_type = models.CharField(choices=TYPE, max_length=300)
+    price_dollar_type = models.CharField(choices=TYPE, max_length=300, default='طبق پکیج اصلی', null=True, blank=True, verbose_name='نوع اختلاف ارز دوم')
+    infant_price = models.IntegerField(default=0, null=True, blank=True, verbose_name='افزایش قیمت نوزاد ارز اول')
+    infant_price_dollar = models.IntegerField(default=0, null=True, blank=True, verbose_name='افزایش قیمت نوزاد ارز دوم')
+
+    def __str__(self):
+        return f"{self.tour} ({self.start_date} - {self.end_date})"
+
+
+class DatePlanPackagePrice(models.Model):
+    date_plan = models.ForeignKey(date_plan, on_delete=models.CASCADE, related_name='package_prices')
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='date_plan_overrides')
+    DoubleBedPrice = models.IntegerField(default=0, verbose_name='قیمت اتاق دوتخته')
+    SingleBedPrice = models.IntegerField(default=0, verbose_name='قیمت اتاق یک تخته')
+    BabyWithBedPrice = models.IntegerField(default=0, verbose_name='قیمت کودک با تخت')
+    BabyWithoutBedPrice = models.IntegerField(default=0, verbose_name='قیمت کودک بدون تخت')
+    InfontPrice = models.IntegerField(default=0, verbose_name='قیمت نوزاد')
+    DoubleBedPrice_doller = models.IntegerField(default=0, verbose_name='قیمت اتاق دوتخته (ارز دوم)')
+    SingleBedPrice_doller = models.IntegerField(default=0, verbose_name='قیمت اتاق یک تخته (ارز دوم)')
+    BabyWithBedPrice_doller = models.IntegerField(default=0, verbose_name='قیمت کودک با تخت (ارز دوم)')
+    BabyWithoutBedPrice_doller = models.IntegerField(default=0, verbose_name='قیمت کودک بدون تخت (ارز دوم)')
+    InfontPrice_doller = models.IntegerField(default=0, verbose_name='قیمت نوزاد (ارز دوم)')
+    hotel_sold_out = models.BooleanField(default=False, verbose_name='تکمیل ظرفیت - هتل اول')
+    mhotel_sold_out = models.BooleanField(default=False, verbose_name='تکمیل ظرفیت - هتل دوم')
+    m1hotel_sold_out = models.BooleanField(default=False, verbose_name='تکمیل ظرفیت - هتل سوم')
+    m2hotel_sold_out = models.BooleanField(default=False, verbose_name='تکمیل ظرفیت - هتل چهارم')
+    m3hotel_sold_out = models.BooleanField(default=False, verbose_name='تکمیل ظرفیت - هتل پنجم')
+    is_hidden = models.BooleanField(default=False, verbose_name='عدم نمایش پکیج در این تاریخ')
+    hotel_override = models.ForeignKey(Hotel_Data, on_delete=models.SET_NULL, null=True, blank=True, related_name='date_override_hotel', verbose_name='جایگزینی هتل اول برای این تاریخ')
+    mhotel_override = models.ForeignKey(Hotel_Data, on_delete=models.SET_NULL, null=True, blank=True, related_name='date_override_mhotel', verbose_name='جایگزینی هتل دوم برای این تاریخ')
+    m1hotel_override = models.ForeignKey(Hotel_Data, on_delete=models.SET_NULL, null=True, blank=True, related_name='date_override_m1hotel', verbose_name='جایگزینی هتل سوم برای این تاریخ')
+    m2hotel_override = models.ForeignKey(Hotel_Data, on_delete=models.SET_NULL, null=True, blank=True, related_name='date_override_m2hotel', verbose_name='جایگزینی هتل چهارم برای این تاریخ')
+    m3hotel_override = models.ForeignKey(Hotel_Data, on_delete=models.SET_NULL, null=True, blank=True, related_name='date_override_m3hotel', verbose_name='جایگزینی هتل پنجم برای این تاریخ')
+    view_hotel = models.CharField(choices=Package.VIEW, max_length=300, null=True, blank=True, verbose_name='ویو هتل اول برای این تاریخ')
+    service_hotel = models.CharField(choices=SERVICE, max_length=300, null=True, blank=True, verbose_name='سرویس هتل اول برای این تاریخ')
+    view_mhotel = models.CharField(choices=Package.VIEW, max_length=300, null=True, blank=True, verbose_name='ویو هتل دوم برای این تاریخ')
+    service_mhotel = models.CharField(choices=SERVICE, max_length=300, null=True, blank=True, verbose_name='سرویس هتل دوم برای این تاریخ')
+    view_m1hotel = models.CharField(choices=Package.VIEW, max_length=300, null=True, blank=True, verbose_name='ویو هتل سوم برای این تاریخ')
+    service_m1hotel = models.CharField(choices=SERVICE, max_length=300, null=True, blank=True, verbose_name='سرویس هتل سوم برای این تاریخ')
+    view_m2hotel = models.CharField(choices=Package.VIEW, max_length=300, null=True, blank=True, verbose_name='ویو هتل چهارم برای این تاریخ')
+    service_m2hotel = models.CharField(choices=SERVICE, max_length=300, null=True, blank=True, verbose_name='سرویس هتل چهارم برای این تاریخ')
+    view_m3hotel = models.CharField(choices=Package.VIEW, max_length=300, null=True, blank=True, verbose_name='ویو هتل پنجم برای این تاریخ')
+    service_m3hotel = models.CharField(choices=SERVICE, max_length=300, null=True, blank=True, verbose_name='سرویس هتل پنجم برای این تاریخ')
+    main_pkg = models.ForeignKey(MainPackage, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='نوع پکیج برای این تاریخ')
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True, related_name='date_plan_price_currency', verbose_name='واحد پول برای این تاریخ')
+    foreign_currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True, related_name='date_plan_price_foreign_currency', verbose_name='واحد پول خارجی برای این تاریخ')
+    view = models.CharField(choices=Package.VIEW, max_length=300, null=True, blank=True, verbose_name='ویو کل پکیج برای این تاریخ')
+    doller_price = models.CharField(max_length=300, null=True, blank=True, verbose_name='قیمت ثابت دلاری برای این تاریخ')
+
+    def __str__(self):
+        return f"{self.date_plan} - {self.package.HotelName}"
+
+    class Meta:
+        unique_together = ('date_plan', 'package')
+        verbose_name = 'قیمت دستی هتل برای تاریخ'
+        verbose_name_plural = 'قیمت های دستی هتل برای تاریخ'
+
 
 class TripPlan(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
-    title = models.CharField(max_length=150)
-    plan_image = ResizedImageField(force_format='WEBP', quality=75, upload_to='media/trip-plan/main-images')
+    title = models.CharField(max_length=150, null=True, blank=True)
+    plan_image = ResizedImageField(force_format='WEBP', quality=75, upload_to='media/trip-plan/main-images', null=True, blank=True)
     location = models.CharField(max_length=150, null=True, blank=True)
     views = models.CharField(max_length=150, null=True, blank=True)
     services = models.CharField(max_length=150, null=True, blank=True)
@@ -470,6 +595,7 @@ class ContactUs(models.Model):
     LastName = models.CharField(max_length=300)
     Mobile = models.CharField(max_length=300)
     Message = models.TextField(max_length=2000)
+    CreatedAt = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.FirstName
@@ -525,6 +651,57 @@ class PMemories(models.Model):
         help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
     )
 
+class TourReview(models.Model):
+    """نظر مشتری دربارهٔ تورهای یک کشور.
+
+    نظرات گوگل مپ را نمی‌شود خودکار خواند: Places API حداکثر ۵ نظر می‌دهد،
+    اجازهٔ فیلتر کردن بر اساس تور را ندارد و از ایران هم در دسترس نیست. پس
+    نظر از گوگل کپی و اینجا ثبت می‌شود و کشورش مشخص می‌گردد تا در صفحهٔ
+    تور همان کشور دیده شود.
+    """
+    SOURCE_CHOICES = [
+        ('google', 'گوگل مپ'),
+        ('site', 'ثبت‌شده در سایت'),
+        ('instagram', 'اینستاگرام'),
+        ('other', 'سایر'),
+    ]
+    RATING_CHOICES = [(i, '%d ستاره' % i) for i in range(1, 6)]
+
+    author = models.CharField(max_length=150, verbose_name='نام نظردهنده')
+    rating = models.PositiveSmallIntegerField(
+        default=5, choices=RATING_CHOICES, verbose_name='امتیاز')
+    text = models.TextField(max_length=1500, verbose_name='متن نظر')
+    review_date = models.DateField(
+        null=True, blank=True, verbose_name='تاریخ نظر')
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, null=True, blank=True,
+        related_name='reviews', verbose_name='مربوط به تورهای کدام کشور')
+    source = models.CharField(
+        max_length=20, choices=SOURCE_CHOICES, default='google',
+        verbose_name='منبع نظر')
+    source_url = models.URLField(
+        max_length=500, null=True, blank=True,
+        verbose_name='لینک اصل نظر (اختیاری)')
+    publish = models.BooleanField(default=True, verbose_name='نمایش در سایت')
+    sort_order = models.IntegerField(
+        default=0, verbose_name='ترتیب نمایش (کوچک‌تر جلوتر)')
+    # شناسهٔ یکتای نظر در گوگل (places/X/reviews/Y) تا هر بار
+    # دریافت، نظرهای تکراری دوباره ثبت نشوند
+    external_id = models.CharField(
+        max_length=190, null=True, blank=True, db_index=True,
+        verbose_name='شناسهٔ نظر در گوگل')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['sort_order', '-review_date', '-created_at']
+        verbose_name = 'نظر مشتری'
+        verbose_name_plural = 'نظرات مشتریان'
+
+    def __str__(self):
+        where = self.country.TitleC if self.country else 'بدون کشور'
+        return '%s - %s (%d)' % (self.author, where, self.rating)
+
+
 class Subscribe(models.Model):
     Mobile = models.CharField(max_length=15)
 
@@ -542,8 +719,25 @@ class Footer(models.Model):
     Samandehi = models.CharField(max_length=200)
     Etehadieh = models.CharField(max_length=200)
     PsLaw = models.CharField(max_length=200)
+    dollar_rate = models.IntegerField(default=170000, verbose_name='نرخ دلار به تومان')
+
+class TourInterest(models.Model):
+    name = models.CharField(max_length=100)
+    family = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    page_type = models.CharField(max_length=20, blank=True)
+    page_slug = models.CharField(max_length=200, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} {self.family} - {self.phone}"
+
 
 class TourOrder(models.Model):
+    api_partner = models.ForeignKey(
+        'ApiPartner', on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='orders', verbose_name='ثبت‌شده از طریق آژانس (API)'
+    )
     OrderTime = models.DateTimeField(null=True, blank=True)
     OrderTour = models.ForeignKey(Tour, on_delete=models.CASCADE)
     Orderpackage = models.ForeignKey(Package, on_delete=models.CASCADE, null=True, blank=True)
@@ -628,3 +822,24 @@ class hotel_faq_city(models.Model):
     Cityfaq = models.ForeignKey("tour.City", on_delete=models.CASCADE, null=True, blank=True, related_name='faq_city')
     Question = models.CharField(max_length=500, null=True, blank=True)
     Answer = RichTextUploadingField(max_length=5000, null=True, blank=True, config_name='col_lg_6')
+
+class ApiPartner(models.Model):
+    name = models.CharField(max_length=200, verbose_name='نام آژانس / همکار')
+    api_key = models.CharField(max_length=64, unique=True, editable=False, verbose_name='کلید API')
+    is_active = models.BooleanField(default=True, verbose_name='فعال')
+    note = models.CharField(max_length=300, null=True, blank=True, verbose_name='توضیحات')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
+    last_used_at = models.DateTimeField(null=True, blank=True, verbose_name='آخرین استفاده')
+
+    def save(self, *args, **kwargs):
+        if not self.api_key:
+            self.api_key = secrets.token_hex(24)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'کلید دسترسی API تور'
+        verbose_name_plural = 'کلیدهای دسترسی API تور'
+

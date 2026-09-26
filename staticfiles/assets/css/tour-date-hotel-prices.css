@@ -1,0 +1,287 @@
+.hp-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.hp-card {
+    background: #fff;
+    border: 1px solid #e5e9f2;
+    border-radius: 12px;
+    padding: 18px 20px;
+}
+.hp-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f2f7;
+}
+.hp-hotel-name {
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0;
+    color: #364a63;
+}
+.hp-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #c12727;
+    background: #fdeeee;
+    padding: 5px 12px;
+    border-radius: 20px;
+}
+.hp-reset-all {
+    border: 1px solid #008cba;
+    background: #fff;
+    color: #008cba;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 8px 16px;
+}
+.hp-reset-all:hover {
+    background: #008cba;
+    color: #fff;
+}
+.hp-fields {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+}
+@media (max-width: 992px) {
+    .hp-fields { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+    .hp-fields { grid-template-columns: repeat(2, 1fr); }
+}
+.hp-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #8094ae;
+    margin: 0 0 6px;
+}
+.hp-input-wrap {
+    position: relative;
+    margin-bottom: 6px;
+}
+.hp-input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #dbdfea;
+    border-radius: 7px;
+    padding: 9px 54px 9px 10px;
+    font-size: 14px;
+    text-align: right;
+    color: #364a63;
+    background: #fff;
+}
+.hp-input:focus {
+    outline: none;
+    border-color: #6576ff;
+    box-shadow: 0 0 0 2px rgba(101, 118, 255, .12);
+}
+.hp-currency {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: #8094ae;
+    background: #f5f6fa;
+    padding: 2px 7px;
+    border-radius: 5px;
+    pointer-events: none;
+}
+.hp-input-sub {
+    font-size: 12px;
+    color: #6576ff;
+    padding: 6px 50px 6px 10px;
+    border-color: #eaecf7;
+}
+.hp-currency-sub {
+    color: #6576ff;
+    background: #eef0ff;
+}
+.hp-soldout-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed #f0f2f7;
+}
+.hp-soldout-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #c98a0a;
+    cursor: pointer;
+}
+.hp-soldout-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #f5a623;
+    cursor: pointer;
+}
+.hp-hidden-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #c12727;
+    cursor: pointer;
+}
+.hp-hidden-checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: #c12727;
+    cursor: pointer;
+}
+.hp-hotel-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed #f0f2f7;
+}
+.hp-hotel-field .hp-badge {
+    display: inline-flex;
+    padding: 2px 8px;
+    font-size: 11px;
+    margin-right: 6px;
+}
+.hp-hotel-select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #dbdfea;
+    border-radius: 7px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #364a63;
+    background: #fff;
+}
+.hp-hotel-field {
+    border: 1px solid #eef0f5;
+    border-radius: 10px;
+    padding: 10px;
+    background: #fff;
+}
+.hp-hidden-hotel-fields {
+    display: none;
+}
+.hp-hotel-field-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+/* اگه یه پکیج فقط یک هتل داشته باشه، اون هتل کل عرض ردیف رو بگیره و
+   ویو/سرویس به‌جای زیرش، کنارش (هم‌ردیف) بیاد */
+.hp-add-hotel-row .hp-hotel-field:only-child {
+    grid-column: 1 / -1;
+}
+.hp-add-hotel-row .hp-hotel-field:only-child .hp-hotel-field-controls {
+    flex-direction: row;
+    align-items: flex-start;
+}
+.hp-add-hotel-row .hp-hotel-field:only-child .hp-hotel-field-controls > select {
+    flex: 1 1 40%;
+}
+.hp-add-hotel-row .hp-hotel-field:only-child .hp-add-subfields {
+    flex: 1 1 60%;
+    margin-top: 0;
+}
+@media (max-width: 640px) {
+    .hp-add-hotel-row .hp-hotel-field:only-child .hp-hotel-field-controls {
+        flex-direction: column;
+    }
+}
+.hp-add-package-card {
+    border: 1.5px dashed #6576ff;
+    background: #f8f9ff;
+    padding: 14px 20px;
+}
+.hp-add-toggle {
+    width: 100%;
+    text-align: right;
+    border: none;
+    background: none;
+    padding: 4px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #6576ff;
+    cursor: pointer;
+}
+.hp-add-toggle:hover {
+    opacity: .8;
+}
+#hp-add-package-body {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed #dfe1ee;
+}
+.hp-add-package-note {
+    font-size: 12px;
+    color: #6576ff;
+    margin: 0 0 14px;
+}
+.hp-add-hotel-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+}
+@media (max-width: 640px) {
+    .hp-add-hotel-row { grid-template-columns: 1fr; }
+}
+.hp-add-subfields {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+.hp-add-subfields select {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 6px 8px;
+    font-size: 12px;
+}
+.hp-add-meta-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed #dfe1ee;
+}
+.hp-add-package-form .hp-input-wrap input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px 54px 9px 10px;
+    border: 1px solid #dbdfea;
+    border-radius: 7px;
+    font-size: 14px;
+    text-align: right;
+    color: #364a63;
+    background: #fff;
+}
+.hp-add-package-form .hp-input-wrap-sub input {
+    font-size: 12px;
+    padding: 6px 50px 6px 10px;
+    border-color: #eaecf7;
+}
+.hp-exclusive-title {
+    margin-bottom: 12px;
+}
+.hp-badge-exclusive {
+    color: #6576ff;
+    background: #eef0ff;
+}

@@ -1,0 +1,16 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+<div class="row m-t-40">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-inner">
+                <h6 class="title">{% if view_only %}فقط اجازه مشاهده دارید{% else %}دسترسی ندارید{% endif %}</h6>
+                <p class="m-t-20">{{ message }}</p>
+                {% if not view_only %}<p>اگر لازم دارید از مدیر سایت بخواهید دسترسی این بخش را برایتان فعال کند.</p>{% endif %}
+                {% if back_url %}<a href="{{ back_url }}" class="btn btn-info m-t-20">بازگشت</a>{% endif %}
+                <a href="{% url 'dashboard' %}" class="btn btn-light m-t-20">داشبورد</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

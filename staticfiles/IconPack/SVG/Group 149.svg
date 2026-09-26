@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="83.06" height="83.059" viewBox="0 0 83.06 83.059">
+  <g id="Group_149" data-name="Group 149" transform="translate(-211.067 -867.296)">
+    <circle id="Ellipse_1" data-name="Ellipse 1" cx="33.497" cy="33.497" r="33.497" transform="translate(219.641 874.787)" fill="#fadd4b"/>
+    <g id="Group_148" data-name="Group 148">
+      <g id="Group_138" data-name="Group 138">
+        <g id="Group_136" data-name="Group 136">
+          <path id="Path_66" data-name="Path 66" d="M281.283,945.378l-22.805-41.227,14.472-14.472,14.915,49.12Z" fill="#54c1f9"/>
+          <path id="Path_67" data-name="Path 67" d="M280.894,948.135,256.4,903.858,273.74,886.52l16.019,52.753Zm-20.34-43.691,21.118,38.177,4.3-4.3-13.811-45.486Z" fill="#282d33"/>
+        </g>
+        <g id="Group_137" data-name="Group 137">
+          <path id="Path_68" data-name="Path 68" d="M216.046,880.139l41.228,22.807,14.473-14.473L222.622,873.56Z" fill="#54c1f9"/>
+          <path id="Path_69" data-name="Path 69" d="M257.567,905.021l-44.278-24.493,8.859-8.863,52.759,16.016ZM218.8,879.75l38.179,21.119,11.606-11.606L223.1,875.454Z" fill="#282d33"/>
+        </g>
+      </g>
+      <g id="Group_139" data-name="Group 139">
+        <path id="Path_70" data-name="Path 70" d="M242.47,927.284,289.453,880.3c2.3-2.3,4.273-8.007,1.974-10.306s-8.007-.328-10.306,1.973l-46.984,46.983L219.5,914.51l-5.678,5.676,16.943,9.372,1.1,1.1,9.372,16.943,5.675-5.677Z" fill="#fff"/>
+        <path id="Path_71" data-name="Path 71" d="M240.848,950.355l-10.334-18.682-.764-.763-18.683-10.335,7.96-7.959,14.636,4.442,46.274-46.273a13.39,13.39,0,0,1,8.514-3.489,5.723,5.723,0,0,1,4.16,1.516c1.469,1.469,1.889,3.862,1.18,6.738a13.349,13.349,0,0,1-3.154,5.936l-46.273,46.273,4.442,14.637ZM216.582,919.8l15.2,8.41,1.431,1.43,8.409,15.2,3.393-3.393-4.442-14.637,47.692-47.692a10.126,10.126,0,0,0,2.27-4.37c.4-1.619.286-2.986-.295-3.567a2.618,2.618,0,0,0-1.792-.536,10.139,10.139,0,0,0-6.146,2.508l-47.694,47.694L219.976,916.4Z" fill="#282d33"/>
+      </g>
+      <g id="Group_140" data-name="Group 140">
+        <line id="Line_14" data-name="Line 14" y1="12.72" x2="12.72" transform="translate(226.517 922.187)" fill="#fff"/>
+        <rect id="Rectangle_60" data-name="Rectangle 60" width="17.989" height="3.349" transform="translate(225.333 933.723) rotate(-45)" fill="#282d33"/>
+      </g>
+      <g id="Group_147" data-name="Group 147">
+        <g id="Group_143" data-name="Group 143">
+          <g id="Group_141" data-name="Group 141">
+            <line id="Line_15" data-name="Line 15" x1="11.153" y2="11.156" transform="translate(222.078 896.069)" fill="#fff"/>
+            <rect id="Rectangle_61" data-name="Rectangle 61" width="15.775" height="3.349" transform="translate(220.893 906.04) rotate(-44.999)" fill="#282d33"/>
+          </g>
+          <g id="Group_142" data-name="Group 142">
+            <line id="Line_16" data-name="Line 16" x1="5.563" y2="5.562" transform="translate(219.717 892.064)" fill="#fff"/>
+            <rect id="Rectangle_62" data-name="Rectangle 62" width="7.866" height="3.35" transform="matrix(0.707, -0.707, 0.707, 0.707, 218.533, 896.441)" fill="#282d33"/>
+          </g>
+        </g>
+        <g id="Group_146" data-name="Group 146">
+          <g id="Group_144" data-name="Group 144">
+            <line id="Line_17" data-name="Line 17" x1="11.155" y2="11.155" transform="translate(254.197 928.19)" fill="#fff"/>
+            <rect id="Rectangle_63" data-name="Rectangle 63" width="15.775" height="3.349" transform="translate(253.013 938.161) rotate(-45)" fill="#282d33"/>
+          </g>
+          <g id="Group_145" data-name="Group 145">
+            <line id="Line_18" data-name="Line 18" x1="5.561" y2="5.562" transform="translate(263.797 936.143)" fill="#fff"/>
+            <rect id="Rectangle_64" data-name="Rectangle 64" width="7.865" height="3.349" transform="translate(262.612 940.521) rotate(-44.999)" fill="#282d33"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

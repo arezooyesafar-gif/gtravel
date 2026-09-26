@@ -31,7 +31,7 @@
                             <th scope="col">Status <span>(وضیعت درخواست)</span></th>
                             <th scope="col">Approve Time <span>(تاریخ صدور)</span></th>
                             <th scope="col">File <span>(دریافت فایل)</span></th>
-                            {% if request.user.is_superuser %}
+                            {% if can.visas.delete %}
                             <th scope="col">Remove Request <span>(حذف درخواست)</span></th>
                             {% endif %}
                         </tr>
@@ -56,7 +56,7 @@
                                         </a>
                                     {% endif %}
                                 </td>
-                                {% if request.user.is_superuser %}
+                                {% if can.visas.delete %}
                                 <td>
                                     <a href="{% url 'delete_thai_visa_request' item.id %}">
                                         <button style="background: red;" type="button" class="btn btn-theme">Remove <span>(حذف )</span>

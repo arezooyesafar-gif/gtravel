@@ -1,0 +1,14 @@
+{% load jalali_tags %}{% load humanize %}
+<a href="/tour/{{ tour.id }}/{{ tour.Slug }}" class="dp-card dp-main">
+    <span class="dp-day">{{ tour.StartDate|to_jalali:'%Y/%m/%d' }}</span>
+    <span class="dp-day" style="font-weight:400;font-size:11px">تا {{ tour.EndDate|to_jalali:'%Y/%m/%d' }}</span>
+    <span class="dp-price dp-{{ main_color }}">از {% if min_price %}{{ min_price|intcomma }} {{ min_currency }}{% endif %}{% if min_price_dollar %} + {{ min_price_dollar|intcomma }} {{ min_currency_foreign }}{% endif %}</span>
+</a>
+{% for item in dates_with_price %}
+<a href="/tour/{{ tour.id }}/{{ tour.Slug }}?dp={{ item.date.id }}" class="dp-card">
+    <span class="dp-day">{{ item.date.start_date|to_jalali:'%Y/%m/%d' }}</span>
+    <span class="dp-day" style="font-weight:400;font-size:11px">تا {{ item.date.end_date|to_jalali:'%Y/%m/%d' }}</span>
+    <span class="dp-price dp-{{ item.color }}">از {% if item.final_price %}{{ item.final_price|intcomma }} {{ min_currency }}{% endif %}{% if item.final_price_dollar %} + {{ item.final_price_dollar|intcomma }} {{ min_currency_foreign }}{% endif %}</span>
+</a>
+{% endfor %}
+<a href="/tour/{{ tour.id }}/{{ tour.Slug }}" class="dp-view-btn">مشاهده تور</a>

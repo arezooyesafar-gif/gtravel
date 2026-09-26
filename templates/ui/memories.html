@@ -181,15 +181,7 @@
                     </div>
                 </div>
                 <div class="contact-banner">
-                    <p class="reseve-title">
-                        دریافت مشاوره و رزرو تور
-                    </p>
-                    <p class="reseve-phone">
-                        021-45128
-                    </p>
-                    <p class="reseve-desc">
-                        کارشناسان ما پاسخگوی شما خواهند بود
-                    </p>
+    {% include 'ui/base/contact-banner.html' %}
                 </div>
                 <div class="spacial-tours">
                     {% for tours, cities, packages in pubTours %}
@@ -270,18 +262,18 @@
                                             </div>
                                             <div class="col-sm-12 col-lg-12 no-padding ir_price">
                                                 <p class="irprice">
-                                                    {{ packages.0.DoubleBedPrice | intcomma:False }}
+                                                    {{ packages.0.DoubleBedPrice | floatformat:0 | intcomma }}
                                                     {{ packages.0.Pcry }}
                                                             {% if packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}
-                                                                + {{ packages.0.DollerPrice | intcomma:False }}
+                                                                + {{ packages.0.DollerPrice | floatformat:0 | intcomma }}
                                                                 {{ packages.0.fr_Pcry }}
                                                             {% endif %}
                                                     {% if not packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
-                                                        + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                                        + {{ packages.0.DoubleBedPrice_doller | floatformat:0 | intcomma }}
                                                         {{ packages.0.fr_Pcry }}
                                                     {% endif %}
                                                     {% if packages.0.DollerPrice and packages.0.DoubleBedPrice_doller %}
-                                                        + {{ packages.0.DoubleBedPrice_doller | intcomma:False }}
+                                                        + {{ packages.0.DoubleBedPrice_doller | floatformat:0 | intcomma }}
                                                         {{ packages.0.fr_Pcry }}
                                                     {% endif %}
                                                     {% if not packages.0.DollerPrice and not packages.0.DoubleBedPrice_doller %}

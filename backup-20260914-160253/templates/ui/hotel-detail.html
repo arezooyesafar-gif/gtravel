@@ -1,0 +1,927 @@
+﻿{% load humanize %}
+{% load static %}
+{% load jalali_tags %}
+{% load icon_mapping %}
+{% load responsive_img %}
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://arezoosafar.com{% url 'hotel-detail' HotelData.id HotelData.Slug %}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="{{ HotelData.metaKeyword }}">
+    <meta name="description" content="{{ HotelData.metaDescription }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if HotelData.HotelImage %}
+    {% srcset_budget HotelData.HotelImage '480,768' as hero_srcset %}
+    <link rel="preload" as="image" href="{{ HotelData.HotelImage.url }}" imagesrcset="{{ hero_srcset }}" imagesizes="(max-width: 991px) calc(100vw - 32px), 810px" fetchpriority="high">
+    {% endif %}
+    {% include 'ui/base/head.html' with skip_base_meta=1 skip_material_icons=1 skip_fontawesome=1 delay_third_party=1 late_scripts=1 skip_popup_css=1 skip_owl_css=1 yekan_desktop_preload=1 %}
+    <style>
+        @font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:900;font-display:block;src:url("/static/asset/css/webfonts/fa-hotel-solid.woff") format("woff")}
+        @font-face{font-family:"Font Awesome 6 Brands";font-style:normal;font-weight:400;font-display:block;src:url("/static/asset/css/webfonts/fa-blog-brands.woff") format("woff")}
+        @font-face{font-family:FontAwesome;font-display:block;src:url("/static/asset/css/webfonts/fa-hotel-solid.woff") format("woff")}
+        .fa{font-family:var(--fa-style-family,"Font Awesome 6 Free");font-weight:var(--fa-style,900)}
+        .fa,.fa-brands,.fa-solid,.fab,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:var(--fa-display,inline-block);font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
+        .fa-solid,.fas{font-family:"Font Awesome 6 Free";font-weight:900}
+        .fa-brands,.fab{font-family:"Font Awesome 6 Brands";font-weight:400}
+        .fa-bars:before{content:"\f0c9"}
+        .fa-user-circle:before{content:"\f2bd"}
+        .fa-calendar:before{content:"\f133"}
+        .fa-money-check-dollar:before{content:"\f53d"}
+        .fa-money-bill:before{content:"\f0d6"}
+        .fa-calendar-week:before{content:"\f784"}
+        .fa-map-marker:before{content:"\f041"}
+        .fa-phone-volume:before{content:"\f2a0"}
+        .fa-whatsapp:before{content:"\f232"}
+        .fa-instagram:before{content:"\f16d"}
+        .fa-telegram:before{content:"\f2c6"}
+        @font-face {
+            font-family: 'Material Icons';
+            font-style: normal;
+            font-weight: 400;
+            font-display: block;
+            src: url("{% static 'material-icons/MaterialIcons-hotel-subset.woff' %}") format('woff');
+        }
+        .hotel_info_img_ img, img.gallery-item, img.tour-main-img{object-fit:cover}
+        .hotel_desc [style*="color:#b8912e"], .hotel_desc [style*="color: #b8912e"], .hotel_desc [style*="color:#B8912E"], .hotel_desc [style*="color: rgb(184, 145, 46)"], .hotel_desc [style*="color:rgb(184,145,46)"]{color:#876a22!important}
+        .hotel_desc [style*="color:#e67e22"], .hotel_desc [style*="color: #e67e22"], .hotel_desc [style*="color:#E67E22"], .hotel_desc [style*="color: rgb(230, 126, 34)"]{color:#a85913!important}
+        .hotel_desc [style*="color:#f39c12"], .hotel_desc [style*="color: #f39c12"], .hotel_desc [style*="color:#F39C12"], .hotel_desc [style*="color: rgb(243, 156, 18)"]{color:#9a6108!important}
+        p.user-rate{color:#007da6}
+        .related-tours .more_detail_link{background:#1d7ab3;border-color:#1d7ab3}
+        .related-tours .more_detail_link:hover{background:#fff;border-color:#1d7ab3}
+        p.footer_menu_header{color:#0088b5}
+        .related-tours h2.blog_sec_title{font-size:22px;line-height:1.2;color:#4e99c6}
+        @media only screen and (max-width:950px){.related-tours h2.blog_sec_title{font-size:25px;margin-top:20px}}
+    
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            font-feature-settings: 'liga';
+        }
+    </style>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Hotel",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://google.com/article"
+            },
+            "name": "{{ HotelData.HotelName }} - {{ HotelData.HotelNameEnglish }}",
+            "image": [
+                "https://arezoosafar.com/{{ HotelData.HotelImage.url }}"
+            ],
+            "description": "{{ HotelData.metaDescription }}",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "{{ HotelData.HotelAddress }}",
+                "addressCountry": {
+                    "@type": "Country",
+                    "name": "{{ HotelData.Hcountry.TitleC }}",
+                    "url": "https://arezoosafar.com{% url 'all-tour-country' HotelData.Hcountry.slug  HotelData.Hcountry.id  %}"
+                }
+            }
+        }
+    </script> 
+    {% if HotelData.htitle %}
+        <title>{{ HotelData.htitle }}</title>
+    {% else %}
+        <title> هتل | {{ HotelData.HotelName }} | </title>
+    {% endif %}
+</head>
+<body>
+<div class="warp">
+    <div class="top-container">
+        {% include 'ui/base/header.html' %}
+    </div>
+    <main>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="hotel_info_img_">
+                    {% if HotelData.HotelImage %}
+                        <img alt="{{ HotelData.HotelName }}" src="{{ HotelData.HotelImage.url }}" {% img_dimensions HotelData.HotelImage %}{% if hero_srcset %} srcset="{{ hero_srcset }}" sizes="(max-width: 991px) calc(100vw - 32px), 810px"{% endif %} fetchpriority="high" decoding="async">
+                    {% else %}
+                        <img loading="lazy" alt="{{ HotelData.HotelName }}" src="/media/no-hotel-img.jpg" width="350">
+                    {% endif %}
+                    <div class="hotel-info">
+                        <div class="row">
+                            <div class="col-lg-8 no-padding">
+                                <h1 class="hotel-fa-title">{{ HotelData.HotelName }}</h1>
+                                <p class="hotel-en-title">{{ HotelData.HotelNameEnglish }}</p>
+                            </div>
+                            <div class="col-lg-4">
+                                {% if HotelData.HotelRating == '1' %}
+                                    <img loading="lazy" class="hotel-rating" alt="rating-1" src="/media/rating/rating-1.png"
+                                         width="150px">
+                                {% endif %}
+                                {% if HotelData.HotelRating == '2' %}
+                                    <img loading="lazy" class="hotel-rating" alt="rating-1" src="/media/rating/rating-2.png"
+                                         width="150px">
+                                {% endif %}
+                                {% if HotelData.HotelRating == '3' %}
+                                    <img loading="lazy" class="hotel-rating" alt="rating-1" src="/media/rating/rating-3.png"
+                                         width="150px">
+                                {% endif %}
+                                {% if HotelData.HotelRating == '4' %}
+                                    <img loading="lazy" class="hotel-rating" alt="rating-1" src="/media/rating/rating-4.png"
+                                         width="150px">
+                                {% endif %}
+                                {% if HotelData.HotelRating == '5' %}
+                                    <img loading="lazy" class="hotel-rating" alt="rating-1" src="/media/rating/rating-5.png"
+                                         width="150px">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-4">
+                <div class="gallery-box">
+                    <div class="row">
+                        {% for image in gallery %}
+                            {% if forloop.counter < 5 %}
+                                <div class="col-sm-6 col-lg-6" style="position: relative;">
+                                    <img loading="lazy" decoding="async" class="gallery-item" src="{{ image.image.url }}" alt="{{ HotelData.HotelName }} - تصویر {{ forloop.counter }}" {% img_dimensions image.image %} srcset="{% srcset_budget image.image '480' %}" sizes="(max-width: 991px) 50vw, 180px">
+                                    {% if forloop.counter == 4 or forloop.last %}
+                                        <button class="gallery-modal" data-bs-toggle="modal"
+                                                data-bs-target="#hotel-gallery">مشاهده گالری
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="booking_rate_">
+                                <p class="feature_title">امتیاز بوکینگ
+                                    <span class="feature_title">{{ HotelData.HotelBookingRate }}<span  style="color:#225ac1;    font-family: iransans;">/10</span></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="booking_rate_">
+                                <p class="feature_title">تعداد اتاق
+                                    <span class="feature_value">{{ HotelData.HotelRoom }} اتاق</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="booking_rate_">
+                                <p class="feature_title">امتیاز تریپ ادوایزر
+                                    
+                                        {% if HotelData.HotelTpRate %}<span class="feature_title"><span  style="color:#225ac1;     font-family:  iransans;">5/</span>
+                                         {{ HotelData.HotelTpRate }} 
+                                        {% else %}
+                                        -
+                                        {% endif %}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="booking_rate_">
+                                <a class="hotel-website" href="{% if HotelData.HotelWebSite %}{{ HotelData.HotelWebSite }}{% else %}#{% endif %}">
+                                    وبسایت هتل
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row hotel-information">
+            <div class="col-sm-12 col-lg-3 hotel-page">
+                <a href="{% url 'city-tours' HotelData.Hcity.slug HotelData.Hcity.id %}">
+                    <div class="row intext-list">
+                        <div class="col-sm-3 col-lg-3 no-padding">
+                            {% if HotelData.Hcity.cityImg %}
+                                <img loading="lazy" decoding="async" class="city-img-text" src="{{ HotelData.Hcity.cityImg.url }}" alt="تورهای {{ HotelData.Hcity.Name }}" width="52" height="52" srcset="{% srcset_budget HotelData.Hcity.cityImg '480' %}" sizes="160px">
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-9 col-lg-9 no-padding">
+                            <span class="ctry_name_arc">تورهای {{ HotelData.Hcity.Name }}</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-12 scrol-tab sticky-tabs">
+                <ul class="nav nav-tabs" id="myTab">
+                    {% if HotelData.HotelService %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#hotel-service-info" data-scroll="smooth">امکانات هتل</a>
+                        </li>
+                    {% endif %}
+                    {% if HotelData.RoomService %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#room-service-info" data-scroll="smooth">امکانات اتاق</a>
+                        </li>
+                    {% endif %}
+                    {% if HotelData.Service %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#all-service-info" data-scroll="smooth">خدمات هتل</a>
+                        </li>
+                    {% endif %}
+                    {% if HotelData.intertainment %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#intertainment-info" data-scroll="smooth">تفریحات هتل</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home-tab-pane" data-scroll="smooth">درباره هتل</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#related-tour" data-scroll="smooth">نظرات کاربران</a>
+                    </li>
+                </ul>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const sections = document.querySelectorAll('.hotel-section');
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    
+                    function removeAllActive() {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            link.blur();
+                        });
+                    }
+                    
+                    function changeActiveLink() {
+                        let current = '';
+                        const scrollPosition = window.scrollY + 150;
+                        
+                        sections.forEach(section => {
+                            const sectionTop = section.offsetTop;
+                            const sectionBottom = sectionTop + section.offsetHeight;
+                            
+                            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                                current = section.getAttribute('id');
+                            }
+                        });
+                        
+                        removeAllActive();
+                        
+                        if (current) {
+                            navLinks.forEach(link => {
+                                const href = link.getAttribute('href');
+                                if (href && href.substring(1) === current) {
+                                    link.classList.add('active');
+                                }
+                            });
+                        }
+                    }
+                    
+                    navLinks.forEach(link => {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            
+                            const targetId = this.getAttribute('href');
+                            const targetElement = document.querySelector(targetId);
+                            
+                            if (targetElement) {
+                                removeAllActive();
+                                this.classList.add('active');
+                                this.blur();
+                                
+                                const headerOffset = 70;
+                                const elementPosition = targetElement.getBoundingClientRect().top;
+                                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                                
+                                window.scrollTo({
+                                    top: offsetPosition,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        });
+                    });
+                    
+                    window.addEventListener('scroll', changeActiveLink);
+                    changeActiveLink();
+                });
+            </script>
+            <div class="col-lg-12">
+                <div class="row mt-4">
+                    <div class="col-lg-9">
+                        {% if HotelData.HotelService %}
+                        <div class="hotel-section" id="hotel-service-info">
+                            <div class="hotel_desc">
+                                <div class="section-title-wrapper">
+                                    <h2 class="hotel-section-title">امکانات هتل</h2>
+                                    <div class="title-divider"></div>
+                                </div>
+                                <div class="hotel_services_container">
+                                    {% for service in HotelData.HotelService %}
+                                    <span class="hotel_servive">
+                                        <i class="material-icons">{{ service|get_icon_name }}</i>{{ service }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if HotelData.RoomService %}
+                        <div class="hotel-section" id="room-service-info">
+                            <div class="hotel_desc">
+                                <div class="section-title-wrapper">
+                                    <h2 class="hotel-section-title">امکانات اتاق</h2>
+                                    <div class="title-divider"></div>
+                                </div>
+                                <div class="hotel_services_container">
+                                    {% for service in HotelData.RoomService %}
+                                    <span class="hotel_servive">
+                                        <i class="material-icons">{{ service|get_icon_name }}</i>{{ service }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                
+                        {% if HotelData.Service %}
+                        <div class="hotel-section" id="all-service-info">
+                            <div class="hotel_desc">
+                                <div class="section-title-wrapper">
+                                    <h2 class="hotel-section-title">خدمات هتل</h2>
+                                    <div class="title-divider"></div>
+                                </div>
+                                <div class="hotel_services_container">
+                                    {% for service in HotelData.Service %}
+                                    <span class="hotel_servive">
+                                        <i class="material-icons">{{ service|get_icon_name }}</i>{{ service }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                
+                        {% if HotelData.intertainment %}
+                        <div class="hotel-section" id="intertainment-info">
+                            <div class="hotel_desc">
+                                <div class="section-title-wrapper">
+                                    <h2 class="hotel-section-title">تفریحات هتل</h2>
+                                    <div class="title-divider"></div>
+                                </div>
+                                <div class="hotel_services_container">
+                                    {% for service in HotelData.intertainment %}
+                                    <span class="hotel_servive">
+                                        <i class="material-icons">{{ service|get_icon_name }}</i>{{ service }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                
+                        <div class="hotel-section" id="home-tab-pane">
+                            <div class="hotel_desc">
+                                <div class="section-title-wrapper">
+                                    <h2 class="hotel-section-title">درباره  {{ HotelData.HotelName }}</h2>
+                                    <div class="title-divider"></div>
+                                </div>
+                                {{ HotelData.HotelDesc|safe }}
+                            </div>
+                        </div>
+                
+                        <div class="hotel-section" id="related-tour">
+                            <div class="section-title-wrapper">
+                                <h2 class="hotel-section-title">نظرات کاربران</h2>
+                                <div class="title-divider"></div>
+                            </div>
+                            <div class="comment-box" style="margin-top: 20px;">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <h2 class="comments_headline">ثبت دیدگاه برای این هتل</h2>
+                                        <p id="success-cm" class="success-send"></p>
+                                        <p id="invalid-cm" class="invalid-data-cm"></p>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <input type="text" name="full_name" maxlength="300" class="form-control"
+                                                       placeholder=" نام و نام خانوادگی را وارد کنید" required=""
+                                                       id="id_full_name">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="email" name="email" maxlength="254"
+                                                       placeholder="ایمیل را وارد کنید" class="form-control" required=""
+                                                       id="id_email">
+                                            </div>
+                                            <div class="d-lg-none d-sm-block col-lg-12">
+                                                <select name="ct-rate-select" class="form-select" aria-label="امتیاز شما به هتل">
+                                                    <option value="5">امتیاز 5 به هتل</option>
+                                                    <option value="4">امتیاز 4 به هتل</option>
+                                                    <option value="3">امتیاز 3 به هتل</option>
+                                                    <option value="2">امتیاز 2 به هتل</option>
+                                                    <option value="1">امتیاز 1 به هتل</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <textarea name="desc" cols="40" rows="3" maxlength="5000"
+                                                          placeholder="توضیحات را وارد کنید" class="form-control"
+                                                          required="" id="id_desc"></textarea>
+                                            </div>
+                                            <div class="col-lg-8 m-t-10">
+                                                <button onclick="sendHotelCm({{ HotelData.id }})" name="submit_comment"
+                                                        class="installment-calculation">ارسال دیدگاه
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-sm-none d-lg-block col-lg-2">
+                                        <div class="rating-box">
+                                            <p class="cmt_rating_title">امتیازتان به هتل</p>
+                                            <div class="rate_field">
+                                                <input class="cmt_rate_filed" name="cmt_rate" type="radio"
+                                                       value="5" aria-label="امتیاز 5 از 5"><img loading="lazy"
+                                                    style="rotate: 180deg;transform: scaleY(-1);" alt="5 ستاره"
+                                                    src="/media/rating/rating-5.png" width="100" height="19">
+                                            </div>
+                                            <div class="rate_field">
+                                                <input class="cmt_rate_filed" name="cmt_rate" type="radio"
+                                                       value="4" aria-label="امتیاز 4 از 5"><img loading="lazy"
+                                                    style="rotate: 180deg;transform: scaleY(-1);" alt="4 ستاره"
+                                                    src="/media/rating/rating-4.png" width="100" height="19">
+                                            </div>
+                                            <div class="rate_field">
+                                                <input class="cmt_rate_filed" name="cmt_rate" type="radio"
+                                                       value="3" aria-label="امتیاز 3 از 5"><img loading="lazy"
+                                                    style="rotate: 180deg;transform: scaleY(-1);" alt="3 ستاره"
+                                                    src="/media/rating/rating-3.png" width="100" height="19">
+                                            </div>
+                                            <div class="rate_field">
+                                                <input class="cmt_rate_filed" name="cmt_rate" type="radio"
+                                                       value="2" aria-label="امتیاز 2 از 5"><img loading="lazy"
+                                                    style="rotate: 180deg;transform: scaleY(-1);" alt="2 ستاره"
+                                                    src="/media/rating/rating-2.png" width="100" height="19">
+                                            </div>
+                                            <div class="rate_field">
+                                                <input class="cmt_rate_filed" name="cmt_rate" type="radio"
+                                                       value="1" aria-label="امتیاز 1 از 5"><img loading="lazy"
+                                                    style="rotate: 180deg;transform: scaleY(-1);" alt="1 ستاره"
+                                                    src="/media/rating/rating-1.png" width="100" height="19">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% for cm in all_comments %}
+                                <div class="user-comments">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <p class="cm-user">
+                                                <i class="fa fa-user-circle cm-item-user"></i>
+                                                {{ cm.full_name }}
+                                            </p>
+                                            <p class="cm-date">
+                                                <i class="fa fa-calendar cm-item-date"></i>
+                                                نوشته شده در تاریخ :
+                                                {{ cm.create_date|to_jalali:'%Y/%m/%d' }}
+                                            </p>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <p class="user-rate-headline">
+                                                امتیاز داده شده توسط کاربر
+                                            </p>
+                                            <p class="user-rate">
+                                                امتیاز (
+                                                {{ cm.hotel_rate }} از 5
+                                                )
+                                                <span class="rating-image">
+                                                {% if cm.hotel_rate == '5' %}
+                                                    <img loading="lazy" src="/media/rating/rating-5.png" width="100" height="19" alt="5 ستاره">
+                                                {% endif %}
+                                                {% if cm.hotel_rate == '4' %}
+                                                    <img loading="lazy" src="/media/rating/rating-4.png" width="100" height="19" alt="4 ستاره">
+                                                {% endif %}
+                                                {% if cm.hotel_rate == '3' %}
+                                                    <img loading="lazy" src="/media/rating/rating-3.png" width="100" height="19" alt="3 ستاره">
+                                                {% endif %}
+                                                {% if cm.hotel_rate == '2' %}
+                                                    <img loading="lazy" src="/media/rating/rating-2.png" width="100" height="19" alt="2 ستاره">
+                                                {% endif %}
+                                                {% if cm.hotel_rate == '1' %}
+                                                    <img loading="lazy" src="/media/rating/rating-1.png" width="100" height="19" alt="1 ستاره">
+                                                {% endif %}
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <p class="message-body">
+                                                {{ cm.desc }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <button type="button" class="btn btn-primary map-button w-100 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            مشاهده هتل روی نقشه
+                        </button>
+                        <div id="hotel-map" class="map-container mobile-d-none mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div class="hotel-map"></div>
+                        </div>
+                        <div class="hotel-sidebar hotel-detail-sidebar">
+                            <div class="contact-banner desktop-d-none" style="margin-bottom:10px;">
+    {% include 'ui/base/contact-banner.html' %}
+                            </div>
+                            {% if HotelData.HotelShotDesc %}
+                            <div class="anchor-links mobile-d-none">
+                                <p class="head-text">فهرست مطالب</p>
+                                <div class="hotel-anchor">{{ HotelData.HotelShotDesc|safe }}</div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="contact-banner mobile-d-block mt-3" style="margin-bottom:10px;">
+    {% include 'ui/base/contact-banner.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section>
+            <div class="container">
+                <div class="insta">
+                    <div class="row">
+                        {% comment %} <div class="col-lg-2">
+                            <div class="insta-box">
+                                <div class="insta-motion">
+                                    <img loading="lazy" alt="گیف اینستا"  src="/media/instaarezoosafar.gif">
+                                </div>
+                            </div> 
+                        </div> {% endcomment %}
+                        <div class="col-lg-7">
+                            <h2 class="about_title">
+                                معرفی تورهای جذاب و شگفت انگیـــز
+                            </h2>
+                            <p>با ما در اینستاگرام همراه شو تا از پیشنهادات لحظه آخری و تورهای جذاب مطلع بشی!</p>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="input-section">
+                                <div class="row">
+                                    <div class="col-lg-12 t-center">
+                                        <a href="https://www.instagram.com/arezooyesafarparsian" class="btn-insta-subscribe">
+                                        <span class="logo-insta">
+                                            <img loading="lazy" alt="اینستاگرام" src="/static/asset/css/images/insta-logo.webp">
+                                        </span>
+                                            ایــنستاگـــرام</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% if packages %}
+            <div class="container">
+                <section class="related-tours">
+                    <div class="row">
+                        <h2 class="blog_sec_title">تورهای مرتبط </h2>
+                        <p class="blog_subtitle_">تورهای مرتبط با این هتل رو اینجا ببین.</p>
+                        {% for i in packages %}
+                            <div class="col-lg-3 tour_grid">
+                                <div class="row tour_data_box">
+                                    <div class="col-lg-12 tour image no-padding">
+                                        {% if i.TourName.Feature %}
+                                            <div class="spacial_baget">
+                                                <p>
+                                                    تور ویژه
+                                                </p>
+                                            </div>
+                                        {% endif %}
+                                        {% if i.TourName.TourImage %}
+                                            <img loading="lazy" decoding="async" class="tour-main-img" src="{{ i.TourName.TourImage.url }}" alt="{{ i.TourName.Title }}" {% img_dimensions i.TourName.TourImage %} srcset="{% srcset_budget i.TourName.TourImage '480' %}" sizes="(max-width: 991px) calc(100vw - 42px), 300px">
+                                        {% else %}
+                                            <img loading="lazy" class="tour-main-img" alt="{{ i.TourName.Title }}"
+                                                src="/static/asset/css/images/No_Image_Available.jpg">
+                                        {% endif %}
+                                        <span class="country_flag_list">
+                                                <img loading="lazy" src="{{ i.TourName.Tcountry.Flagimg.url }}" alt="پرچم {{ i.TourName.Tcountry.TitleC }}" width="30" height="30">
+                                                {{ i.TourName.Tcountry.TitleC }}
+                                            </span>
+                                        {% if i.TourName.satrap_gte %}
+                                            <span class="grte_">
+                                            گارانتی هتل
+                                        </span>
+                                        {% endif %}
+                                        {% if i.TourName.Cash %}
+                                            <span class="cashe_">
+                                            نقدی
+                                        </span>
+                                        {% endif %}
+                                        {% if i.TourName.Installment %}
+                                            <span class="installment_">
+                                            اقساطی
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-12 no-padding">
+                                        <div class="row">
+                                            <div class="col-lg-12 no-padding">
+                                                <p class="tour_title_">
+                                                    {{ i.TourName.Title }}
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-6 no-padding">
+                                                <p class="duration_">
+                                                    <img loading="lazy" class="day_icon" alt="روز" src="/static/asset/css/images/icon/day.png">
+                                                    {{ i.TourName.NightCount }}
+                                                    شب و
+                                                    {{ i.TourName.DayCount }}
+                                                    روز
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-6 no-padding">
+                                                <p class="duration_">
+                                                    <img loading="lazy" class="day_icon" alt="تاریخ" src="/static/asset/css/images/icon/date.png">
+                                                    {{ i.TourName.StartDate|to_jalali:'%Y/%m/%d' }}
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-12 col-lg-12 no-padding">
+                                                <div class="row">
+                                                    {#                            <div class="col-sm-6 col-lg-6 no-padding">#}
+                                                    {#                                <p class="duration_">#}
+                                                    {#                                    {% if cities.0.QTransfer or cities.0.GTransfer  %}#}
+                                                    {#                                        ساعت حرکت: #}
+                                                    {#                                {{ cities.0.FlightTime }}#}
+                                                    {#                                        {% else %}#}
+                                                    {#                                ساعت پرواز: #}
+                                                    {#                                {{ cities.0.FlightTime }}#}
+                                                    {#                                        {% endif %}#}
+                                                    {#                                </p>#}
+                                                    {#                            </div>#}
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-12 col-lg-12 no-padding ir_price">
+                                                <p class="irprice">
+                                                    {{ i.DoubleBedPrice | floatformat:0 | intcomma }}
+                                                    {{ i.Pcry }}
+                                                    {% if i.DollerPrice and not i.DoubleBedPrice_doller %}
+                                                        + {{ i.DollerPrice | floatformat:0 | intcomma }} 
+                                                        {% if i.fr_Pcry %}
+                                                        {{ i.fr_Pcry }}
+                                                        {% else %}
+                                                        دلار
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if not i.DollerPrice and i.DoubleBedPrice_doller %}
+                                                        + {{ i.DoubleBedPrice_doller | floatformat:0 | intcomma }} 
+                                                        {% if i.fr_Pcry %}
+                                                        {{ i.fr_Pcry }}
+                                                        {% else %}
+                                                        دلار
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if i.DollerPrice and i.DoubleBedPrice_doller %}
+                                                        + {{ i.DoubleBedPrice_doller | floatformat:0 | intcomma }} 
+                                                        {% if i.fr_Pcry %}
+                                                        {{ i.fr_Pcry }}
+                                                        {% else %}
+                                                        دلار
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if not i.DollerPrice and not i.DoubleBedPrice_doller %}
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-6 no-padding">
+                                                <p class="more_detail">
+                                                    <a class="more_detail_link"
+                                                    href="{% url 'tour-detail' i.TourName.id i.TourName.Slug %}">
+                                                        مشاهده جزئیات
+                                                    </a>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6 col-lg-6 no-padding">
+                                                <p class="pdf_download">
+                                                    <a class="pdf_download_link"
+                                                    href="{% url 'pdf-download' i.TourName.id %}">
+                                                        دریافت پکیج ها
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>
+        {% endif %}
+        <section>
+            <div class="container">
+                <div class="about">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h2 class="about_title">
+                                دوست داری از جدیدترین تورها با خبر بشی؟
+                            </h2>
+                            <p>با عضویت در خبرنامه پیامکی آرزوی سفر پارسیان از جدیدترین تورها با خبر شو!</p>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-section">
+                                <div class="row">
+                                    <div class="col-lg-9">
+                                        <input type="text" class="form-control index-input"
+                                               placeholder="شماره موبایل خود را وارد کنید">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <button type="submit" class="btn-primary-subscribe">عضویت</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% if gallery %}
+    <div class="modal fade" id="hotel-gallery"
+         tabindex="-1"
+         aria-labelledby="galleryModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog hotel-gallery">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5"
+                        id="galleryModalLabel">
+                        گالری تصاویر {{ HotelData.HotelName }}
+                    </h2>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <img loading="lazy" class="gallery-active-image" alt="{{ HotelData.HotelName }}"
+                                 src="{{ HotelData.HotelImage.url }}">
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="gallery-item-container">
+                                {% for image in gallery %}
+                                    <div class="gallery-images">
+                                        <img loading="lazy" class="gallery-item-image" alt="{{ HotelData.HotelName }} - تصویر {{ forloop.counter }}"
+                                             src="{{ image.image.url }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        {% endif %}
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+            <div class="modal-dialog map-hotel modal-xl modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="mapModalLabel">{{ HotelData.HotelName }} روی نقشه</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div id="map" style="width:100%; height:70vh;"></div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </main>
+    </div>
+    <script>
+        var country = {% if country %}
+            '{{ country.slug }}'
+        {% else %}
+            '{{ city.CountryName.slug }}'
+        {% endif %}
+        var country_id = {% if country %}
+            '{{ country.id }}'
+        {% else %}
+            '{{ city.CountryName.id }}'
+        {% endif %}
+        var city = '{{ city.slug }}'
+        var city_id = '{{ city.id }}'
+        var tour_id = '{{ Tour.id }}'
+        var tour_slug = '{{ Tour.Slug }}'
+        var tour_menu = '{{ Menu.slug }}'
+        var locations = "{{ HotelData.HotelName }}";
+        var locationsEn = "{{ HotelData.HotelNameEnglish }}";
+        var category_slug = '{{ category.slug|default:"" }}'
+        var hotel_Lcordinate = {{Lcordinate}}
+        var hotel_Acordinate = {{Acordinate}}
+        
+    
+var map = null;
+var marker = null;
+var leafletPromise = null;
+var tileUrl = 'https://{s}.tile.jawg.io/jawg-sunny/{z}/{x}/{y}.png?access-token={{ JAWG_ACCESS_TOKEN }}&lang=en';
+
+function ensureLeaflet() {
+    if (window.L) return Promise.resolve();
+    if (leafletPromise) return leafletPromise;
+    leafletPromise = new Promise(function (resolve, reject) {
+        var css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+        css.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+        css.crossOrigin = '';
+        document.head.appendChild(css);
+        var js = document.createElement('script');
+        js.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+        js.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+        js.crossOrigin = '';
+        js.onload = resolve;
+        js.onerror = reject;
+        document.head.appendChild(js);
+    });
+    return leafletPromise;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    var modalEl = document.getElementById('exampleModal');
+    modalEl.addEventListener('shown.bs.modal', function () {
+        ensureLeaflet().then(function () {
+            if (map) {
+                try { map.remove(); } catch (e) {}
+                map = null;
+                marker = null;
+            }
+            map = L.map('map', { center: [hotel_Lcordinate, hotel_Acordinate], zoom: 11 });
+            L.tileLayer(tileUrl, {
+                maxZoom: 19,
+                subdomains: 'abcd',
+                attribution: '&copy; OpenStreetMap contributors &copy; Jawg Maps'
+            }).addTo(map);
+            marker = L.marker([hotel_Lcordinate, hotel_Acordinate]).addTo(map);
+            marker.bindPopup("<b>" + locations + "</b><br>" + locationsEn, {
+                maxWidth: 500,
+                minWidth: 200
+            }).openPopup();
+            setTimeout(function () {
+                try {
+                    map.invalidateSize(true);
+                    map.setView([hotel_Lcordinate, hotel_Acordinate], 11);
+                } catch (e) { console.error('Leaflet error:', e); }
+            }, 150);
+        });
+    });
+
+    var mini = document.getElementById('hotel-map');
+    function drawMini() {
+        ensureLeaflet().then(function () {
+            var mapmini = L.map('hotel-map').setView([hotel_Lcordinate, hotel_Acordinate], 11);
+            L.tileLayer(tileUrl, {
+                maxZoom: 19,
+                subdomains: 'abcd',
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; Jawg Maps'
+            }).addTo(mapmini);
+            var miniMarker = L.marker([hotel_Lcordinate, hotel_Acordinate]).addTo(mapmini);
+            mapmini.setView(miniMarker.getLatLng(), 10);
+        });
+    }
+    function whenVisible() {
+        if (!mini || mini.offsetParent === null) return;
+        if ('IntersectionObserver' in window) {
+            var obs = new IntersectionObserver(function (entries) {
+                if (entries.some(function (e) { return e.isIntersecting; })) {
+                    obs.disconnect();
+                    drawMini();
+                }
+            }, {rootMargin: '200px'});
+            obs.observe(mini);
+        } else {
+            drawMini();
+        }
+    }
+    if (document.readyState === 'complete') { whenVisible(); } else { window.addEventListener('load', whenVisible); }
+});
+    </script>
+    {% include 'ui/base/footer.html' %}
+    {% include 'ui/base/plugins.html' with late_scripts=1 %}
+</div>
+</div>
+</body>
+</html>

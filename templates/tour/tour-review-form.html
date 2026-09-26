@@ -1,0 +1,112 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% comment %}
+    استایل این صفحه در static/assets/css/tour-review.css است.
+{% endcomment %}
+{% block Main %}
+    <div class="row m-t-40">
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title">
+                            <h6 class="title">
+                                {% if is_new %}ثبت نظر جدید{% else %}ویرایش نظر {{ review.author }}{% endif %}
+                            </h6>
+                        </div>
+                        <div class="card-tools">
+                            <a href="{% url 'tour-review-list' %}" class="link">لیست نظرات</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if form.errors %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger review-errors">
+                {% for field, errs in form.errors.items %}
+                    {% for e in errs %}<p>{{ field }}: {{ e }}</p>{% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <form method="POST" novalidate="novalidate" class="review-form">
+        {% csrf_token %}
+        <div class="row">
+
+            <div class="col-lg-7">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p class="label-text">نام نظردهنده <span class="required">*</span></p>
+                            {{ form.author }}
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">متن نظر <span class="required">*</span></p>
+                            {{ form.text }}
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">امتیاز</p>
+                            {{ form.rating }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="inner_section">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p class="label-text">کشور <span class="required">*</span></p>
+                            {{ form.country }}
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">تاریخ نظر</p>
+                            {{ form.review_date }}
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">منبع نظر</p>
+                            {{ form.source }}
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">لینک اصل نظر</p>
+                            {{ form.source_url }}
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="label-text">ترتیب نمایش</p>
+                            {{ form.sort_order }}
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="review-publish">
+                                {{ form.publish }}
+                                <span>در سایت نمایش داده شود</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="review-hints">
+                    <p><b>کشور</b> — نظر فقط در صفحهٔ تور همین کشور دیده می‌شود. اگر خالی بماند هیچ‌جا نمایش داده نمی‌شود.</p>
+                    <p><b>تاریخ نظر</b> — قالب <span dir="ltr">2026-09-07</span>. خالی هم می‌تواند بماند.</p>
+                    <p><b>ترتیب نمایش</b> — عدد کوچک‌تر جلوتر نشان داده می‌شود. در هر صفحهٔ کشور ۳ نظر اول دیده می‌شوند.</p>
+                    {% if review.external_id %}
+                    <p><b>منبع</b> — این نظر از گوگل مپ گرفته شده؛ متن و امتیازش در دریافت بعدی از گوگل به‌روزرسانی می‌شود.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <button type="submit" class="btn btn-primary review-submit">
+                    {% if is_new %}ثبت نظر{% else %}ذخیره تغییرات{% endif %}
+                </button>
+            </div>
+
+        </div>
+    </form>
+{% endblock %}

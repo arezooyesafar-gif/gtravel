@@ -1,0 +1,178 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% load jalali_tags %}
+{% block Main %}
+<div class="row m-t-40">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-inner border-bottom">
+                <div class="card-title-group">
+                    <div class="card-title">
+                        <h6 class="title">تاریخچه تغییرات</h6>
+                    </div>
+                    <div class="card-tools">
+                        <a href="{% url 'staff-list' %}" class="link">کاربران پشتیبانی</a>
+                    </div>
+                </div>
+            </div>
+            <form method="get" class="row m-20">
+                <div class="col-lg-3">
+                    <select name="user" class="text-input search-input">
+                        <option value="">همه کاربران</option>
+                        {% for item in users %}
+                        <option value="{{ item.id }}" {% if selected_user == item.id|stringformat:'s' %}selected{% endif %}>{{ item.get_full_name|default:item.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <select name="action" class="text-input search-input">
+                        <option value="">همه کارها</option>
+                        {% for code, label in actions %}
+                        <option value="{{ code }}" {% if selected_action == code %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <select name="area" class="text-input search-input">
+                        <option value="">همه بخش ها</option>
+                        {% for code, label in areas %}
+                        <option value="{{ code }}" {% if selected_area == code %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <input type="date" name="from" value="{{ date_from }}" class="text-input search-input" title="از تاریخ (میلادی)">
+                </div>
+                <div class="col-lg-2">
+                    <input type="date" name="to" value="{{ date_to }}" class="text-input search-input" title="تا تاریخ (میلادی)">
+                </div>
+                <div class="col-lg-1">
+                    <button type="submit" class="btn btn-lg btn-info btn-block">جستجو</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row m-t-20">
+    <div class="col-sm-12 col-lg-12">
+        <div class="table-block">
+            {% for msg in messages %}<p class="success" style="text-align:center">{{ msg }}</p>{% endfor %}
+            <form method="post" action="{% url 'staff-change-log-delete' %}" id="log-delete-form">
+                {% csrf_token %}
+                <input type="hidden" name="query" value="{{ request.GET.urlencode }}">
+                <input type="hidden" name="user" value="{{ selected_user }}">
+                <input type="hidden" name="action" value="{{ selected_action }}">
+                <input type="hidden" name="area" value="{{ selected_area }}">
+                <input type="hidden" name="from" value="{{ date_from }}">
+                <input type="hidden" name="to" value="{{ date_to }}">
+                <input type="hidden" name="search" value="{{ search }}">
+                <input type="hidden" name="mode" value="selected" id="log-delete-mode">
+                <div class="log-tools">
+                    <button type="submit" class="btn btn-outline-danger" data-mode="selected">حذف ردیف های انتخاب شده</button>
+                    {% if logs.paginator.count %}
+                    <button type="submit" class="btn btn-danger" data-mode="filtered" data-count="{{ logs.paginator.count }}">حذف همه نتایج این جستجو ({{ logs.paginator.count }})</button>
+                    {% endif %}
+                </div>
+                <table class="table BranchTable">
+                    <thead>
+                    <tr>
+                        <th class="TbHead"><input type="checkbox" id="log-select-all" title="انتخاب همه"></th>
+                        <th class="TbHead">ردیف</th>
+                        <th class="TbHead">تاریخ</th>
+                        <th class="TbHead">ساعت</th>
+                        <th class="TbHead">کاربر</th>
+                        <th class="TbHead">کار</th>
+                        <th class="TbHead">بخش</th>
+                        <th class="TbHead">مورد</th>
+                        <th class="TbHead">حذف</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td class="TbCells"><input type="checkbox" name="ids" value="{{ log.id }}" class="log-select"></td>
+                        <td class="TbCells serial">{{ forloop.counter0|add:logs.start_index }}</td>
+                        <td class="TbCells">{{ log.created_at|to_jalali:'%Y/%m/%d' }}</td>
+                        <td class="TbCells">{{ log.created_at|date:'H:i' }}</td>
+                        <td class="TbCells">{{ log.username|default:'-' }}</td>
+                        <td class="TbCells">{{ log.action_label }}</td>
+                        <td class="TbCells">{{ log.area_label|default:'-' }}</td>
+                        <td class="TbCells">{{ log.model_title }}: {{ log.title }}</td>
+                        <td class="TbCells">
+                            <button type="submit" class="log-row-delete" data-mode="one" data-id="{{ log.id }}" title="حذف این ردیف">&#10005;</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td class="TbCells" colspan="9">تغییری ثبت نشده است</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+            <ul class="pagination">
+                {% for n in logs.paginator.page_range %}
+                {% if n > logs.number|add:'-8' and n < logs.number|add:'8' %}
+                <li class="page-item {% if logs.number == n %}active{% endif %}"><a class="page-link" href="?page={{ n }}&user={{ selected_user }}&action={{ selected_action }}&area={{ selected_area }}&from={{ date_from }}&to={{ date_to }}">{{ n }}</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<style>
+    .log-tools{display:flex;gap:10px;justify-content:flex-end;margin:0 0 12px}
+    .log-row-delete{border:0;background:transparent;color:#e85347;font-size:16px;cursor:pointer;line-height:1}
+    .log-row-delete:hover{color:#b8261a}
+    #log-delete-form input[type="checkbox"]{width:16px;height:16px;cursor:pointer}
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('log-delete-form');
+        const mode = document.getElementById('log-delete-mode');
+        const all = document.getElementById('log-select-all');
+        if (!form) {
+            return;
+        }
+        if (all) {
+            all.addEventListener('change', function () {
+                form.querySelectorAll('.log-select').forEach(function (box) {
+                    box.checked = all.checked;
+                });
+            });
+        }
+        form.querySelectorAll('button[data-mode]').forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                const kind = button.dataset.mode;
+                if (kind === 'one') {
+                    if (!confirm('این ردیف حذف شود؟')) {
+                        event.preventDefault();
+                        return;
+                    }
+                    form.querySelectorAll('.log-select').forEach(function (box) {
+                        box.checked = box.value === button.dataset.id;
+                    });
+                    mode.value = 'selected';
+                    return;
+                }
+                if (kind === 'selected') {
+                    const count = form.querySelectorAll('.log-select:checked').length;
+                    if (!count) {
+                        event.preventDefault();
+                        alert('هیچ ردیفی انتخاب نشده است');
+                        return;
+                    }
+                    if (!confirm(count + ' ردیف انتخاب شده حذف شود؟')) {
+                        event.preventDefault();
+                        return;
+                    }
+                    mode.value = 'selected';
+                    return;
+                }
+                if (!confirm('همه ' + button.dataset.count + ' ردیف این جستجو حذف شود؟')) {
+                    event.preventDefault();
+                    return;
+                }
+                mode.value = 'filtered';
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -11,6 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-*@gq&_rhf7t0s@6q^j=pdvsmp3ad)ped#z34=44=u+@hhcd!cp'
+JAWG_ACCESS_TOKEN = 'H1jQtCWYx5epQvkYhB6hxdTPOyDsNSP12Ms3S8V7LHKfITEIZsS5vZpIuybKmwn9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -45,7 +46,8 @@ INSTALLED_APPS = [
     'wallet',
     'blog',
     'visa',
-    'payments'
+    'payments',
+    'staff'
 ]
 
 SITE_ID = 1
@@ -69,14 +71,23 @@ JALALI_DATE_DEFAULTS = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # WhiteNoise باید بلافاصله بعد از SecurityMiddleware باشد، نه انتهای لیست.
+    # قبلاً هر درخواست فایل استاتیک (css/js/image) مجبور بود از Session,
+    # Csrf و Auth middleware هم رد بشه (که هرکدوم روی درخواست‌های
+    # session-backed یک کوئری دیتابیس اضافه می‌کنن)، قبل از این‌که
+    # WhiteNoise بالاخره فایل رو مستقیم serve کنه. با ۱۴۰+ درخواست
+    # استاتیک در هر بار لود صفحه، همین یک مورد سنگین‌ترین دلیل کندی
+    # سرور بود (لوکال چون از static handler جنگو استفاده می‌کنه این
+    # مشکل رو نداره، برای همین لوکال سریع بود ولی سرور کند).
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django_user_agents.middleware.UserAgentMiddleware',
+    'staff.middleware.StaffAccessMiddleware',
 ]
 
 ROOT_URLCONF = 'aps.urls'
@@ -94,6 +105,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'webp_converter.context_processors.webp_support',
+                'aps.context_processors.site_config',
+                'aps.context_processors.admin_notifications',
+                'aps.context_processors.hotel_menu',
+                'aps.context_processors.tour_menu',
+                'staff.context_processors.staff_menu',
             ],
         },
     },
@@ -107,9 +123,10 @@ WSGI_APPLICATION = 'aps.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'CONN_MAX_AGE': 60,
         'NAME': 'test', #maindb_asp
         'USER': 'root',
-        'PASSWORD': 'N190]1XLkhovE*5K',
+        'PASSWORD': '',
         # 'PASSWORD': '1234qwer!@#$QWER',
         'HOST': '127.0.0.1',
         'PORT': '3306',
@@ -151,9 +168,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# نکته: چون نام فایل‌ها هش نمی‌شوند (برای سازگاری با مسیرهای هاردکدشده‌ی
+# تمپلیت‌ها)، بعد از هر تغییر در یک فایل CSS/JS باید ?v= آن دستی بالا برود
+# (همان الگویی که خود پروژه برای theme_funcs.js?v=6 استفاده می‌کند).
+# مرورگر کاربر یک هفته CSS/JS را کش می‌کند (پیش‌فرض WhiteNoise فقط ۶۰ ثانیه بود).
+WHITENOISE_MAX_AGE = 60 * 60 * 24 * 7  # 7 days
+# مهم: بدون این خط، WhiteNoise فایل خام را می‌فرستد نه gzip/brotli را؛
+# collectstatic با این storage نسخه‌ی .gz/.br هر فایل را هم می‌سازد و
+# WhiteNoise همان نسخه‌ی فشرده را serve می‌کند (مثلاً bootstrap.min.css از
+# ۲۲۷KB به حدود ۳۰KB روی سیم می‌رسد). بعد از تغییر این تنظیم حتماً باید
+# `python manage.py collectstatic` دوباره روی سرور اجرا شود.
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # CKEDITOR
@@ -193,10 +218,17 @@ JQUERY_URL = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
+# hotel_menu_countries (context processor روی همه‌ی صفحات) هر بار cache.get
+# می‌زد که با DatabaseCache یعنی یک کوئری MySQL اضافه به ازای هر ریکوئست.
+# LocMemCache همون داده رو تو حافظه‌ی خود پروسه نگه می‌داره، بدون کوئری.
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'apscachetable',
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, '.django_cache'),
+        'TIMEOUT': 600,
+        'OPTIONS': {
+            'MAX_ENTRIES': 5000,
+        },
     }
 }
 
@@ -209,8 +241,19 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '89.42.211.72', 'arezoosafar.com', 'w
 MERCHANT = '00000000-0000-0000-0000-000000000000'
 SANDBOX = True
 # SECURE_SSL_REDIRECT = True
-SECURE_HSTS_SECONDS = 518400
+SECURE_HSTS_SECONDS = 31536000
 SESSION_COOKIE_SECURE = True
 SECURE_HSTS_PRELOAD = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = [
+    'https://arezoosafar.com',
+    'https://www.arezoosafar.com',
+]
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
