@@ -142,3 +142,5 @@ static/
 # Backup folders
 _backup_perf/
 backup-*/
+# Data dump — must never be committed (contains sessions/PII/secrets)
+before_encoding_fix.json
