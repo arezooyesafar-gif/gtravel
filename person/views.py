@@ -467,14 +467,14 @@ def visa_view(request, id):
 
 @login_required(login_url='otp_login')
 def delete_visa_request(request, id):
-    if request.user.is_superuser:
+    if request.user.is_superuser or user_can(request.user, 'visas', 'delete'):
         item = visa_request_item.objects.get(id=id)
         item.delete()
         return redirect('visa_list')
     
 @login_required(login_url='otp_login')
 def delete_thai_visa_request(request, id):
-    if request.user.is_superuser:
+    if request.user.is_superuser or user_can(request.user, 'visas', 'delete'):
         item = ThaiVisa.objects.get(id=id)
         item.delete()
         return redirect('thai_visa_list')
