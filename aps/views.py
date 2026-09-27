@@ -903,7 +903,7 @@ def TourDetail(request,id, Slug):
         if leaving is None or arriving is None:
             return ''
         if leaving.Hcity_id == arriving.Hcity_id:
-            return ''
+            return transfer_by_pair.get((leaving.Hcity_id, arriving.Hcity_id), '')
         paired = transfer_by_pair.get((leaving.Hcity_id, arriving.Hcity_id))
         if paired:
             return paired
