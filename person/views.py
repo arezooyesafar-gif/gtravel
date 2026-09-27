@@ -214,10 +214,13 @@ def visa_list(request):
 @login_required(login_url='otp_login')
 def update_visa_request(request, id):
     item = visa_request_item.objects.get(id=id)
+    is_owner = item.user_id == request.user.id
+    if not is_owner and not user_can(request.user, 'visas', 'view'):
+        return redirect('visa_list')
     visa_manager = user_can(request.user, 'visas', 'edit')
     if not visa_manager:
         forms = visa_request_form(instance=item)
-        if request.method == 'POST':
+        if request.method == 'POST' and is_owner:
             forms = visa_request_form(request.POST, request.FILES, instance=item)
             if forms.is_valid():
                 data = forms.save(commit=False)
@@ -335,10 +338,13 @@ def thai_visa_list(request):
 @login_required(login_url='otp_login')
 def update_thai_visa_request(request, id):
     item = ThaiVisa.objects.get(id=id)
+    is_owner = item.user_id == request.user.id
+    if not is_owner and not user_can(request.user, 'visas', 'view'):
+        return redirect('thai_visa_list')
     visa_manager = user_can(request.user, 'visas', 'edit')
     if not visa_manager:
         forms = thaiVisaForm(instance=item)
-        if request.method == 'POST':
+        if request.method == 'POST' and is_owner:
             forms = thaiVisaForm(request.POST, request.FILES, instance=item)
             if forms.is_valid():
                 data = forms.save(commit=False)

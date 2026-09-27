@@ -9,8 +9,8 @@ ADMIN_NAMES = {
     'user_list', 'delete_user', 'ajax_user_list',
     'create_page', 'page_update', 'page_delete', 'page_list', 'file_list', 'ads_file_list',
     'upload_file', 'ads_upload_file', 'ajax_file_list', 'ajax_ads_files',
-    'visa_list_admin', 'update_visa_request', 'visa_view', 'visa_pdf', 'delete_visa_request',
-    'delete_thai_visa_request', 'thai_visa_list', 'update_thai_visa_request',
+    'visa_list_admin', 'visa_view', 'visa_pdf', 'delete_visa_request',
+    'delete_thai_visa_request',
     'main_page_settings', 'reset_password_admin',
 }
 
