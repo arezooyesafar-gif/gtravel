@@ -181,6 +181,8 @@ WHITENOISE_MAX_AGE = 60 * 60 * 24 * 7  # 7 days
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+DEFAULT_FILE_STORAGE = 'aps.webp_storage.WebPStorage'
+WEBP_UPLOAD_QUALITY = 80
 # CKEDITOR
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {
