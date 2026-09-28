@@ -178,7 +178,6 @@ def visa_list(request):
     user = request.user
     prof, _ = profile.objects.get_or_create(user=user)
 
-    # 1) ساختن کوئری پایه
     if user_can(user, 'visas', 'view'):
         qs = visa_request_item.objects.all()
     else:
@@ -186,19 +185,11 @@ def visa_list(request):
 
     qs = qs.order_by('-id')
 
-    # 2) گرفتن مقدار سرچ از GET و فیلتر
     search_query = (request.GET.get('search') or '').strip()
     if search_query:
-        # اگر trs_number از نوع CharField است:
         qs = qs.filter(trs_number__icontains=search_query)
 
-        # اگر trs_number از نوع عددی (Integer/BigInteger) است، به‌جایش این را بگذار:
-        # if search_query.isdigit():
-        #     qs = qs.filter(trs_number=int(search_query))
-        # else:
-        #     qs = qs.none()
 
-    # 3) صفحه‌بندی (بعد از فیلتر)
     paginator = Paginator(qs, 10 if user.is_superuser else 20)
     page_number = request.GET.get('page')
     all_items = paginator.get_page(page_number)
@@ -207,7 +198,7 @@ def visa_list(request):
         'all_items': all_items,
         'prof': prof,
         'user': user,
-        'search_query': search_query,  # برای استفاده در تمپلیت
+        'search_query': search_query,
     }
     return render(request, 'layout/your-applications.html', context)
 
@@ -584,38 +575,6 @@ def reset_password_admin(request, id):
     }
     return render(request, 'person/reset_password.html', context)
 
-# @superuser_required(login_url='login')
-# def add_reseller_profile(request, id):
-#     user= User.objects.get(id=id)
-#     agancy_code = random.randint(100000, 999999)
-#     agancy_code = f'AG-{agancy_code}'
-#     forms = reseller_prof_form()
-#     if request.method == 'POST':
-#         forms = reseller_prof_form(request.POST, request.FILES)
-#         if forms.is_valid():
-#             reseller = forms.save(commit=False)
-#             reseller.user = user
-#             reseller.reseller_code = agancy_code
-#             reseller.save()
-#             return redirect('user_list')
-#     else:
-#         context = {
-#             'forms': forms
-#         }
-#         return render(request, 'person/add-reseller-profile.html', context)
-#
-# @superuser_required(login_url='login')
-# def update_reseller_profile(request, id):
 
 
-# from django.contrib.auth import get_user_model
-# def rest_password(u, password):
-#     try:
-#         user = get_user_model().objects.get(username=u)
-#     except:
-#         return 'کاربر پیدا نشد'
-#     user.set_password(password)
-#     user.save()
-#     return 'رمز با موفقیت تغییر یافت'
 
-# rest_password('admin', '09122714808n@')

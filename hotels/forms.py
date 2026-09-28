@@ -77,27 +77,21 @@ class CreateHotelForm(forms.ModelForm):
         })
         self.fields['HotelName'].widget.attrs.update({
             'class': 'text-input',
-            # 'placeholder': ' نام هتل را وارد کنید'
         })
         self.fields['htitle'].widget.attrs.update({
             'class': 'text-input',
-            # 'placeholder': ' عنوان صفحه هتل را وارد کنید'
         })
         self.fields['HotelNameEnglish'].widget.attrs.update({
             'class': 'text-input',
-            # 'placeholder': ' نام انگلیسی هتل را وارد کنید'
         })
         self.fields['HotelRating'].widget.attrs.update({
             'class': 'text-input',
-            # 'placeholder': ' تعداد ستاره هتل را وارد کنید'
         })
         self.fields['HotelBookingRate'].widget.attrs.update({
             'class': 'text-input',
-            # 'placeholder': ' امتیاز هتل در سایت بوکینگ را وارد کنید'
         })
         self.fields['HotelTpRate'].widget.attrs.update({
             'class': 'text-input',
-            # 'placeholder': ' امتیاز هتل در سایت بوکینگ را وارد کنید'
         })
         self.fields['HotelRoom'].widget.attrs.update({
             'class': 'text-input',
@@ -169,7 +163,6 @@ class hotel_search_form(forms.Form):
         'placeholder': 'نام انگلیسی هتل را انتخاب کنید',
         'autocomplete': 'off',
         'class': 'text-input search-input',
-        # 'onchange': 'convertDateadmin()'
     })
 
 class hotel_comment_form(forms.ModelForm):

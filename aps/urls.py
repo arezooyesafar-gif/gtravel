@@ -158,7 +158,6 @@ def payment_redirect(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('chaining/', include('smart_selects.urls')),
     path('dashboard/', include('tour.urls')),
     path('dashboard/blog/', include('blog.urls')),
     path('user/', include('person.urls')),
@@ -172,18 +171,15 @@ urlpatterns = [
     path('', (IndexPage), name='index-page'),
     path('visa/request', visa_request, name='visa_request'),
     path('visa/request/thai', thai_visa_request, name='thai_visa_request'),
-    #tours urls
     path('all-tour', (AllTourList), name='all-tour'),
     path('<str:slug>/<int:id>/city-tours', CityTourList, name='city-tours'),
     path('<str:slug>/<int:id>/all-tour', (CategoryTourList), name='all-tour-country'),
     path('tour/<int:id>/<str:Slug>', TourDetail, name='tour-detail'),
     path('tour/<str:slug>', MenuTourList, name='MenuTourList'),
     path('tours/<slug:slug>', tour_category_detail, name='tour-category-detail'),
-    #public JSON feed (auto price/detail sync for partner agencies)
     path('api/tours/', tour_feed_list, name='tour-feed-list'),
     path('api/tours/reserve/', tour_reserve, name='tour-reserve'),
     path('api/tours/<str:slug>/', tour_feed_detail, name='tour-feed-detail'),
-    #hotels urls
     path('all-hotel', (AllHotelList), name='all-hotel'),
     path('all-hotel/<int:id>/<str:slug>', (AllHotelCity), name='all-hotel-city-list'),
     path('all-country-hotel/<int:id>/<str:slug>', (AllCountryHotel), name='all-hotel-list'),
@@ -233,7 +229,6 @@ urlpatterns = [
     path('get_country_tours_city_canvas', get_country_tours_city_mobile, name='get_country_tours_city_mobile'),
     path('country_hotel_cities', get_country_hotel_cities, name='get_country_hotel_cities'),
     path('get_country_hotel_cities_canvas', get_country_hotel_cities_mobile, name='get_country_hotel_cities_mobile'),
-    # ajax views
 
     path('toursdata', index_tours_ajax, name='index_tours_ajax'),
     path('tourslist', list_tours_ajax, name='list_tours_ajax'),

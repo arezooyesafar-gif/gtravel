@@ -74,8 +74,6 @@ def admin_notifications(request):
     hotel_comment_count = 0
     blog_comment_count = 0
 
-    # نوتیف‌های تور/رزرو/تماس - جدا نگه داشته می‌شوند تا خطای احتمالی
-    # این بخش، کل نوتیف‌ها را از کار نیندازد
     try:
         from tour.models import TourInterest, ContactUs, TourOrder
 
@@ -93,12 +91,10 @@ def admin_notifications(request):
     except Exception:
         pass
 
-    # کامنت‌های جدید هتل - بر اساس آخرین کامنت دیده‌شده (با باز کردن لیست پاک می‌شود)
     try:
         from hotels.models import hotel_comments
         seen_id = request.session.get('seen_hotel_comment_id')
         if seen_id is None:
-            # اولین بار: از این لحظه به بعد بشمار (backlog قدیمی را نشان نده)
             latest = hotel_comments.objects.order_by('-id').values_list('id', flat=True).first() or 0
             request.session['seen_hotel_comment_id'] = latest
             hotel_comment_count = 0
@@ -107,7 +103,6 @@ def admin_notifications(request):
     except Exception:
         pass
 
-    # کامنت‌ها و پاسخ‌های جدید مجله گردشگری - بر اساس آخرین مورد دیده‌شده
     try:
         from blog.models import comments as blog_comments, reply_comments
         c_seen = request.session.get('seen_blog_comment_id')

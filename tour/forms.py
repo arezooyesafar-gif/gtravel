@@ -355,7 +355,6 @@ class hotel_search_form(forms.Form):
         'placeholder': 'نام انگلیسی هتل را انتخاب کنید',
         'autocomplete': 'off',
         'class': 'text-input search-input',
-        # 'onchange': 'convertDateadmin()'
     })
 
 
@@ -366,17 +365,14 @@ class CreateAirLineForm(forms.ModelForm):
         self.fields['AirLineTitle'].widget.attrs.update({
             'class': 'air-line-name',
             'id': 'Air-Line-Name',
-            # 'placeholder': ' نام ایرلاین را وارد کنید'
         })
         self.fields['AirLineTitle'].widget.attrs.update(
             {
-                # 'placeholder': 'نام ایرلاین را وارد کنید',
                 'class': 'text-input',
             }
         )
         self.fields['AirlineCargo'].widget.attrs.update(
             {
-                # 'placeholder': 'نام ایرلاین را وارد کنید',
                 'class': 'text-input',
             }
         )
@@ -521,12 +517,7 @@ class CreateTourForm(forms.ModelForm):
         self.fields['Tcity'].widget.attrs.update({
             'class': 'text-input'
         })
-        # self.fields['custom_categories'].widget = forms.CheckboxSelectMultiple()
-        # self.fields['custom_categories'].queryset = CustomTourCategory.objects.filter(is_active=True)
 
-        # self.fields['custom_categories'].widget.attrs.update({
-        #     'class': 'category-checkbox-wrapper'
-        # })
         
         self.fields['custom_categories'].widget = forms.SelectMultiple(attrs={
             'id': 'id_custom_categories',
@@ -1169,8 +1160,6 @@ class faqCreateForm(forms.ModelForm):
             'placeholder': 'متن سوال'
         })
         self.fields['Answer'].widget.attrs.update({
-            ##'class': 'text-input reserve',
-            ##'placeholder': 'متن پاسخ'
         })
         
     class Meta:
@@ -1186,8 +1175,6 @@ class faqhotelcountryCreateForm(forms.ModelForm):
             'placeholder': 'متن سوال'
         })
         self.fields['Answer'].widget.attrs.update({
-            ##'class': 'text-input reserve',
-            ##'placeholder': 'متن پاسخ'
         })
 
     class Meta:
@@ -1201,7 +1188,6 @@ class cityfaqCreateForm(forms.ModelForm):
             'placeholder': 'متن سوال'
         })
         self.fields['Answer'].widget.attrs.update({
-            ##'class': 'text-input reserve',
             'placeholder': 'متن پاسخ'
         })
         
@@ -1218,7 +1204,6 @@ class cityfaqhotelCreateForm(forms.ModelForm):
             'placeholder': 'متن سوال'
         })
         self.fields['Answer'].widget.attrs.update({
-            ##'class': 'text-input reserve',
             'placeholder': 'متن پاسخ'
         })
 
@@ -1306,8 +1291,6 @@ class create_faq__home_form(forms.ModelForm):
 class TourReviewForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # .text-input تم داشبورد line-height:45px دارد که برای input درست است
-        # ولی textarea را غول‌پیکر می‌کند، پس textarea استایل خودش را می‌گیرد.
         for name in ('author', 'rating', 'review_date', 'country',
                      'source', 'source_url', 'sort_order'):
             self.fields[name].widget.attrs.update({'class': 'text-input'})
@@ -1320,8 +1303,6 @@ class TourReviewForm(forms.ModelForm):
         self.fields['source_url'].widget.attrs['placeholder'] = 'https://...'
         self.fields['review_date'].widget.attrs['placeholder'] = '2026-09-07'
         self.fields['country'].empty_label = '— کشور را انتخاب کنید —'
-        # theme.css قاعده‌ی #id_publish دارد که height:50px را به هر عنصری با این
-        # آیدی تحمیل می‌کند (برای سلکت فرم بلاگ نوشته شده)؛ چک‌باکس را کشیده می‌کرد.
         self.fields['publish'].widget.attrs['id'] = 'id_review_publish'
 
     class Meta:

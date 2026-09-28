@@ -78,7 +78,6 @@ def _build_day_prefix_re():
         words.add(_cardinal_word(n))
     words.discard('')
     words |= {m for m in (_mojibake(w) for w in words) if m}
-    # عبارت‌های طولانی‌تر اول بیایند تا «بیست و یکم» قبل از «یک» تطبیق بخورد
     alternatives = sorted(words, key=len, reverse=True)
     day_words = [w for w in ('روز', _mojibake('روز')) if w]
     pattern = r'^\s*(?:%s)\s*(?:%s|[0-9۰-۹٠-٩]+)\s*(?:[:：\-–—،]\s*)?' % (

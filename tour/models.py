@@ -328,8 +328,6 @@ class TourCity(models.Model):
     flight_inbound = models.BooleanField(default=False)
     GDest = models.CharField(max_length=300, null=True, blank=True)
     
-##    def __str__(self):
-##        return self.Airline.AirLineTitle
 
 class CustomTourCategory(models.Model):
     name = models.CharField(max_length=200)
@@ -685,8 +683,6 @@ class TourReview(models.Model):
     publish = models.BooleanField(default=True, verbose_name='نمایش در سایت')
     sort_order = models.IntegerField(
         default=0, verbose_name='ترتیب نمایش (کوچک‌تر جلوتر)')
-    # شناسهٔ یکتای نظر در گوگل (places/X/reviews/Y) تا هر بار
-    # دریافت، نظرهای تکراری دوباره ثبت نشوند
     external_id = models.CharField(
         max_length=190, null=True, blank=True, db_index=True,
         verbose_name='شناسهٔ نظر در گوگل')

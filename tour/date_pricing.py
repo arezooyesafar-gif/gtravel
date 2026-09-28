@@ -33,7 +33,6 @@ def compute_tour_min_price(packages, dp=None, overrides=None):
             }
     best = None
     for pkg in packages:
-        # پکیج مخصوص یک تاریخ دیگه (نه همین تاریخ) هیچ‌وقت تو این تاریخ نمایش داده نمی‌شه
         if pkg.exclusive_date_plan_id and (not dp or pkg.exclusive_date_plan_id != dp.id):
             continue
         override = overrides.get(pkg.id)
@@ -45,7 +44,6 @@ def compute_tour_min_price(packages, dp=None, overrides=None):
             currency = override.currency or pkg.Pcry
             currency_foreign = override.foreign_currency or pkg.fr_Pcry
         elif pkg.exclusive_date_plan_id:
-            # پکیج مخصوص همین تاریخه و override نداره یعنی قیمت خودش از قبل نهایی‌ه
             price = pkg.DoubleBedPrice
             price_dollar = pkg.DoubleBedPrice_doller
             currency = pkg.Pcry
@@ -114,19 +112,16 @@ def tour_card_packages_bulk(tours):
         return {}
     tour_ids = [t.id for t in tours]
 
-    # ۱) همه‌ی پکیج‌های این تورها
     by_tour = {}
     for p in Package.objects.filter(TourName_id__in=tour_ids).select_related('Pcry', 'fr_Pcry'):
         by_tour.setdefault(p.TourName_id, []).append(p)
 
-    # ۲) تاریخ برگزاریِ منطبق با تاریخ شروع هر تور (اگه وجود داشته باشه)
     start_by_tour = {t.id: t.StartDate for t in tours}
     base_dp_by_tour = {}
     for dp in date_plan.objects.filter(tour_id__in=tour_ids):
         if start_by_tour.get(dp.tour_id) and dp.start_date == start_by_tour[dp.tour_id]:
             base_dp_by_tour.setdefault(dp.tour_id, dp)
 
-    # ۳) قیمت‌های دستیِ ثبت‌شده برای همون تاریخ‌ها
     overrides_by_dp = {}
     dp_ids = [dp.id for dp in base_dp_by_tour.values()]
     if dp_ids:
@@ -286,13 +281,9 @@ def packages_for_date(tour, dp=None):
                 pkg.DollerPrice = override.doller_price
             for field in _PRICE_FIELDS:
                 setattr(pkg, field, getattr(override, field))
-            # «تکمیل ظرفیت» هر هتل هم مثل قیمت، مقدارِ همین تاریخ است. صفحهٔ
-            # تنظیم قیمت هر تاریخ هر پنج چک‌باکس را در هر ذخیره می‌نویسد، پس
-            # ردیف override مقدار معتبر این تاریخ را دارد.
             for field in _SOLD_OUT_FIELDS:
                 setattr(pkg, field, getattr(override, field))
         elif not pkg.exclusive_date_plan_id:
-            # پکیج مخصوص همین تاریخ، قیمتش از قبل نهایی‌ه و اختلاف عمومی روش اعمال نمی‌شه
             pkg.DoubleBedPrice = (pkg.DoubleBedPrice or 0) + sign * adj
             pkg.SingleBedPrice = (pkg.SingleBedPrice or 0) + sign * adj
             pkg.BabyWithBedPrice = (pkg.BabyWithBedPrice or 0) + sign * adj

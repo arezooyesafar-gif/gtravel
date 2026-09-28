@@ -46,7 +46,6 @@ def ajax_hotel_cities(request):
     return render(request, 'hotel/hotel_cities.html', context)
 
 
-# Hotel Menu CRUD
 @superuser_required(login_url='login')
 def CreateHotelMenu(request):
     forms = CreateHotelMenuForm()
@@ -109,7 +108,6 @@ def DeleteHotelMenu(request, id):
     menu.delete()
     return redirect('create-hotel-menu')
 
-# Hotel CRUD Functions
 
 @superuser_required(login_url='login')
 def create_hotel(request):

@@ -1,5 +1,4 @@
 SERVICE_ICONS = {
-    # HOTEL_SERVICES
     'پارکینگ': 'local_parking',
     'آسانسور': 'import_export',
     'شاتل': 'airport_shuttle',
@@ -25,7 +24,6 @@ SERVICE_ICONS = {
     'لپ تاپ': 'laptop',
     'ورود حیوانات مجاز': 'pets',
     
-    # ROOM_SERVICES
     'اینترنت رایگان در اتاق': 'wifi',
     'تراس/بالکن': 'balcony',
     'چای/قهوه ساز': 'coffee_maker',
@@ -48,7 +46,6 @@ SERVICE_ICONS = {
     'آشپزخانه': 'kitchen',
     'لوازم بهداشتي': 'bathroom',
     
-    # SERVICES
     'سرویس اتاق 24 ساعته': 'room_service',
     'صبحانه در اتاق': 'breakfast_dining',
     'خدمات پزشکی': 'medical_services',
@@ -60,7 +57,6 @@ SERVICE_ICONS = {
     'صبحانه': 'free_breakfast',
     'خدمات زیبایی': 'spa',
     
-    # INTERTAINMENT
     'استخر روباز': 'pool',
     'استخر سرپوشیده': 'pool',
     'سونا/جکوزی': 'hot_tub',

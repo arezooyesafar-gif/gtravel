@@ -114,7 +114,6 @@ def find_price_like(data):
 def extract_price_fields(data, source=None):
     """نقطه ورود اصلی: بر اساس اولویت‌های بالا سعی می‌کنه amount/currency (ارز اول و دوم) رو پیدا کنه."""
     result = _extract_price_fields_raw(data, source)
-    # واحد ارز تو دیتابیس محدود به ۵۰ کاراکتره؛ اگه آژانس یه چیز عجیب/طولانی برگردوند خطا نگیریم
     for key in ('price_currency', 'price_currency_foreign'):
         if isinstance(result.get(key), str):
             result[key] = result[key].strip()[:50] or None
@@ -127,7 +126,6 @@ def _extract_price_fields_raw(data, source=None):
         'price_amount_foreign': None, 'price_currency_foreign': None,
     }
 
-    # 1) مسیر دستی تنظیم‌شده روی منبع
     if source is not None and getattr(source, 'price_amount_path', None):
         raw = resolve_path(data, source.price_amount_path)
         if raw is not None and _looks_numeric(raw):
@@ -147,7 +145,6 @@ def _extract_price_fields_raw(data, source=None):
         if result['price_amount'] is not None:
             return result
 
-    # 2) ساختارهای شناخته‌شده‌ی رایج
     if isinstance(data, dict):
         price = data.get('price')
         if isinstance(price, dict) and _looks_numeric(price.get('amount')):
@@ -167,7 +164,6 @@ def _extract_price_fields_raw(data, source=None):
                 result['price_currency_foreign'] = data.get('currency_foreign')
                 return result
 
-    # 3) جستجوی بازگشتی حدسی در کل درخت
     guesses = find_price_like(data)
     if guesses:
         result['price_amount'] = guesses[0][1]

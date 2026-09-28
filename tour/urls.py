@@ -9,7 +9,6 @@ from tour.views.views_packages import *
 from tour.views.views_ajax import *
 
 urlpatterns = [
-    # AJAX urls
     path('ajax_airline_list/', ajax_airline_list, name='airline_list'),
     path('ajax_country_list/', ajax_country_list, name='ajax_country_list'),
     path('ajax_city_list/', ajax_city_list, name='ajax_city_list'),
@@ -41,7 +40,6 @@ urlpatterns = [
     path('update-currency/<int:id>', update_currency, name='update-currency'),
     path('delete-currency/<int:id>', delete_currency, name='delete-currency'),
 
-    #destination views
     path('create-country', create_country, name='create-country'),
     path('country_list', country_list, name='country_list'),
     path('update-country/<int:id>', update_country, name='update-country'),
@@ -65,7 +63,6 @@ urlpatterns = [
     path('update_city_to_spacial/<int:id>', update_city_to_spacial, name='update_city_to_spacial'),
     path('delete_city_to_spacial/<int:id>', delete_city_to_spacial, name='delete_city_to_spacial'),
 
-    #tour views
     path('create-tour', create_tour, name='create-tour'),
     path('tour-list', tour_list, name='tour-list'),
     path('update-tour/<int:id>', update_tour, name='update-tour'),
@@ -122,12 +119,10 @@ urlpatterns = [
     path('delete_trip_plan/<int:id>', delete_trip_plan, name='delete_trip_plan'),
     path('update_trip_plan/<int:id>', update_trip_plan, name='update_trip_plan'),
 
-    #api partner keys (access we grant to other agencies)
     path('api-partner-list', api_partner_list, name='api-partner-list'),
     path('toggle-api-partner/<int:id>', toggle_api_partner, name='toggle-api-partner'),
     path('delete-api-partner/<int:id>', delete_api_partner, name='delete-api-partner'),
 
-    #template views
     path('create-about', AboutUsCreate, name='create-about'),
     path('update-about/<int:id>', AboutUsUpdate, name='update-about'),
     path('create-contact-us', ContactUsTextCreate, name='create-contact-us'),
@@ -136,7 +131,6 @@ urlpatterns = [
     path('messages', ContactUsInbox, name='messages'),
     path('message_delete/<int:id>', message_delete, name='message_delete'),
 
-    #memory views
     path('memo-list', MemoriesList, name='memo-list'),
     path('create-memory', memoriesCreate, name='create-memory'),
     path('memo-update/<int:id>', memoriesUpdate, name='memo-update'),

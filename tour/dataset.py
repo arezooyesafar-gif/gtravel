@@ -133,7 +133,6 @@ def get_origins():
     return origins
 
 def get_tours_country():
-    # قبلا به ازای هر تور یک کوئری برای کشور و یک کوئری برای شمارش می‌خورد
     counts = (
         Tour.objects.filter(PubTour=True, Tcountry__isnull=False)
         .values('Tcountry')
@@ -159,15 +158,6 @@ def get_tours_country_list():
     countries = Country.objects.filter(tocountry__PubTour=True).order_by('menu_order').distinct()
     return countries
 
-# def get_country_tours(country_id):
-#     tour_list = []
-#     tours_query = related_tour_city.objects.filter(country=country_id, tour__PubTour=True)
-#     tours_query = list(set(tours_query))
-#     for i in tours_query:
-#         tour_list.append(i.tour)
-#     tour_list = list(set(tour_list))
-#     tour_list = sorted(tour_list, key=attrgetter('updateDate'))
-#     return tour_list
 def get_country_tours(country_id):
     tour_list = []
     direct_tours = Tour.objects.filter(
@@ -194,15 +184,6 @@ def get_country_tours(country_id):
     )
     return tour_list
 
-# def get_city_tours(city_id):
-#     tour_list = []
-#     tours_query = related_tour_city.objects.filter(city=city_id, tour__PubTour=True)
-#     tours_query = list(set(tours_query))
-#     for i in tours_query:
-#         tour_list.append(i.tour)
-#     tour_list = list(set(tour_list))
-#     tour_list = sorted(tour_list, key=attrgetter('updateDate'))
-#     return tour_list
 
 def get_city_tours(city_id):
     tour_list = []

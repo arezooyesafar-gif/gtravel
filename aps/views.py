@@ -33,25 +33,11 @@ from django.shortcuts import get_object_or_404, render
 def IndexPage(request):
     date = datetime.now()
     date = date.date()
-    # ArchiveTour = Tour.objects.filter(StartDate=date)
-    # for tour in ArchiveTour:
-    #     tour.PubTour = False
-    #     tour.save()
-    # Tour.objects.filter(StartDate=date).update(PubTour=False)
     theme_setting = index_page.objects.get(id=1)
     view = viewCounter.objects.get(id=1)
     view.indexView += 1
     view.save()
 
-    # These reads are expensive (N+1-prone) but not request-specific, so they're
-    # cached at the data level instead of caching the whole rendered page — that
-    # way {% csrf_token %} in the search/subscribe forms below is always rendered
-    # fresh per-request instead of a stale token getting baked into a cached page.
-    # The rollover call below is a write with side effects (not just a read), but
-    # it's kept here on purpose: this preserves its exact original once-per-cache-
-    # window frequency from when the page itself was cached with @cache_page, and
-    # leaves its filter args (including force_pub) completely untouched since
-    # their exact intent isn't known here.
     homepage_data = cache.get('homepage_index_data')
     if homepage_data is None:
         roll_over_expired_tour_dates(Tour.objects.filter(StartDate__lte=date, PubTour=True, force_pub=False))
@@ -129,10 +115,6 @@ def CategoryTourList(request, slug, id):
     except Country.DoesNotExist:
         raise Http404
 
-    # Same reasoning as AllTourList: cache the reads that are the same for every
-    # country page (menu/footer/airlines/etc.), not the whole rendered page, so
-    # {% csrf_token %} in this template always gets a fresh token instead of a
-    # stale one baked into a cached page.
     shared_data = cache.get('category_tour_shared_data')
     if shared_data is None:
         shared_data = {
@@ -164,18 +146,8 @@ def CategoryTourList(request, slug, id):
     tour_cities = []
     dates = []
 
-    # for tour in tourlist:
-    #     packages.append(
-    #    Package.objects.filter(TourName=tour).order_by('DoubleBedPrice', 'DoubleBedPrice_doller')
-    #     )
 
-    #     tour_cities.append(
-    #     list(TourCity.objects.filter(TourName=tour).select_related('Airline', 'FromAirport', 'ToAirport'))
-    #     )
 
-    #     dates.append(
-    #     date_plan.objects.filter(tour=tour).count()
-    #    )
 
     tour_ids = [tour.id for tour in tourlist]
 
@@ -222,18 +194,11 @@ def CategoryTourList(request, slug, id):
         'meta_robots': meta_robots,
         'pubTours': alldata,
         'tours_list': tourlist,
-        # Legacy mobile template compatibility (keep the old mobile UI intact)
         'AllTour': tourlist,
         'AllData': list(zip(tourlist, tour_cities, packages)),
         'contry': menu,
     }
-    # تقویم جلالی (django_jalali.js + jquery-ui.min.css) فقط برای فرم‌هایی
-    # لازم است که ورودی تاریخ دارند. این صفحه ندارد، ولی ۸۲ کیلوبایت را
-    # روی هر بازدید دانلود می‌کرد.
     context['skip_jalali_datepicker'] = True
-    # سه نظر مشتریان همین کشور (از پنل ثبت می‌شوند؛ نظرات گوگل مپ قابل
-    # خواندن خودکار نیستند - Places API حداکثر ۵ نظرِ غیرقابل‌فیلتر می‌دهد
-    # و از ایران هم در دسترس نیست)
     context['tour_reviews'] = list(
         TourReview.objects.filter(publish=True, country=menu)[:3]
     )
@@ -278,9 +243,6 @@ def CityTourListOrigin(request, id, slug):
         'footer_2': footer_2,
         'footer_3': footer_3,
     }
-    # تقویم جلالی (django_jalali.js + jquery-ui.min.css) فقط برای فرم‌هایی
-    # لازم است که ورودی تاریخ دارند. این صفحه ندارد، ولی ۸۲ کیلوبایت را
-    # روی هر بازدید دانلود می‌کرد.
     context['skip_jalali_datepicker'] = True
     return render(request, 'ui/all-tour.html', context)
 def CityTourList(request,slug, id):
@@ -289,10 +251,6 @@ def CityTourList(request,slug, id):
     except City.DoesNotExist:
         raise Http404
 
-    # Same reasoning as CategoryTourList/AllTourList: cache the reads that are
-    # the same for every city page, not the whole rendered page, so
-    # {% csrf_token %} in this template always gets a fresh token instead of a
-    # stale one baked into a cached page.
     shared_data = cache.get('city_tour_shared_data')
     if shared_data is None:
         shared_data = {
@@ -344,14 +302,10 @@ def CityTourList(request,slug, id):
         'meta_robots': meta_robots,
         'pubTours': alldata,
         'tours_list': tourlist,
-        # Legacy mobile template compatibility (keep the old mobile UI intact)
         'AllTour': tourlist,
         'AllData': list(zip(tourlist, tour_cities, packages)),
         'Menu': menu,
     }
-    # تقویم جلالی (django_jalali.js + jquery-ui.min.css) فقط برای فرم‌هایی
-    # لازم است که ورودی تاریخ دارند. این صفحه ندارد، ولی ۸۲ کیلوبایت را
-    # روی هر بازدید دانلود می‌کرد.
     context['skip_jalali_datepicker'] = True
     return render(request, 'ui/all-tour.html', context)
 def AllTourList(request):
@@ -359,9 +313,6 @@ def AllTourList(request):
     view.toursView += 1
     view.save()
 
-    # Same reasoning as IndexPage: cache the expensive, non-page-specific reads
-    # instead of the whole rendered page, so {% csrf_token %} in this template
-    # always gets a fresh token instead of a stale one baked into a cached page.
     all_tour_data = cache.get('all_tour_list_data')
     if all_tour_data is None:
         all_tour_data = {
@@ -381,8 +332,6 @@ def AllTourList(request):
     forms = SearchForm()
     theme_setting = index_page.objects.get(id=1)
     meta_robots = 'INDEX,FOLLOW'
-    # Moved to `python manage.py rollover_tour_dates` (scheduled task) — same
-    # ~1250-query cost as IndexPage, running on every /all-tour cache-miss request.
 
 
     tourlist = get_all_pub_tours()
@@ -426,13 +375,9 @@ def AllTourList(request):
         'meta_robots': meta_robots,
         'pubTours': alldata,
         'tours_list': tourlist,
-        # Legacy mobile template compatibility (keep the old mobile UI intact)
         'AllTour': tourlist,
         'AllData': list(zip(tourlist, tour_cities, packages)),
     }
-    # تقویم جلالی (django_jalali.js + jquery-ui.min.css) فقط برای فرم‌هایی
-    # لازم است که ورودی تاریخ دارند. این صفحه ندارد، ولی ۸۲ کیلوبایت را
-    # روی هر بازدید دانلود می‌کرد.
     context['skip_jalali_datepicker'] = True
     return render(request, 'ui/all-tour.html', context)
 
@@ -467,31 +412,7 @@ def MenuTourList(request, slug):
     }
     return render(request, 'ui/all-tour-list-city.html', context)
 
-# def tour_category_detail(request, slug):
-#     category = get_object_or_404(
-#         CustomTourCategory,
-#         slug=slug
-#     )
-#     faqs = TourCategoryFAQ.objects.filter(category=category)
 
-#     context = {
-#         'category': category,
-#         'category_title': category.name,
-#         'category_desc': category.description,
-#         'countries': get_tours_country(),
-#         'tour_countries': get_tours_country_list(),
-#         'dest_cities': get_tours_cities(),
-#         'airlines': get_pub_tour_airlines(),
-#         'spacialDest': spacial_destinations.objects.select_related('country', 'city').filter(show_homepage=True),
-#         'spacialDest_tour': spacial_destinations.objects.select_related('country', 'city').filter(show_tourpage=True),
-#         'all_faqs': faqs,
-#         'meta_robots': category.meta_robots,
-#     }
-#     return render(
-#         request,
-#         'ui/all-tour.html',
-#         context
-#     )
 
 def tour_category_detail(request, slug):
     category = get_object_or_404(
@@ -508,10 +429,6 @@ def tour_category_detail(request, slug):
         current_category = current_category.parent
 
     faqs = TourCategoryFAQ.objects.filter(category=category)
-    # tourlist = Tour.objects.filter(
-    #     custom_categories=category,
-    #     PubTour=True
-    # ).order_by('-id')
 
     base_tour_qs = Tour.objects.filter(
         custom_categories=category,
@@ -549,36 +466,10 @@ def tour_category_detail(request, slug):
         ).first()
         if first_city_tour_for_breadcrumb:
             category_city = first_city_tour_for_breadcrumb.Tcity
-    # country_ids = list(
-    #     base_tour_qs.exclude(Tcountry__isnull=True)
-    #     .values_list('Tcountry_id', flat=True)
-    #     .distinct()
-    # )
 
-    # if len(country_ids) == 1:
-    #     category_country = Country.objects.filter(id=country_ids[0]).first()
-    # first_tour_for_breadcrumb = base_tour_qs.exclude(
-    #     Tcountry__isnull=True
-    # ).first()
 
-    # if first_tour_for_breadcrumb:
-    #     category_country = first_tour_for_breadcrumb.Tcountry
 
-    # if category.parent_id:
-    #     city_ids = list(
-    #         base_tour_qs.exclude(Tcity__isnull=True)
-    #         .values_list('Tcity_id', flat=True)
-    #         .distinct()
-    #     )
 
-    #     if len(city_ids) == 1:
-    #         category_city = City.objects.filter(id=city_ids[0]).first()
-    # if category.parent_id:
-    #     first_city_tour_for_breadcrumb = base_tour_qs.exclude(
-    #          Tcity__isnull=True
-    #     ).first()
-    # if first_city_tour_for_breadcrumb:
-    #     category_city = first_city_tour_for_breadcrumb.Tcity
 
     tourlist = base_tour_qs
 
@@ -768,24 +659,14 @@ def all_tour_list_origins(request, slug, id):
         'Menu': menu,
         'all_faqs': faqs,
         'set': theme_setting,
-        # 'origins': zip(origins, origin_tours),
         'footer_2': footer_2,
         'footer_3': footer_3,
     }
-    # تقویم جلالی (django_jalali.js + jquery-ui.min.css) فقط برای فرم‌هایی
-    # لازم است که ورودی تاریخ دارند. این صفحه ندارد، ولی ۸۲ کیلوبایت را
-    # روی هر بازدید دانلود می‌کرد.
     context['skip_jalali_datepicker'] = True
     if request.user_agent.is_mobile:
         return render(request, 'ui/mobile/all-tour.html', context)
     else:
         return render(request, 'ui/all-tour.html', context)
-# عمداً @cache_page ندارد. این قالب فرم «درخواست رزرو» را با {% csrf_token %}
-# رندر می‌کند؛ اگر کل صفحه کش شود، توکن CSRFِ یک بازدیدکننده داخل HTML پخته
-# می‌شود و به بقیه هم همان تحویل می‌رود، در حالی که کوکی csrftoken آن‌ها فرق
-# دارد (یا اصلاً ست نمی‌شود، چون روی cache hit میان‌افزار CSRF اجرا نمی‌شود).
-# نتیجه: ارسال فرم رزرو با 403 رد می‌شود. مثل AllTourList/CategoryTourList
-# فقط داده‌های مشترک کش می‌شوند، نه خروجی رندرشده.
 def TourDetail(request,id, Slug):
     items = spacial_destinations.objects.select_related('country', 'city').filter(show_homepage=True)
     tours_country_list = get_tours_country_list()
@@ -811,15 +692,11 @@ def TourDetail(request,id, Slug):
             selected_dp = date_plan.objects.get(id=dp_id, tour=tour)
         except date_plan.DoesNotExist:
             pass
-    # اگه یه date_plan دقیقاً با تاریخ پیش‌فرض تور یکی باشه، از تب تاریخ‌ها حذف میشه
-    # (چون تکراریه) ولی خودش هیچ‌وقت با dp دستی هم قابل انتخاب نیست؛ پس تنظیمات
-    # (قیمت/پکیج مخصوص/تکمیل ظرفیت و ...) اون باید خودکار روی همین نمایش پیش‌فرض اعمال بشه
     base_date_plan = date_plan.objects.filter(tour=tour, start_date=tour.StartDate).first()
     if selected_dp is None and base_date_plan:
         selected_dp = base_date_plan
     tipe_plan = TripPlan.objects.filter(tour=tour).order_by('id')
     cities = list(TourCity.objects.filter(TourName_id=tour.id).select_related('Airline', 'FromAirport', 'ToAirport'))
-    # packages = list(Package.objects.filter(TourName=tour.id).order_by('DoubleBedPrice', 'DoubleBedPrice_doller'))
     exclusive_filter = Q(exclusive_date_plan__isnull=True)
     if selected_dp:
         exclusive_filter |= Q(exclusive_date_plan_id=selected_dp.id)
@@ -920,9 +797,6 @@ def TourDetail(request,id, Slug):
         pkg.transfer_label_map = {
             slot: _TRANSFER_LABELS.get(kind, '') for slot, kind in pkg.transfer_map.items()
         }
-    # «ارزون‌ترین قیمت» هر تاریخ باید واقعاً بین همه‌ی پکیج‌های قابل‌نمایش همون تاریخ
-    # حساب بشه (نه فقط یک پکیجِ ثابتِ از پیش انتخاب‌شده) وگرنه با تغییر قیمت/افزودن
-    # پکیج برای بقیه‌ی پکیج‌ها، تب‌های تاریخ به‌روز نمی‌شدن
     _all_packages_for_pricing = list(
         Package.objects.filter(TourName=tour.id).select_related('Pcry', 'fr_Pcry')
     )
@@ -1000,8 +874,6 @@ def TourDetail(request,id, Slug):
                 pkg.BabyWithoutBedPrice_doller = override.BabyWithoutBedPrice_doller
                 pkg.InfontPrice_doller = override.InfontPrice_doller
             elif pkg.exclusive_date_plan_id:
-                # پکیج مخصوص همین تاریخه؛ قیمتش از قبل مستقیماً برای همین تاریخ ثبت شده
-                # (نه یک override جدا)، پس نباید اختلاف‌قیمت عمومی تاریخ رویش دوباره اعمال بشه
                 pass
             else:
                 pkg.DoubleBedPrice = (pkg.DoubleBedPrice or 0) + sign * adj
@@ -1061,9 +933,6 @@ def TourDetail(request,id, Slug):
         'base_currency': base_currency,
         'base_currency_foreign': base_currency_foreign,
     }
-    # تقویم جلالی (django_jalali.js + jquery-ui.min.css) فقط برای فرم‌هایی
-    # لازم است که ورودی تاریخ دارند. این صفحه ندارد، ولی ۸۲ کیلوبایت را
-    # روی هر بازدید دانلود می‌کرد.
     context['skip_jalali_datepicker'] = True
     return render(request, 'ui/detail-tour.html', context)
 def AllHotelList(request):
@@ -1295,8 +1164,6 @@ def TourSearch(request):
     if day:
         day = int(day)
         pubTours = pubTours.filter(DayCount=day)
-    # قبلاً لیست پکیج‌ها اصلاً به تور متناظرش وصل نمی‌شد (همه‌ی پکیج‌های سایت zip
-    # می‌شدن) و قیمت اشتباه رو کارت نتایج جستجو نشون داده می‌شد
     _bulk = tour_card_packages_bulk(list(pubTours))
     packages = [_bulk.get(t.id, []) for t in pubTours]
     alldata = zip(pubTours, packages)
@@ -1771,8 +1638,6 @@ def CategoryMemo(request, slug):
 
 
 def handler404(request, *args, **argv):
-    # status=404 لازم است: بدون آن صفحهٔ «پیدا نشد» با کد ۲۰۰ برمی‌گردد و
-    # گوگل آدرس‌های نامعتبر را به‌عنوان صفحهٔ سالم ایندکس می‌کند (soft 404).
     return render(request, 'ui/404.html', status=404)
 
 

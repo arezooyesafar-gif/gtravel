@@ -49,7 +49,6 @@ def Dashboard(request):
     return render(request, 'admin-dashboard/dashboard.html', context)
 
 
-# Hotel Menu CRUD
 @superuser_required(login_url='login')
 def CreateHotelMenu(request):
     forms = CreateHotelMenuForm()
@@ -114,7 +113,6 @@ def DeleteHotelMenu(request, id):
     return redirect('create-hotel-menu')
 
 
-# Order Functions
 @superuser_required(login_url='login')
 def OrderUpdate(request, id):
     order = TourOrder.objects.get(id=id)
@@ -285,7 +283,6 @@ def memoriesDelete(request, id):
     memo.delete()
     return redirect('memo-list')
 
-## Memory Category CRUD Functions
 @superuser_required(login_url='login')
 def CreateMemoryCategory(request):
     forms = CreateMemoryCategoryForm()
@@ -370,7 +367,6 @@ def TourMenuList(request):
     }
     return render(request, 'tour/menu-list.html', context)
 
-## Custom Tour Category CRUD Functions
 @superuser_required(login_url='login')
 def CreateTourCategory(request):
     forms = CreateTourCategoryForm()
@@ -824,7 +820,6 @@ def tour_review_fetch_google(request):
     except GoogleReviewsError as exc:
         data = {'ok': False, 'error': exc.message, 'network': exc.network}
         if exc.network:
-            # مسیر جایگزین: درخواست از مرورگر خودِ مدیر
             try:
                 place_id, api_key, _proxy = _config(setting)
                 data['place_id'] = place_id

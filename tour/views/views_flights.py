@@ -6,7 +6,6 @@ from tour.forms import CreateAirLineForm, CreateAirPortForm
 from django.contrib import messages
 
 
-# Airline CRUD Functions
 @superuser_required(login_url='login')
 def create_airline(request):
     forms = CreateAirLineForm()
@@ -55,7 +54,6 @@ def airline_list(request):
     return render(request, 'airlines/list.html')
 
 
-# Airport CURD Funtions
 @superuser_required(login_url='login')
 def create_airport(request):
     forms = CreateAirPortForm()

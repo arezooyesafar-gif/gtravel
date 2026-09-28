@@ -26,8 +26,6 @@ class tourContrySitemap(Sitemap):
     def items(self):
         return Country.objects.filter(tocountry__PubTour=True, tocountry__isnull=False).distinct()
 
-    # def lastmod(self, obj):
-    #     return obj.updateDate
 
     def location(self, obj):
         return '/%s/%s/all-tour' % (obj.slug, obj.id)
@@ -40,8 +38,6 @@ class tourCitySitemap(Sitemap):
     def items(self):
         return City.objects.filter(tour_city__PubTour=True, tour_city__isnull=False).distinct()
 
-    # def lastmod(self, obj):
-    #     return obj.updateDate
 
     def location(self, obj):
         return '/%s/%s/city-tours' % (obj.slug, obj.id)

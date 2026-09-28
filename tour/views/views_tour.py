@@ -71,10 +71,6 @@ def update_tour(request, id):
         if form.is_valid():
             t = form.save(commit=False)
             t.updateDate = date
-            # for field_name in previous_richtext:
-            #     submitted_value = (getattr(t, field_name) or '').strip()
-            #     if not submitted_value and previous_richtext[field_name]:
-            #         setattr(t, field_name, previous_richtext[field_name])
             for field_name in previous_richtext:
                 submitted_value = (getattr(t, field_name) or '').strip()
                 touched = request.POST.get(field_name + '_touched') == '1'
@@ -316,7 +312,6 @@ _SOLDOUT_SLOTS = [
 ]
 
 _HOTEL_SLOTS = [
-    # (hotel_attr, hotel_override_field, hotel_post_key, view_field, service_field, view_post_key, service_post_key)
     ('HotelName', 'hotel_override', 'hotelslot0', 'view_hotel', 'service_hotel', 'viewslot0', 'serviceslot0'),
     ('Mhotel', 'mhotel_override', 'hotelslot1', 'view_mhotel', 'service_mhotel', 'viewslot1', 'serviceslot1'),
     ('M1hotel', 'm1hotel_override', 'hotelslot2', 'view_m1hotel', 'service_m1hotel', 'viewslot2', 'serviceslot2'),
@@ -331,8 +326,6 @@ def tour_date_plan_hotel_prices(request, id):
     date_item = date_plan.objects.select_related('tour').get(id=id)
     tour = date_item.tour
     main_currency, foreign_currency = _tour_price_currencies(tour)
-    # پکیج‌های مخصوص این تاریخ جدا مدیریت می‌شوند (بخش «پکیج‌های مخصوص این تاریخ» پایین‌تر)
-    # و اینجا تکراری نمایش داده نمی‌شوند
     packages = Package.objects.filter(TourName=tour, exclusive_date_plan__isnull=True).select_related(
         'HotelName', 'Mhotel', 'M1hotel', 'M2hotel', 'M3hotel'
     ).order_by('DoubleBedPrice', 'DoubleBedPrice_doller')
@@ -387,7 +380,6 @@ def tour_date_plan_hotel_prices(request, id):
                 raw_value = request.POST.get(f'{post_key}_{pkg.id}')
                 submitted_id = int(raw_value) if raw_value else None
                 base_hotel_id = getattr(pkg, f'{hotel_attr}_id')
-                # اگه همون هتل پیش‌فرض دوباره انتخاب شده باشه، یعنی جایگزینی واقعی نیست
                 hotel_override_submitted[override_field] = None if submitted_id == base_hotel_id else submitted_id
                 view_service_submitted[view_field] = request.POST.get(f'{view_key}_{pkg.id}') or ''
                 view_service_submitted[service_field] = request.POST.get(f'{service_key}_{pkg.id}') or ''
@@ -440,8 +432,6 @@ def tour_date_plan_hotel_prices(request, id):
             override.doller_price = dollerprice_submitted or None
             override.save()
 
-        # پکیج‌های مخصوص این تاریخ فقط برای همین تاریخ وجود دارن، پس اینجا override
-        # نمی‌سازیم و مستقیم روی خودِ پکیج ذخیره می‌کنیم
         for pkg in exclusive_packages:
             if request.POST.get(f'deletepkg_{pkg.id}'):
                 pkg.delete()

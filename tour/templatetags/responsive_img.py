@@ -54,8 +54,6 @@ def _natural_size(field_file):
     if name in _known_bad:
         return None
 
-    # باز کردن فایل برای خواندن ابعاد، در صفحه‌ای با ۳۰ تصویر ۳۰ بار I/O
-    # می‌شود. ابعاد یک تصویر عوض نمی‌شود، پس کش می‌کنیم.
     ck = "respimg:size:%s" % name
     hit = cache.get(ck)
     if hit is not None:

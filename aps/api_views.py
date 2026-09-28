@@ -59,8 +59,6 @@ def _hotel_entry(request, hotel, view, service, sold_out=False):
         'view': view or None,
         'service': service or None,
         'address': hotel.HotelAddress or None,
-        # «تکمیل ظرفیت» این هتل. برای تاریخ‌های غیر از تاریخ پایه، مقدارِ
-        # بازنویسی‌شدهٔ همان تاریخ است.
         'sold_out': bool(sold_out),
     }
     if hotel.Slug:
@@ -82,13 +80,11 @@ def _serialize_package(pkg, request):
                      pkg.m2hotel_sold_out),
         _hotel_entry(request, pkg.M3hotel, pkg.view_m3hotel, pkg.service_m3hotel,
                      pkg.m3hotel_sold_out),
-        # اسلات ششم فیلد «تکمیل ظرفیت» جدا ندارد
         _hotel_entry(request, pkg.M4hotel, pkg.view_m4hotel, pkg.service_m4hotel),
     ]
     return {
         'id': pkg.id,
         'available': not pkg.is_sold_out,
-        # پکیجی که فقط برای یک تاریخ برگزاری ساخته شده
         'exclusive_to_departure': pkg.exclusive_date_plan.start_date.isoformat()
         if pkg.exclusive_date_plan_id and pkg.exclusive_date_plan.start_date else None,
         'hotels': [h for h in hotels if h],
@@ -178,7 +174,6 @@ def _departures(tour, all_packages, base_price, base_price_dollar, currency,
             base_price, base_price_dollar, base_dp,
         ))
     for dp in date_plan.objects.filter(tour=tour).exclude(start_date=tour.StartDate).order_by('start_date'):
-        # قیمت هر تاریخ باید ارزون‌ترین قیمت مؤثر همون تاریخ باشه (با قیمت‌های دستی)
         best = compute_tour_min_price(all_packages, dp)
         price = int(best['price'] or 0) if best else base_price
         price_dollar = int(best['price_dollar'] or 0) if best else base_price_dollar
@@ -196,7 +191,6 @@ def _serialize_tour(tour, request):
         'exclusive_date_plan'
     ).order_by('DoubleBedPrice', 'DoubleBedPrice_doller'))
     base_dp = date_plan.objects.filter(tour=tour, start_date=tour.StartDate).first()
-    # لیست پکیج‌ها با قیمت/هتلِ مؤثرِ تاریخ پیش‌فرض تور
     packages_qs = packages_for_date(tour, base_dp)
     base_price, base_price_dollar, currency, currency_foreign = _base_price(all_packages, base_dp)
     gallery = tour_images.objects.filter(tour=tour)

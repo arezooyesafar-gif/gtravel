@@ -7,7 +7,6 @@ from django.core.paginator import Paginator
 from tour.pms_manager import *
 from django.contrib import messages
 
-# Country CRUD Functions
 @superuser_required(login_url='login')
 def create_country(request):
     form = CreateCountryForm()
@@ -167,7 +166,6 @@ def country_list(request):
     return render(request, 'destinations/country_list.html')
 
 
-# City CRUD Functions
 @superuser_required(login_url='login')
 def create_city(request):
     form = CreateCityForm()
@@ -372,7 +370,6 @@ def create_media_country(request, id):
 
 @superuser_required(login_url='login')
 def update_media_city(request, id):
-    # city_media = CityCountryMedia.objects.get(city_id=id)
     city_media = CityCountryMedia.objects.get(id=id)
     form = CityCountryMediaForm(instance=city_media)
     
@@ -394,7 +391,6 @@ def update_media_country(request, id):
     form = CityCountryMediaForm(instance=country_media)
     
     if request.method == 'POST':
-        # forms = CityCountryMediaForm(request.POST, instance=country_media)
         forms = CityCountryMediaForm(request.POST, request.FILES, instance=country_media)
         if forms.is_valid():
             forms.save()

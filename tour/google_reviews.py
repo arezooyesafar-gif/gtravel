@@ -41,7 +41,6 @@ def _config(setting):
     if not api_key:
         raise GoogleReviewsError(
             'کلید Places API در تنظیمات ثبت نشده است.')
-    # اگر لینک کامل گوگل را چسبانده باشند، شناسه را بیرون می‌کشیم
     m = re.search(r'placeid=([^&\s]+)', place_id) or re.search(r'place_id[:=]([^&\s]+)', place_id)
     if m:
         place_id = m.group(1)
@@ -63,7 +62,7 @@ def fetch_place(place_id, api_key, language='fa', proxy=None,
         resp = requests.get(url, headers=headers,
                             params={'languageCode': language},
                             proxies=proxies, timeout=timeout)
-    except Exception as exc:                      # فیلترینگ، DNS، تایم‌اوت
+    except Exception as exc:
         raise GoogleReviewsError(
             'سرور نتوانست به گوگل وصل شود — %s: %s'
             % (type(exc).__name__, str(exc)[:160]),
@@ -103,7 +102,6 @@ def normalize(payload):
     """پاسخ گوگل را به لیستی از دیکشنری‌های ساده تبدیل می‌کند."""
     rows = []
     for r in (payload or {}).get('reviews', []) or []:
-        # متن اصلیِ نویسنده مقدم است؛ text ترجمهٔ گوگل است
         text = ((r.get('originalText') or {}).get('text')
                 or (r.get('text') or {}).get('text') or '').strip()
         author = ((r.get('authorAttribution') or {}).get('displayName')
@@ -131,7 +129,6 @@ def guess_country(text):
     for country in Country.objects.all().only('id', 'TitleC', 'slug'):
         title = (country.TitleC or '').strip()
         if title and title in text:
-            # اسم بلندتر دقیق‌تر است ("کره جنوبی" بر "کره" مقدم)
             if best is None or len(title) > len(best[1]):
                 best = (country, title)
     return best[0] if best else None
@@ -148,7 +145,6 @@ def import_reviews(rows, publish=True, assign_country=True):
             existing = TourReview.objects.filter(
                 external_id=row['external_id']).first()
         if existing is None:
-            # نظرهای دستیِ قبلی دوباره ثبت نشوند
             existing = TourReview.objects.filter(
                 author=row['author'], text=row['text']).first()
 

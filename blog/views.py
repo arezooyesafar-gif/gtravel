@@ -53,7 +53,6 @@ def ListPost(request):
     return render(request, 'post/list-post.html', context)
 
 
-## Blog Category CRUD Functions
 @superuser_required(login_url='login')
 def CreatePostCategory(request):
     forms = CreatePostCategoryForm()
@@ -108,16 +107,13 @@ def comments_list(request):
     pagenumber = request.GET.get('page')
     all_comments = paginator.get_page(pagenumber)
 
-    # فقط reply های مربوط به کامنت‌های همین صفحه
     comment_ids = [c.id for c in all_comments]
     replies = reply_comments.objects.filter(comment_id__in=comment_ids).order_by('-id')
 
-    # گروه‌بندی reply ها برای هر کامنت
     replies_by_comment = {}
     for r in replies:
         replies_by_comment.setdefault(r.comment_id, []).append(r)
 
-    # بچسباندن reply ها به هر کامنت (تا تو template راحت باشه)
     for c in all_comments:
         c.replies = replies_by_comment.get(c.id, [])
 

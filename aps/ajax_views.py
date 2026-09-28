@@ -10,19 +10,6 @@ from tour.dataset import *
 from tour.models import *
 from tour.date_pricing import compute_tour_min_price, tour_card_packages, tour_card_packages_bulk
 
-# def get_country_tours_city(request):
-#     country_id = request.GET.get('country_id')
-#     country = Country.objects.get(id=country_id)
-#     tours_cities = related_tour_city.objects.filter(tour__PubTour=True, country=country).order_by('city').distinct()
-#     cities = []
-#     for i in tours_cities:
-#         cities.append(i.city)
-#     cities = list(set(cities))
-#     context={
-#         'country': country,
-#         'tours_cities': cities
-#     }
-#     return render(request, 'ui/ajax_tours_cities.html', context)
 
 def get_country_tours_city(request):
     country_id = request.GET.get('country_id')
@@ -200,36 +187,6 @@ def list_tours_ajax_menu_horzental(request):
         tourlist = Tour.objects.filter(TourMenu=menu.id, PubTour=True).only('Title', 'NightCount', 'DayCount', 'Cash', 'Installment').order_by('-updateDate')
         date = datetime.now()
         date = date.date()
-        # ArchiveTour = Tour.objects.filter(TourMenu=menu.id, StartDate=date)
-        # # for tour in ArchiveTour:
-        # #     tour.PubTour = False
-        # #     tour.save()
-        # Tour.objects.filter(TourMenu=menu.id, StartDate=date).update(PubTour=False)
-        # cities = []
-        # for i in tourlist:
-        #     cities.append(TourCity.objects.filter(TourName_id=i))
-        # paginator = Paginator(tourlist, 10)
-        # PageNumber = request.GET.get('page')
-        # tourlist = paginator.get_page(PageNumber)
-        # packages = []
-        # for i in tourlist:
-        #     packages.append(Package.objects.filter(TourName_id=i.id).order_by('DoubleBedPrice'))
-        # dates = []
-        # for tour in tourlist:
-        #     tour_dates = date_plan.objects.filter(tour=tour).exclude(start_date=tour.StartDate).count()
-        #     dates.append(tour_dates)
-        # paginator = Paginator(tourlist, 9)
-        # pagenumber = request.GET.get('page')
-        # pubTours = paginator.get_page(pagenumber)
-        # paginator2 = Paginator(packages, 9)
-        # pagenumber2 = request.GET.get('page')
-        # packages = paginator2.get_page(pagenumber2)
-        # paginator3 = Paginator(cities, 9)
-        # pagenumber3 = request.GET.get('page')
-        # cities = paginator3.get_page(pagenumber3)
-        # paginator4 = Paginator(dates, 9)
-        # pagenumber4 = request.GET.get('page')
-        # dates = paginator4.get_page(pagenumber4)
         Tour.objects.filter(TourMenu=menu.id, StartDate=date).update(PubTour=False)
         paginator = Paginator(tourlist, 11)
         pagenumber = request.GET.get('page')
@@ -528,8 +485,6 @@ def sidebar_filter(request):
         every_pkg = list(Package.objects.filter(TourName=tour).select_related('Pcry', 'fr_Pcry'))
         if not every_pkg:
             continue
-        # قیمت نمایشی/فیلتر باید همون «ارزون‌ترین قیمت مؤثر تاریخ پیش‌فرض تور» باشه
-        # (با در نظر گرفتن قیمت‌های دستیِ ثبت‌شده برای اون تاریخ)، نه قیمت خام پکیج
         base_dp = date_plan.objects.filter(tour=tour, start_date=tour.StartDate).first()
         best = compute_tour_min_price(every_pkg, base_dp)
         display_pool = [p for p in every_pkg if not p.exclusive_date_plan_id] or every_pkg
@@ -572,60 +527,6 @@ def sidebar_filter(request):
     }
     return render(request, 'ajax/layout/filter-tour-list.html', context)
     
-    # for j in tours_list:
-    #     cities.append(TourCity.objects.filter(TourName=j).first())
-    # # for i in tours_list:
-    # #     packages.append(
-    # #         Package.objects.filter(TourName=i, DoubleBedPrice__gte=fromPrice, DoubleBedPrice__lte=toPrice).order_by(
-    # #             'DoubleBedPrice'))
-    # from tour.models import Footer as _Footer
-    # _f = _Footer.objects.first()
-    # _rate = _f.dollar_rate if _f else 170000
-    # _from = int(fromPrice) if fromPrice else 0
-    # _to = int(toPrice) if toPrice else 9999999999
-    # for i in tours_list:
-    #     all_pkgs = Package.objects.filter(TourName=i).order_by('DoubleBedPrice')
-    #     matched = []
-    #     for pkg in all_pkgs:
-    #         if pkg.DoubleBedPrice > 0 and pkg.DoubleBedPrice_doller:
-    #             total = pkg.DoubleBedPrice + pkg.DoubleBedPrice_doller * _rate
-    #         elif pkg.DoubleBedPrice > 0:
-    #             total = pkg.DoubleBedPrice
-    #         elif pkg.DoubleBedPrice_doller:
-    #             total = pkg.DoubleBedPrice_doller * _rate
-    #         else:
-    #             total = 0
-    #         if _from <= total <= _to:
-    #             matched.append(pkg)
-    #     packages.append(matched)
-    # if hotelRate:
-    #     new_t_list = []
-    #     for i in hotelRate:
-    #         for j in packages:
-    #             for k in j:
-    #                 if k.HotelName:
-    #                     hotel = k.HotelName
-    #                     if hotel.HotelRating == i:
-    #                         new_t_list.append(k.TourName)
-    #     new_t_list = list(set(new_t_list))
-    #     tours_list = new_t_list
-    # price_package = []
-    # price_tours = []
-    # for i in packages:
-    #     for j in i:
-    #         if j != None:
-    #             price_package.append(j)
-    #             price_tours.append(j.TourName)
-    # packages = price_package
-    # tours = list(set(price_tours))
-    # pubTours = zip(tours, packages, cities)
-    # context = {
-    #     'pubTours': pubTours,
-    #     'tours': tours_list,
-    #     'packages': packages,
-    #     'cities': cities
-    # }
-    # return render(request, 'ajax/layout/filter-tour-list.html', context)
 
 def sidebar_filter_city(request):
     country = request.GET.get('selectedCountry', '[]')

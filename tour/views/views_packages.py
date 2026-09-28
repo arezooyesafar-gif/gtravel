@@ -12,7 +12,6 @@ from tour.forms import CreatePackageForm, AddToPackageForm, CurrencyForm
 from tour.resources import packages_resource, packages_import_resource
 
 
-# Currency CURD Functions
 @superuser_required(login_url='login')
 def create_currency(request):
     allcry = Currency.objects.all()
@@ -65,7 +64,6 @@ def delete_currency(request, id):
     return redirect('create-currency')
 
 
-# Main PAckage CRUD Functions
 @superuser_required(login_url='login')
 def create_package(request):
     forms = CreatePackageForm()
@@ -108,7 +106,6 @@ def delete_main_package(request, id):
     return redirect('create-package')
 
 
-# Tour Package CRUD Functions
 @superuser_required(login_url='login')
 def add_to_package(request, id):
     forms = AddToPackageForm()
@@ -161,7 +158,6 @@ def add_to_package(request, id):
                 'Cities': cities,
             }
             return render(request, 'package/add-to-package.html', context)
-            # return redirect('add-to-package', tour.id)
     if 'submit_file' in request.POST:
         package_resource = packages_import_resource()
         dataset = Dataset()
@@ -169,7 +165,7 @@ def add_to_package(request, id):
         imported_data = dataset.load(packages_data.read())
         result = package_resource.import_data(dataset, dry_run=True, raise_errors=True)
         if not result.has_errors():
-            package_resource.import_data(dataset, dry_run=False)  # Actually import now
+            package_resource.import_data(dataset, dry_run=False)
             messages.success(request, 'اطلاعات پکیج با موفقیت ثبت شد')
             return redirect('add-to-package', tour.id)
         else:

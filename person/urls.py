@@ -13,8 +13,6 @@ urlpatterns = [
     path('my_profile/<int:id>', user_profile, name='user_profile'),
     path('user_profile_update/<int:id>', user_profile_update, name='user_profile_update'),
     path('reset_password_admin/<int:id>', reset_password_admin, name='reset_password_admin'),
-    # path('user_varify_number/<int:prf_id>/<int:id>', otp_varify, name='otp_varify'),
-    #visa urls
     path('otp_login', otp_login, name='otp_login'),
     path('varify_otp_login/<int:id>', varify_otp_login, name='varify_otp_login'),
     path('register', create_user, name='create_user'),

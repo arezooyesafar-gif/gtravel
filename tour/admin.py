@@ -35,6 +35,4 @@ class FooterAdmin(admin.ModelAdmin):
 admin.site.register(Tour, TourAdmin)
 admin.site.register(AirLineData, AirLineAdmin)
 admin.site.register(Package, PackageAdmin)
-# admin.site.register(Posts, PostsAdmin)
 admin.site.register(TourMenu, TourMenuAdmin)
-# admin.site.register(PostCategory, PostCategoryAdmin)

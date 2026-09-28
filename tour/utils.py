@@ -38,7 +38,6 @@ def _strip_html(html_text, max_chars=400):
         return ''
     text = re.sub(r'<[^>]+>', ' ', html_text)
     text = html_module.unescape(text)
-    # Fix mojibake: UTF-8 bytes stored as Latin-1
     try:
         text = text.encode('latin-1').decode('utf-8')
     except (UnicodeDecodeError, UnicodeEncodeError, AttributeError):
@@ -60,8 +59,6 @@ def mypdf(request, id):
             selected_dp = date_plan.objects.get(id=dp_id, tour=tour)
         except date_plan.DoesNotExist:
             pass
-    # قیمت/هتل/ویو/سرویسِ مؤثرِ همون تاریخ از قبل روی پکیج‌ها اعمال می‌شه، پس
-    # قالب دیگه نباید اختلاف قیمت رو دوباره اضافه کنه
     packages = packages_for_date(tour, selected_dp)
     price_adjustment = 0
     infont = 0
@@ -129,8 +126,8 @@ def mypdf2(request, id):
         raise Http404('برای این تور پکیجی برای نمایش وجود ندارد')
     infont = next((i.InfontPrice for i in packages if i.InfontPrice > 0), 0)
     if packages[0].Mhotel and not packages[0].M1hotel:
-        per_page = 10  # Define how many packages per page
-        num_pages = ceil(pcount / per_page)  # Calculate total number of pages
+        per_page = 10
+        num_pages = ceil(pcount / per_page)
         pdf_document = None
         for page_num in range(num_pages):
             start_idx = page_num * per_page
@@ -187,8 +184,8 @@ def mypdf2(request, id):
         response['Content-Disposition'] = 'filename="package.pdf"'
         return response
     if packages[0].M2hotel and not packages[0].M3hotel:
-        per_page = 6  # Define how many packages per page
-        num_pages = ceil(pcount / per_page)  # Calculate total number of pages
+        per_page = 6
+        num_pages = ceil(pcount / per_page)
         pdf_document = None
         for page_num in range(num_pages):
             start_idx = page_num * per_page
@@ -216,8 +213,8 @@ def mypdf2(request, id):
         response['Content-Disposition'] = 'filename="package.pdf"'
         return response
     if packages[0].M3hotel and not packages[0].M4hotel:
-        per_page = 5  # Define how many packages per page
-        num_pages = ceil(pcount / per_page)  # Calculate total number of pages
+        per_page = 5
+        num_pages = ceil(pcount / per_page)
         pdf_document = None
         for page_num in range(num_pages):
             start_idx = page_num * per_page
@@ -244,8 +241,8 @@ def mypdf2(request, id):
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = 'filename="package.pdf"'
         return response
-    per_page = 20  # Define how many packages per page
-    num_pages = ceil(pcount / per_page)  # Calculate total number of pages
+    per_page = 20
+    num_pages = ceil(pcount / per_page)
     pdf_document = None
     for page_num in range(num_pages):
         start_idx = page_num * per_page
