@@ -275,18 +275,23 @@ def CityTourList(request,slug, id):
     packages = []
     tour_cities = []
     dates = []
-    card_packages = tour_card_packages_bulk(list(tourlist))
-    for tour in tourlist:
+    page_tours = list(tourlist)
+    tour_ids = [tour.id for tour in page_tours]
+    card_packages = tour_card_packages_bulk(page_tours)
+    cities_by_tour = {}
+    for tour_city in TourCity.objects.filter(TourName_id__in=tour_ids).select_related('Airline', 'FromAirport', 'ToAirport'):
+        cities_by_tour.setdefault(tour_city.TourName_id, []).append(tour_city)
+    starts_by_tour = {}
+    for tour_id, start_date in date_plan.objects.filter(tour_id__in=tour_ids).values_list('tour_id', 'start_date'):
+        starts_by_tour.setdefault(tour_id, []).append(start_date)
+    for tour in page_tours:
         packages.append(card_packages.get(tour.id, []))
-
-        tour_cities.append(
-         list(TourCity.objects.filter(TourName=tour).select_related('Airline', 'FromAirport', 'ToAirport'))
-        )
-
-        dates.append(
-         date_plan.objects.filter(tour=tour).exclude(start_date=tour.StartDate).count()
-        )
-    alldata = list(zip(tourlist, packages, tour_cities, dates))
+        tour_cities.append(cities_by_tour.get(tour.id, []))
+        dates.append(len([
+            start_date for start_date in starts_by_tour.get(tour.id, [])
+            if start_date is not None and start_date != tour.StartDate
+        ]))
+    alldata = list(zip(page_tours, packages, tour_cities, dates))
 
     context = {
         'Search': forms,
