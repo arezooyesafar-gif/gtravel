@@ -456,16 +456,17 @@
                                         <a href="{% url 'staff-change-log' %}" class="nk-menu-link"><span
                                                 class="nk-menu-text">تاریخچه تغییرات</span></a>
                                     </li>
-                                    {% if request.user.is_superuser %}
-                                    <li class="nk-menu-item">
-                                        <a href="{% url 'redirect-list' %}" class="nk-menu-link"><span
-                                                class="nk-menu-text">مدیریت ریدایرکت‌ها</span></a>
-                                    </li>
-                                    {% endif %}
                                     {% endif %}
                                     <!-- .nk-menu-item -->
                                 </ul>
                                 <!-- .nk-menu-sub -->
+                            </li>
+                            {% endif %}
+                            {% if request.user.is_superuser %}
+                            <li class="nk-menu-item">
+                                <a href="{% url 'redirect-list' %}" class="nk-menu-link">
+                                    <span class="nk-menu-text">مدیریت ریدایرکت‌ها</span>
+                                </a>
                             </li>
                             {% endif %}
                             <!-- .nk-menu-item -->

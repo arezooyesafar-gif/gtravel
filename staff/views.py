@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import StaffUserForm
 from .models import ACTIONS, AREAS, REDIRECT_STATUSES, ChangeLog, RedirectRule, StaffAccess
+from .redirect_rules import clean_path, clean_target, creates_loop, is_protected, path_key, search_filter
 
 superuser_only = user_passes_test(lambda u: u.is_authenticated and u.is_superuser, login_url='login')
 
@@ -111,21 +112,31 @@ def change_log(request):
 @superuser_only
 def redirect_list(request):
     if request.method == 'POST':
-        old_path = (request.POST.get('old_path') or '').strip()
-        new_path = (request.POST.get('new_path') or '').strip()
+        host = request.get_host()
+        raw_new_path = (request.POST.get('new_path') or '').strip()
+        old_path = clean_path(request.POST.get('old_path'), host)
+        new_path = clean_target(raw_new_path, host)
         try:
             status = int(request.POST.get('status') or 301)
         except ValueError:
             status = 301
         if status not in (301, 302, 410):
             status = 301
+        if status == 410:
+            new_path = ''
         if not old_path:
             messages.error(request, 'آدرس قدیمی را وارد کنید')
+        elif is_protected(old_path):
+            messages.error(request, 'آدرس‌های پنل مدیریت، ورود کاربران و فایل‌ها قابل ریدایرکت نیستند')
+        elif status != 410 and raw_new_path and not new_path:
+            messages.error(request, 'آدرس جدید معتبر نیست')
         elif status != 410 and not new_path:
             messages.error(request, 'برای انتقال ۳۰۱ یا ۳۰۲ باید آدرس جدید را وارد کنید')
+        elif status != 410 and '://' not in new_path and path_key(new_path) == path_key(old_path):
+            messages.error(request, 'آدرس قدیمی و جدید یکسان است')
+        elif status != 410 and creates_loop(old_path, new_path):
+            messages.error(request, 'این ریدایرکت با ریدایرکت‌های قبلی یک چرخه می‌سازد و صفحه باز نمی‌شود')
         else:
-            if not old_path.startswith('/'):
-                old_path = '/' + old_path
             RedirectRule.objects.update_or_create(
                 old_path=old_path, defaults={'new_path': new_path, 'status': status})
             messages.success(request, 'ریدایرکت ذخیره شد')
@@ -133,7 +144,7 @@ def redirect_list(request):
     items = RedirectRule.objects.all()
     search = request.GET.get('search', '').strip()
     if search:
-        items = items.filter(Q(old_path__icontains=search) | Q(new_path__icontains=search))
+        items = items.filter(search_filter(search, request.get_host()))
     paginator = Paginator(items, 50)
     return render(request, 'staff/redirects.html', {
         'items': paginator.get_page(request.GET.get('page')),

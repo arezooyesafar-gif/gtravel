@@ -13,10 +13,10 @@
             <form method="post" class="row m-20">
                 {% csrf_token %}
                 <div class="col-lg-4">
-                    <input type="text" name="old_path" class="text-input search-input" placeholder="آدرس قدیمی — مثال: /blog/16/tourist-visa-russia" required>
+                    <input type="text" name="old_path" class="text-input search-input" placeholder="آدرس قدیمی (لینک کامل یا مسیر)" required>
                 </div>
                 <div class="col-lg-4">
-                    <input type="text" name="new_path" class="text-input search-input" placeholder="آدرس جدید — مثال: /russia_visa">
+                    <input type="text" name="new_path" class="text-input search-input" placeholder="آدرس جدید (لینک کامل یا مسیر)">
                 </div>
                 <div class="col-lg-2">
                     <select name="status" class="text-input search-input">
@@ -29,7 +29,6 @@
                     <button type="submit" class="btn btn-lg btn-info btn-block">افزودن</button>
                 </div>
             </form>
-            <p style="padding:0 20px 15px;color:#8094ae">آدرس قدیمی حتماً با «/» شروع شود و فقط بخش بعد از دامنه باشد. نوع را انتخاب کنید: <b>۳۰۱</b> انتقال دائمی، <b>۳۰۲</b> انتقال موقت، <b>۴۱۰</b> صفحهٔ حذف‌شده (برای ۴۱۰ نیازی به آدرس جدید نیست).</p>
         </div>
     </div>
 </div>
@@ -39,7 +38,7 @@
             {% for msg in messages %}<p class="success" style="text-align:center">{{ msg }}</p>{% endfor %}
             <form method="get" class="row m-20">
                 <div class="col-lg-10">
-                    <input type="text" name="search" value="{{ search }}" class="text-input search-input" placeholder="جستجو در آدرس‌ها">
+                    <input type="text" name="search" value="{{ search }}" class="text-input search-input" placeholder="جستجو با لینک کامل یا بخشی از آدرس">
                 </div>
                 <div class="col-lg-2">
                     <button type="submit" class="btn btn-lg btn-info btn-block">جستجو</button>
@@ -73,7 +72,7 @@
             </table>
             <ul class="pagination">
                 {% for n in items.paginator.page_range %}
-                <li class="page-item {% if items.number == n %}active{% endif %}"><a class="page-link" href="?page={{ n }}&search={{ search }}">{{ n }}</a></li>
+                <li class="page-item {% if items.number == n %}active{% endif %}"><a class="page-link" href="?page={{ n }}&search={{ search|urlencode }}">{{ n }}</a></li>
                 {% endfor %}
             </ul>
         </div>

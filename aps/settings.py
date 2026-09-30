@@ -80,6 +80,7 @@ MIDDLEWARE = [
     # سرور بود (لوکال چون از static handler جنگو استفاده می‌کنه این
     # مشکل رو نداره، برای همین لوکال سریع بود ولی سرور کند).
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    'staff.middleware.RedirectRuleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,7 +89,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
     'staff.middleware.StaffAccessMiddleware',
-    'staff.middleware.RedirectRuleMiddleware',
 ]
 
 ROOT_URLCONF = 'aps.urls'
