@@ -588,7 +588,7 @@ def copy_tour_data(request, id):
         i.id = None
         i.TourName = tour
         i.save()
-    return redirect('tour-list')
+    return redirect('update-tour', tour.id)
 
 @superuser_required(login_url='login')
 def remove_tour_gallery(request, id):

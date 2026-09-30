@@ -5,12 +5,38 @@
     {% load humanize %}
     {% load jalali_tags %}
     {% load responsive_img %}
+    {% load seo_tags %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="canonical" href="https://arezoosafar.com{% url 'post-detail' Post.id Post.slug %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="{{ Post.metaKeyword }}">
-    <meta name="description" content="{{ Post.metaDescription }}">
+    <meta name="description" content="{% if Post.metaDescription %}{{ Post.metaDescription }}{% else %}{{ Post.ShortDesc|plain_summary }}{% endif %}">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "mainEntityOfPage": {"@type": "WebPage", "@id": "https://arezoosafar.com{% url 'post-detail' Post.id Post.slug %}"},
+            "headline": "{{ Post.Title|escapejs }}",
+            {% if Post.Image %}"image": ["https://arezoosafar.com{{ Post.Image.url }}"],
+            {% endif %}{% if Post.PubDate %}"datePublished": "{{ Post.PubDate|date:'Y-m-d' }}",
+            {% endif %}{% if Post.modified_date %}"dateModified": "{{ Post.modified_date|date:'c' }}",
+            {% endif %}"description": "{% if Post.metaDescription %}{{ Post.metaDescription|escapejs }}{% else %}{{ Post.ShortDesc|plain_summary|escapejs }}{% endif %}",
+            "author": {"@type": "Organization", "name": "آرزوی سفر پارسیان", "url": "https://arezoosafar.com/"},
+            "publisher": {"@type": "Organization", "name": "آرزوی سفر پارسیان", "url": "https://arezoosafar.com/"}
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "آرزوی سفر پارسیان", "item": "https://arezoosafar.com/"},
+                {"@type": "ListItem", "position": 2, "name": "مجله گردشگری", "item": "https://arezoosafar.com/blog"},
+                {"@type": "ListItem", "position": 3, "name": "{{ Post.Title|escapejs }}", "item": "https://arezoosafar.com{% url 'post-detail' Post.id Post.slug %}"}
+            ]
+        }
+    </script>
     {% srcset_with_original Post.Image '480,768' as hero_srcset %}
     {% if hero_srcset %}
     <link rel="preload" as="image" href="{{ Post.Image.url }}" imagesrcset="{{ hero_srcset }}" imagesizes="(max-width: 991px) calc(100vw - 32px), 914px" fetchpriority="high">

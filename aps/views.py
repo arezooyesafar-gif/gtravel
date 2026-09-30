@@ -19,6 +19,7 @@ from tour.date_pricing import (compute_tour_min_price, tour_card_packages,
                                packages_for_date)
 from django.contrib import messages
 from django.http import Http404, JsonResponse
+from staff.access import user_can
 from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
@@ -28,6 +29,7 @@ from pages.dataset import *
 from visa.forms import visa_request_form, thaiVisaForm
 from blog.models import *
 from django.shortcuts import get_object_or_404, render
+from .lookups import get_by_id_and_slug, get_by_slug
 
 
 def IndexPage(request):
@@ -124,10 +126,7 @@ def ajax_dest(request):
         }
         return render(request, 'ui/ajax_dest.html', context)
 def CategoryTourList(request, slug, id):
-    try:
-        menu = Country.objects.get(slug=slug)
-    except Country.DoesNotExist:
-        raise Http404
+    menu = get_by_id_and_slug(Country.objects.all(), id, 'slug', slug)
 
     # Same reasoning as AllTourList: cache the reads that are the same for every
     # country page (menu/footer/airlines/etc.), not the whole rendered page, so
@@ -284,10 +283,7 @@ def CityTourListOrigin(request, id, slug):
     context['skip_jalali_datepicker'] = True
     return render(request, 'ui/all-tour.html', context)
 def CityTourList(request,slug, id):
-    try:
-        menu = City.objects.get(slug=slug)
-    except City.DoesNotExist:
-        raise Http404
+    menu = get_by_id_and_slug(City.objects.all(), id, 'slug', slug)
 
     # Same reasoning as CategoryTourList/AllTourList: cache the reads that are
     # the same for every city page, not the whole rendered page, so
@@ -437,10 +433,7 @@ def AllTourList(request):
     return render(request, 'ui/all-tour.html', context)
 
 def MenuTourList(request, slug):
-    try:
-        menu = TourMenu.objects.get(slug=slug)
-    except TourMenu.DoesNotExist:
-        raise Http404
+    menu = get_by_slug(TourMenu.objects.all(), 'slug', slug)
     top_menu = TourMenu.objects.filter(show_meu=True)
     items = spacial_destinations.objects.select_related('country', 'city').filter(show_homepage=True)
     items_2 = spacial_destinations.objects.select_related('country', 'city').filter(show_homepage=True)
@@ -794,10 +787,11 @@ def TourDetail(request,id, Slug):
     characters = string.ascii_letters + string.digits
     trs = ''.join(random.choice(characters) for i in range(8))
     date = datetime.now()
-    try:
-        tour = Tour.objects.get(Slug=Slug)
-    except Tour.DoesNotExist:
-        raise Http404
+    tour = get_by_id_and_slug(Tour.objects.all(), id, 'Slug', Slug)
+    if not tour.PubTour and not user_can(request.user, 'tours', 'view'):
+        if tour.Tcountry and tour.Tcountry.slug:
+            return redirect('all-tour-country', tour.Tcountry.slug, tour.Tcountry.id)
+        return redirect('all-tour')
     if tour.viewCount is None:
         tour.viewCount = 0
     tour.viewCount += 1
@@ -809,7 +803,7 @@ def TourDetail(request,id, Slug):
     if dp_id:
         try:
             selected_dp = date_plan.objects.get(id=dp_id, tour=tour)
-        except date_plan.DoesNotExist:
+        except (date_plan.DoesNotExist, ValueError):
             pass
     # اگه یه date_plan دقیقاً با تاریخ پیش‌فرض تور یکی باشه، از تب تاریخ‌ها حذف میشه
     # (چون تکراریه) ولی خودش هیچ‌وقت با dp دستی هم قابل انتخاب نیست؛ پس تنظیمات
@@ -1102,10 +1096,7 @@ def AllCountryHotel(request,id, slug):
     items = spacial_destinations.objects.select_related('country', 'city').filter(show_homepage=True)
     tours_country_list = get_tours_country_list()
     theme_setting = index_page.objects.get(id=1)
-    try:
-        hotelmenu = Country.objects.get(slug=slug)
-    except Country.DoesNotExist:
-        raise Http404
+    hotelmenu = get_by_id_and_slug(Country.objects.all(), id, 'slug', slug)
     hotels = get_all_country_hotels(hotelmenu.id)
     all_faqs = hotel_faq_Country.objects.filter(Countryfaq=hotelmenu)
     paginator = Paginator(hotels.select_related('Hcity'), 12)
@@ -1209,10 +1200,7 @@ def HotelDetail(request,id,  Slug):
     footer_2 = get_colm_two_pages()
     footer_3 = get_colm_tree_pages()
     theme_setting = index_page.objects.get(id=1)
-    try:
-        hotel = Hotel_Data.objects.get(Slug=Slug)
-    except Hotel_Data.DoesNotExist:
-        raise Http404
+    hotel = get_by_id_and_slug(Hotel_Data.objects.all(), id, 'Slug', Slug)
     gallery = hotel_images.objects.filter(hotel=hotel)
     packages = []
     for slot in ('HotelName', 'Mhotel', 'M1hotel', 'M2hotel', 'M3hotel'):
@@ -1699,10 +1687,7 @@ def CategoryMemo(request, slug):
     items = spacial_destinations.objects.select_related('country', 'city').filter(show_homepage=True)
     tours_country_list = get_tours_country_list()
     theme_setting = index_page.objects.get(id=1)
-    try:
-        category = MemoryCategory.objects.get(slug=slug)
-    except MemoryCategory.DoesNotExist:
-        raise Http404
+    category = get_by_slug(MemoryCategory.objects.all(), 'slug', slug)
     menus = Country.objects.filter(showInMenu=True)
     categories = MemoryCategory.objects.all()
     ch_categories = MemoryCategory.objects.exclude(parentCat=None)

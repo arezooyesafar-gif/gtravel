@@ -4,15 +4,10 @@
 <!DOCTYPE html>
 <html lang="fa-IR" dir="rtl">
 <head>
-    {% include 'ui/base/head.html' %}
-    <link rel=“canonical” href="">
+    {% include 'ui/base/head.html' with meta_robots='NOINDEX,FOLLOW' %}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="{{ category.meta_desc }}">
-    {% if category.page_title %}
-    {{ category.page_title }}
-    {% else %}
-    <title>مجله گردشگری | {{ category }} |شرکت خدمات مسافرت هوایی و گردشگری آرزوی سفر پارسیان</title>
-    {% endif %}
+    <meta name="description" content="صفحه‌ای که دنبال آن بودید پیدا نشد. تورها، هتل‌ها و مقالات آرزوی سفر پارسیان را از صفحه اصلی ببینید.">
+    <title>صفحه پیدا نشد (۴۰۴) | آرزوی سفر پارسیان</title>
 </head>
 <body>
 {% include 'ui/base/header.html' %}

@@ -87,26 +87,20 @@
         {
             "@context": "https://schema.org",
             "@type": "Hotel",
-            "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "https://google.com/article"
-            },
-            "name": "{{ HotelData.HotelName }} - {{ HotelData.HotelNameEnglish }}",
-            "image": [
-                "https://arezoosafar.com/{{ HotelData.HotelImage.url }}"
-            ],
-            "description": "{{ HotelData.metaDescription }}",
-            "address": {
+            "@id": "https://arezoosafar.com{% url 'hotel-detail' HotelData.id HotelData.Slug %}",
+            "url": "https://arezoosafar.com{% url 'hotel-detail' HotelData.id HotelData.Slug %}",
+            "name": "{{ HotelData.HotelName|escapejs }}{% if HotelData.HotelNameEnglish %} - {{ HotelData.HotelNameEnglish|escapejs }}{% endif %}",
+            {% if HotelData.HotelImage %}"image": ["https://arezoosafar.com{{ HotelData.HotelImage.url }}"],
+            {% endif %}{% if HotelData.metaDescription %}"description": "{{ HotelData.metaDescription|escapejs }}",
+            {% endif %}{% if HotelData.HotelRating == '1' or HotelData.HotelRating == '2' or HotelData.HotelRating == '3' or HotelData.HotelRating == '4' or HotelData.HotelRating == '5' %}"starRating": {"@type": "Rating", "ratingValue": "{{ HotelData.HotelRating }}"},
+            {% endif %}"address": {
                 "@type": "PostalAddress",
-                "streetAddress": "{{ HotelData.HotelAddress }}",
-                "addressCountry": {
-                    "@type": "Country",
-                    "name": "{{ HotelData.Hcountry.TitleC }}",
-                    "url": "https://arezoosafar.com{% url 'all-tour-country' HotelData.Hcountry.slug  HotelData.Hcountry.id  %}"
-                }
+                {% if HotelData.HotelAddress %}"streetAddress": "{{ HotelData.HotelAddress|escapejs }}",
+                {% endif %}"addressLocality": "{{ HotelData.Hcity.Name|escapejs }}",
+                "addressCountry": "{{ HotelData.Hcountry.TitleC|escapejs }}"
             }
         }
-    </script> 
+    </script>
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -122,7 +116,7 @@
     {% if HotelData.htitle %}
         <title>{{ HotelData.htitle }}</title>
     {% else %}
-        <title> هتل | {{ HotelData.HotelName }} | </title>
+        <title>هتل {{ HotelData.HotelName }} | آرزوی سفر پارسیان</title>
     {% endif %}
 </head>
 <body>

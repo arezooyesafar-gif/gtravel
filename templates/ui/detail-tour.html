@@ -9,7 +9,29 @@
     <meta charset="UTF-8">
     <link rel="canonical" href="https://arezoosafar.com{% url 'tour-detail' Tour.id Tour.Slug %}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="{{ Tour.MetaDescription }}">
+    <meta name="description" content="{% if Tour.MetaDescription %}{{ Tour.MetaDescription }}{% else %}{{ Tour.Title }}، {{ Tour.NightCount }} شب و {{ Tour.DayCount }} روز. رزرو نقد و اقساطی با آژانس مسافرتی آرزوی سفر پارسیان{% endif %}">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "TouristTrip",
+            "name": "{{ Tour.Title|escapejs }}",
+            "url": "https://arezoosafar.com{% url 'tour-detail' Tour.id Tour.Slug %}",
+            {% if Tour.TourImage %}"image": ["https://arezoosafar.com{{ Tour.TourImage.url }}"],
+            {% endif %}"description": "{% if Tour.MetaDescription %}{{ Tour.MetaDescription|escapejs }}{% else %}{{ Tour.Title|escapejs }}{% endif %}",
+            "provider": {"@type": "TravelAgency", "name": "آرزوی سفر پارسیان", "url": "https://arezoosafar.com/"}
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "آرزوی سفر پارسیان", "item": "https://arezoosafar.com/"},
+                {% if Tour.Tcountry and Tour.Tcountry.slug %}{"@type": "ListItem", "position": 2, "name": "تور {{ Tour.Tcountry.TitleC|escapejs }}", "item": "https://arezoosafar.com{% url 'all-tour-country' Tour.Tcountry.slug Tour.Tcountry.id %}"},
+                {"@type": "ListItem", "position": 3, "name": "{{ Tour.Title|escapejs }}", "item": "https://arezoosafar.com{% url 'tour-detail' Tour.id Tour.Slug %}"}{% else %}{"@type": "ListItem", "position": 2, "name": "{{ Tour.Title|escapejs }}", "item": "https://arezoosafar.com{% url 'tour-detail' Tour.id Tour.Slug %}"}{% endif %}
+            ]
+        }
+    </script>
     <meta name="keyword" content="{{ Tour.MetaKeywords }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include 'ui/base/head.html' with skip_base_meta=1 skip_material_icons=1 skip_fontawesome=1 %}
@@ -22,7 +44,7 @@
     {% if Tour.tstitle %}
         <title>{{ Tour.tstitle }}</title>
     {% else %}
-        <title>{{ Tour.Title }} | شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان</title>
+        <title>{{ Tour.Title }} | شرکت خدمات مسافرت هوایی و گردشگری آرزوی سفر پارسیان</title>
     {% endif %}
 </head>
 <body>

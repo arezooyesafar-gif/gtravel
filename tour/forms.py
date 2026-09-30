@@ -586,6 +586,12 @@ class CreateTourForm(forms.ModelForm):
         if self.instance and self.instance.pk:
             self.fields['custom_categories'].initial = self.instance.custom_categories.all()
 
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('PubTour') and '_copy' in (cleaned_data.get('Slug') or ''):
+            self.add_error('Slug', 'این تور کپی است. قبل از انتشار، لینک سئو را عوض کنید و _copy را از آن بردارید.')
+        return cleaned_data
+
     class Meta:
         model = Tour
         exclude = ['Creator', 'updateDate']

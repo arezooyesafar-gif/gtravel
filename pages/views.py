@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
+from aps.lookups import get_by_slug
 
 from theme.models import index_page
 from tour.dataset import get_top_pages, get_origin_menu_cities, get_menu_cities
@@ -138,7 +139,7 @@ def page_detail(request, slug):
     orgin_menu_cities = get_origin_menu_cities(69)
     cities_menu = get_menu_cities()
     theme_setting = index_page.objects.get(id=1)
-    page = pages.objects.get(slug=slug)
+    page = get_by_slug(pages.objects.all(), 'slug', slug)
     context = {
         'reseller_menu': reseller_menu,
         'footer_2': footer_2,

@@ -14,8 +14,7 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 from .ajax_views import *
 from .api_views import tour_feed_list, tour_feed_detail, tour_reserve
-from .sitemaps import StaticSitemap, blogSitemap, tourSitemap, hotelSitemap, tourContrySitemap, tourCitySitemap, \
-    hotelCountrySitemap, hotelCitySitemap
+from .seo_sitemaps import sitemap_index, sitemap_section
 from .views import *
 from tour.views import *
 from django.contrib.sitemaps.views import sitemap
@@ -25,16 +24,6 @@ import requests
 import json
 from uuid import uuid4
 
-sitemaps = {
-    'static': StaticSitemap,
-    'blog': blogSitemap,
-    'tour': tourSitemap,
-    'tourCountry': tourContrySitemap,
-    'tourCity': tourCitySitemap,
-    'hotel': hotelSitemap,
-    'hotelCountry': hotelCountrySitemap,
-    'hotelCity': hotelCitySitemap,
-}
 
 def read_robot(request):
     frb = open('robots.txt', 'r')
@@ -206,10 +195,8 @@ urlpatterns = [
     path('ajax_dest', ajax_dest, name='ajax_dest'),
     path('pdf-download/<int:id>', mypdf, name='pdf-download'),
     path('dashboard/theme/main_page/<int:id>', (main_page_settings), name='main_page_settings'),
-    path("sitemap.xml", sitemap,
-         {"sitemaps": sitemaps},
-         name="django.contrib.sitemaps.views.sitemap",
-         ),
+    path('sitemap.xml', sitemap_index, name='sitemap-index'),
+    path('sitemap-<str:section>.xml', sitemap_section, name='sitemap-section'),
     path('robots.txt', read_robot),
     path('llms.txt', read_llms),
     path('google953f8aa654184902.html', read_search),

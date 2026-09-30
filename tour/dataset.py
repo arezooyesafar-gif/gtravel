@@ -415,7 +415,8 @@ def get_pub_tour_airlines():
     for i in tours:
         cities.append(TourCity.objects.filter(TourName=i).first())
     for i in cities:
-        airlines.append(i.Airline)
+        if i is not None:
+            airlines.append(i.Airline)
     airlines = list(set(airlines))
     return airlines
 
