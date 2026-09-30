@@ -22,7 +22,7 @@
             {% endif %}{% if Post.PubDate %}"datePublished": "{{ Post.PubDate|date:'Y-m-d' }}",
             {% endif %}{% if Post.modified_date %}"dateModified": "{{ Post.modified_date|date:'c' }}",
             {% endif %}"description": "{% if Post.metaDescription %}{{ Post.metaDescription|escapejs }}{% else %}{{ Post.ShortDesc|plain_summary|escapejs }}{% endif %}",
-            "author": {"@type": "Organization", "name": "آرزوی سفر پارسیان", "url": "https://arezoosafar.com/"},
+            "author": {"@type": "Person", "name": "{{ Post.author|default:'حدیثه محمدی'|escapejs }}"},
             "publisher": {"@type": "Organization", "name": "آرزوی سفر پارسیان", "url": "https://arezoosafar.com/"}
         }
     </script>

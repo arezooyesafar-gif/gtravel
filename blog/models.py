@@ -43,6 +43,7 @@ class blogPosts(models.Model):
     metaDescription = models.TextField(max_length=150, null=True, blank=True)
     viewCount = models.IntegerField(default=0, null=True, blank=True)
     ptitle = models.CharField(max_length=500, null=True, blank=True)
+    author = models.CharField(max_length=150, blank=True, default='حدیثه محمدی', verbose_name='نویسنده')
     meta_robots = models.CharField(
         max_length=50,
         choices=ROBOTS_CHOICES,

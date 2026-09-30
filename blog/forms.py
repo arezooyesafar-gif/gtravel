@@ -19,6 +19,9 @@ class CreatePostForm(forms.ModelForm):
         self.fields['ptitle'].widget.attrs.update({
             'class': 'text-input'
         })
+        self.fields['author'].widget.attrs.update({
+            'class': 'text-input'
+        })
         self.fields['slug'].widget.attrs.update({
             'class': 'text-input'
         })

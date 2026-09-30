@@ -19,7 +19,6 @@ from tour.date_pricing import (compute_tour_min_price, tour_card_packages,
                                packages_for_date)
 from django.contrib import messages
 from django.http import Http404, JsonResponse
-from staff.access import user_can
 from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
@@ -788,10 +787,6 @@ def TourDetail(request,id, Slug):
     trs = ''.join(random.choice(characters) for i in range(8))
     date = datetime.now()
     tour = get_by_id_and_slug(Tour.objects.all(), id, 'Slug', Slug)
-    if not tour.PubTour and not user_can(request.user, 'tours', 'view'):
-        if tour.Tcountry and tour.Tcountry.slug:
-            return redirect('all-tour-country', tour.Tcountry.slug, tour.Tcountry.id)
-        return redirect('all-tour')
     if tour.viewCount is None:
         tour.viewCount = 0
     tour.viewCount += 1
