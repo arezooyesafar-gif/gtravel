@@ -1,0 +1,82 @@
+{% extends 'admin-dashboard/base/base.html' %}
+{% block Main %}
+<div class="row m-t-40">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-inner border-bottom">
+                <div class="card-title-group">
+                    <div class="card-title">
+                        <h6 class="title">مدیریت ریدایرکت‌ها</h6>
+                    </div>
+                </div>
+            </div>
+            <form method="post" class="row m-20">
+                {% csrf_token %}
+                <div class="col-lg-4">
+                    <input type="text" name="old_path" class="text-input search-input" placeholder="آدرس قدیمی — مثال: /blog/16/tourist-visa-russia" required>
+                </div>
+                <div class="col-lg-4">
+                    <input type="text" name="new_path" class="text-input search-input" placeholder="آدرس جدید — مثال: /russia_visa">
+                </div>
+                <div class="col-lg-2">
+                    <select name="status" class="text-input search-input">
+                        {% for value, label in statuses %}
+                        <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <button type="submit" class="btn btn-lg btn-info btn-block">افزودن</button>
+                </div>
+            </form>
+            <p style="padding:0 20px 15px;color:#8094ae">آدرس قدیمی حتماً با «/» شروع شود و فقط بخش بعد از دامنه باشد. نوع را انتخاب کنید: <b>۳۰۱</b> انتقال دائمی، <b>۳۰۲</b> انتقال موقت، <b>۴۱۰</b> صفحهٔ حذف‌شده (برای ۴۱۰ نیازی به آدرس جدید نیست).</p>
+        </div>
+    </div>
+</div>
+<div class="row m-t-20">
+    <div class="col-sm-12 col-lg-12">
+        <div class="table-block">
+            {% for msg in messages %}<p class="success" style="text-align:center">{{ msg }}</p>{% endfor %}
+            <form method="get" class="row m-20">
+                <div class="col-lg-10">
+                    <input type="text" name="search" value="{{ search }}" class="text-input search-input" placeholder="جستجو در آدرس‌ها">
+                </div>
+                <div class="col-lg-2">
+                    <button type="submit" class="btn btn-lg btn-info btn-block">جستجو</button>
+                </div>
+            </form>
+            <table class="table BranchTable">
+                <thead>
+                <tr>
+                    <th class="TbHead">ردیف</th>
+                    <th class="TbHead">آدرس قدیمی</th>
+                    <th class="TbHead">آدرس جدید</th>
+                    <th class="TbHead">نوع</th>
+                    <th class="TbHead">اقدامات</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                <tr>
+                    <td class="TbCells serial">{{ forloop.counter0|add:items.start_index }}</td>
+                    <td class="TbCells">{{ item.old_path }}</td>
+                    <td class="TbCells">{{ item.new_path|default:'—' }}</td>
+                    <td class="TbCells">{{ item.get_status_display }}</td>
+                    <td class="TbCells">
+                        <a href="{% url 'redirect-delete' item.id %}" style="color:red" onclick="return confirm('این ریدایرکت حذف شود؟')">حذف</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td class="TbCells" colspan="5">هنوز ریدایرکتی ثبت نشده است</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <ul class="pagination">
+                {% for n in items.paginator.page_range %}
+                <li class="page-item {% if items.number == n %}active{% endif %}"><a class="page-link" href="?page={{ n }}&search={{ search }}">{{ n }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

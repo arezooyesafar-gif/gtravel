@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .message_views import bulk_delete_messages
-from .views import change_log, change_log_delete, staff_create, staff_delete, staff_list, staff_update
+from .views import change_log, change_log_delete, redirect_delete, redirect_list, staff_create, staff_delete, staff_list, staff_update
 
 urlpatterns = [
     path('', staff_list, name='staff-list'),
@@ -11,4 +11,6 @@ urlpatterns = [
     path('change-log', change_log, name='staff-change-log'),
     path('change-log/delete', change_log_delete, name='staff-change-log-delete'),
     path('messages/delete', bulk_delete_messages, name='messages-bulk-delete'),
+    path('redirects/', redirect_list, name='redirect-list'),
+    path('redirects/delete/<int:id>', redirect_delete, name='redirect-delete'),
 ]

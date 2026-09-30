@@ -88,6 +88,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
     'staff.middleware.StaffAccessMiddleware',
+    'staff.middleware.RedirectRuleMiddleware',
 ]
 
 ROOT_URLCONF = 'aps.urls'
