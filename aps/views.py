@@ -29,6 +29,7 @@ from visa.forms import visa_request_form, thaiVisaForm
 from blog.models import *
 from django.shortcuts import get_object_or_404, render
 from .lookups import get_by_id_and_slug, get_by_slug
+from .related import related_tours_for_post
 
 
 def IndexPage(request):
@@ -1434,6 +1435,7 @@ def PostDetail(request, id, slug):
     context = {
         'Post': post,
         'Posts': post_related,
+        'related_tours': related_tours_for_post(post),
         'all_comments': all_comments,
         'all_comments_reply': all_comments_reply,
         'set': tset,

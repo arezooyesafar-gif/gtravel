@@ -73,6 +73,9 @@ class CreatePostCategoryForm(forms.ModelForm):
             'class': 'text-input',
 
         })
+        self.fields['country'].widget.attrs.update({
+            'class': 'text-input',
+        })
 
     class Meta:
         model = PostCategory

@@ -19,6 +19,7 @@ class PostCategory(models.Model):
     page_title = models.CharField(max_length=500, null=True, blank=True)
     meta_desc = models.CharField(max_length=500, null=True, blank=True)
     meta_keyword = models.CharField(max_length=500, null=True, blank=True)
+    country = models.ForeignKey('tour.Country', on_delete=models.SET_NULL, null=True, blank=True, related_name='post_categories', verbose_name='کشور')
 
     def __str__(self):
         full_path = [self.CatName]
