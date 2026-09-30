@@ -12,17 +12,24 @@
             </div>
             <form method="post" class="row m-20">
                 {% csrf_token %}
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <input type="text" name="old_path" class="text-input search-input" placeholder="آدرس قدیمی — مثال: /blog/16/tourist-visa-russia" required>
                 </div>
-                <div class="col-lg-5">
-                    <input type="text" name="new_path" class="text-input search-input" placeholder="آدرس جدید — مثال: /russia_visa (خالی = صفحه حذف شده / 410)">
+                <div class="col-lg-4">
+                    <input type="text" name="new_path" class="text-input search-input" placeholder="آدرس جدید — مثال: /russia_visa">
+                </div>
+                <div class="col-lg-2">
+                    <select name="status" class="text-input search-input">
+                        {% for value, label in statuses %}
+                        <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-lg-2">
                     <button type="submit" class="btn btn-lg btn-info btn-block">افزودن</button>
                 </div>
             </form>
-            <p style="padding:0 20px 15px;color:#8094ae">آدرس قدیمی حتماً با «/» شروع شود و فقط بخش بعد از دامنه باشد. اگر «آدرس جدید» را پر کنید، بازدیدکننده با کد 301 به آن منتقل می‌شود؛ اگر خالی بگذارید، آن صفحه با کد 410 «حذف‌شده» اعلام می‌شود.</p>
+            <p style="padding:0 20px 15px;color:#8094ae">آدرس قدیمی حتماً با «/» شروع شود و فقط بخش بعد از دامنه باشد. نوع را انتخاب کنید: <b>۳۰۱</b> انتقال دائمی، <b>۳۰۲</b> انتقال موقت، <b>۴۱۰</b> صفحهٔ حذف‌شده (برای ۴۱۰ نیازی به آدرس جدید نیست).</p>
         </div>
     </div>
 </div>
@@ -54,7 +61,7 @@
                     <td class="TbCells serial">{{ forloop.counter0|add:items.start_index }}</td>
                     <td class="TbCells">{{ item.old_path }}</td>
                     <td class="TbCells">{{ item.new_path|default:'—' }}</td>
-                    <td class="TbCells">{% if item.new_path %}301 انتقال{% else %}410 حذف‌شده{% endif %}</td>
+                    <td class="TbCells">{{ item.get_status_display }}</td>
                     <td class="TbCells">
                         <a href="{% url 'redirect-delete' item.id %}" style="color:red" onclick="return confirm('این ریدایرکت حذف شود؟')">حذف</a>
                     </td>

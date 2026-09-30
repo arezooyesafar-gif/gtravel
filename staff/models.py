@@ -111,3 +111,25 @@ class ChangeLog(models.Model):
     @property
     def area_label(self):
         return AREA_LABELS.get(self.area, self.area)
+
+
+REDIRECT_STATUSES = [
+    (301, '301 - انتقال دائمی'),
+    (302, '302 - انتقال موقت'),
+    (410, '410 - حذف شده'),
+]
+
+
+class RedirectRule(models.Model):
+    old_path = models.CharField(max_length=400, unique=True, db_index=True)
+    new_path = models.CharField(max_length=400, blank=True, default='')
+    status = models.IntegerField(choices=REDIRECT_STATUSES, default=301)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['old_path']
+        verbose_name = 'ریدایرکت'
+        verbose_name_plural = 'ریدایرکت ها'
+
+    def __str__(self):
+        return '%s -> %s' % (self.old_path, self.new_path or str(self.status))

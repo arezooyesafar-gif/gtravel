@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'django.contrib.redirects',
     'django.contrib.sitemaps',
     'django_user_agents',
     'multiselectfield',
@@ -73,7 +72,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
     'staff.middleware.StaffAccessMiddleware',
-    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
+    'staff.middleware.RedirectRuleMiddleware',
 ]
 
 ROOT_URLCONF = 'aps.urls'

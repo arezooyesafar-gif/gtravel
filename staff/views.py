@@ -1,14 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
-from django.contrib.redirects.models import Redirect
-from django.contrib.sites.models import Site
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import StaffUserForm
-from .models import ACTIONS, AREAS, ChangeLog, StaffAccess
+from .models import ACTIONS, AREAS, REDIRECT_STATUSES, ChangeLog, RedirectRule, StaffAccess
 
 superuser_only = user_passes_test(lambda u: u.is_authenticated and u.is_superuser, login_url='login')
 
@@ -112,33 +110,41 @@ def change_log(request):
 
 @superuser_only
 def redirect_list(request):
-    site = Site.objects.get_current()
     if request.method == 'POST':
         old_path = (request.POST.get('old_path') or '').strip()
         new_path = (request.POST.get('new_path') or '').strip()
+        try:
+            status = int(request.POST.get('status') or 301)
+        except ValueError:
+            status = 301
+        if status not in (301, 302, 410):
+            status = 301
         if not old_path:
             messages.error(request, 'آدرس قدیمی را وارد کنید')
+        elif status != 410 and not new_path:
+            messages.error(request, 'برای انتقال ۳۰۱ یا ۳۰۲ باید آدرس جدید را وارد کنید')
         else:
             if not old_path.startswith('/'):
                 old_path = '/' + old_path
-            _, created = Redirect.objects.update_or_create(
-                site=site, old_path=old_path, defaults={'new_path': new_path})
-            messages.success(request, 'ریدایرکت ذخیره شد' if created else 'ریدایرکت به‌روزرسانی شد')
+            RedirectRule.objects.update_or_create(
+                old_path=old_path, defaults={'new_path': new_path, 'status': status})
+            messages.success(request, 'ریدایرکت ذخیره شد')
         return redirect('redirect-list')
-    items = Redirect.objects.filter(site=site).order_by('old_path')
+    items = RedirectRule.objects.all()
     search = request.GET.get('search', '').strip()
     if search:
         items = items.filter(Q(old_path__icontains=search) | Q(new_path__icontains=search))
     paginator = Paginator(items, 50)
     return render(request, 'staff/redirects.html', {
         'items': paginator.get_page(request.GET.get('page')),
+        'statuses': REDIRECT_STATUSES,
         'search': search,
     })
 
 
 @superuser_only
 def redirect_delete(request, id):
-    get_object_or_404(Redirect, id=id).delete()
+    get_object_or_404(RedirectRule, id=id).delete()
     messages.success(request, 'ریدایرکت حذف شد')
     return redirect('redirect-list')
 

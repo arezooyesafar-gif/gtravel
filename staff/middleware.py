@@ -1,5 +1,5 @@
 from django.db import connection, transaction
-from django.http import JsonResponse
+from django.http import HttpResponseGone, HttpResponsePermanentRedirect, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 
 from .access import FREE_NAMES, SELF_NAMES, resolve_action, resolve_area, user_can
@@ -98,3 +98,25 @@ class StaffAccessMiddleware:
         if request.path.startswith('/dashboard/'):
             return True
         return name in ADMIN_NAMES or name in SELF_NAMES
+
+
+class RedirectRuleMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        if response.status_code != 404:
+            return response
+        from .models import RedirectRule
+        path = request.path
+        rule = RedirectRule.objects.filter(old_path=path).first()
+        if rule is None and not path.endswith('/'):
+            rule = RedirectRule.objects.filter(old_path=path + '/').first()
+        if rule is None:
+            return response
+        if rule.status == 410 or not rule.new_path:
+            return HttpResponseGone()
+        if rule.status == 302:
+            return HttpResponseRedirect(rule.new_path)
+        return HttpResponsePermanentRedirect(rule.new_path)
