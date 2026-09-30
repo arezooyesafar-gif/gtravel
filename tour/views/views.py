@@ -184,9 +184,10 @@ def PMemoriesCreate(request):
             return redirect('/')
     categories = MemoryCategory.objects.all()
     ch_categories = MemoryCategory.objects.exclude(parentCat=None)
-    ch_cat_number = []
-    for i in categories:
-        ch_cat_number.append(MemoryCategory.objects.filter(parentCat=i).count())
+    child_counts = {}
+    for parent_id in MemoryCategory.objects.exclude(parentCat=None).values_list('parentCat_id', flat=True):
+        child_counts[parent_id] = child_counts.get(parent_id, 0) + 1
+    ch_cat_number = [child_counts.get(i.id, 0) for i in categories]
     parent_categories = zip(categories, ch_cat_number)
     
     meta_robots = 'INDEX,FOLLOW'

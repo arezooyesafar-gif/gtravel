@@ -20,8 +20,11 @@ def hotel_menu(request):
     if cached is None:
         countries = Country.objects.filter(hotel_country__isnull=False).distinct().order_by('menu_order')
         grouped = {'1': [], '2': [], '3': [], '4': []}
+        counts = {}
+        for country_id in Hotel_Data.objects.values_list('Hcountry_id', flat=True):
+            counts[country_id] = counts.get(country_id, 0) + 1
         for idx, country in enumerate(countries):
-            count = Hotel_Data.objects.filter(Hcountry=country).count()
+            count = counts.get(country.id, 0)
             column = str((idx % 4) + 1)
             grouped[column].append((country, count))
         cached = {

@@ -1217,7 +1217,12 @@ def HotelDetail(request,id,  Slug):
     Hotel_Data.objects.filter(pk=hotel.pk).update(viewCount=M.F('viewCount') + 1)
     all_comments = hotel_comments.objects.filter(hotel=hotel, publish=True).order_by('-id')
     comments_form = hotel_comment_form()
-    cordinate = hotel.HotelMap.split(',')
+    cordinate = [part.strip() for part in (hotel.HotelMap or '').split(',')][:2]
+    try:
+        float(cordinate[0])
+        float(cordinate[1])
+    except (IndexError, ValueError):
+        cordinate = ['null', 'null']
     if request.method == 'POST':
         if 'submit_comment' in request.POST:
             comments_form = hotel_comment_form(request.POST)
@@ -1306,8 +1311,8 @@ def BlogPage(request):
     view = viewCounter.objects.get(id=1)
     view.blogView += 1
     view.save()
-    posts = blogPosts.objects.filter(Publish=True).only('Title', 'Category', 'Image').order_by('-PubDate')[:6]
-    fav_posts = blogPosts.objects.filter(Publish=True).only('Title', 'Category', 'Image').order_by('-viewCount')[:6]
+    posts = blogPosts.objects.filter(Publish=True).select_related('Category__parentCat').only('Title', 'Category', 'Image', 'slug', 'ShortDesc', 'viewCount', 'PubDate').order_by('-PubDate')[:6]
+    fav_posts = blogPosts.objects.filter(Publish=True).select_related('Category__parentCat').only('Title', 'Category', 'Image', 'slug', 'ShortDesc', 'viewCount', 'PubDate').order_by('-viewCount')[:6]
 
     search_query = request.GET.get('q', '').strip()
     if search_query:
@@ -1325,12 +1330,13 @@ def BlogPage(request):
             )
         ).order_by('title_match', '-PubDate')
     else:
-        all_posts = blogPosts.objects.filter(Publish=True).only('Title', 'Category', 'Image').order_by('-PubDate') 
+        all_posts = blogPosts.objects.filter(Publish=True).select_related('Category__parentCat').only('Title', 'Category', 'Image', 'slug', 'ShortDesc', 'viewCount', 'PubDate').order_by('-PubDate') 
     categories = PostCategory.objects.all()
     ch_categories = PostCategory.objects.exclude(parentCat=None)
-    ch_cat_number = []
-    for i in categories:
-        ch_cat_number.append(PostCategory.objects.filter(parentCat=i).count())
+    child_counts = {}
+    for parent_id in PostCategory.objects.exclude(parentCat=None).values_list('parentCat_id', flat=True):
+        child_counts[parent_id] = child_counts.get(parent_id, 0) + 1
+    ch_cat_number = [child_counts.get(i.id, 0) for i in categories]
     parent_categories = zip(categories, ch_cat_number)
     paginator = Paginator(all_posts, 10)
     pagenumber = request.GET.get('page')
@@ -1365,9 +1371,10 @@ def CategoryPost(request, id, slug):
     menus = Country.objects.filter(showInMenu=True)
     categories = PostCategory.objects.all()
     ch_categories = PostCategory.objects.exclude(parentCat=None)
-    ch_cat_number = []
-    for i in categories:
-        ch_cat_number.append(PostCategory.objects.filter(parentCat=i).count())
+    child_counts = {}
+    for parent_id in PostCategory.objects.exclude(parentCat=None).values_list('parentCat_id', flat=True):
+        child_counts[parent_id] = child_counts.get(parent_id, 0) + 1
+    ch_cat_number = [child_counts.get(i.id, 0) for i in categories]
     parent_categories = zip(categories, ch_cat_number)
     subcat = PostCategory.objects.filter(parentCat=category)
     posts = blogPosts.objects.filter(Category=category, Publish=True).order_by('-id')
@@ -1688,9 +1695,10 @@ def CategoryMemo(request, slug):
     menus = Country.objects.filter(showInMenu=True)
     categories = MemoryCategory.objects.all()
     ch_categories = MemoryCategory.objects.exclude(parentCat=None)
-    ch_cat_number = []
-    for i in categories:
-        ch_cat_number.append(MemoryCategory.objects.filter(parentCat=i).count())
+    child_counts = {}
+    for parent_id in MemoryCategory.objects.exclude(parentCat=None).values_list('parentCat_id', flat=True):
+        child_counts[parent_id] = child_counts.get(parent_id, 0) + 1
+    ch_cat_number = [child_counts.get(i.id, 0) for i in categories]
     parent_categories = zip(categories, ch_cat_number)
     subcat = MemoryCategory.objects.filter(parentCat=category)
     memories = PMemories.objects.filter(category=category, publish=True).order_by('-id')

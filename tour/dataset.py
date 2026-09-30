@@ -105,17 +105,14 @@ def get_spacial_tours():
     return spacialData
 
 def get_all_pub_posts():
-    return blogPosts.objects.filter(Publish=True).only('Title').order_by('-id')
+    return blogPosts.objects.filter(Publish=True).select_related('Category__parentCat').only('Title', 'slug', 'Image', 'Category').order_by('-id')
 
 def get_menu_cities():
-    tours_cities_name = []
-    tours_cities_slug = []
-    for i in get_all_pub_tours_admin():
-        tours_cities_name.append(i.Tcity.Name)
-    tours_cities_name = sorted(list(set(tours_cities_name)))
-    for i in tours_cities_name:
-        city_data = City.objects.get(Name=i)
-        tours_cities_slug.append(city_data.slug)
+    tours_cities_name = sorted(set(Tour.objects.filter(PubTour=True, Tcity__isnull=False).values_list('Tcity__Name', flat=True)))
+    slugs = {}
+    for name, slug in City.objects.filter(Name__in=tours_cities_name).order_by('-id').values_list('Name', 'slug'):
+        slugs[name] = slug
+    tours_cities_slug = [slugs[name] for name in tours_cities_name]
     menu_cities = zip(tours_cities_name, tours_cities_slug)
     return menu_cities
 
@@ -146,7 +143,7 @@ def get_tours_country():
 
 def get_tours_cities():
     cities = []
-    for i in Tour.objects.filter(PubTour=True).order_by('-id'):
+    for i in Tour.objects.filter(PubTour=True).select_related('Tcity').order_by('-id'):
         cities.append(i.Tcity)
     cities = list(set(cities))
     return cities
@@ -411,9 +408,12 @@ def get_all_tour_categories():
 def get_pub_tour_airlines():
     cities = []
     airlines = []
-    tours = get_all_pub_tours()
+    tours = list(get_all_pub_tours())
+    first_city = {}
+    for tour_city in TourCity.objects.filter(TourName__in=tours).select_related('Airline').order_by('id'):
+        first_city.setdefault(tour_city.TourName_id, tour_city)
     for i in tours:
-        cities.append(TourCity.objects.filter(TourName=i).first())
+        cities.append(first_city.get(i.id))
     for i in cities:
         if i is not None:
             airlines.append(i.Airline)
