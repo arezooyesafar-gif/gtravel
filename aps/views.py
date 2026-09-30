@@ -1121,10 +1121,7 @@ def AllCountryHotel(request,id, slug):
             formsub.save()
             return redirect('/')
 
-    if PageNumber and int(PageNumber) > 1:
-        meta_robots = 'NOINDEX,FOLLOW'
-    else:
-        meta_robots = hotelmenu.hotel_meta_robots
+    meta_robots = hotelmenu.hotel_meta_robots
 
     context = {
         'Hotels': hotels,
@@ -1144,9 +1141,8 @@ def AllHotelCity(request, id, slug):
     items = spacial_destinations.objects.select_related('country', 'city').filter(show_homepage=True)
     tours_country_list = get_tours_country_list()
     theme_setting = index_page.objects.get(id=1)
-    try:
-        hotelmenu = City.objects.get(slug=slug)
-    except City.DoesNotExist:
+    hotelmenu = City.objects.filter(id=id, slug=slug).first() or City.objects.filter(slug=slug).order_by('id').first()
+    if hotelmenu is None:
         raise Http404
     all_faqs = hotel_faq_city.objects.filter(Cityfaq=hotelmenu)    
     meta_robots = hotelmenu.hotel_meta_robots
@@ -1356,10 +1352,7 @@ def BlogPage(request):
     pagenumber = request.GET.get('page')
     data = paginator.get_page(pagenumber)
     
-    if pagenumber and int(pagenumber) > 1:
-        meta_robots = 'NOINDEX,FOLLOW'
-    else:
-        meta_robots = 'INDEX,FOLLOW'
+    meta_robots = 'INDEX,FOLLOW'
 
     context = {
         'AllCat': categories,
@@ -1415,10 +1408,7 @@ def CategoryPost(request, id, slug):
             formsub.save()
             return redirect('/')
         
-    if pageNumber and int(pageNumber) > 1:
-        meta_robots = 'NOINDEX,FOLLOW'
-    else:
-        meta_robots = 'INDEX,FOLLOW'
+    meta_robots = 'INDEX,FOLLOW'
 
     context = {
         'Posts': listPost,
@@ -1746,8 +1736,6 @@ def CategoryMemo(request, slug):
             return redirect('/')
 
     if not all_memos:
-        meta_robots = 'NOINDEX,FOLLOW'
-    elif pageNumber and int(pageNumber) > 1:
         meta_robots = 'NOINDEX,FOLLOW'
     else:
         meta_robots = 'INDEX,FOLLOW'

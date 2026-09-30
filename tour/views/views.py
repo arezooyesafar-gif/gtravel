@@ -189,10 +189,7 @@ def PMemoriesCreate(request):
         ch_cat_number.append(MemoryCategory.objects.filter(parentCat=i).count())
     parent_categories = zip(categories, ch_cat_number)
     
-    if PageNumber and int(PageNumber) > 1:
-        meta_robots = 'NOINDEX,FOLLOW'
-    else:
-        meta_robots = 'INDEX,FOLLOW'
+    meta_robots = 'INDEX,FOLLOW'
 
     context = {
         'Form': forms,

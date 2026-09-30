@@ -1,7 +1,10 @@
 User-agent: *
-Disallow: /admin/*
-Disallow: /dashboard/*
-Disallow: /blog/61/weirdest-laws-around-world
-Disallow: /singapore-tour/65/city-tours
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /user/
+Disallow: /payment
+Disallow: /save-tour-interest
+Disallow: /*?dp=
+Disallow: /*TB_iframe=
 
 Sitemap: https://arezoosafar.com/sitemap.xml

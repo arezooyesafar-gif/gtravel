@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     {% if country %}
-        <link rel="canonical" href="https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}">
+        <link rel="canonical" href="https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}{% if request.GET.page %}?page={{ request.GET.page|urlencode }}{% endif %}">
     {% elif city %}
         <link rel="canonical" href="https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}">
     {% else %}
@@ -24,7 +24,7 @@
     {% else %}
         <meta name="description" content=" رزرو بهترین هتل های خارجی و داخلی با کمترین نرخ در آرزوی سفر پارسیان">
         <meta name="keywords"
-              content="لیست هتل های داخلی,لیست هتل های خارجی,هتل های روسیه,هتل های ترکیه,هتل های دبی,هتل های ارزان قیمت,رزور هتل,آرزوی سفر">
+              content="لیست هتل های داخلی,لیست هتل های خارجی,هتل های روسیه,هتل های ترکیه,هتل های دبی,هتل های ارزان قیمت,رزرو هتل,آرزوی سفر">
     {% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if country.country_iamge %}

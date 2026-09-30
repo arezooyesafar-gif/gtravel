@@ -5,9 +5,9 @@
 <html lang="fa-IR" dir="rtl">
 <head>
     {% include 'ui/base/head.html' %}
-    <link rel="canonical" href="https://arezoosafar.com/blog"/>
+    <link rel="canonical" href="https://arezoosafar.com/blog{% if request.GET.page %}?page={{ request.GET.page|urlencode }}{% endif %}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="آرزوی سفر ارائه دهنده انواع تورهای مسافرتی (داخلی، خارجی، لوکس و نمایشگاهی) به صورت نقد و اقساط، اخذ و مشاوره انواع ویزای توریستی، رزور بلیط و هتل. آرزوی شما را برآورده میکنیم">
+    <meta name="description" content="آرزوی سفر ارائه دهنده انواع تورهای مسافرتی (داخلی، خارجی، لوکس و نمایشگاهی) به صورت نقد و اقساط، اخذ و مشاوره انواع ویزای توریستی، رزرو بلیط و هتل. آرزوی شما را برآورده میکنیم">
     <meta name="keywords" content="تورهای داخلی,تورهای خارجی,تورهای نمایشگاهی,تورهای ارزان قیمت,تور ترکیه,تور روسیه,تور قسطی,تور اقساطی,آرزوی سفر">
     <title>مجله گردشگری | شرکت خدمات مسافررت هوایی و گردشگری آرزوی سفر پارسیان</title>
 </head>

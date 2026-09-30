@@ -6,7 +6,7 @@ import base64
 import html as html_module
 
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.template.loader import get_template
 from django.template.loader import render_to_string
 from weasyprint import HTML, CSS
@@ -49,7 +49,7 @@ def _strip_html(html_text, max_chars=400):
     return text
 
 def mypdf(request, id):
-    tour = Tour.objects.get(id=id)
+    tour = get_object_or_404(Tour, id=id)
     cities = TourCity.objects.filter(TourName_id=tour.id)
     tc = cities.first()
     lc = cities.last()
@@ -58,7 +58,7 @@ def mypdf(request, id):
     if dp_id:
         try:
             selected_dp = date_plan.objects.get(id=dp_id, tour=tour)
-        except date_plan.DoesNotExist:
+        except (date_plan.DoesNotExist, ValueError):
             pass
     # قیمت/هتل/ویو/سرویسِ مؤثرِ همون تاریخ از قبل روی پکیج‌ها اعمال می‌شه، پس
     # قالب دیگه نباید اختلاف قیمت رو دوباره اضافه کنه
@@ -119,7 +119,7 @@ def mypdf(request, id):
     return response
 
 def mypdf2(request, id):
-    tour = Tour.objects.get(id=id)
+    tour = get_object_or_404(Tour, id=id)
     cities = TourCity.objects.filter(TourName_id=tour.id)
     tc = cities.first()
     lc = cities.last()

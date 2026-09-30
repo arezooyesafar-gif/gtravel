@@ -81,6 +81,7 @@ MIDDLEWARE = [
     # مشکل رو نداره، برای همین لوکال سریع بود ولی سرور کند).
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'staff.middleware.RedirectRuleMiddleware',
+    'aps.seo_middleware.SeoRedirectMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

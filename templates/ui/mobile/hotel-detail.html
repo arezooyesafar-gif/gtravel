@@ -63,7 +63,7 @@
         <div class="col-lg-3 hotel_data_detail">
             <div class="col-lg-12 hotel-data-i map">
                 <div class="map-link">
-                    <a href="{{ HotelData.HotelMap }}">هتل بر روی نقشه</a>
+                    {% if HotelData.HotelMap %}<a href="https://www.google.com/maps/search/?api=1&amp;query={{ HotelData.HotelMap|urlencode }}" target="_blank" rel="noopener">هتل بر روی نقشه</a>{% endif %}
                 </div>
             </div>
         </div>
