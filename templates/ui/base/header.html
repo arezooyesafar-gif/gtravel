@@ -81,7 +81,7 @@
             <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
                  aria-labelledby="offcanvasWithBothOptionsLabel">
                 <div class="offcanvas-header">
-                    <h2 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">آرزوی سفر پارسیان</h2>
+                    <div class="offcanvas-title title-h2" id="offcanvasWithBothOptionsLabel">آرزوی سفر پارسیان</div>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
@@ -413,4 +413,9 @@
             </div>
         </div>
     </div>
+    <nav class="menu-city-links" aria-label="شهرها" hidden style="display:none!important">
+        {% for city in menu_city_links.tours %}<a href="{% url 'city-tours' city.slug city.id %}">تور {{ city.Name }}</a>
+        {% endfor %}{% for city in menu_city_links.hotels %}<a href="{% url 'all-hotel-city-list' city.id city.slug %}">هتل های {{ city.Name }}</a>
+        {% endfor %}
+    </nav>
 </header>

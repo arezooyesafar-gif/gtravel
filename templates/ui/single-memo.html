@@ -7,11 +7,8 @@
 <head>
     {% include 'ui/base/head.html' with skip_material_icons=1 delay_third_party=1 %}
     <link rel="canonical" href="https://arezoosafar.com/read-jounery/{{ Memo.id }}"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description"
           content="{% if Memo.metaDescription %}{{ Memo.metaDescription }}{% elif Memo.headline %}{{ Memo.headline }}{% else %}سفرنامه {{ Memo.Name }} {{ Memo.Family }} از سفر با آرزوی سفر پارسیان{% endif %}">
-    <meta name="keywords"
-          content="تورهای داخلی,تورهای خارجی,تورهای نمایشگاهی,تورهای ارزان قیمت,تور ترکیه,تور روسیه,تور قسطی,تور اقساطی,آرزوی سفر">
     <title> سفرنامه - {{ Memo.Name }} {{ Memo.Family }} | شرکت خدمات مسافرت هوایی و گردشگری آرزوی سفر پارسیان</title>
 </head>
 <body>

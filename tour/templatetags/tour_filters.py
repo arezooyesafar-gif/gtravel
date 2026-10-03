@@ -140,3 +140,28 @@ def nights_in_city(cities, city):
         if nights > 0:
             total += nights
     return total or ''
+
+
+def _first_number(value):
+    match = re.search(r'\d[\d,]*', str(value or ''))
+    return int(match.group().replace(',', '')) if match else 0
+
+
+@register.filter
+def price_slider_max(rows, rate):
+    rate = _first_number(rate) or 170000
+    highest = 0
+    for row in rows or []:
+        packages = row[1] if len(row) > 1 else None
+        if not packages:
+            continue
+        package = packages[0]
+        foreign = package.DoubleBedPrice_doller or (_first_number(package.DollerPrice) if package.DollerPrice else 0)
+        numbers = [n for n in (_first_number(package.DoubleBedPrice), _first_number(foreign)) if n > 0]
+        if not numbers:
+            continue
+        value = numbers[0] + (numbers[1] if len(numbers) > 1 else 0) * rate if numbers[0] >= 1000000 else numbers[0] * rate
+        highest = max(highest, value)
+    if highest <= 0:
+        return 0
+    return -(-highest // 5000000) * 5000000

@@ -10,7 +10,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="canonical" href="https://arezoosafar.com{% url 'post-detail' Post.id Post.slug %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="{{ Post.metaKeyword }}">
     <meta name="description" content="{% if Post.metaDescription %}{{ Post.metaDescription }}{% else %}{{ Post.ShortDesc|plain_summary }}{% endif %}">
     <script type="application/ld+json">
         {

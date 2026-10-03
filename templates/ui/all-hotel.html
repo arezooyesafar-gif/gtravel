@@ -5,13 +5,11 @@
 <html lang="fa-IR" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <link rel=“canonical” href=“https://arezoosafar.com/all-hotel”/>
+    <link rel="canonical" href="https://arezoosafar.com{{ request.path }}{% if request.GET.page %}?page={{ request.GET.page|urlencode }}{% endif %}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content=" رزرو بهترین هتل های خارجی و داخلی با کمترین نرخ در آرزوی سفر پارسیان">
-    {% comment %} <meta name="keywords"
-          content="لیست هتل های داخلی,لیست هتل های خارجی,هتل های روسیه,هتل های ترکیه,هتل های دبی,هتل های ارزان قیمت,رزرو هتل,آرزوی سفر"> {% endcomment %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% include 'ui/base/head.html' %}
+    {% include 'ui/base/head.html' with skip_base_meta=1 %}
     <script>
         !function (t, e, n) {
             t.yektanetAnalyticsObject = n, t[n] = t[n] || function () {
@@ -39,7 +37,7 @@
                     ],
                     "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}",
                     "url": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}",
-                    "name": "{{ city.hltitle }} هتل",
+                    "name": "{{ city.hltitle|escapejs }} هتل",
                     "isPartOf": {
                         "@id": "https://arezoosafar.com/#website"
                     },
@@ -50,7 +48,7 @@
                         "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#primaryimage"
                     },
                     "thumbnailUrl": "https://arezoosafar.com{{ city.cityImg.url }}",
-                    "description": "{{ city.hotelmd }}",
+                    "description": "{{ city.hotelmd|escapejs }}",
                     "breadcrumb": {
                         "@id": "https://arezoosafar.com{% url 'all-hotel-city-list' city.id city.slug %}#breadcrumb"
                     },
@@ -79,7 +77,7 @@
                     "contentUrl": "https://arezoosafar.com{{ city.cityImg.url }}",
                     "width": 1211,
                     "height": 400,
-                    "caption": "{{ city.hltitle }}"
+                    "caption": "{{ city.hltitle|escapejs }}"
                 },
                 {
                     "@type": "BreadcrumbList",
@@ -100,13 +98,13 @@
                         {
                             "@type": "ListItem",
                             "position": 3,
-                            "name": "{{city.CountryName.TitleC}}",
+                            "name": "{{ city.CountryName.TitleC|escapejs }}",
                             "item": "https://arezoosafar.com{% url 'all-hotel-list' city.CountryName.id city.CountryName.slug %}"
                         },
                         {
                             "@type": "ListItem",
                             "position": 4,
-                            "name": "{{ city.hltitle }}"
+                            "name": "{{ city.hltitle|escapejs }}"
                         }
                     ]
                 },
@@ -146,7 +144,7 @@
             ],
             "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}",
             "url": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}",
-            "name": "{{ country.TitleC }} هتل",
+            "name": "{{ country.TitleC|escapejs }} هتل",
             "isPartOf": {
                 "@id": "https://arezoosafar.com/#website"
             },
@@ -157,7 +155,7 @@
                 "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#primaryimage"
             },
             "thumbnailUrl": "https://arezoosafar.com{{ country.country_iamge.url }}",
-            "description": "{{ country.hotelmd }}",
+            "description": "{{ country.hotelmd|escapejs }}",
             "breadcrumb": {
                 "@id": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}#breadcrumb"
             },
@@ -186,7 +184,7 @@
             "contentUrl": "https://arezoosafar.com{{ country.country_iamge.url }}",
             "width": 387,
             "height": 192,
-            "caption": "هتل های {{ country.TitleC }}"
+            "caption": "هتل های {{ country.TitleC|escapejs }}"
         },
         {
             "@type": "BreadcrumbList",
@@ -207,7 +205,7 @@
                 {
                     "@type": "ListItem",
                     "position": 3,
-                    "name": "{{country.TitleC}}",
+                    "name": "{{ country.TitleC|escapejs }}",
                     "item": "https://arezoosafar.com{% url 'all-hotel-list' country.id country.slug %}"
                 }
             ]

@@ -4,17 +4,13 @@
     {% load static %}
     {% load humanize %}
     {% load jalali_tags %}
-    <meta charset="UTF-8">
     <link rel="canonical" href="https://arezoosafar.com/all-tour"/>
     {% if Menu %}
         <meta name="description" content="{{ Menu.meta_description }}">
-        <meta name="keywords" content="{{ Menu.meta_keywords }}">
     {% else %}
         <meta name="description"
         content=" رزرو تور اقساطی بدون ضامن | آرزوی سفر پارسیان ارائه دهنده تورهای قسطی با پایین ترین کارمزد– مشاوره و رزرو تور قسطی تماس با 44224444 - 021">
-        <meta name="keywords" content="تورهای قسطی، تور قسطی ،تورهای اقساطی ، تور اقساطی">
     {% endif %}
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {% include 'ui/base/head.html' %}
     {% if Menu.page_title %}
         <title> {{ Menu.page_title }} </title>
@@ -140,15 +136,15 @@
                                         </div>
                                         {% if countries %}
                                             <div class="accordion-item">
-                                                <h2 class="accordion-header" id="headingTwo">
+                                                <div class="accordion-header title-h2" id="headingCountry">
                                                     <button class="accordion-button collapsed" type="button"
                                                             data-bs-toggle="collapse" data-bs-target="#collapseCountry"
                                                             aria-expanded="false" aria-controls="collapseCountry">
                                                         کشور مقصد
                                                     </button>
-                                                </h2>
+                                                </div>
                                                 <div id="collapseCountry" class="accordion-collapse collapse"
-                                                     aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                     aria-labelledby="headingCountry" data-bs-parent="#accordionExample">
                                                     <div class="accordion-body filter-side">
                                                         {% for countries, countries_tours in countries %}
                                                             <div class="checkbox-city">
@@ -196,13 +192,13 @@
                                         {% endif %}
                                         {% if not countries and dest_cities %}
                                             <div class="accordion-item">
-                                                <h2 class="accordion-header" id="headingTwo">
+                                                <div class="accordion-header title-h2" id="headingTwo">
                                                     <button class="accordion-button collapsed" type="button"
                                                             data-bs-toggle="collapse" data-bs-target="#collapseTwo"
                                                             aria-expanded="false" aria-controls="collapseTwo">
                                                         شهر مقصد
                                                     </button>
-                                                </h2>
+                                                </div>
                                                 <div id="collapseTwo" class="accordion-collapse collapse"
                                                      aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                                     <div id='filter-city' class="accordion-body filter-side">
@@ -221,13 +217,13 @@
                                             </div>
                                         {% endif %}
                                         <div class="accordion-item">
-                                            <h2 class="accordion-header" id="headingThree">
+                                            <div class="accordion-header title-h2" id="headingThree">
                                                 <button class="accordion-button collapsed" type="button"
                                                         data-bs-toggle="collapse" data-bs-target="#collapseThree"
                                                         aria-expanded="false" aria-controls="collapseThree">
                                                     هتل
                                                 </button>
-                                            </h2>
+                                            </div>
                                             <div id="collapseThree" class="accordion-collapse collapse"
                                                  aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                                 <div class="accordion-body filter-side">
@@ -259,15 +255,15 @@
                                             </div>
                                         </div>
                                         <div class="accordion-item">
-                                            <h2 class="accordion-header" id="headingThree">
+                                            <div class="accordion-header title-h2" id="headingFour">
                                                 <button class="accordion-button collapsed" type="button"
                                                         data-bs-toggle="collapse" data-bs-target="#collapsefour"
                                                         aria-expanded="false" aria-controls="collapsefour">
                                                     مدت اقامت
                                                 </button>
-                                            </h2>
+                                            </div>
                                             <div id="collapsefour" class="accordion-collapse collapse"
-                                                 aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                 aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                                 <div class="accordion-body filter-side">
                                                     <div class="trip-period">
                                                         <input onchange="SidebarFilter()" id="day-Count" type="number"
@@ -277,15 +273,15 @@
                                             </div>
                                         </div>
                                         <div class="accordion-item">
-                                            <h2 class="accordion-header" id="headingThree">
+                                            <div class="accordion-header title-h2" id="headingFive">
                                                 <button class="accordion-button collapsed" type="button"
                                                         data-bs-toggle="collapse" data-bs-target="#collapsefive"
                                                         aria-expanded="false" aria-controls="collapsefive">
                                                     هواپیمایی
                                                 </button>
-                                            </h2>
+                                            </div>
                                             <div id="collapsefive" class="accordion-collapse collapse"
-                                                 aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                 aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                                                 <div class="accordion-body filter-side">
                                                     {% for airline in airlines %}
                                                         <div class="checkbox-city">

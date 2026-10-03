@@ -7,10 +7,9 @@
     <meta charset="UTF-8">
 {#    <link rel="canonical" href="{% url 'hotel-detail' HotelData.id HotelData.Slug %}">#}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% include 'ui/base/head.html' %}
+    {% include 'ui/base/head.html' with skip_base_meta=1 %}
         <title>شرکت هواپیمایی ساوث ویند (ساوت ویند)</title>
 </head>
 <body>

@@ -3,7 +3,7 @@
 <head>{% load static %}{% load humanize %}{% load jalali_tags %}{% load webp_converter %}
     {% include 'ui/base/head.html' %}
     <meta name="enamad" content="746303">
-    <link rel=“canonical” href=“https://arezoosafar.com”/>
+    <link rel="canonical" href="https://arezoosafar.com{{ request.path }}{% if request.GET.page %}?page={{ request.GET.page|urlencode }}{% endif %}"/>
     <meta name="description"
           content="معرفی کامل شرکت آرزوی سفر پارسیان">
     {% comment %} <script async src="https://www.googletagmanager.com/gtag/js?id=G-35DTMEQBTC"></script> {% endcomment %}

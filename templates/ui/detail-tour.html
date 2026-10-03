@@ -11,15 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="{% if Tour.MetaDescription %}{{ Tour.MetaDescription }}{% else %}{{ Tour.Title }}، {{ Tour.NightCount }} شب و {{ Tour.DayCount }} روز. رزرو نقد و اقساطی با آژانس مسافرتی آرزوی سفر پارسیان{% endif %}">
     <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "TouristTrip",
-            "name": "{{ Tour.Title|escapejs }}",
-            "url": "https://arezoosafar.com{% url 'tour-detail' Tour.id Tour.Slug %}",
-            {% if Tour.TourImage %}"image": ["https://arezoosafar.com{{ Tour.TourImage.url }}"],
-            {% endif %}"description": "{% if Tour.MetaDescription %}{{ Tour.MetaDescription|escapejs }}{% else %}{{ Tour.Title|escapejs }}{% endif %}",
-            "provider": {"@type": "TravelAgency", "name": "آرزوی سفر پارسیان", "url": "https://arezoosafar.com/"}
-        }
+{{ tour_schema }}
     </script>
     <script type="application/ld+json">
         {
@@ -32,7 +24,6 @@
             ]
         }
     </script>
-    <meta name="keyword" content="{{ Tour.MetaKeywords }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include 'ui/base/head.html' with skip_base_meta=1 skip_material_icons=1 skip_fontawesome=1 %}
     {% comment %} این صفحه فقط ۱۰ آیکن لازم دارد؛ به‌جای ۲۶۸ کیلوبایت
@@ -409,15 +400,15 @@
                                                     </div>
                                                     <div class="modal fade" id="exampleModal{{ forloop.counter }}"
                                                          tabindex="-1"
-                                                         aria-labelledby="exampleModalLabel"
+                                                         aria-labelledby="exampleModalLabel{{ forloop.counter }}"
                                                          aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h2 class="modal-title fs-5"
-                                                                        id="exampleModalLabel">
+                                                                    <div class="modal-title fs-5 title-h2"
+                                                                        id="exampleModalLabel{{ forloop.counter }}">
                                                                         درخواست رزرو {{ Tour.Title }}
-                                                                    </h2>
+                                                                    </div>
                                                                     <button type="button" class="btn-close" aria-label="بستن"
                                                                             data-bs-dismiss="modal"
                                                                             aria-label="Close"></button>
@@ -431,7 +422,7 @@
                                                                                        maxlength="300"
                                                                                        class="form-control reserve"
                                                                                        placeholder="نام " required=""
-                                                                                       id="id_orderform-Name">
+                                                                                       id="id_orderform-Name-{{ i.id }}">
                                                                             </div>
                                                                             <div class="col-sm-6 col-lg-6">
                                                                                 <input type="text"
@@ -440,7 +431,7 @@
                                                                                        class="form-control reserve"
                                                                                        placeholder="نام خانوادگي"
                                                                                        required=""
-                                                                                       id="id_orderform-Family">
+                                                                                       id="id_orderform-Family-{{ i.id }}">
                                                                             </div>
                                                                             <div class="col-sm-12 col-lg-12">
                                                                                 <input type="text"
@@ -451,7 +442,7 @@
                                                                                        onkeypress="return isNumber(event)"
                                                                                        pattern="09(0[1-2]|1[0-9]|3[0-9]|2[0-1])-?[0-9]{3}-?[0-9]{4}"
                                                                                        required=""
-                                                                                       id="id_orderform-Mobile">
+                                                                                       id="id_orderform-Mobile-{{ i.id }}">
                                                                             </div>
                                                                             <div class="col-sm-12 col-lg-4">
                                                                                 <div class="order-input">
@@ -544,7 +535,7 @@
                                                                                       cols="40" rows="2"
                                                                                       maxlength="1000"
                                                                                       class="form-control reserve"
-                                                                                      id="id_orderform-description"></textarea>
+                                                                                      id="id_orderform-description-{{ i.id }}"></textarea>
                                                                         </div>
 
                                                                     </div>

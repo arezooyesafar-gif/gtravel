@@ -144,3 +144,27 @@ def admin_notifications(request):
         'notif_blog_comment': blog_comment_count,
     }
 
+
+
+def menu_city_links(request):
+    from tour.models import City, Tour, related_tour_city
+
+    cached = cache.get('menu_city_links')
+    if cached is None:
+        def usable(city):
+            return city is not None and city.slug and '/' not in city.slug
+
+        tour_cities = {}
+        for tour in Tour.objects.filter(PubTour=True, Tcity__isnull=False).select_related('Tcity'):
+            if usable(tour.Tcity):
+                tour_cities[tour.Tcity.id] = tour.Tcity
+        for item in related_tour_city.objects.filter(tour__PubTour=True, city__isnull=False).select_related('city'):
+            if usable(item.city):
+                tour_cities[item.city.id] = item.city
+        hotel_cities = [city for city in City.objects.filter(hotel_city__isnull=False).distinct() if usable(city)]
+        cached = {
+            'tours': sorted(tour_cities.values(), key=lambda city: (city.Name, city.id)),
+            'hotels': sorted(hotel_cities, key=lambda city: (city.Name, city.id)),
+        }
+        cache.set('menu_city_links', cached, timeout=1800)
+    return {'menu_city_links': cached}

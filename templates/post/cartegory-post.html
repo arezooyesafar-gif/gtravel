@@ -6,9 +6,7 @@
 <head>
     {% include 'ui/base/head.html' %}
     <link rel="canonical" href="https://arezoosafar.com{{ request.path }}{% if request.GET.page %}?page={{ request.GET.page|urlencode }}{% endif %}">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="{{ category.meta_desc }}">
-    <meta name="keywords" content="{{ category.meta_keyword }}">
     {% if category.page_title %}
         <title>{{ category.page_title }}</title>
     {% else %}

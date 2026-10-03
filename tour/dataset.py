@@ -109,11 +109,10 @@ def get_all_pub_posts():
 
 def get_menu_cities():
     tours_cities_name = sorted(set(Tour.objects.filter(PubTour=True, Tcity__isnull=False).values_list('Tcity__Name', flat=True)))
-    slugs = {}
-    for name, slug in City.objects.filter(Name__in=tours_cities_name).order_by('-id').values_list('Name', 'slug'):
-        slugs[name] = slug
-    tours_cities_slug = [slugs[name] for name in tours_cities_name]
-    menu_cities = zip(tours_cities_name, tours_cities_slug)
+    found = {}
+    for name, slug, city_id in City.objects.filter(Name__in=tours_cities_name).order_by('-id').values_list('Name', 'slug', 'id'):
+        found[name] = (slug, city_id)
+    menu_cities = [(name,) + found[name] for name in tours_cities_name if found[name][0] and '/' not in found[name][0]]
     return menu_cities
 
 def get_origins():
@@ -289,16 +288,21 @@ def get_origin_tours(origin_id):
 
 def get_origin_menu_cities(origin_id):
     tours_cities_name = []
+    names = []
     tours_cities_id = []
     tours_cities_slug = []
     for i in get_origin_tours(origin_id):
         tours_cities_name.append(i.Tcity.Name)
     tours_cities_name = sorted(list(set(tours_cities_name)))
+    found = {}
+    for name, slug, city_id in City.objects.filter(Name__in=tours_cities_name).order_by('-id').values_list('Name', 'slug', 'id'):
+        found[name] = (slug, city_id)
     for i in tours_cities_name:
-        city_data = City.objects.get(Name=i)
-        tours_cities_id.append(city_data.id)
-        tours_cities_slug.append(city_data.slug)
-    menu_cities = zip(tours_cities_name, tours_cities_slug, tours_cities_id)
+        if found[i][0] and '/' not in found[i][0]:
+            tours_cities_slug.append(found[i][0])
+            tours_cities_id.append(found[i][1])
+            names.append(i)
+    menu_cities = zip(names, tours_cities_slug, tours_cities_id)
     return menu_cities
 
 def get_norooz_tours():

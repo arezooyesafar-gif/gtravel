@@ -4,6 +4,7 @@
 
     {% load static %}
 {% load responsive_img %}
+{% load tour_filters %}
     {% load humanize %}
     {% load jalali_tags %}
     <meta charset="UTF-8">
@@ -732,18 +733,19 @@
                                             <div id="collapseOne" class="accordion-collapse collapse show"
                                                  aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                                 <div class="accordion-body filter-side">
+                                                    {% with slider_max=pubTours|price_slider_max:dollar_rate %}
                                                     <div class="range-input">
                                                         <div class="range_container" >
                                                             <div class="sliders_control">
                                                                 <input id="toSlider" onchange="SidebarFilter()"
-                                                                       type="range" value="300000000"
+                                                                       type="range" value="{{ slider_max|default:300000000 }}"
                                                                        min="0"
-                                                                       max="300000000"
+                                                                       max="{{ slider_max|default:300000000 }}"
                                                                        aria-label="حداکثر قیمت"/>
                                                                 <input id="fromSlider" onchange="SidebarFilter()"
                                                                        type="range" value="0"
                                                                        min="5000000"
-                                                                       max="300000000"
+                                                                       max="{{ slider_max|default:300000000 }}"
                                                                        aria-label="حداقل قیمت"/>
                                                                 <div class="row label-box">
                                                                     <div class="col-sm-6 col-lg-6 no-padding right-label">
@@ -765,13 +767,14 @@
                                                                     <input disabled
                                                                            class="form-control placeholder-left"
                                                                            type="text" id="toInput"
-                                                                           value="100,000,000"
+                                                                           value="{% if slider_max %}{{ slider_max|intcomma }}{% else %}100,000,000{% endif %}"
                                                                            aria-label="حداکثر قیمت"/>
                                                                     <span class="to-input-cry">تومان</span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {% endwith %}
                                                 </div>
                                             </div>
                                         </div>

@@ -5,13 +5,12 @@
     {% load humanize %}
     {% load jalali_tags %}
     <meta charset="UTF-8">
-    <link rel=“canonical” href=“https://arezoosafar.com/all-tour”/>
+    <link rel="canonical" href="https://arezoosafar.com{{ request.path }}{% if request.GET.page %}?page={{ request.GET.page|urlencode }}{% endif %}"/>
     <meta name="description"
           content="مجله گردشگری آرزوی سفر راهنمای سفر به تمامی نقاط جهان. اطلاعات جاذبه های گردشگری، مکان های دیدنی، بناهای تاریخی، مراکز خرید، تفریحات و سرگرمی">
-    <meta name="keywords" content="جاذبه های گردشگری, مکان های دیدنی,بناهای تاریخی,آرزوی سفر،تور قسطی ، تور اقساطی">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% include 'ui/base/head.html' %}
+    {% include 'ui/base/head.html' with skip_base_meta=1 %}
     <title>لیست تورهای نوروزی | آرزوی سفر پارسیان</title>
 </head>
 <body>

@@ -6,11 +6,10 @@
     {% load jalali_tags %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel=“canonical” href=“https://arezoosafar.com/blog{% url 'post-detail' Post.id Post.slug %}”/>
+    <link rel="canonical" href="https://arezoosafar.com{{ request.path }}{% if request.GET.page %}?page={{ request.GET.page|urlencode }}{% endif %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="{{ Post.metaKeyword }}">
     <meta name="description" content="{{ Post.metaDescription }}">
-    {% include 'ui/base/head.html' %}
+    {% include 'ui/base/head.html' with skip_base_meta=1 %}
     {% if Post.ptitle %}
         <title>{{ Post.ptitle }}</title>
     {% else %}

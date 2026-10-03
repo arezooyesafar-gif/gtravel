@@ -30,6 +30,7 @@ from blog.models import *
 from django.shortcuts import get_object_or_404, render
 from .lookups import get_by_id_and_slug, get_by_slug
 from .related import related_tours_for_post
+from .tour_schema import tour_schema
 
 
 def IndexPage(request):
@@ -664,10 +665,7 @@ def AllTourList_norooz(request):
         'footer_2': footer_2,
         'footer_3': footer_3,
     }
-    if request.user_agent.is_mobile:
-        return render(request, 'ui/mobile/all-tour-norooz.html', context)
-    else:
-        return render(request, 'ui/all-tour-norooz.html', context)
+    return render(request, 'ui/all-tour-norooz.html', context)
 
 def AllTourList_Installment(request):
     reseller_menu = get_top_pages()
@@ -711,10 +709,7 @@ def AllTourList_Installment(request):
         'footer_2': footer_2,
         'footer_3': footer_3,
     }
-    if request.user_agent.is_mobile:
-        return render(request, 'ui/mobile/all-tour-install.html', context)
-    else:
-        return render(request, 'ui/all-tour-install.html', context)
+    return render(request, 'ui/all-tour-install.html', context)
 
 def all_tour_list_origins(request, slug, id):
     reseller_menu = get_top_pages()
@@ -769,10 +764,7 @@ def all_tour_list_origins(request, slug, id):
     # لازم است که ورودی تاریخ دارند. این صفحه ندارد، ولی ۸۲ کیلوبایت را
     # روی هر بازدید دانلود می‌کرد.
     context['skip_jalali_datepicker'] = True
-    if request.user_agent.is_mobile:
-        return render(request, 'ui/mobile/all-tour.html', context)
-    else:
-        return render(request, 'ui/all-tour.html', context)
+    return render(request, 'ui/all-tour.html', context)
 # عمداً @cache_page ندارد. این قالب فرم «درخواست رزرو» را با {% csrf_token %}
 # رندر می‌کند؛ اگر کل صفحه کش شود، توکن CSRFِ یک بازدیدکننده داخل HTML پخته
 # می‌شود و به بقیه هم همان تحویل می‌رود، در حالی که کوکی csrftoken آن‌ها فرق
@@ -1054,6 +1046,8 @@ def TourDetail(request,id, Slug):
     # تقویم جلالی (django_jalali.js + jquery-ui.min.css) فقط برای فرم‌هایی
     # لازم است که ورودی تاریخ دارند. این صفحه ندارد، ولی ۸۲ کیلوبایت را
     # روی هر بازدید دانلود می‌کرد.
+    footer_settings = Footer.objects.first()
+    context['tour_schema'] = tour_schema(tour, base_price, base_price_dollar, base_currency, base_currency_foreign, packages, date_plans, footer_settings.dollar_rate if footer_settings else 170000)
     context['skip_jalali_datepicker'] = True
     return render(request, 'ui/detail-tour.html', context)
 def AllHotelList(request):
