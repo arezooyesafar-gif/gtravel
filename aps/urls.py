@@ -89,7 +89,7 @@ def get_token_for_payment(request):
             createdAT=date
         )
         return render(request, 'confirm_payment.html', context=context)
-    except TypeError:
+    except (TypeError, KeyError, ValueError, requests.RequestException):
         context = {
             'meta_robots': 'NOINDEX,NOFOLLOW',
         }
