@@ -18,6 +18,7 @@
                     <div class="card shadow">
                         <div class="card-body">
                             <h5 class="mb-4 text-center">فرم ثبت اطلاعات</h5>
+                            {% if payment_error %}<div class="alert alert-danger text-center" role="alert">{{ payment_error }}</div>{% endif %}
                             <form action="/get-token" method="post">
                                 <div class="mb-3">
                                     <label class="form-label">شماره قرارداد</label>

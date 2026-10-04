@@ -21,8 +21,12 @@ from django.contrib.sitemaps.views import sitemap
 from tour.models import *
 from django.views.decorators.csrf import csrf_exempt
 import requests
+import logging
 import json
 from uuid import uuid4
+
+
+payment_logger = logging.getLogger('payments')
 
 
 def read_robot(request):
@@ -50,50 +54,72 @@ def payment(request):
     return render(request, 'payment.html', context)
 
 
+PAYMENT_DIGITS = str.maketrans('۰۱۲۳۴۵۶۷۸۹٠١٢٣٤٥٦٧٨٩', '01234567890123456789')
+
+
+def payment_form(request, error):
+    context = {
+        'meta_robots': 'NOINDEX,NOFOLLOW',
+        'payment_error': error,
+    }
+    return render(request, 'payment.html', context)
+
+
 @csrf_exempt
 def get_token_for_payment(request):
+    if request.method != 'POST':
+        return payment_form(request, '')
+    body = request.POST
     try:
-        body = request.POST
-        amount = int(body['amount'].replace(',', ''))
-        res_number = str(uuid4().int)
-        url = "https://sep.shaparak.ir/onlinepg/onlinepg"
-        payload = json.dumps({
-            "action": "token",
-            "TerminalId": "15278676",
-            "Amount": amount,
-            "ResNum": res_number,
-            "RedirectUrl": "https://arezoosafar.com/payment-redirect",
-            "CellNumber": body['phoneNumber']
-        })
-        headers = {'Content-Type': 'application/json'}
-        response = requests.request("POST", url, headers=headers, data=payload).json()
-        if response['status'] == 1:
-            PaymentRequest.objects.create(
-                contract_number=body['contractNumber'],
-                full_name=body['fullName'],
-                phone_number=body['phoneNumber'],
-                amount=decimal.Decimal(amount),
-                description=body['description'],
-                terminal_id="15278676",
-                res_number=res_number,
-                token=response['token'],
-            )
-        date = datetime.now()
-        context = dict(
-            token=response['token'],
-            amount=body['amount'],
-            phoneNumber=body['phoneNumber'],
-            fullName=body['fullName'],
-            contractNumber=body['contractNumber'],
-            description=body['description'],
-            createdAT=date
-        )
-        return render(request, 'confirm_payment.html', context=context)
-    except (TypeError, KeyError, ValueError, requests.RequestException):
-        context = {
-            'meta_robots': 'NOINDEX,NOFOLLOW',
-        }
-        return render(request, 'payment.html', context)
+        amount = int(body.get('amount', '').translate(PAYMENT_DIGITS).replace(',', '').replace('٬', '').strip())
+    except ValueError:
+        return payment_form(request, 'مبلغ وارد شده معتبر نیست.')
+    if amount <= 0:
+        return payment_form(request, 'مبلغ وارد شده معتبر نیست.')
+    res_number = str(uuid4().int)
+    url = "https://sep.shaparak.ir/onlinepg/onlinepg"
+    payload = json.dumps({
+        "action": "token",
+        "TerminalId": "15278676",
+        "Amount": amount,
+        "ResNum": res_number,
+        "RedirectUrl": "https://arezoosafar.com/payment-redirect",
+        "CellNumber": body.get('phoneNumber', '')
+    })
+    headers = {'Content-Type': 'application/json'}
+    try:
+        response = requests.request("POST", url, headers=headers, data=payload, timeout=30).json()
+    except (requests.RequestException, ValueError) as error:
+        payment_logger.warning('payment token request failed: %s', error)
+        return payment_form(request, 'ارتباط با درگاه بانک برقرار نشد. لطفاً چند دقیقه دیگر دوباره تلاش کنید.')
+    if response.get('status') != 1 or not response.get('token'):
+        payment_logger.warning('payment token refused: %s', response)
+        detail = response.get('errorDesc') or ''
+        code = response.get('errorCode')
+        message = 'درگاه بانک درخواست را نپذیرفت.'
+        if detail or code is not None:
+            message += ' (%s%s)' % (detail, ' - کد %s' % code if code is not None else '')
+        return payment_form(request, message)
+    PaymentRequest.objects.create(
+        contract_number=body.get('contractNumber', ''),
+        full_name=body.get('fullName', ''),
+        phone_number=body.get('phoneNumber', ''),
+        amount=decimal.Decimal(amount),
+        description=body.get('description', ''),
+        terminal_id="15278676",
+        res_number=res_number,
+        token=response['token'],
+    )
+    context = dict(
+        token=response['token'],
+        amount=body.get('amount', ''),
+        phoneNumber=body.get('phoneNumber', ''),
+        fullName=body.get('fullName', ''),
+        contractNumber=body.get('contractNumber', ''),
+        description=body.get('description', ''),
+        createdAT=datetime.now()
+    )
+    return render(request, 'confirm_payment.html', context=context)
 
 
 
