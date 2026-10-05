@@ -228,4 +228,7 @@ body.modal-open .fixed-top,body.modal-open .sticky-top,body.modal-open .main_hea
     .hbx-transfer{padding:2px 0;}
     .hbx-transfer-icon{padding:0 12px;}
     .hbx-transfer-icon svg{width:26px;height:26px;}
+    .pakage_container .hotel_image_,.pakage_container .hotel_image_ a{height:auto!important;}
+    .pakage_container .hotel_image_ img{height:auto!important;aspect-ratio:3/2;object-fit:cover!important;}
+    .pakage_container .border-bottom-dashed{border-bottom:0!important;}
 }
