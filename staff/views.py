@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
@@ -133,7 +135,10 @@ def redirect_list(request):
     items = RedirectRule.objects.all()
     search = request.GET.get('search', '').strip()
     if search:
-        items = items.filter(Q(old_path__icontains=search) | Q(new_path__icontains=search))
+        term = search
+        if '://' in term:
+            term = urlparse(term).path or term
+        items = items.filter(Q(old_path__icontains=term) | Q(new_path__icontains=term))
     paginator = Paginator(items, 50)
     return render(request, 'staff/redirects.html', {
         'items': paginator.get_page(request.GET.get('page')),
