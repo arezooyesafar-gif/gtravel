@@ -112,6 +112,7 @@ TEMPLATES = [
                 'aps.context_processors.hotel_menu',
                 'aps.context_processors.tour_menu',
                 'aps.context_processors.menu_city_links',
+                'aps.context_processors.mobile_nav',
                 'staff.context_processors.staff_menu',
             ],
         },

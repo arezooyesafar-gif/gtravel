@@ -168,3 +168,14 @@ def menu_city_links(request):
         }
         cache.set('menu_city_links', cached, timeout=1800)
     return {'menu_city_links': cached}
+
+
+def mobile_nav(request):
+    from tour.models import Country
+
+    russia = cache.get('mobile_nav_russia')
+    if russia is None:
+        country = Country.objects.filter(slug='russia').only('id', 'slug').first()
+        russia = '/%s/%s/all-tour' % (country.slug, country.id) if country else '/all-tour'
+        cache.set('mobile_nav_russia', russia, timeout=1800)
+    return {'mobile_nav_russia': russia}
