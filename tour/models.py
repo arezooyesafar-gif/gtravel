@@ -137,7 +137,7 @@ class Country(models.Model):
     TitleC = models.CharField(max_length=300)
     Flagimg = models.ImageField(upload_to='country-flag', null=True, blank=True)
     tourmk = models.CharField(max_length=500, null=True, blank=True)
-    Description = RichTextUploadingField(max_length=35000, null=True, blank=True)
+    Description = RichTextUploadingField(max_length=1000000, null=True, blank=True)
     Description_anchor = RichTextUploadingField(max_length=25000, null=True, blank=True)
     hotel_page_Description = RichTextUploadingField(max_length=25000, null=True, blank=True)
     hotel_page_Description_anchor = RichTextUploadingField(max_length=25000, null=True, blank=True)
