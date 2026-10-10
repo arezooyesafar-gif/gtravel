@@ -841,7 +841,8 @@ class PMemoriesForm(forms.ModelForm):
         self.fields['meta_robots'].widget.attrs.update({
             'class': 'text-input',
         })
-        
+        self.fields['meta_robots'].required = False
+
     class Meta:
         model = PMemories
         exclude = ['created_date']
