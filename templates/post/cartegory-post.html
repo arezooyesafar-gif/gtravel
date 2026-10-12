@@ -23,7 +23,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <a style="height:301px;" class="blog_post_index blog_page" href="{% url 'post-detail' Posts.0.id Posts.0.slug %}">
+                    {% if Posts %}<a style="height:301px;" class="blog_post_index blog_page" href="{% url 'post-detail' Posts.0.id Posts.0.slug %}">
                         <div class="_blog_page_post_cat">
                             <p class="_blog_cat">
                                 {{ Posts.0.Category }}
@@ -38,7 +38,7 @@
                                 {{ Posts.0.Title|truncatechars:40 }}
                             </p>
                         </div>
-                    </a>
+                    </a>{% endif %}
                 </div>
                 <div class="col-lg-3">
                     {% for post in Posts %}
