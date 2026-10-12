@@ -100,6 +100,25 @@ class StaffAccessMiddleware:
         return name in ADMIN_NAMES or name in SELF_NAMES
 
 
+class RedirectFirstMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        from .models import RedirectRule
+        path = request.path
+        rule = RedirectRule.objects.filter(old_path=path).first()
+        if rule is None and not path.endswith('/'):
+            rule = RedirectRule.objects.filter(old_path=path + '/').first()
+        if rule is not None:
+            if rule.status == 410 or not rule.new_path:
+                return HttpResponseGone()
+            if rule.status == 302:
+                return HttpResponseRedirect(rule.new_path)
+            return HttpResponsePermanentRedirect(rule.new_path)
+        return self.get_response(request)
+
+
 class RedirectRuleMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response

@@ -63,6 +63,7 @@ JALALI_DATE_DEFAULTS = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'staff.middleware.RedirectFirstMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
