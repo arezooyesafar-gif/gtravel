@@ -1,12 +1,30 @@
 from django import forms
 from .models import *
+from .image_utils import to_jpeg
+
+
+class JpegConvertMixin:
+    jpeg_fields = []
+
+    def clean(self):
+        cleaned = super().clean()
+        for name in self.jpeg_fields:
+            value = cleaned.get(name)
+            if value and hasattr(value, 'read'):
+                try:
+                    cleaned[name] = to_jpeg(value)
+                except forms.ValidationError as error:
+                    self.add_error(name, error)
+        return cleaned
 
 
 class DateInput(forms.DateInput):
     input_type = 'date'
     is_required = False
 
-class visa_request_form(forms.ModelForm):
+class visa_request_form(JpegConvertMixin, forms.ModelForm):
+    jpeg_fields = ['person_image', 'passport_image']
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['cz_passport'].required = True
@@ -21,8 +39,8 @@ class visa_request_form(forms.ModelForm):
         self.fields['military_start_date'].required = False
         self.fields['military_end_date'].required = False
         self.fields['partner_brd_date'].required = False
-        self.fields['person_image'] = forms.ImageField(widget=forms.FileInput())
-        self.fields['passport_image'] = forms.ImageField(widget=forms.FileInput())
+        self.fields['person_image'] = forms.FileField(widget=forms.FileInput())
+        self.fields['passport_image'] = forms.FileField(widget=forms.FileInput())
         self.fields['passport_expire'].widget.attrs.update({
             'class': 'form-control'
         })
@@ -218,7 +236,9 @@ class visa_request_form(forms.ModelForm):
         exclude = ['user', 'confirmed', 'req_stat', 'payment_stat', 'trs_number']
 
 
-class thaiVisaForm(forms.ModelForm):
+class thaiVisaForm(JpegConvertMixin, forms.ModelForm):
+    jpeg_fields = ['person_image', 'passport_image', 'person_brd_image', 'person_id_image', 'person_hotel_image', 'person_flight_image']
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['rqquester_brd'] = forms.DateField(widget=DateInput)
@@ -226,12 +246,12 @@ class thaiVisaForm(forms.ModelForm):
         self.fields['passport_expire'] = forms.DateField(widget=DateInput)
         self.fields['thai_entry'] = forms.DateField(widget=DateInput)
         self.fields['thai_exit'] = forms.DateField(widget=DateInput)
-        self.fields['person_image'] = forms.ImageField(widget=forms.FileInput())
-        self.fields['passport_image'] = forms.ImageField(widget=forms.FileInput())
-        self.fields['person_brd_image'] = forms.ImageField(widget=forms.FileInput())
-        self.fields['person_id_image'] = forms.ImageField(widget=forms.FileInput())
-        self.fields['person_hotel_image'] = forms.ImageField(widget=forms.FileInput())
-        self.fields['person_flight_image'] = forms.ImageField(widget=forms.FileInput())
+        self.fields['person_image'] = forms.FileField(widget=forms.FileInput())
+        self.fields['passport_image'] = forms.FileField(widget=forms.FileInput())
+        self.fields['person_brd_image'] = forms.FileField(widget=forms.FileInput())
+        self.fields['person_id_image'] = forms.FileField(widget=forms.FileInput())
+        self.fields['person_hotel_image'] = forms.FileField(widget=forms.FileInput())
+        self.fields['person_flight_image'] = forms.FileField(widget=forms.FileInput())
         self.fields['passport_image'].widget.attrs.update({
             'class': 'form-control hide'
         })
