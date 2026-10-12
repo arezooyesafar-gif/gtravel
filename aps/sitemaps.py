@@ -10,7 +10,16 @@ class blogSitemap(Sitemap):
     protocol = 'https'
 
     def items(self):
-        return blogPosts.objects.filter(Publish=True)
+        from staff.models import RedirectRule
+        posts = blogPosts.objects.filter(Publish=True)
+        redirected = set()
+        for old_path in RedirectRule.objects.filter(old_path__startswith='/blog/').values_list('old_path', flat=True):
+            parts = old_path.strip('/').split('/')
+            if len(parts) >= 2 and parts[1].isdigit():
+                redirected.add(int(parts[1]))
+        if redirected:
+            posts = posts.exclude(id__in=redirected)
+        return posts
 
     def lastmod(self, obj):
         return obj.PubDate

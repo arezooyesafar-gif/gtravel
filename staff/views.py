@@ -130,6 +130,11 @@ def redirect_list(request):
                 old_path = '/' + old_path
             RedirectRule.objects.update_or_create(
                 old_path=old_path, defaults={'new_path': new_path, 'status': status})
+            if old_path.startswith('/blog/'):
+                parts = old_path.strip('/').split('/')
+                if len(parts) >= 2 and parts[1].isdigit():
+                    from blog.models import blogPosts
+                    blogPosts.objects.filter(id=parts[1]).update(Publish=False)
             messages.success(request, 'ریدایرکت ذخیره شد')
         return redirect('redirect-list')
     items = RedirectRule.objects.all()
