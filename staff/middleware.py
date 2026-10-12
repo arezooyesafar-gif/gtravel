@@ -105,11 +105,14 @@ class RedirectFirstMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        from .models import RedirectRule
-        path = request.path
-        rule = RedirectRule.objects.filter(old_path=path).first()
-        if rule is None and not path.endswith('/'):
-            rule = RedirectRule.objects.filter(old_path=path + '/').first()
+        try:
+            from .models import RedirectRule
+            path = request.path
+            rule = RedirectRule.objects.filter(old_path=path).first()
+            if rule is None and not path.endswith('/'):
+                rule = RedirectRule.objects.filter(old_path=path + '/').first()
+        except Exception:
+            rule = None
         if rule is not None:
             if rule.status == 410 or not rule.new_path:
                 return HttpResponseGone()
@@ -127,11 +130,14 @@ class RedirectRuleMiddleware:
         response = self.get_response(request)
         if response.status_code != 404:
             return response
-        from .models import RedirectRule
-        path = request.path
-        rule = RedirectRule.objects.filter(old_path=path).first()
-        if rule is None and not path.endswith('/'):
-            rule = RedirectRule.objects.filter(old_path=path + '/').first()
+        try:
+            from .models import RedirectRule
+            path = request.path
+            rule = RedirectRule.objects.filter(old_path=path).first()
+            if rule is None and not path.endswith('/'):
+                rule = RedirectRule.objects.filter(old_path=path + '/').first()
+        except Exception:
+            rule = None
         if rule is None:
             return response
         if rule.status == 410 or not rule.new_path:
