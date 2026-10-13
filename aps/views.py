@@ -1275,6 +1275,8 @@ def CategoryPost(request, id, slug):
             all_posts.append(j)
     for i in posts:
         all_posts.append(i)
+    if not all_posts:
+        raise Http404
     listPost = all_posts
     paginator = Paginator(all_posts, 10)
     pageNumber = request.GET.get('page')
