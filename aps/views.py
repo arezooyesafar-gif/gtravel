@@ -1567,8 +1567,16 @@ def singleMemoView(request, id):
         if forms.is_valid():
             forms.save()
             return redirect('/')
+    country_tour = None
+    cat = memo.category
+    for _ in range(5):
+        if cat is None or country_tour is not None:
+            break
+        country_tour = Country.objects.filter(TitleC=cat.CatName).first()
+        cat = cat.parentCat
     context = {
         'Memo': memo,
+        'country_tour': country_tour,
         'Sub': forms2,
         'pubTours': spacialTours,
         'tour_countries': tours_country_list,

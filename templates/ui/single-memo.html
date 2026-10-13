@@ -74,7 +74,13 @@
 
             </div>
             <div class="col-lg-3">
-                <div class="contact-banner" style="margin-top: 100px">
+                {% if country_tour %}
+                <a href="{% url 'all-tour-country' country_tour.slug country_tour.id %}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#1d5cad;color:#fff;border-radius:12px;padding:14px 18px;margin-top:100px;margin-bottom:14px;text-decoration:none;font-weight:700;">
+                    <span>مشاهده تورهای {{ country_tour.TitleC }}</span>
+                    {% if country_tour.Flagimg %}<img src="{{ country_tour.Flagimg.url }}" alt="تور {{ country_tour.TitleC }}" width="34" height="34" loading="lazy" style="border-radius:6px;object-fit:cover;flex:0 0 auto;">{% endif %}
+                </a>
+                {% endif %}
+                <div class="contact-banner"{% if not country_tour %} style="margin-top: 100px"{% endif %}>
     {% include 'ui/base/contact-banner.html' %}
                 </div>
                 <div class="spacial-tours">
