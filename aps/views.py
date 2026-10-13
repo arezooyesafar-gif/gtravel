@@ -1568,8 +1568,8 @@ def singleMemoView(request, id):
             forms.save()
             return redirect('/')
     def _norm_fa(value):
-        value = (value or '').strip().replace('ي', 'ی').replace('ك', 'ک')
-        value = value.replace('‌', '').replace('‏', '').replace('‎', '')
+        value = (value or '').strip().replace(chr(0x064a), chr(0x06cc)).replace(chr(0x0643), chr(0x06a9))
+        value = value.replace(chr(0x200c), '').replace(chr(0x200f), '').replace(chr(0x200e), '')
         return ' '.join(value.split())
     country_tour = None
     wanted = []
