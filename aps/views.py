@@ -1567,23 +1567,24 @@ def singleMemoView(request, id):
         if forms.is_valid():
             forms.save()
             return redirect('/')
-    def _norm_fa(value):
-        value = (value or '').strip().replace(chr(0x064a), chr(0x06cc)).replace(chr(0x0643), chr(0x06a9))
-        value = value.replace(chr(0x200c), '').replace(chr(0x200f), '').replace(chr(0x200e), '')
-        return ' '.join(value.split())
     country_tour = None
-    wanted = []
-    cat = memo.category
-    for _ in range(5):
-        if cat is None:
+    top = memo.category
+    for _ in range(6):
+        if top is None or top.parentCat is None:
             break
-        wanted.append(_norm_fa(cat.CatName))
-        cat = cat.parentCat
-    if wanted:
-        for c in Country.objects.all():
-            if _norm_fa(c.TitleC) in wanted:
-                country_tour = c
-                break
+        top = top.parentCat
+    if top is not None:
+        top_slug = (top.slug or '').strip().lower()
+        if top_slug:
+            country_tour = Country.objects.filter(slug__iexact=top_slug).first()
+        if country_tour is None:
+            top_name = (top.CatName or '').strip()
+            if top_name:
+                for c in Country.objects.all():
+                    title = (c.TitleC or '').strip()
+                    if title and title in top_name:
+                        country_tour = c
+                        break
     context = {
         'Memo': memo,
         'country_tour': country_tour,
