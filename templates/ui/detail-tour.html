@@ -24,6 +24,30 @@
     {% else %}
         <title>{{ Tour.Title }} | شرکت خدمات مسافرت هوایی و گردشگری آرزو سفر پارسیان</title>
     {% endif %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TouristTrip",
+      "@id": "https://arezoosafar.com{% url 'tour-detail' Tour.id Tour.Slug %}#trip",
+      "name": "{{ Tour.Title|escapejs }}",
+      "url": "https://arezoosafar.com{% url 'tour-detail' Tour.id Tour.Slug %}",
+      "image": "{% if Tour.TourImage %}https://arezoosafar.com{{ Tour.TourImage.url }}{% else %}https://arezoosafar.com/static/asset/css/images/No_Image_Available.jpg{% endif %}",
+      "description": "{{ Tour.Title|escapejs }}؛ {{ Tour.NightCount }} شب و {{ Tour.DayCount }} روز",
+      "touristType": "گردشگران ایرانی",
+      "provider": {
+        "@type": "TravelAgency",
+        "name": "آرزوی سفر پارسیان",
+        "url": "https://arezoosafar.com/"
+      }{% if schema_in_stock %},
+      "offers": {
+        "@type": "Offer",
+        "price": "{{ schema_price }}",
+        "priceCurrency": "{{ schema_currency }}",
+        "availability": "https://schema.org/InStock",
+        "url": "https://arezoosafar.com{% url 'tour-detail' Tour.id Tour.Slug %}"
+      }{% endif %}
+    }
+    </script>
 </head>
 <body>
 <div class="warp">

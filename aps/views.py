@@ -913,6 +913,28 @@ def TourDetail(request,id, Slug):
             orderform.save()
             data = TourOrder.objects.get(id=orderform.id)
             return redirect('order-info', orderform.id, orderform.OrderCode)
+    _schema_has_stock = any((not getattr(p, 'fully_sold_out', False)) for p in packages) if packages else False
+    if base_price and base_price > 0:
+        _schema_cur_name = base_currency or ''
+        _schema_amount = base_price
+    elif base_price_dollar and base_price_dollar > 0:
+        _schema_cur_name = base_currency_foreign or ''
+        _schema_amount = base_price_dollar
+    else:
+        _schema_cur_name = ''
+        _schema_amount = 0
+    _schema_dollar = chr(0x062f) + chr(0x0644) + chr(0x0627) + chr(0x0631)
+    _schema_euro = chr(0x0648) + chr(0x0631) + chr(0x0648)
+    if _schema_dollar in _schema_cur_name:
+        schema_currency = 'USD'
+        schema_price = int(_schema_amount)
+    elif _schema_euro in _schema_cur_name:
+        schema_currency = 'EUR'
+        schema_price = int(_schema_amount)
+    else:
+        schema_currency = 'IRR'
+        schema_price = int(_schema_amount) * 10
+    schema_in_stock = bool(schema_price) and _schema_has_stock
     context = {
         'tours_cities_list': cities_menu,
         'Tour': tour,
@@ -937,6 +959,9 @@ def TourDetail(request,id, Slug):
         'base_price_dollar': base_price_dollar,
         'base_currency': base_currency,
         'base_currency_foreign': base_currency_foreign,
+        'schema_price': schema_price,
+        'schema_currency': schema_currency,
+        'schema_in_stock': schema_in_stock,
     }
     context['skip_jalali_datepicker'] = True
     return render(request, 'ui/detail-tour.html', context)
