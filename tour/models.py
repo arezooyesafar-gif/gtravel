@@ -179,7 +179,7 @@ class City(models.Model):
     Name = models.CharField(max_length=300)
     cityImg = models.ImageField(upload_to='city', null=True, blank=True)
     cityIcon = models.ImageField(upload_to='city/icon', null=True, blank=True)
-    Description = RichTextUploadingField(max_length=25000, null=True, blank=True)
+    Description = RichTextUploadingField(max_length=1000000, null=True, blank=True)
     Description_anchor = RichTextUploadingField(max_length=25000, null=True, blank=True)
     hotel_page_Description = RichTextUploadingField(max_length=25000, null=True, blank=True)
     hotel_page_Description_anchor= RichTextUploadingField(max_length=25000, null=True, blank=True)
