@@ -91,7 +91,7 @@ class Hotel_Data(models.Model):
     Creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creator')
     HotelName = models.CharField(max_length=500)
     HotelNameEnglish = models.CharField(max_length=500, null=True, blank=True)
-    Slug = models.SlugField(null=False, unique=True, max_length=200)
+    Slug = models.SlugField(null=False, unique=True, max_length=255)
     Hcountry = models.ForeignKey("tour.Country", on_delete=models.CASCADE, default=13, related_name='hotel_country')
     Hcity = models.ForeignKey("tour.City", on_delete=models.CASCADE, default=29, db_index=True, related_name='hotel_city')
     HotelRating = models.CharField(choices=RATING, max_length=1, null=True, blank=True )
@@ -134,6 +134,19 @@ class Hotel_Data(models.Model):
         verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
         help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
     )
+
+    def save(self, *args, **kwargs):
+        from django.utils.text import slugify
+        if not self.Slug:
+            base = self.HotelNameEnglish or self.HotelName or ''
+            generated = slugify(base.replace('_', '-'), allow_unicode=False)
+            if generated:
+                self.Slug = generated
+        elif self._state.adding:
+            normalized = slugify(self.Slug.replace('_', '-'), allow_unicode=False)
+            if normalized:
+                self.Slug = normalized
+        super().save(*args, **kwargs)
 
     def __str__(self):
         DisplayName = str(self.HotelName) + ' - ' + str(self.Hcity)
