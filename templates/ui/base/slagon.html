@@ -2,11 +2,12 @@
 <style>
 @media (max-width:767px){
 .country-desc table.stacked-table,.country-desc table.stacked-table tbody{display:block;width:100%}
-.country-desc table.stacked-table tr{display:block;margin-bottom:12px;border:1px solid #9aa3a7;border-radius:6px;overflow:hidden;background:#fff}
+.country-desc table.stacked-table tr{display:block;margin-bottom:14px;border:1px solid #cfe6f2;border-top:3px solid #008cba;border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.06)}
 .country-desc table.stacked-table tr:first-child{display:none}
-.country-desc table.stacked-table td{display:flex;justify-content:space-between;gap:12px;border:0;border-bottom:1px solid #eee;padding:8px 10px;text-align:right;white-space:normal;width:auto}
+.country-desc table.stacked-table td{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border:0;border-bottom:1px solid #eef3f6;padding:10px 12px;white-space:normal;width:auto;text-align:right}
+.country-desc table.stacked-table td:nth-child(odd){background:#f7fbfd}
 .country-desc table.stacked-table td:last-child{border-bottom:0}
-.country-desc table.stacked-table td::before{content:attr(data-label);font-weight:700;color:#008cba;flex:0 0 42%;max-width:42%;text-align:right}
+.country-desc table.stacked-table td::before{content:attr(data-label);color:#0088b5;font-weight:700;flex:0 0 38%;max-width:38%;text-align:right;white-space:normal}
 }
 </style>
 <script>
