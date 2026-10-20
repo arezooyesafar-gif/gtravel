@@ -566,16 +566,24 @@
         {% if all_hotel_links %}
         <div class="row">
             <div class="col-lg-12">
-                <div style="margin-top:18px;padding-top:14px;border-top:1px solid #eee">
-                    <h2 style="font-size:17px;margin-bottom:12px;color:#0088b5">همه هتل های {{ city }}</h2>
-                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px 20px">
+                <div class="city-all-hotels">
+                    <h2>همه هتل های {{ city }}</h2>
+                    <ul>
                         {% for h in all_hotel_links %}
-                        <li><a href="{% url 'hotel-detail' h.id h.Slug %}" style="color:#3a3a3a;font-size:14px">{{ h.HotelName }}</a></li>
+                        <li><a href="{% url 'hotel-detail' h.id h.Slug %}">{{ h.HotelName }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
         </div>
+        <style>
+        .city-all-hotels{margin-top:20px;padding-top:14px;border-top:1px solid #eee}
+        .city-all-hotels h2{font-size:16px;margin-bottom:10px;color:#0088b5;font-weight:700}
+        .city-all-hotels ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:4px 16px}
+        .city-all-hotels li{background:none !important;border:none !important;padding:0 !important;margin:0 !important;display:inline-block !important;float:none !important}
+        .city-all-hotels a{background:none !important;color:#3a3a3a !important;font-size:13px !important;font-weight:400 !important;padding:0 !important;border:none !important;display:inline !important;text-decoration:none !important;line-height:2 !important}
+        .city-all-hotels a:hover{color:#0066cc !important;text-decoration:underline !important}
+        </style>
         {% endif %}
     </div>
     {% include 'ui/base/hotel-slagon.html' %}
