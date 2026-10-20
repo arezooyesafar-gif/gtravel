@@ -2,12 +2,13 @@
 <style>
 @media (max-width:767px){
 .country-desc table.stacked-table,.country-desc table.stacked-table tbody{display:block;width:100%}
-.country-desc table.stacked-table tr{display:block;margin-bottom:14px;border:1px solid #cfe6f2;border-top:3px solid #008cba;border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.06)}
+.country-desc table.stacked-table tr{display:block;margin-bottom:16px;border:1px solid #9aa3a7;border-radius:4px;overflow:hidden;background:#fff}
 .country-desc table.stacked-table tr:first-child{display:none}
-.country-desc table.stacked-table td{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border:0;border-bottom:1px solid #eef3f6;padding:10px 12px;white-space:normal;width:auto;text-align:right}
-.country-desc table.stacked-table td:nth-child(odd){background:#f7fbfd}
+.country-desc table.stacked-table td{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border:0;border-bottom:1px solid #9aa3a7;padding:9px 12px;white-space:normal;width:auto;text-align:right}
 .country-desc table.stacked-table td:last-child{border-bottom:0}
-.country-desc table.stacked-table td::before{content:attr(data-label);color:#0088b5;font-weight:700;flex:0 0 38%;max-width:38%;text-align:right;white-space:normal}
+.country-desc table.stacked-table td::before{content:attr(data-label);color:#008cba;font-weight:700;flex:0 0 38%;max-width:38%;text-align:right;white-space:normal}
+.country-desc table.stacked-table td:first-child{background:#008cba;color:#fff;font-weight:700;justify-content:center;text-align:center}
+.country-desc table.stacked-table td:first-child::before{display:none}
 }
 </style>
 <script>
