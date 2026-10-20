@@ -1047,9 +1047,14 @@ def AllHotelCity(request, id, slug):
         hotelmenu = City.objects.get(slug=slug)
     except City.DoesNotExist:
         raise Http404
-    all_faqs = hotel_faq_city.objects.filter(Cityfaq=hotelmenu)    
-    meta_robots = hotelmenu.hotel_meta_robots
-    hotels = Paginator(get_all_city_hotels(hotelmenu.id).select_related('Hcity'), 12).get_page(1)
+    all_faqs = hotel_faq_city.objects.filter(Cityfaq=hotelmenu)
+    paginator = Paginator(get_all_city_hotels(hotelmenu.id).select_related('Hcity'), 12)
+    PageNumber = request.GET.get('page')
+    hotels = paginator.get_page(PageNumber)
+    if PageNumber and str(PageNumber).isdigit() and int(PageNumber) > 1:
+        meta_robots = 'NOINDEX,FOLLOW'
+    else:
+        meta_robots = hotelmenu.hotel_meta_robots
 
     context = {
         'Hotels': hotels,
@@ -1058,7 +1063,6 @@ def AllHotelCity(request, id, slug):
         'set': theme_setting,
         'tour_countries': tours_country_list,
         'spacialDest': items,
-        'all_hotel_links': get_all_city_hotels(hotelmenu.id).only('id', 'Slug', 'HotelName'),
         'type': 'city',
         'meta_robots': meta_robots,
         'skip_jalali_datepicker': True,

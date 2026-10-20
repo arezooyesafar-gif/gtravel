@@ -47,10 +47,10 @@
     {% for n in hotels.paginator.page_range %}
         {% if hotels.number == n %}
             <li data-page='{{ n }}' class="page-item {% if hotels.number == n %}active{% endif %}"><a
-                    class="page-link">{{ n }}</a></li>
+                    class="page-link" href="?page={{ n }}">{{ n }}</a></li>
         {% elif n > hotels.number|add:'-10' and n < hotels.number|add:'10' %}
             <li data-page='{{ n }}' class="page-item {% if hotels.number == n %}active{% endif %}"><a
-                    class="page-link">{{ n }}</a></li>
+                    class="page-link" href="?page={{ n }}">{{ n }}</a></li>
         {% endif %}
     {% endfor %}
 </ul>
