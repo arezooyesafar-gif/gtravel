@@ -11,7 +11,7 @@ function mark(){
 if(window.innerWidth>767)return;
 document.querySelectorAll('.country-desc table:not(.wide-table)').forEach(function(t){
 var r=t.querySelector('tr');if(!r)return;
-if(r.querySelectorAll('th,td').length>=3)t.classList.add('wide-table');
+if(r.querySelectorAll('th,td').length>=3||t.querySelector('li'))t.classList.add('wide-table');
 });
 }
 if(document.readyState!=='loading')mark();else document.addEventListener('DOMContentLoaded',mark);
