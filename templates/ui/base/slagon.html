@@ -1,10 +1,32 @@
 {% load responsive_img %}
 <style>
 @media (max-width:767px){
-.country-desc table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.country-desc table>tbody{display:table;width:100%;min-width:560px}
+.country-desc table.stacked-table,.country-desc table.stacked-table tbody{display:block;width:100%}
+.country-desc table.stacked-table tr{display:block;margin-bottom:12px;border:1px solid #9aa3a7;border-radius:6px;overflow:hidden;background:#fff}
+.country-desc table.stacked-table tr:first-child{display:none}
+.country-desc table.stacked-table td{display:flex;justify-content:space-between;gap:12px;border:0;border-bottom:1px solid #eee;padding:8px 10px;text-align:right;white-space:normal;width:auto}
+.country-desc table.stacked-table td:last-child{border-bottom:0}
+.country-desc table.stacked-table td::before{content:attr(data-label);font-weight:700;color:#008cba;flex:0 0 42%;max-width:42%;text-align:right}
 }
 </style>
+<script>
+(function(){
+function stack(){
+if(window.innerWidth>767)return;
+document.querySelectorAll('.country-desc table:not(.stacked-table)').forEach(function(t){
+var rows=t.querySelectorAll('tr');if(rows.length<2)return;
+var head=rows[0].querySelectorAll('th,td');if(head.length<3)return;
+var labels=[].map.call(head,function(c){return (c.textContent||'').trim();});
+for(var i=1;i<rows.length;i++){
+var cs=rows[i].querySelectorAll('td,th');
+[].forEach.call(cs,function(c,idx){if(labels[idx])c.setAttribute('data-label',labels[idx]);});
+}
+t.classList.add('stacked-table');
+});
+}
+if(document.readyState!=='loading')stack();else document.addEventListener('DOMContentLoaded',stack);
+})();
+</script>
 {% if country %}
     <div class="container">
         <section class="slagon {% if contry %}country-info-box{% endif %}">
