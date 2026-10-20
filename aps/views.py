@@ -1058,6 +1058,7 @@ def AllHotelCity(request, id, slug):
         'set': theme_setting,
         'tour_countries': tours_country_list,
         'spacialDest': items,
+        'all_hotel_links': get_all_city_hotels(hotelmenu.id).only('id', 'Slug', 'HotelName'),
         'type': 'city',
         'meta_robots': meta_robots,
         'skip_jalali_datepicker': True,
