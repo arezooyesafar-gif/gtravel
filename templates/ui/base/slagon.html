@@ -1,4 +1,10 @@
 {% load responsive_img %}
+<style>
+@media (max-width:767px){
+.country-desc table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.country-desc table>tbody{display:table;width:100%;min-width:560px}
+}
+</style>
 {% if country %}
     <div class="container">
         <section class="slagon {% if contry %}country-info-box{% endif %}">
