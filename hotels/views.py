@@ -11,20 +11,20 @@ from tour.pms_manager import *
 
 @superuser_required(login_url='login')
 def ajax_hotel_list(request):
-    hotellist = get_all_hotels().order_by('id')
+    hotellist = get_all_hotels().order_by('-id')
     if 'hotel_name' in request.GET:
         hotel_name = request.GET['hotel_name']
         if hotel_name:
-            hotellist = hotellist.filter(HotelName__contains=hotel_name).order_by('id')
+            hotellist = hotellist.filter(HotelName__contains=hotel_name).order_by('-id')
     if 'hotel_name_eng' in request.GET:
         hotel_name_eng = request.GET['hotel_name_eng']
         if hotel_name_eng:
-            hotellist = hotellist.filter(HotelNameEnglish__contains=hotel_name_eng).order_by('id')
+            hotellist = hotellist.filter(HotelNameEnglish__contains=hotel_name_eng).order_by('-id')
     if 'city' in request.GET:
         city = request.GET['city']
         if city:
             city = City.objects.get(id=city)
-            hotellist = hotellist.filter(Hcity=city).order_by('id')
+            hotellist = hotellist.filter(Hcity=city).order_by('-id')
     paginator = Paginator(hotellist, 20)
     page_number = request.GET.get('page')
     hotellist = paginator.get_page(page_number)
