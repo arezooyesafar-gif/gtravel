@@ -124,9 +124,9 @@ def create_hotel(request):
                 hotel_file_instance = hotel_images(hotel=hotel, image=file)
                 hotel_file_instance.save()
                 messages.success(request, 'اطلاعات با موفقیت ذخیره گردید!')
-                return redirect('create_hotel')
+                return redirect('update_hotel', hotel.id)
             messages.success(request, 'اطلاعات با موفقیت ذخیره گردید!')
-            return redirect('create_hotel')
+            return redirect('update_hotel', hotel.id)
         else:
             messages.error(request, 'فیلدهای الزامی را جهت ورود اطلاعات هتل کامل نمایید')
             return redirect('create_hotel')
