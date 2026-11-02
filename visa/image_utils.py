@@ -55,6 +55,7 @@ def to_jpeg(uploaded):
     image = ImageOps.exif_transpose(image)
     if image.mode != 'RGB':
         image = image.convert('RGB')
+    image.thumbnail((2500, 2500), Image.LANCZOS)
     output = io.BytesIO()
     image.save(output, format='JPEG', quality=85, optimize=True)
     return ContentFile(output.getvalue(), name=_safe_base(uploaded.name) + '.jpg')

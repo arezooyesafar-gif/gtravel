@@ -1699,9 +1699,7 @@ def handler404(request, *args, **argv):
 
 @login_required(login_url='otp_login')
 def visa_request(request):
-    all_prof = profile.objects.all()
-    print(len(all_prof))
-    prof = profile.objects.get(user=request.user)
+    prof, _ = profile.objects.get_or_create(user=request.user)
     forms = visa_request_form()
     if request.method == 'POST':
         forms = visa_request_form(request.POST, request.FILES)
@@ -1744,8 +1742,7 @@ def visa_request(request):
 
 @login_required(login_url='otp_login')
 def thai_visa_request(request):
-    all_prof = profile.objects.all()
-    prof = profile.objects.get(user=request.user)
+    prof, _ = profile.objects.get_or_create(user=request.user)
     forms = thaiVisaForm()
     if request.method == 'POST':
         forms = thaiVisaForm(request.POST, request.FILES)
