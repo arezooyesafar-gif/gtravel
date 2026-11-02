@@ -16,6 +16,9 @@ CONVERTIBLE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff'}
 class WebPStorage(FileSystemStorage):
     def save(self, name, content, max_length=None):
         if name:
+            parts = name.replace('\\', '/').split('/')
+            if 'visa' in parts[:-1]:
+                return super().save(name, content, max_length=max_length)
             root, ext = os.path.splitext(name)
             ext = ext.lower()
             if Image is not None and ext in CONVERTIBLE_EXTENSIONS:
