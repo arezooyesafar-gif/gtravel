@@ -108,36 +108,42 @@
                         <div>
                             <p style="text-align:left;">Person Image</p>
                             <img width="200px" src="{{ item.person_image.url }}">
+                            <a href="{% url 'visa_image_png' 'thai' item.id 'person_image' %}" class="btn btn-theme" download>ذخیره PNG</a>
                         </div>
                     {% endif %}
                     {% if item.passport_image %}
                         <div>
                             <p style="text-align:left;">Passport Image</p>
                             <img width="200px" src="{{ item.passport_image.url }}">
+                            <a href="{% url 'visa_image_png' 'thai' item.id 'passport_image' %}" class="btn btn-theme" download>ذخیره PNG</a>
                         </div>
                     {% endif %}
                     {% if item.person_id_image %}
                         <div>
                             <p style="text-align:left;">National Card Image</p>
                             <img width="200px" src="{{ item.person_id_image.url }}">
+                            <a href="{% url 'visa_image_png' 'thai' item.id 'person_id_image' %}" class="btn btn-theme" download>ذخیره PNG</a>
                         </div>
                     {% endif %}
                     {% if item.person_brd_image %}
                         <div>
                             <p style="text-align:left;">Bitrh Certificate Image</p>
                             <img width="200px" src="{{ item.person_brd_image.url }}">
+                            <a href="{% url 'visa_image_png' 'thai' item.id 'person_brd_image' %}" class="btn btn-theme" download>ذخیره PNG</a>
                         </div>
                     {% endif %}
                     {% if item.person_hotel_image %}
                         <div>
                             <p style="text-align:left;"> Hotel Voucher  Image</p>
                             <img width="200px" src="{{ item.person_hotel_image.url }}">
+                            <a href="{% url 'visa_image_png' 'thai' item.id 'person_hotel_image' %}" class="btn btn-theme" download>ذخیره PNG</a>
                         </div>
                     {% endif %}
                     {% if item.person_flight_image %}
                         <div>
                             <p style="text-align:left;">Ticket Image</p>
                             <img width="200px" src="{{ item.person_flight_image.url }}">
+                            <a href="{% url 'visa_image_png' 'thai' item.id 'person_flight_image' %}" class="btn btn-theme" download>ذخیره PNG</a>
                         </div>
                     {% endif %}
                 </div>

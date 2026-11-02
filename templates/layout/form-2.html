@@ -60,12 +60,14 @@
                     <div>
                     <p style="text-align:left;">Person Image</p>
                             <img width="200px" src="{{ item.person_image.url }}">
+                            <a href="{% url 'visa_image_png' 'russia' item.id 'person_image' %}" class="btn btn-theme" download>ذخیره PNG</a>
                     </div>
                     {% endif %}
                     {% if item.passport_image %}
                     <div>
                     <p style="text-align:left;">Passport Image</p>
                             <img width="200px" src="{{ item.passport_image.url }}">
+                            <a href="{% url 'visa_image_png' 'russia' item.id 'passport_image' %}" class="btn btn-theme" download>ذخیره PNG</a>
                     </div>
                     {% endif %}
                     <div>

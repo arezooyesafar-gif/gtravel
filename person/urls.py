@@ -24,6 +24,7 @@ urlpatterns = [
     path('applications_list', visa_list_admin, name='visa_list_admin'),
     path('update_visa_request/<int:id>', update_visa_request, name='update_visa_request'),
     path('visa_view/<int:id>', visa_view, name='visa_view'),
+    path('visa/image-png/<str:kind>/<int:id>/<str:field>', visa_image_png, name='visa_image_png'),
     path('visa_pdf/<int:id>', visa_pdf, name='visa_pdf'),
     path('delete_visa/<int:id>', delete_visa_request, name='delete_visa_request'),
     path('delete_thai_visa/<int:id>', delete_thai_visa_request, name="delete_thai_visa_request"),

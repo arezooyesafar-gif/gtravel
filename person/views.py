@@ -1,6 +1,10 @@
+import io
+import os
 import random
 import requests
+from PIL import Image
 from django.contrib import messages
+from django.http import HttpResponse, Http404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -455,6 +459,50 @@ def visa_view(request, id):
         'item': item
     }
     return render(request, 'layout/form-details.html', context)
+
+
+@login_required(login_url='otp_login')
+def visa_image_png(request, kind, id, field):
+    mapping = {
+        'russia': (visa_request_item, {'passport_image', 'person_image'}),
+        'thai': (ThaiVisa, {'passport_image', 'person_image', 'person_id_image', 'person_brd_image', 'person_hotel_image', 'person_flight_image'}),
+    }
+    entry = mapping.get(kind)
+    if entry is None:
+        raise Http404
+    model, allowed = entry
+    if field not in allowed:
+        raise Http404
+    try:
+        obj = model.objects.get(id=id)
+    except model.DoesNotExist:
+        raise Http404
+    image_file = getattr(obj, field, None)
+    if not image_file:
+        raise Http404
+    try:
+        image_file.open('rb')
+        data = image_file.read()
+    finally:
+        try:
+            image_file.close()
+        except Exception:
+            pass
+    try:
+        image = Image.open(io.BytesIO(data))
+        image.load()
+    except Exception:
+        raise Http404
+    if image.mode == 'P' and 'transparency' in image.info:
+        image = image.convert('RGBA')
+    elif image.mode not in ('RGB', 'RGBA', 'L'):
+        image = image.convert('RGB')
+    buffer = io.BytesIO()
+    image.save(buffer, format='PNG')
+    response = HttpResponse(buffer.getvalue(), content_type='image/png')
+    base = os.path.splitext(os.path.basename(image_file.name))[0] or 'image'
+    response['Content-Disposition'] = 'attachment; filename="' + base + '.png"'
+    return response
 
 @login_required(login_url='otp_login')
 def delete_visa_request(request, id):

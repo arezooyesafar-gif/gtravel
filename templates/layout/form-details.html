@@ -87,10 +87,12 @@
                             <div class="upload-holder">
                                 <div class="child-upload">
                                     <img src="{{ item.person_image.url}}" alt="">
+                                    {% if item.person_image %}<a href="{% url 'visa_image_png' 'russia' item.id 'person_image' %}" class="btn btn-theme" download>ذخیره PNG</a>{% endif %}
 
                                 </div>
                                 <div class="child-upload">
                                    <img src="{{ item.passport_image.url}}" alt="">
+                                   {% if item.passport_image %}<a href="{% url 'visa_image_png' 'russia' item.id 'passport_image' %}" class="btn btn-theme" download>ذخیره PNG</a>{% endif %}
                                 </div>
                             </div>
                             <div>
