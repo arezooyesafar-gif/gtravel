@@ -98,7 +98,7 @@ class Hotel_Data(models.Model):
     HotelBookingRate = models.CharField(max_length=4, null=True, blank=True )
     HotelTpRate = models.CharField(max_length=4, null=True, blank=True )
     HotelShotDesc = RichTextUploadingField(max_length=1000, null=True, blank=True )
-    HotelDesc = RichTextUploadingField(max_length=25000, null=True, blank=True)
+    HotelDesc = RichTextUploadingField(max_length=1000000, null=True, blank=True)
     HotelRoom = models.CharField(max_length=100, null=True, blank=True)
     HotelAddress = models.CharField(max_length=1000, null=True, blank=True)
     HotelPhone = models.CharField(max_length=500, null=True, blank=True)
