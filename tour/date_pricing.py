@@ -65,12 +65,19 @@ def compute_tour_min_price(packages, dp=None, overrides=None):
                     price_dollar = price_dollar + sign_f * adj_foreign
         if price is None:
             continue
-        if best is None or (price, price_dollar or 0) < (best['price'], best['price_dollar']):
+        cf = str(currency_foreign) if currency_foreign else 'دلار'
+        replace = (
+            best is None
+            or price < best['price']
+            or (price == best['price'] and cf == best['currency_foreign']
+                and (price_dollar or 0) < best['price_dollar'])
+        )
+        if replace:
             best = {
                 'price': price,
                 'price_dollar': price_dollar or 0,
                 'currency': str(currency) if currency else 'تومان',
-                'currency_foreign': str(currency_foreign) if currency_foreign else 'دلار',
+                'currency_foreign': cf,
             }
     return best
 
