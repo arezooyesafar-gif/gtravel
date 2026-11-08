@@ -231,8 +231,10 @@ def memoriesSubmit(request, id):
         if forms2.is_valid():
             forms2.save()
             return redirect('/')
+    memo_cats = MemoryCategory.objects.all()
     context = {
         'AllCat': categories,
+        'memo_cats': memo_cats,
         'Form': forms,
         'Memo': memo,
         'Footer': footer,

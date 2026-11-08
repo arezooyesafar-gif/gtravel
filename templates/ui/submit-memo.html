@@ -70,10 +70,10 @@
                 <p><ion-icon id="cat-icon" name="albums-sharp"></ion-icon>دسته بندی مطالب</p>
                 <div class="offer-list">
                     <ul class="cat-list">
-                        {% for cat in AllCat %}
+                        {% for cat in memo_cats %}
                             <li class="cat-list-item">
                             <ion-icon id="list-item" name="reorder-two-sharp"></ion-icon>
-                                <a href="{% url 'blog-category' cat.slug cat.id %}">{{ cat.CatName }}</a>
+                                <a href="{% url 'memory-category' cat.slug %}">{{ cat.CatName }}</a>
                             </li>
                         {% endfor %}
                     </ul>
