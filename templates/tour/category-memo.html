@@ -121,6 +121,25 @@
                         </div>
                     </div>
                 {% endif %}
+                <div class="post-list-card">
+                    <p class="memo-form-heading">ارسال سفرنامه</p>
+                    <form method="POST" novalidate="novalidate">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-6">{{ Form.Name }}</div>
+                            <div class="col-lg-6">{{ Form.Family }}</div>
+                            <div class="col-lg-6">{{ Form.Mobile }}</div>
+                            <div class="col-lg-6">{{ Form.Email }}</div>
+                            <div class="col-lg-6">{{ Form.img1 }}</div>
+                            <div class="col-lg-6">{{ Form.img2 }}</div>
+                            <div class="col-lg-12">{{ Form.Message }}
+                                <button id="save-button-hd" type="submit" class="btn btn-lg btn-info btn-block">
+                                    <i class="fa fa-check btn-icon font-20 edit-btn"></i><span id="save-button-title">ارسال</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="col-lg-3 memo_category_list" style="padding-top: 90px">
                 <div class="container">

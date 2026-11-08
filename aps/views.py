@@ -1661,6 +1661,13 @@ def CategoryMemo(request, slug):
     pageNumber = request.GET.get('page')
     data = paginator.get_page(pageNumber)
     footer = Footer.objects.all()
+    from tour.forms import PMemoriesForm
+    forms = PMemoriesForm()
+    if request.method == 'POST':
+        forms = PMemoriesForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            return redirect('memory-category', slug)
     formsub = SubscribeForm()
     if request.method == 'POST':
         formsub = SubscribeForm(request.POST)
@@ -1677,6 +1684,7 @@ def CategoryMemo(request, slug):
         
     context = {
         'PMemories': listMemo,
+        'Form': forms,
         'Footer': footer,
         'Sub': formsub,
         'Menus': menus,
