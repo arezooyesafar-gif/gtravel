@@ -62,7 +62,7 @@ def _hotel_entry(request, hotel, view, service, sold_out=False):
         'sold_out': bool(sold_out),
     }
     if hotel.Slug:
-        entry['url'] = _abs_url(request, reverse('hotel-detail', args=[hotel.id, hotel.Slug]))
+        entry['url'] = _abs_url(request, hotel.get_absolute_url())
     if hotel.HotelImage:
         entry['image'] = _abs_url(request, hotel.HotelImage.url)
     return entry

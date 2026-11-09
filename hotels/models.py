@@ -134,6 +134,7 @@ class Hotel_Data(models.Model):
         verbose_name='وضعیت نمایش در موتورهای جستجو (SEO)',
         help_text='تنظیم کنید که این صفحه در گوگل دیده شود یا خیر'
     )
+    short_url = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         from django.utils.text import slugify
@@ -147,6 +148,12 @@ class Hotel_Data(models.Model):
             if normalized:
                 self.Slug = normalized
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        if self.short_url:
+            return reverse('hotel-detail-slug', args=[self.Slug])
+        return reverse('hotel-detail', args=[self.id, self.Slug])
 
     def __str__(self):
         DisplayName = str(self.HotelName) + ' - ' + str(self.Hcity)

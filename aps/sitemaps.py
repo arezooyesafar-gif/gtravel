@@ -74,7 +74,7 @@ class hotelSitemap(Sitemap):
         return Hotel_Data.objects.all()
 
     def location(self, obj):
-        return '/hotels/%s/%s' % (obj.id, obj.Slug)
+        return obj.get_absolute_url()
 
 class hotelCountrySitemap(Sitemap):
     changefreq = "daily"

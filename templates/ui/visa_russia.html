@@ -100,7 +100,7 @@
                     <p class="hotel-list-title post-page-side"><ion-icon id="ui-layout" name="business-sharp"></ion-icon> هتل های ویژه</p>
                     {% for hotel in Hotels %}
                     {% if forloop.counter <= 5 %}
-                        <a href="{% url 'hotel-detail' hotel.id hotel.Slug %}">
+                        <a href="{{ hotel.get_absolute_url }}">
                             <div class="list-hotels post-design">
                                 <div class="hotel-image">
                                     {% if hotel.HotelImage %}

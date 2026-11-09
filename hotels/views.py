@@ -118,6 +118,7 @@ def create_hotel(request):
         if forms.is_valid():
             hotel = forms.save(commit=False)
             hotel.Creator = user
+            hotel.short_url = True
             hotel.save()
             files = request.FILES.getlist('files')
             for file in files:

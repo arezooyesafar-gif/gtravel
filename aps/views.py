@@ -1111,7 +1111,7 @@ def hotel_search(request):
     }
     return render(request, 'ui/hotel_search.html', context)
 
-def HotelDetail(request,id,  Slug):
+def HotelDetail(request, Slug, id=None):
     items = spacial_destinations.objects.select_related('country', 'city').filter(show_homepage=True)
     tours_country_list = get_tours_country_list()
     footer_2 = get_colm_two_pages()
@@ -1158,7 +1158,7 @@ def HotelDetail(request,id,  Slug):
                 forms.save()
                 message = 'کامنت شما با موفقیت ارسال شد.'
                 messages.success(request, message)
-                return redirect('hotel-detail', hotel.id, hotel.Slug)
+                return redirect(hotel.get_absolute_url())
     context = {
         'HotelData': hotel,
         'set':theme_setting,

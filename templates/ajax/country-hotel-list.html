@@ -1,6 +1,6 @@
 {% load responsive_img %}{% for hotel in hotels %}
     <div class="col-lg-3">
-        <a href="{% url 'hotel-detail' hotel.id hotel.Slug %}">
+        <a href="{{ hotel.get_absolute_url }}">
             <div class="hotel-cat">
                 <div class="cat-img">
                     {% if hotel.HotelImage %}

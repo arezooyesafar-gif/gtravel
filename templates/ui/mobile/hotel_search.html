@@ -122,7 +122,7 @@
     <div class="row">
         {% for hotel in Hotels %}
             <div class="col-lg-6">
-                <a href="{% url 'hotel-detail' hotel.id hotel.Slug %}">
+                <a href="{{ hotel.get_absolute_url }}">
                     <div class="hotel-cat">
                         <div class="cat-img">
                             {% if hotel.HotelImage %}

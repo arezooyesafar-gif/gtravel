@@ -7,7 +7,7 @@
 <html lang="fa-IR" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <link rel="canonical" href="https://arezoosafar.com{% url 'hotel-detail' HotelData.id HotelData.Slug %}">
+    <link rel="canonical" href="https://arezoosafar.com{{ HotelData.get_absolute_url }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="keywords" content="{{ HotelData.metaKeyword }}">
     <meta name="description" content="{{ HotelData.metaDescription }}">
@@ -115,7 +115,7 @@
                 {"@type": "ListItem", "position": 1, "name": "آرزوی سفر", "item": "https://arezoosafar.com/"},
                 {"@type": "ListItem", "position": 2, "name": "هتل های {{ HotelData.Hcountry.TitleC|escapejs }}", "item": "https://arezoosafar.com{% url 'all-hotel-list' HotelData.Hcountry.id HotelData.Hcountry.slug %}"},
                 {"@type": "ListItem", "position": 3, "name": "هتل های {{ HotelData.Hcity.Name|escapejs }}", "item": "https://arezoosafar.com{% url 'all-hotel-city-list' HotelData.Hcity.id HotelData.Hcity.slug %}"},
-                {"@type": "ListItem", "position": 4, "name": "{{ HotelData.HotelName|escapejs }}", "item": "https://arezoosafar.com{% url 'hotel-detail' HotelData.id HotelData.Slug %}"}
+                {"@type": "ListItem", "position": 4, "name": "{{ HotelData.HotelName|escapejs }}", "item": "https://arezoosafar.com{{ HotelData.get_absolute_url }}"}
             ]
         }
     </script>

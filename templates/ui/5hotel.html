@@ -15,7 +15,7 @@
 </div>
 <div class="col-lg-3 col-sm-4 no-padding d-lg-none">
     <div class="hotel_image_{% if i.sold_out_map.hotel %} hotel-soldout-dim{% endif %}">
-        <a href="{% url 'hotel-detail' i.HotelName.id i.HotelName.Slug %}">
+        <a href="{{ i.HotelName.get_absolute_url }}">
             {% if i.HotelName.HotelImage %}
                 <img loading="lazy" alt="{{ i.HotelName }}"
                      src="{% img_url_at i.HotelName.HotelImage 480 %}"
@@ -114,7 +114,7 @@
     <div class="col-12 no-padding d-lg-none">{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.mhotel tr_label=i.transfer_label_map.mhotel %}</div>
     <div class="col-lg-3 col-sm-4 no-padding d-lg-none">
         <div class="hotel_image_{% if i.sold_out_map.mhotel %} hotel-soldout-dim{% endif %}">
-            <a href="{% url 'hotel-detail' i.Mhotel.id i.Mhotel.Slug %}">
+            <a href="{{ i.Mhotel.get_absolute_url }}">
                 {% if i.Mhotel.HotelImage %}
                     <img loading="lazy" alt="{{ i.Mhotel }}"
                      src="{% img_url_at i.Mhotel.HotelImage 480 %}"
@@ -214,7 +214,7 @@
     <div class="col-12 no-padding d-lg-none">{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.m1hotel tr_label=i.transfer_label_map.m1hotel %}</div>
     <div class="col-lg-3 col-sm-4 no-padding d-lg-none">
         <div class="hotel_image_{% if i.sold_out_map.m1hotel %} hotel-soldout-dim{% endif %}">
-            <a href="{% url 'hotel-detail' i.M1hotel.id i.M1hotel.Slug %}">
+            <a href="{{ i.M1hotel.get_absolute_url }}">
                 {% if i.M1hotel.HotelImage %}
                     <img loading="lazy" alt="{{ i.M1hotel }}"
                      src="{% img_url_at i.M1hotel.HotelImage 480 %}"
@@ -314,7 +314,7 @@
     <div class="col-12 no-padding d-lg-none">{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.m2hotel tr_label=i.transfer_label_map.m2hotel %}</div>
     <div class="col-lg-3 col-sm-4 no-padding d-lg-none">
         <div class="hotel_image_{% if i.sold_out_map.m2hotel %} hotel-soldout-dim{% endif %}">
-            <a href="{% url 'hotel-detail' i.M2hotel.id i.M2hotel.Slug %}">
+            <a href="{{ i.M2hotel.get_absolute_url }}">
                 {% if i.M2hotel.HotelImage %}
                     <img loading="lazy" alt="{{ i.M2hotel }}"
                      src="{% img_url_at i.M2hotel.HotelImage 480 %}"
@@ -414,7 +414,7 @@
     <div class="col-12 no-padding d-lg-none">{% include 'ui/_transfer_divider.html' with tr_type=i.transfer_map.m3hotel tr_label=i.transfer_label_map.m3hotel %}</div>
     <div class="col-lg-3 col-sm-4 no-padding d-lg-none">
         <div class="hotel_image_{% if i.sold_out_map.m3hotel %} hotel-soldout-dim{% endif %}">
-            <a href="{% url 'hotel-detail' i.M3hotel.id i.M3hotel.Slug %}">
+            <a href="{{ i.M3hotel.get_absolute_url }}">
                 {% if i.M3hotel.HotelImage %}
                     <img loading="lazy" alt="{{ i.M3hotel }}"
                      src="{% img_url_at i.M3hotel.HotelImage 480 %}"

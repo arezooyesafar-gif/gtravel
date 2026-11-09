@@ -24,7 +24,7 @@
                             </div>
                             <div class="card-tools">
                                 {% if Data %}
-                                {% if Data.Slug %}<a href="{% url 'hotel-detail' Data.id Data.Slug %}" target="_blank" rel="noopener" class="link m-r-20">مشاهده هتل</a>{% endif %}
+                                {% if Data.Slug %}<a href="{{ Data.get_absolute_url }}" target="_blank" rel="noopener" class="link m-r-20">مشاهده هتل</a>{% endif %}
                                 <a href="{% url 'create_hotel' %}" class="link">ایجاد هتل</a>
                                 {% endif %}
                                 <a href="{% url 'hotel_list' %}" class="link m-r-20"> لیست هتل ها</a>

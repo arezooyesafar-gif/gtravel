@@ -15,7 +15,7 @@
         <div class="hbx-nights-city">{{ hbx_hotel.Hcity.Name }}</div>
     </div>
     <div class="hbx-photo">
-        <a href="{% url 'hotel-detail' hbx_hotel.id hbx_hotel.Slug %}">
+        <a href="{{ hbx_hotel.get_absolute_url }}">
             {% if hbx_hotel.HotelImage %}
                 <img loading="lazy" alt="{{ hbx_hotel.HotelName }}"
                      src="{% img_url_at hbx_hotel.HotelImage 480 %}"
@@ -27,7 +27,7 @@
         </a>
     </div>
     <div class="hbx-info">
-        <a class="hbx-name-fa" href="{% url 'hotel-detail' hbx_hotel.id hbx_hotel.Slug %}">{{ hbx_hotel.HotelName|truncatechars:50 }}</a>
+        <a class="hbx-name-fa" href="{{ hbx_hotel.get_absolute_url }}">{{ hbx_hotel.HotelName|truncatechars:50 }}</a>
         <div class="hbx-name-en">{{ hbx_hotel.HotelNameEnglish|truncatechars:50 }}</div>
         {% if hbx_hotel.HotelRating %}
             <div class="hbx-stars" dir="ltr">

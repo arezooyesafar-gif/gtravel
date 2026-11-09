@@ -373,7 +373,7 @@
                 <div class="hotels-list">
                     <p class="hotel-list-title">لیست هتل ها</p>
                     {% for hotel in Hotels %}
-                    {% if forloop.counter <= 4 %} <a href="{% url 'hotel-detail' hotel.id hotel.Slug%}">
+                    {% if forloop.counter <= 4 %} <a href="{{ hotel.get_absolute_url }}">
                         <div class="list-hotels">
                             <div class="hotel-image">
                                 {% if hotel.HotelImage %}

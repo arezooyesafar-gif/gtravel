@@ -184,6 +184,7 @@ urlpatterns = [
     path('all-hotel/<int:id>/<str:slug>', (AllHotelCity), name='all-hotel-city-list'),
     path('all-country-hotel/<int:id>/<str:slug>', (AllCountryHotel), name='all-hotel-list'),
     path('hotels/<int:id>/<str:Slug>', (HotelDetail), name='hotel-detail'),
+    path('hotels/<str:Slug>', (HotelDetail), name='hotel-detail-slug'),
     path('<str:slug>/<int:id>/origin_tour_city', CityTourListOrigin, name='CityTourListOrigin'),
     path('norooz_tours', (AllTourList_norooz), name='norooz_tours'),
     path('installment_tours', (AllTourList_Installment), name='installment_tours'),
